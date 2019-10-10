@@ -1,2 +1,3 @@
-# GDP2019_20
-Code for the GDP 2019/20 term
+# dz1106_GEX
+
+small steps towards c++ game engine
