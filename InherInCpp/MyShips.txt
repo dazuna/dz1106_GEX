@@ -1,0 +1,9 @@
+ship
+fast_ship
+big_fast_ship
+stealth_ship_please
+small_ship
+stealth_ship_please
+stealth_ship_please
+big_fast_ship
+EOF

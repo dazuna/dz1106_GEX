@@ -1,0 +1,41 @@
+[
+    {
+        "friendlyName" : "sphere",
+        "meshName" : "sphereMesh",
+        "meshURL": "assets/models/Sphere_Radius_1_XYZ_n.ply",
+	    "positionXYZ":[0.0, 10.0, 0.0],
+        "rotationXYZ":[0.0, 0.0, 0.0],
+        "scale": 2.0,
+        "objectColourRGBA":	[0.0,1.0,0.0,1.0],
+        "diffuseColour": [1.0,1.0,1.0,1.0],
+        "specularColour": [1.0,1.0,1.0,1.0],
+        "velocity": [0.0, 0.0, 0.0],
+        "accel": [0.0, 0.0, 0.0],
+        "inverseMass": 0.0,
+        "physicsShapeType": 4,
+        "isWireframe": false,
+        "debugColour": [1.0,1.0,1.0,1.0],
+        "isVisible": true
+    },
+    {
+        "friendlyName" : "sphere2",
+        "meshName" : "sphereMesh",
+        "meshURL": "assets/models/Sphere_Radius_1_XYZ_n.ply",
+	    "positionXYZ":[5.0, 10.0, 0.0],
+        "rotationXYZ":[0.0, 0.0, 0.0],
+        "scale": 4.0,
+        "objectColourRGBA":	[0.0,1.0,0.0,1.0],
+        "diffuseColour": [1.0,1.0,1.0,1.0],
+        "specularColour": [1.0,1.0,1.0,1.0],
+        "velocity": [0.0, 0.0, 0.0],
+        "accel": [0.0, 0.0, 0.0],
+        "inverseMass": 0.0,
+        "physicsShapeType": 4,
+        "isWireframe": false,
+        "debugColour": [1.0,1.0,1.0,1.0],
+        "isVisible": true
+    }
+]
+
+
+

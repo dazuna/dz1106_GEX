@@ -1,0 +1,8 @@
+[
+    {"name":"bunnyMesh","location":"assets/models/bun_zipper_XYZ_n.ply"},
+    {"name":"largeBunnyMesh","location":"assets/models/Large_Physics_Bunny_XYZ_N.ply"},
+    {"name":"pirateMesh","location":"assets/models/Sky_Pirate_Combined_xyz_n.ply"},
+    {"name":"terrainMesh","location":"assets/models/Terrain_XYZ_n.ply"},
+    {"name":"cubeMesh","location":"assets/models/Cube_1_Unit_from_origin_XYZ_n.ply"},
+    {"name":"sphereMesh","location":"assets/models/Sphere_Radius_1_XYZ_n.ply"}
+]

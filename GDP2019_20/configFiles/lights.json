@@ -1,0 +1,14 @@
+[
+    {
+        "name":"light0",
+        "position":[-4.0, 20.0, 0.0],
+        "LinearAtten": 0.03,
+        "QuadraticAtten": 0.0000001
+    },
+    {
+        "name":"light1",
+        "position":[4.0, 20.0, 0.0],
+        "LinearAtten": 0.03,
+        "QuadraticAtten": 0.0000001
+    }
+]
