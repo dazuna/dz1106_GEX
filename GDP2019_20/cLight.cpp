@@ -36,12 +36,13 @@ void cLight::getUniforms(int ID)
 void cLight::setUniforms()
 {
 	glUniform4f(ULposition,positionXYZ.x,positionXYZ.y,positionXYZ.z,1.0f);
-	glUniform4f(ULdiffuse, 1.0f, 1.0f, 1.0f, 1.0f);	// White
-	glUniform4f(ULspecular, 1.0f, 1.0f, 1.0f, 1.0f);	// White
+	glUniform4f(ULdiffuse,diffuse.r,diffuse.g,diffuse.b, 1.0f);	// White
+	glUniform4f(ULspecular,specular.r,specular.g,specular.b, 1.0f);	// White
+	glUniform4f(ULdirection,direction.r,direction.g,direction.b, 1.0f);	// White
+	glUniform4f(ULparam1, 0.0f /*POINT light*/, 0.0f, 0.0f, 1.0f);
+	glUniform4f(ULparam2, 1.0f /*Light is on*/, 0.0f, 0.0f, 1.0f);
 	glUniform4f(ULatten, 0.0f,  // constant attenuation
 		LinearAtten,  // Linear 
 		QuadraticAtten,	// Quadratic 
 		1000000.0f);	// Distance cut off
-	glUniform4f(ULparam1, 0.0f /*POINT light*/, 0.0f, 0.0f, 1.0f);
-	glUniform4f(ULparam2, 1.0f /*Light is on*/, 0.0f, 0.0f, 1.0f);
 }

@@ -4,7 +4,8 @@
 #include <glm/vec4.hpp>
 
 #include "GFLW_callbacks.h"
-#include "globalStuff.h"			// for find object
+#include "globalStuff.h"			// for finding object
+#include "JSONLoader.h"
 
 #include "cLight.h"
 #include <iostream>
@@ -120,15 +121,14 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			selectedLight->second.positionXYZ.z += CAMERASPEED;		// Move the camera +0.01f units
 		}
-
-		if (key == GLFW_KEY_1)
-		{
-			selectedLight->second.ConstAtten *= 0.99f;			// 99% of what it was
-		}
-		if (key == GLFW_KEY_2)
-		{
-			selectedLight->second.ConstAtten *= 1.01f;			// 1% more of what it was
-		}		
+		//if (key == GLFW_KEY_1)
+		//{
+		//	selectedLight->second.ConstAtten *= 0.99f;			// 99% of what it was
+		//}
+		//if (key == GLFW_KEY_2)
+		//{
+		//	selectedLight->second.ConstAtten *= 1.01f;			// 1% more of what it was
+		//}		
 		if (key == GLFW_KEY_3)
 		{
 			selectedLight->second.LinearAtten *= 0.99f;			// 99% of what it was
@@ -172,6 +172,14 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 	}//if (isShiftKeyDownByAlone(mods))
 
+	if (isCtrlKeyDownByAlone(mods))
+	{
+		if (key == GLFW_KEY_S && action == GLFW_PRESS)
+		{
+			JSONSaveLights(&::g_map_pLights);
+			JSONSaveGameObjects(&::g_map_GameObjects);
+		}
+	}
 
 	//// Moving the pirate ship in a certain direction
 	//if (isCtrlKeyDownByAlone(mods))
@@ -201,9 +209,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	//	}
 	//}
 
-
-
-
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 
@@ -217,10 +222,7 @@ bool isShiftKeyDownByAlone(int mods)
 		return true;
 	}
 	//// Ignore other keys and see if the shift key is down
-	//if ((mods & GLFW_MOD_SHIFT) == GLFW_MOD_SHIFT)
-	//{
-
-	//}
+	//if ((mods & GLFW_MOD_SHIFT) == GLFW_MOD_SHIFT){}
 	return false;
 }
 

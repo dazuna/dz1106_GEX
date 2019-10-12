@@ -22,3 +22,7 @@ bool loadMeshToGPU(
 	std::map<std::string, cMesh*>* g_map_Mesh,
 	std::map<std::string, cGameObject*>* g_map_GameObjects,
 	GLuint shaderProgID);
+bool JSONSaveLights(
+	std::map<std::string, cLight>* g_map_pLights);
+bool JSONSaveGameObjects(
+	std::map<std::string, cGameObject*>* g_map_GameObjects);

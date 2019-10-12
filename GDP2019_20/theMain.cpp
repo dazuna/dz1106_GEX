@@ -411,15 +411,44 @@ void drawLightXYZ(cDebugRenderer* pDebugRenderer)
 {
 	pDebugRenderer->addLine(
 		selectedLight->second.positionXYZ,
-		(selectedLight->second.positionXYZ + glm::vec3(3.0f, 0.0f, 0.0f)),
+		(selectedLight->second.positionXYZ + glm::vec3(2.0f, 0.0f, 0.0f)),
 		glm::vec3(1.0f, 1.0f, 1.0f));
 	pDebugRenderer->addLine(
 		selectedLight->second.positionXYZ,
-		(selectedLight->second.positionXYZ + glm::vec3(0.0f, 3.0f, 0.0f)),
+		(selectedLight->second.positionXYZ + glm::vec3(0.0f, 2.0f, 0.0f)),
 		glm::vec3(1.0f, 1.0f, 1.0f));
 	pDebugRenderer->addLine(
 		selectedLight->second.positionXYZ,
-		(selectedLight->second.positionXYZ + glm::vec3(0.0f, 0.0f, 3.0f)),
+		(selectedLight->second.positionXYZ + glm::vec3(0.0f, 0.0f, 2.0f)),
 		glm::vec3(1.0f, 1.0f, 1.0f));
-	pDebugRenderer->addTriangle()
+	// draw pyramid on top of object
+	// x triangle
+	pDebugRenderer->addTriangle(
+		selectedLight->second.positionXYZ + glm::vec3(0.0f, 3.0f, 0.0f),
+		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
+		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
+		glm::vec3(1.0f, 1.0f, 1.0f));
+	// z triangle
+	pDebugRenderer->addTriangle(
+		selectedLight->second.positionXYZ + glm::vec3(0.0f, 3.0f, 0.0f),
+		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
+		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
+		glm::vec3(1.0f, 1.0f, 1.0f));
+	// square
+	pDebugRenderer->addLine(
+		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
+		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
+		glm::vec3(1.0f, 1.0f, 1.0f));
+	pDebugRenderer->addLine(
+		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
+		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
+		glm::vec3(1.0f, 1.0f, 1.0f));
+	pDebugRenderer->addLine(
+		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
+		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
+		glm::vec3(1.0f, 1.0f, 1.0f));
+	pDebugRenderer->addLine(
+		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
+		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
+		glm::vec3(1.0f, 1.0f, 1.0f));
 }

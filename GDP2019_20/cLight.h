@@ -32,6 +32,16 @@ public:
 	float ConstAtten = 0.0000001f;
 	float LinearAtten = 0.03f;
 	float QuadraticAtten = 0.0000001f;
+	glm::vec3 diffuse = glm::vec3(1.0f, 1.0f, 1.0f);
+	glm::vec3 specular = glm::vec3(1.0f, 1.0f, 1.0f);
+	glm::vec3 direction = glm::vec3(1.0f, 1.0f, 1.0f);
+	// param1 x = lightType, y = inner angle, z = outer angle, w = TBD
+	// 0 = pointlight // 1 = spotlight // 2 = directionallight
+	float type = 0.0f;
+	float innerAngle = 0.0f;
+	float outerAngle = 0.0f;
+	float lightW = 0.0f;
+	float lightSwitch = 1.0f;
 	/* /Modifiable stuff*/
 	cLight();
 	cLight(
