@@ -15,12 +15,14 @@
 
 bool isShiftKeyDownByAlone(int mods);
 bool isCtrlKeyDownByAlone(int mods);
+void getStatus();
 
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 
 	const float CAMERASPEED = 2.0f;
+	visionVector = cameraTarget - cameraEye;
 
 	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 	{
@@ -29,30 +31,36 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		if (key == GLFW_KEY_A)
 		{
 			cameraEye.x -= CAMERASPEED;		// Move the camera -0.01f units
+			cameraTarget = cameraEye + glm::vec3(0.0, 0.0, -10.0);
 		}
 		if (key == GLFW_KEY_D)
 		{
 			cameraEye.x += CAMERASPEED;		// Move the camera +0.01f units
+			cameraTarget = cameraEye + glm::vec3(0.0, 0.0, -10.0);
 		}
 
 		// Move the camera (Q & E for up and down, along the y axis)
 		if (key == GLFW_KEY_Q)
 		{
 			cameraEye.y -= CAMERASPEED;		// Move the camera -0.01f units
+			cameraTarget = cameraEye + glm::vec3(0.0, 0.0, -10.0);
 		}
 		if (key == GLFW_KEY_E)
 		{
 			cameraEye.y += CAMERASPEED;		// Move the camera +0.01f units
+			cameraTarget = cameraEye + glm::vec3(0.0, 0.0, -10.0);
 		}
 
 		// Move the camera (W & S for towards and away, along the z axis)
 		if (key == GLFW_KEY_W)
 		{
 			cameraEye.z -= CAMERASPEED;		// Move the camera -0.01f units
+			cameraTarget = cameraEye + glm::vec3(0.0, 0.0, -10.0);
 		}
 		if (key == GLFW_KEY_S)
 		{
 			cameraEye.z += CAMERASPEED;		// Move the camera +0.01f units
+			cameraTarget = cameraEye + glm::vec3(0.0, 0.0, -10.0);
 		}
 
 		//if ( key == GLFW_KEY_B )
@@ -71,23 +79,36 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 		if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
 		{
-			selectedLight++;
-			if (selectedLight == ::g_map_pLights.end()){
-				selectedLight = ::g_map_pLights.begin();
-			}	
+			switch (cursorType)
+			{
+			case selectedType::GAMEOBJECT:
+				selectedGameObject++;
+				if (selectedGameObject == ::g_map_GameObjects.end()) 
+					selectedGameObject = ::g_map_GameObjects.begin();
+				break;
+			case selectedType::LIGHT:
+				selectedLight++;
+				if (selectedLight == ::g_map_pLights.end()) 
+					selectedLight = ::g_map_pLights.begin();
+				break;
+			case selectedType::SOUND:break;
+			}
+				
 		}
 		if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
 		{
-			system("cls");
-			std::ostringstream tempSS;
-			tempSS << "lightname: " << selectedLight->second.getName()
-				<< " x: " << selectedLight->second.positionXYZ.x
-				<< " y: " << selectedLight->second.positionXYZ.y
-				<< " z: " << selectedLight->second.positionXYZ.z;
-			console = tempSS.str();
+			getStatus();
 			std::cout << console << std::endl;
 		}
-
+		if (key == GLFW_KEY_F1 && action == GLFW_PRESS)
+		{
+			switch (cursorType)
+			{
+			case selectedType::GAMEOBJECT:cursorType = selectedType::LIGHT; break;
+			case selectedType::LIGHT:cursorType = selectedType::GAMEOBJECT; break;
+			case selectedType::SOUND:break;
+			}
+		}
 	}
 
 	if (isShiftKeyDownByAlone(mods))
@@ -95,31 +116,61 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		// move the light
 		if (key == GLFW_KEY_A)
 		{
-			selectedLight->second.positionXYZ.x -= CAMERASPEED;		// Move the camera -0.01f units
+			switch (cursorType)
+			{
+			case selectedType::GAMEOBJECT:	selectedGameObject->second->positionXYZ.x -= CAMERASPEED; break;
+			case selectedType::LIGHT:		selectedLight->second.positionXYZ.x -= CAMERASPEED;	break;
+			case selectedType::SOUND:		break;
+			}
 		}
 		if (key == GLFW_KEY_D)
 		{
-			selectedLight->second.positionXYZ.x += CAMERASPEED;		// Move the camera +0.01f units
+			switch (cursorType)
+			{
+			case selectedType::GAMEOBJECT:	selectedGameObject->second->positionXYZ.x += CAMERASPEED; break;
+			case selectedType::LIGHT:		selectedLight->second.positionXYZ.x += CAMERASPEED;	break;
+			case selectedType::SOUND:		break;
+			}
 		}
 
 		// Move the camera (Q & E for up and down, along the y axis)
 		if (key == GLFW_KEY_Q)
 		{
-			selectedLight->second.positionXYZ.y -= CAMERASPEED;		// Move the camera -0.01f units
+			switch (cursorType)
+			{
+			case selectedType::GAMEOBJECT:	selectedGameObject->second->positionXYZ.y -= CAMERASPEED; break;
+			case selectedType::LIGHT:		selectedLight->second.positionXYZ.y -= CAMERASPEED;	break;
+			case selectedType::SOUND:		break;
+			}
 		}
 		if (key == GLFW_KEY_E)
 		{
-			selectedLight->second.positionXYZ.y += CAMERASPEED;		// Move the camera +0.01f units
+			switch (cursorType)
+			{
+			case selectedType::GAMEOBJECT:	selectedGameObject->second->positionXYZ.y += CAMERASPEED; break;
+			case selectedType::LIGHT:		selectedLight->second.positionXYZ.y += CAMERASPEED;	break;
+			case selectedType::SOUND:		break;
+			}
 		}
 
 		// Move the camera (W & S for towards and away, along the z axis)
 		if (key == GLFW_KEY_W)
 		{
-			selectedLight->second.positionXYZ.z -= CAMERASPEED;		// Move the camera -0.01f units
+			switch (cursorType)
+			{
+			case selectedType::GAMEOBJECT:	selectedGameObject->second->positionXYZ.z -= CAMERASPEED; break;
+			case selectedType::LIGHT:		selectedLight->second.positionXYZ.z -= CAMERASPEED;	break;
+			case selectedType::SOUND:		break;
+			}
 		}
 		if (key == GLFW_KEY_S)
 		{
-			selectedLight->second.positionXYZ.z += CAMERASPEED;		// Move the camera +0.01f units
+			switch (cursorType)
+			{
+			case selectedType::GAMEOBJECT:	selectedGameObject->second->positionXYZ.z += CAMERASPEED; break;
+			case selectedType::LIGHT:		selectedLight->second.positionXYZ.z += CAMERASPEED;	break;
+			case selectedType::SOUND:		break;
+			}
 		}
 		//if (key == GLFW_KEY_1)
 		//{
@@ -168,6 +219,23 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		if (key == GLFW_KEY_0)
 		{
 			bLightDebugSheresOn = true; 
+		}
+		if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
+		{
+			switch (cursorType)
+			{
+			case selectedType::GAMEOBJECT:
+				if (selectedGameObject == ::g_map_GameObjects.begin())
+					selectedGameObject = ::g_map_GameObjects.end();
+				selectedGameObject--;
+				break;
+			case selectedType::LIGHT:
+				if (selectedLight == ::g_map_pLights.begin())
+					selectedLight = ::g_map_pLights.end();
+				selectedLight--;
+				break;
+			case selectedType::SOUND:break;
+			}
 		}
 
 	}//if (isShiftKeyDownByAlone(mods))
@@ -233,4 +301,30 @@ bool isCtrlKeyDownByAlone(int mods)
 		return true;
 	}
 	return false;
+}
+
+void getStatus()
+{
+	system("cls");
+	std::ostringstream tempSS;
+	switch (cursorType)
+	{
+	case selectedType::GAMEOBJECT:
+		tempSS << "cursor: " << selectedGameObject->second->friendlyName
+			<< " x: " << selectedGameObject->second->positionXYZ.x
+			<< " y: " << selectedGameObject->second->positionXYZ.y
+			<< " z: " << selectedGameObject->second->positionXYZ.z
+			<< "\n";
+		break;
+	case selectedType::LIGHT:
+		tempSS << "cursor: " << selectedLight->second.getName()
+			<< " x: " << selectedLight->second.positionXYZ.x
+			<< " y: " << selectedLight->second.positionXYZ.y
+			<< " z: " << selectedLight->second.positionXYZ.z
+			<< " type: " << selectedLight->second.type
+			<< "\n";
+		break;
+	case selectedType::SOUND:break;
+	}
+	console += tempSS.str();
 }

@@ -42,8 +42,6 @@ public:
 	                                // RGB - colour
 	                                // 4th value (a or w) is the "power"
 	                                // 1.0 to 10,000.0f 
-
-
 	// Add some physics things
 	glm::vec3 velocity;
 	glm::vec3 accel;

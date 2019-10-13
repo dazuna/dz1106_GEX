@@ -6,8 +6,8 @@
         "QuadraticAtten": 0.0000001,
         "diffuse":      [1.0, 1.0, 1.0],
         "specular":     [1.0, 1.0, 1.0],
-        "direction":    [1.0, 1.0, 1.0],
-        "type": 0.0,
+        "direction":    [-1.0, -1.0, 0.0],
+        "type": 2.0,
         "innerAngle": 0.0,
         "outerAngle": 0.0,
         "lightW": 0.0,
@@ -25,6 +25,6 @@
         "innerAngle": 0.0,
         "outerAngle": 0.0,
         "lightW": 0.0,
-        "lightSwitch": 1.0
+        "lightSwitch": 0.0
     }
 ]

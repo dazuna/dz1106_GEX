@@ -15,6 +15,7 @@
 #include <sstream>
 #include <limits.h>
 #include <float.h>
+#include <string>
 
 #include "cModelLoader.h"			
 #include "cVAOManager.h"		// NEW
@@ -37,13 +38,17 @@
 #include "GFLW_callbacks.h"
 
 void drawLightXYZ(cDebugRenderer* pDebugRenderer);
+void drawGameObjectXYZ(cDebugRenderer* pDebugRenderer);
+void setWindowTitle(std::stringstream* ssTitle);
+std::string GLMvec3toString(glm::vec3 theGLMvec3);
 void DrawObject(glm::mat4 m,
 	cGameObject* pCurrentObject,
 	GLint shaderProgID,
 	cVAOManager* pVAOManager);
 
-glm::vec3 cameraEye = glm::vec3(0.0, 80.0, 80.0);
-glm::vec3 cameraTarget = glm::vec3(0.0f, 10.0, 0.0f);
+glm::vec3 cameraEye = glm::vec3(0.0, 40.0, 100.0);
+glm::vec3 cameraTarget = glm::vec3(0.0f, 40.0, 0.0f);
+glm::vec3 visionVector = cameraTarget - cameraEye;
 glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
 float sexyLightSpotInnerAngle = 5.0f;
@@ -62,6 +67,8 @@ std::map<std::string, cGameObject*>::iterator selectedGameObject = g_map_GameObj
 std::map<std::string, cLight> g_map_pLights;
 std::map<std::string, cLight>::iterator selectedLight = g_map_pLights.begin();
 //bool g_BallCollided = false;
+
+selectedType cursorType = selectedType::GAMEOBJECT;
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
@@ -137,6 +144,7 @@ int main(void)
 	JSONLoadMeshes(&g_map_Mesh, pTheModelLoader);
 	JSONLoadGameObjects(&::g_map_GameObjects);
 	loadMeshToGPU(pTheVAOManager, &::g_map_Mesh, &::g_map_GameObjects, shaderProgID);
+	selectedGameObject = ::g_map_GameObjects.begin();
 
 	//	//	mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
 	glEnable(GL_DEPTH);			// Write to the depth buffer
@@ -152,6 +160,7 @@ int main(void)
 
 	// Get the initial time
 	double lastTime = glfwGetTime();
+	std::cout << "start loop!" << std::endl;
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -208,7 +217,7 @@ int main(void)
 			cameraEye.x, cameraEye.y, cameraEye.z, 1.0f);
 
 		std::stringstream ssTitle;
-		ssTitle << " light: " << selectedLight->first.c_str();
+		setWindowTitle(&ssTitle);
 		glfwSetWindowTitle(window, ssTitle.str().c_str());
 
 		GLint matView_UL = glGetUniformLocation(shaderProgID, "matView");
@@ -231,7 +240,13 @@ int main(void)
 
 		}//for (int index...
 
-		drawLightXYZ(pDebugRenderer);
+		switch (cursorType)
+		{
+		case selectedType::GAMEOBJECT:drawGameObjectXYZ(pDebugRenderer); break;
+		case selectedType::LIGHT:drawLightXYZ(pDebugRenderer);break;
+		case selectedType::SOUND:break;
+		}
+		
 
 		//	Update the objects through physics
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
@@ -451,4 +466,70 @@ void drawLightXYZ(cDebugRenderer* pDebugRenderer)
 		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
 		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
 		glm::vec3(1.0f, 1.0f, 1.0f));
+}
+
+void drawGameObjectXYZ(cDebugRenderer* pDebugRenderer)
+{
+	pDebugRenderer->addLine(
+		selectedGameObject->second->positionXYZ,
+		(selectedGameObject->second->positionXYZ + glm::vec3(2.0f, 0.0f, 0.0f)),
+		glm::vec3(1.0f, 1.0f, 1.0f));
+	pDebugRenderer->addLine(
+		selectedGameObject->second->positionXYZ,
+		(selectedGameObject->second->positionXYZ + glm::vec3(0.0f, 2.0f, 0.0f)),
+		glm::vec3(1.0f, 1.0f, 1.0f));
+	pDebugRenderer->addLine(
+		selectedGameObject->second->positionXYZ,
+		(selectedGameObject->second->positionXYZ + glm::vec3(0.0f, 0.0f, 2.0f)),
+		glm::vec3(1.0f, 1.0f, 1.0f));
+	// draw pyramid on top of object
+	// x triangle
+	pDebugRenderer->addTriangle(
+		selectedGameObject->second->positionXYZ + glm::vec3(0.0f, 3.0f, 0.0f),
+		selectedGameObject->second->positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
+		selectedGameObject->second->positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
+		glm::vec3(1.0f, 1.0f, 1.0f));
+	// z triangle
+	pDebugRenderer->addTriangle(
+		selectedGameObject->second->positionXYZ + glm::vec3(0.0f, 3.0f, 0.0f),
+		selectedGameObject->second->positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
+		selectedGameObject->second->positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
+		glm::vec3(1.0f, 1.0f, 1.0f));
+	// square
+	pDebugRenderer->addLine(
+		selectedGameObject->second->positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
+		selectedGameObject->second->positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
+		glm::vec3(1.0f, 1.0f, 1.0f));
+	pDebugRenderer->addLine(
+		selectedGameObject->second->positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
+		selectedGameObject->second->positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
+		glm::vec3(1.0f, 1.0f, 1.0f));
+	pDebugRenderer->addLine(
+		selectedGameObject->second->positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
+		selectedGameObject->second->positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
+		glm::vec3(1.0f, 1.0f, 1.0f));
+	pDebugRenderer->addLine(
+		selectedGameObject->second->positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
+		selectedGameObject->second->positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
+		glm::vec3(1.0f, 1.0f, 1.0f));
+}
+
+std::string GLMvec3toString(glm::vec3 theGLMvec3)
+{
+	std::stringstream out;
+	out << theGLMvec3.x << ", " << theGLMvec3.y << ", " << theGLMvec3.z;
+	return out.str();
+}
+
+void setWindowTitle(std::stringstream* ssTitle)
+{
+	switch (cursorType)
+	{
+	case selectedType::GAMEOBJECT:*ssTitle << " object: " << selectedGameObject->first.c_str(); break;
+	case selectedType::LIGHT:*ssTitle << " light: " << selectedLight->first.c_str(); break;
+	case selectedType::SOUND:break;
+	}
+	*ssTitle << "   Eye: " << GLMvec3toString(cameraEye);
+	*ssTitle << "   Tgt: " << GLMvec3toString(cameraTarget);
+	*ssTitle << "   Vis: " << GLMvec3toString(visionVector);
 }

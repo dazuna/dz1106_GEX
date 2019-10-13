@@ -11,6 +11,7 @@ cGameObject* pFindObjectByFriendlyNameMap( std::string name );
 // These are defined in theMain.cpp
 extern glm::vec3 cameraEye;
 extern glm::vec3 cameraTarget;
+extern glm::vec3 visionVector;
 extern glm::vec3 upVector;
 
 extern float sexyLightSpotInnerAngle;
@@ -27,3 +28,5 @@ extern std::map<std::string, cGameObject*>::iterator selectedGameObject;
 extern std::map<std::string, cLight> g_map_pLights;
 extern std::map<std::string, cLight>::iterator selectedLight;
 
+extern enum class selectedType { GAMEOBJECT, LIGHT, SOUND };
+extern selectedType cursorType;
