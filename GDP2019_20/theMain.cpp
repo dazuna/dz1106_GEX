@@ -41,14 +41,15 @@ void drawLightXYZ(cDebugRenderer* pDebugRenderer);
 void drawGameObjectXYZ(cDebugRenderer* pDebugRenderer);
 void setWindowTitle(std::stringstream* ssTitle);
 std::string GLMvec3toString(glm::vec3 theGLMvec3);
+glm::mat4 calculateWorldMatrix(cGameObject* pCurrentObject);
 void DrawObject(glm::mat4 m,
 	cGameObject* pCurrentObject,
 	GLint shaderProgID,
 	cVAOManager* pVAOManager);
 
-glm::vec3 cameraEye = glm::vec3(0.0, 40.0, 100.0);
-glm::vec3 cameraTarget = glm::vec3(0.0f, 40.0, 0.0f);
-glm::vec3 visionVector = cameraTarget - cameraEye;
+glm::vec3 cameraEye = glm::vec3(0.0f, 30.0f, 100.0f);
+glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+glm::vec3 visionVector = glm::normalize(cameraTarget - cameraEye);
 glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
 float sexyLightSpotInnerAngle = 5.0f;
@@ -72,17 +73,17 @@ selectedType cursorType = selectedType::GAMEOBJECT;
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
-	// Move the sphere to where the camera is and shoot the ball from there...
-	cGameObject* pTheBall = pFindObjectByFriendlyNameMap("sphere");
+	//// Move the sphere to where the camera is and shoot the ball from there...
+	//cGameObject* pTheBall = pFindObjectByFriendlyNameMap("sphere");
 
-	// What's the velocity
-	// Target - eye = direction
-	glm::vec3 direction = glm::normalize(cameraTarget - cameraEye);
+	//// What's the velocity
+	//// Target - eye = direction
+	//glm::vec3 direction = glm::normalize(cameraTarget - cameraEye);
 
-	float speed = 10.0f;
+	//float speed = 10.0f;
 
-	pTheBall->velocity = direction * speed;
-	pTheBall->positionXYZ = cameraEye;
+	//pTheBall->velocity = direction * speed;
+	//pTheBall->positionXYZ = cameraEye;
 
 	return;
 }
@@ -250,7 +251,9 @@ int main(void)
 
 		//	Update the objects through physics
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
-		// pPhsyics->IntegrationStep(::g_map_GameObjects, (float)averageDeltaTime);
+		pPhsyics->IntegrationStep(::g_map_GameObjects, (float)averageDeltaTime);
+
+		pPhsyics->TestForCollisions(::g_map_GameObjects);
 		
 		pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
 
@@ -268,40 +271,34 @@ int main(void)
 	exit(EXIT_SUCCESS);
 }
 
-void DrawObject(glm::mat4 m,
-	cGameObject* pCurrentObject,
-	GLint shaderProgID,
-	cVAOManager* pVAOManager)
+glm::mat4 calculateWorldMatrix(cGameObject* pCurrentObject)
 {
-	// 
-				//         mat4x4_identity(m);
-	m = glm::mat4(1.0f);
-
+	glm::mat4 matWorld = glm::mat4(1.0f);
 	// ******* TRANSLATION TRANSFORM *********
 	glm::mat4 matTrans
 		= glm::translate(glm::mat4(1.0f),
 			glm::vec3(pCurrentObject->positionXYZ.x,
 				pCurrentObject->positionXYZ.y,
 				pCurrentObject->positionXYZ.z));
-	m = m * matTrans;
+	matWorld = matWorld * matTrans;
 	// ******* TRANSLATION TRANSFORM *********
 
 	// ******* ROTATION TRANSFORM *********
-	//mat4x4_rotate_Z(m, m, (float) glfwGetTime());
+	// ROTATE Z
 	glm::mat4 rotateZ = glm::rotate(glm::mat4(1.0f),
-		pCurrentObject->rotationXYZ.z,					// Angle 
+		pCurrentObject->rotationXYZ.z,
 		glm::vec3(0.0f, 0.0f, 1.0f));
-	m = m * rotateZ;
-
+	matWorld = matWorld * rotateZ;
+	// ROTATE Y
 	glm::mat4 rotateY = glm::rotate(glm::mat4(1.0f),
-		pCurrentObject->rotationXYZ.y,	//(float)glfwGetTime(),					// Angle 
+		pCurrentObject->rotationXYZ.y,
 		glm::vec3(0.0f, 1.0f, 0.0f));
-	m = m * rotateY;
-
+	matWorld = matWorld * rotateY;
+	// ROTATE X
 	glm::mat4 rotateX = glm::rotate(glm::mat4(1.0f),
-		pCurrentObject->rotationXYZ.x,	// (float)glfwGetTime(),					// Angle 
+		pCurrentObject->rotationXYZ.x,
 		glm::vec3(1.0f, 0.0f, 0.0f));
-	m = m * rotateX;
+	matWorld = matWorld * rotateX;
 	// ******* ROTATION TRANSFORM *********
 
 	// ******* SCALE TRANSFORM *********
@@ -309,22 +306,17 @@ void DrawObject(glm::mat4 m,
 		glm::vec3(pCurrentObject->scale,
 			pCurrentObject->scale,
 			pCurrentObject->scale));
-	m = m * scale;
+	matWorld = matWorld * scale;
 	// ******* SCALE TRANSFORM *********
+	return matWorld;
+}
 
-	//	mat4x4_mul(mvp, p, m);
-	//	mvp = p * v * m;
-
-	//	 Choose which shader to use
-	//	glUseProgram(program);
-	//	glUseProgram(shaderProgID);
-
-	//	glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*) mvp);
-	//	glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
-
-	//	uniform mat4 matModel;		// Model or World 
-	//	uniform mat4 matView; 		// View or camera
-	//	uniform mat4 matProj;
+void DrawObject(glm::mat4 m,
+	cGameObject* pCurrentObject,
+	GLint shaderProgID,
+	cVAOManager* pVAOManager)
+{
+	m = calculateWorldMatrix(pCurrentObject);
 	GLint matModel_UL = glGetUniformLocation(shaderProgID, "matModel");
 
 	glUniformMatrix4fv(matModel_UL, 1, GL_FALSE, glm::value_ptr(m));
@@ -525,11 +517,14 @@ void setWindowTitle(std::stringstream* ssTitle)
 {
 	switch (cursorType)
 	{
-	case selectedType::GAMEOBJECT:*ssTitle << " object: " << selectedGameObject->first.c_str(); break;
-	case selectedType::LIGHT:*ssTitle << " light: " << selectedLight->first.c_str(); break;
+	case selectedType::GAMEOBJECT:*ssTitle << " object: " << selectedGameObject->first.c_str()
+		<< " posXYZ: " << GLMvec3toString(selectedGameObject->second->positionXYZ); break;
+	case selectedType::LIGHT:*ssTitle << " light: " << selectedLight->first.c_str()
+		<< " posXYZ: " << GLMvec3toString(selectedLight->second.positionXYZ); break;
 	case selectedType::SOUND:break;
 	}
-	*ssTitle << "   Eye: " << GLMvec3toString(cameraEye);
-	*ssTitle << "   Tgt: " << GLMvec3toString(cameraTarget);
-	*ssTitle << "   Vis: " << GLMvec3toString(visionVector);
+	//*ssTitle << "   Eye: " << GLMvec3toString(cameraEye);
+	//*ssTitle << "   Tgt: " << GLMvec3toString(cameraTarget);
+	//*ssTitle << "   Vis: " << GLMvec3toString(visionVector);
+	//*ssTitle << "   XYZ: " << GLMvec3toString(visionVector);
 }

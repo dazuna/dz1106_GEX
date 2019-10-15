@@ -22,49 +22,31 @@ glm::vec3 cPhysics::getGravity(void)
 }
 
 
-void cPhysics::IntegrationStep(std::vector<cGameObject*>& vec_pGameObjects, float deltaTime)
+void cPhysics::IntegrationStep(std::map<std::string, cGameObject*> g_map_GameObjects, float deltaTime)
 {
-
-
-	for (unsigned int index = 0;
-		 index != vec_pGameObjects.size(); index++)
+	for (std::map<std::string, cGameObject*>::iterator itGO = g_map_GameObjects.begin();
+		itGO != g_map_GameObjects.end();
+		itGO++)
 	{
 		// Get a pointer to the current object (makes the code a little clearer)
-		cGameObject* pCurObj = vec_pGameObjects[index];
+		cGameObject* pCurObj = itGO->second;
 
 		if (pCurObj->inverseMass != 0.0f)
 		{
-
 			// Forward Explicit Euler Inetegration
 			//NewVelocty += Velocity + ( Ax * DeltaTime )
-
-			// 
 			pCurObj->accel = this->m_Gravity;
-
-
-			pCurObj->velocity.x += pCurObj->accel.x * deltaTime;
-			pCurObj->velocity.y += pCurObj->accel.y * deltaTime;
-			pCurObj->velocity.z += pCurObj->accel.z * deltaTime;
-			//		// Or you can do this...
-			//		CurObj.velocity += CurObj.accel * deltaTime;
-
-					//NewPosition = Posistion + ( Vx * DeltaTime )
-
-			pCurObj->positionXYZ.x += pCurObj->velocity.x * deltaTime;
-			pCurObj->positionXYZ.y += pCurObj->velocity.y * deltaTime;
-			pCurObj->positionXYZ.z += pCurObj->velocity.z * deltaTime;
-
-
+			pCurObj->velocity += pCurObj->accel * deltaTime;
+			pCurObj->positionXYZ += pCurObj->velocity * deltaTime;
 		}
 	}//for (unsigned int index = 0;
 
 	return;
 }
 
-
-
 // Returns all the triangles and the closest points
-void cPhysics::GetClosestTriangleToPoint(Point pointXYZ, cMesh& mesh, glm::vec3& closestPoint, sPhysicsTriangle& closestTriangle)
+void cPhysics::GetClosestTriangleToPoint(Point pointXYZ, cMesh& mesh, 
+	glm::vec3& closestPoint, sPhysicsTriangle& closestTriangle)
 {
 
 	// Assume the closest distance is REALLY far away
@@ -147,7 +129,7 @@ void cPhysics::GetClosestTrianglesToSphere(cGameObject& testSphere, float distan
 }
 
 // Test each object with every other object
-void cPhysics::TestForCollisions(std::vector<cGameObject*>& vec_pGameObjects)
+void cPhysics::TestForCollisions(std::map<std::string, cGameObject*> g_map_GameObjects)
 {
 	// This will store all the collisions in this frame
 	std::vector<sCollisionInfo> vecCollisions;
@@ -163,21 +145,9 @@ void cPhysics::TestForCollisions(std::vector<cGameObject*>& vec_pGameObjects)
 			cGameObject* pA = vec_pGameObjects[outerLoopIndex];
 			cGameObject* pB = vec_pGameObjects[innerLoopIndex];
 
-
-
-			// Note that if you don't respond to the 
-			// collision here, then you will get the same
-			// result twice (Object "A" with "B" and later, 
-			//   object "B" with "A" - but it's the same collison
-
-			// Compare the two objects:
-			// Either a sphere-sphere or sphere-mesh
-			// An I testing the object with itself? 
-			//if (pA == pB)
 			if ( pA->getUniqueID() == pB->getUniqueID() )
 			{	
-				// It's the same object
-				// Do nothing
+				return; // It's the same // Do nothing
 			}
 			else if (pA->physicsShapeType == SPHERE &&
 				pB->physicsShapeType == SPHERE)
@@ -195,8 +165,6 @@ void cPhysics::TestForCollisions(std::vector<cGameObject*>& vec_pGameObjects)
 					vecCollisions.push_back(collisionInfo);
 				}
 			}
-		
-		
 		}//for (unsigned int innerLoopIndex = 0;
 	}//for (unsigned int outerLoopIndex = 0;
 

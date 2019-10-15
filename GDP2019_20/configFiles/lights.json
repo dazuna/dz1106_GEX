@@ -1,7 +1,7 @@
 [
     {
         "name":"light0",
-        "positionXYZ":  [-4.0, 20.0, 0.0],
+        "positionXYZ":  [0.0, 200.0, 50.0],
         "LinearAtten": 0.03,
         "QuadraticAtten": 0.0000001,
         "diffuse":      [1.0, 1.0, 1.0],

@@ -20,62 +20,72 @@ void getStatus();
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-
+	glm::mat4 matRotX,matRotY;
+	glm::vec3 invVisVec;
 	const float CAMERASPEED = 2.0f;
-	visionVector = cameraTarget - cameraEye;
+	const float DEGREESOFROTATION = 3.0f;
 
 	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 	{
-
-		// Move the camera (A & D for left and right, along the x axis)
 		if (key == GLFW_KEY_A)
 		{
-			cameraEye.x -= CAMERASPEED;		// Move the camera -0.01f units
-			cameraTarget = cameraEye + glm::vec3(0.0, 0.0, -10.0);
+			cameraEye.x -= CAMERASPEED;
+			cameraTarget = cameraEye + visionVector;
 		}
 		if (key == GLFW_KEY_D)
 		{
-			cameraEye.x += CAMERASPEED;		// Move the camera +0.01f units
-			cameraTarget = cameraEye + glm::vec3(0.0, 0.0, -10.0);
+			cameraEye.x += CAMERASPEED;
+			cameraTarget = cameraEye + visionVector;
 		}
 
-		// Move the camera (Q & E for up and down, along the y axis)
 		if (key == GLFW_KEY_Q)
 		{
-			cameraEye.y -= CAMERASPEED;		// Move the camera -0.01f units
-			cameraTarget = cameraEye + glm::vec3(0.0, 0.0, -10.0);
+			cameraEye.y -= CAMERASPEED;
+			cameraTarget = cameraEye + visionVector;
 		}
 		if (key == GLFW_KEY_E)
 		{
-			cameraEye.y += CAMERASPEED;		// Move the camera +0.01f units
-			cameraTarget = cameraEye + glm::vec3(0.0, 0.0, -10.0);
+			cameraEye.y += CAMERASPEED;
+			cameraTarget = cameraEye + visionVector;
 		}
 
-		// Move the camera (W & S for towards and away, along the z axis)
 		if (key == GLFW_KEY_W)
 		{
-			cameraEye.z -= CAMERASPEED;		// Move the camera -0.01f units
-			cameraTarget = cameraEye + glm::vec3(0.0, 0.0, -10.0);
+			//cameraEye.z -= CAMERASPEED;
+			cameraEye = cameraEye + glm::normalize(visionVector);
+			cameraTarget = cameraEye + visionVector;
 		}
 		if (key == GLFW_KEY_S)
 		{
-			cameraEye.z += CAMERASPEED;		// Move the camera +0.01f units
-			cameraTarget = cameraEye + glm::vec3(0.0, 0.0, -10.0);
+			//cameraEye.z += CAMERASPEED;
+			cameraEye = cameraEye - glm::normalize(visionVector);
+			cameraTarget = cameraEye + visionVector;
 		}
 
-		//if ( key == GLFW_KEY_B )
-		//{ 
-		//	// Shoot a bullet from the pirate ship
-		//	cGameObject* pShip = pFindObjectByFriendlyNameMap("PirateShip");
-		//	// Find the sphere#2
-		//	cGameObject* pBall = pFindObjectByFriendlyNameMap("Sphere#2");
-		//	// Set the location velocity for sphere#2
-		//	pBall->positionXYZ = pShip->positionXYZ;
-		//	pBall->inverseMass = 1.0f;		// So it's updated
-		//	pBall->velocity = glm::vec3( 15.0f, 20.0f, 0.0f );
-		//	pBall->accel = glm::vec3(0.0f,0.0f,0.0f);
-		//	pBall->diffuseColour = glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
-		//}//if ( key == GLFW_KEY_B )
+		if (key == GLFW_KEY_DOWN)
+		{
+			matRotX = glm::rotate(glm::mat4(1.0f), -glm::radians(3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			visionVector = glm::vec3(matRotX * glm::vec4(visionVector, 1.0));
+			cameraTarget = cameraEye + visionVector;
+		}
+		if (key == GLFW_KEY_UP)
+		{
+			matRotX = glm::rotate(glm::mat4(1.0f), glm::radians(3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			visionVector = glm::vec3(matRotX * glm::vec4(visionVector, 1.0));
+			cameraTarget = cameraEye + visionVector;
+		}
+		if (key == GLFW_KEY_LEFT)
+		{
+			matRotY = glm::rotate(glm::mat4(1.0f), glm::radians(3.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			visionVector = glm::vec3(matRotY * glm::vec4(visionVector, 1.0));
+			cameraTarget = cameraEye + visionVector;
+		}
+		if (key == GLFW_KEY_RIGHT)
+		{
+			matRotY = glm::rotate(glm::mat4(1.0f), -glm::radians(3.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			visionVector = glm::vec3(matRotY * glm::vec4(visionVector, 1.0));
+			cameraTarget = cameraEye + visionVector;
+		}
 
 		if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
 		{
@@ -237,6 +247,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			case selectedType::SOUND:break;
 			}
 		}
+		//if (key == GLFW_KEY_R && action == GLFW_PRESS)
+		//{
+		//	::g_map_GameObjects.clear();
+		//	selectedGameObject = ::g_map_GameObjects.begin();
+		//	JSONLoadGameObjects(&::g_map_GameObjects);
+		//}
 
 	}//if (isShiftKeyDownByAlone(mods))
 

@@ -39,10 +39,11 @@ public:
 	};
 	
 	// This "moves" the objects based on the inegration step
-	void IntegrationStep( std::vector<cGameObject*>& vec_pGameObjects,
-					      float deltaTime );
+	void IntegrationStep(
+		std::map<std::string, cGameObject*> g_map_GameObjects, 
+		float deltaTime);
 
-	void TestForCollisions( std::vector<cGameObject*>& vec_pGameObjects );
+	void TestForCollisions(std::map<std::string, cGameObject*> g_map_GameObjects);
 
 	// Returns all the triangles and the closest points
 	void GetClosestTriangleToPoint( Point pointXYZ, cMesh &mesh, glm::vec3 &closestPoint, sPhysicsTriangle &closestTriangle );
