@@ -34,6 +34,9 @@
     <Filter Include="JSON">
       <UniqueIdentifier>{d4f3296f-40cf-4039-aee0-8225e6f1f00e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="configFiles">
+      <UniqueIdentifier>{17f36e9e-9cac-4c13-a543-c29c46c73637}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -167,5 +170,25 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\TODO_Feeney.notes" />
+    <None Include="configFiles\2spheres.json">
+      <Filter>configFiles</Filter>
+    </None>
+    <None Include="configFiles\bkpgameObjects.json">
+      <Filter>configFiles</Filter>
+    </None>
+    <None Include="configFiles\gameObjects.json">
+      <Filter>configFiles</Filter>
+    </None>
+    <None Include="configFiles\lights.json">
+      <Filter>configFiles</Filter>
+    </None>
+    <None Include="configFiles\meshToLoad.json">
+      <Filter>configFiles</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="configFiles\log.txt">
+      <Filter>configFiles</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -22,11 +22,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 {
 	glm::mat4 matRotX,matRotY;
 	glm::vec3 invVisVec;
-	const float CAMERASPEED = 2.0f;
+	cGameObject* playerSphere = ::g_map_GameObjects["spherePlayer"];
+	const float CAMERASPEED = 1.0f;
 	const float DEGREESOFROTATION = 3.0f;
 
 	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 	{
+		// <Camera Movement> ******************************************************
 		if (key == GLFW_KEY_A)
 		{
 			cameraEye.x -= CAMERASPEED;
@@ -61,7 +63,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			cameraEye = cameraEye - glm::normalize(visionVector);
 			cameraTarget = cameraEye + visionVector;
 		}
+		// </Camera Movement> ******************************************************
 
+		// <Camera Rotattion> ******************************************************
 		if (key == GLFW_KEY_DOWN)
 		{
 			matRotX = glm::rotate(glm::mat4(1.0f), -glm::radians(3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -86,6 +90,36 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			visionVector = glm::vec3(matRotY * glm::vec4(visionVector, 1.0));
 			cameraTarget = cameraEye + visionVector;
 		}
+		// </Camera Rotattion> ******************************************************
+
+		// <Sphere Movement> ******************************************************
+		if (key == GLFW_KEY_J)
+		{
+			playerSphere->velocity += glm::vec3(1.0f, 0.0f, 0.0f);
+		}
+		if (key == GLFW_KEY_L)
+		{
+			playerSphere->velocity += glm::vec3(-1.0f, 0.0f, 0.0f);
+		}
+
+		if (key == GLFW_KEY_U)
+		{
+			playerSphere->velocity += glm::vec3(0.0f, 1.0f, 0.0f);
+		}
+		if (key == GLFW_KEY_O)
+		{
+			playerSphere->velocity += glm::vec3(0.0f, -1.0f, 0.0f);
+		}
+
+		if (key == GLFW_KEY_I)
+		{
+			playerSphere->velocity += glm::vec3(0.0f, 0.0f, 1.0f);
+		}
+		if (key == GLFW_KEY_K)
+		{
+			playerSphere->velocity += glm::vec3(0.0f, 0.0f, -1.0f);
+		}
+		// </Sphere Movement> ******************************************************
 
 		if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
 		{
@@ -118,6 +152,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			case selectedType::LIGHT:cursorType = selectedType::GAMEOBJECT; break;
 			case selectedType::SOUND:break;
 			}
+		}
+		if (key == GLFW_KEY_Z && action == GLFW_PRESS)
+		{
+			::g_map_GameObjects["sphere"]->positionXYZ = glm::vec3(2.0f, 10.0f, 0.0f);
+			::g_map_GameObjects["sphere"]->velocity = glm::vec3(0.0f, 0.0f, 0.0f);
 		}
 	}
 

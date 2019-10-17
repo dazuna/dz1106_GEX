@@ -85,6 +85,7 @@ bool JSONLoadGameObjects(
 {
 	std::cout << "loading objects...";
 	std::ifstream inFile(GAMEOBJECTS_JSON.c_str());
+	std::ofstream outFile("./configFiles/log.txt");
 	json jsonArray;
 	int index = 0;
 	inFile >> jsonArray;
@@ -92,40 +93,52 @@ bool JSONLoadGameObjects(
 	for (index = 0; index < jsonArray.size(); index++)
 	{
 		std::string friendlyName = jsonArray[index]["friendlyName"];
+		outFile << "firendlyName: " << friendlyName << std::endl;
 		std::string meshName = jsonArray[index]["meshName"];
+		outFile << "meshName: " << meshName << std::endl;
+		std::string meshURL = jsonArray[index]["meshURL"];
+		outFile << "meshURL: " << meshURL << std::endl;
 		glm::vec3 positionXYZ = glm::vec3(
 			jsonArray[index]["positionXYZ"][0],
 			jsonArray[index]["positionXYZ"][1],
 			jsonArray[index]["positionXYZ"][2]);
+		outFile << "positionXYZ: " << glm::to_string(positionXYZ) << std::endl;
 		glm::vec3 rotationXYZ = glm::vec3(
 			jsonArray[index]["rotationXYZ"][0],
 			jsonArray[index]["rotationXYZ"][1],
 			jsonArray[index]["rotationXYZ"][2]);
+		outFile << "rotationXYZ: " << glm::to_string(rotationXYZ) << std::endl;
 		float scale = jsonArray[index]["scale"];
 		glm::vec4 objectColourRGBA = glm::vec4(
 			jsonArray[index]["objectColourRGBA"][0],
 			jsonArray[index]["objectColourRGBA"][1],
 			jsonArray[index]["objectColourRGBA"][2],
 			jsonArray[index]["objectColourRGBA"][3]);
+		outFile << "objectColourRGBA: " << glm::to_string(objectColourRGBA) << std::endl;
 		glm::vec4 diffuseColour = glm::vec4(
 			jsonArray[index]["diffuseColour"][0],
 			jsonArray[index]["diffuseColour"][1],
 			jsonArray[index]["diffuseColour"][2],
 			jsonArray[index]["diffuseColour"][3]);
+		outFile << "diffuseColour: " << glm::to_string(diffuseColour) << std::endl;
 		glm::vec4 specularColour = glm::vec4(
 			jsonArray[index]["specularColour"][0],
 			jsonArray[index]["specularColour"][1],
 			jsonArray[index]["specularColour"][2],
 			jsonArray[index]["specularColour"][3]);
+		outFile << "specularColour: " << glm::to_string(specularColour) << std::endl;
 		glm::vec3 velocity = glm::vec3(
 			jsonArray[index]["velocity"][0],
 			jsonArray[index]["velocity"][1],
 			jsonArray[index]["velocity"][2]);
+		outFile << "velocity: " << glm::to_string(velocity) << std::endl;
 		glm::vec3 accel = glm::vec3(
 			jsonArray[index]["accel"][0],
 			jsonArray[index]["accel"][1],
 			jsonArray[index]["accel"][2]);
+		outFile << "accel: " << glm::to_string(accel) << std::endl;
 		float inverseMass = jsonArray[index]["inverseMass"];
+
 		int physicsShapeType = jsonArray[index]["physicsShapeType"];
 		bool isWireframe = jsonArray[index]["isWireframe"];
 		glm::vec4 debugColour = glm::vec4(
@@ -133,10 +146,12 @@ bool JSONLoadGameObjects(
 			jsonArray[index]["debugColour"][1],
 			jsonArray[index]["debugColour"][2],
 			jsonArray[index]["debugColour"][3]);
+		outFile << "debugColour: " << glm::to_string(debugColour) << std::endl;
 		bool isVisible = jsonArray[index]["isVisible"];
 		cGameObject* tempGameObject = new cGameObject();
 		tempGameObject->friendlyName = friendlyName;
 		tempGameObject->meshName = meshName;
+		tempGameObject->meshURL = meshURL;
 		tempGameObject->positionXYZ = positionXYZ;
 		tempGameObject->rotationXYZ = rotationXYZ;
 		tempGameObject->scale = scale;
@@ -225,6 +240,7 @@ bool JSONSaveGameObjects(std::map<std::string, cGameObject*>* g_map_GameObjects)
 		json jsonObject;
 		jsonObject["friendlyName"] = index->second->friendlyName;
 		jsonObject["meshName"] = index->second->meshName;
+		jsonObject["meshURL"] = index->second->meshURL;
 		jsonObject["positionXYZ"][0] = index->second->positionXYZ.x;
 		jsonObject["positionXYZ"][1] = index->second->positionXYZ.y;
 		jsonObject["positionXYZ"][2] = index->second->positionXYZ.z;
@@ -235,12 +251,15 @@ bool JSONSaveGameObjects(std::map<std::string, cGameObject*>* g_map_GameObjects)
 		jsonObject["objectColourRGBA"][0] = index->second->objectColourRGBA.x;
 		jsonObject["objectColourRGBA"][1] = index->second->objectColourRGBA.y;
 		jsonObject["objectColourRGBA"][2] = index->second->objectColourRGBA.z;
+		jsonObject["objectColourRGBA"][3] = index->second->objectColourRGBA.w;
 		jsonObject["diffuseColour"][0] = index->second->diffuseColour.x;
 		jsonObject["diffuseColour"][1] = index->second->diffuseColour.y;
 		jsonObject["diffuseColour"][2] = index->second->diffuseColour.z;
+		jsonObject["diffuseColour"][3] = index->second->diffuseColour.w;
 		jsonObject["specularColour"][0] = index->second->specularColour.x;
 		jsonObject["specularColour"][1] = index->second->specularColour.y;
 		jsonObject["specularColour"][2] = index->second->specularColour.z;
+		jsonObject["specularColour"][3] = index->second->specularColour.w;
 		jsonObject["velocity"][0] = index->second->velocity.x;
 		jsonObject["velocity"][1] = index->second->velocity.y;
 		jsonObject["velocity"][2] = index->second->velocity.z;
@@ -253,7 +272,7 @@ bool JSONSaveGameObjects(std::map<std::string, cGameObject*>* g_map_GameObjects)
 		jsonObject["debugColour"][0] = index->second->debugColour.x;
 		jsonObject["debugColour"][1] = index->second->debugColour.y;
 		jsonObject["debugColour"][2] = index->second->debugColour.z;
-		jsonObject["debugColour"][2] = index->second->debugColour.w;
+		jsonObject["debugColour"][3] = index->second->debugColour.w;
 		jsonObject["isVisible"] = index->second->isVisible;
 		jsonArray[x] = jsonObject;
 	}

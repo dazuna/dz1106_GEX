@@ -1,0 +1,275 @@
+firendlyName: cube
+meshName: cubeMesh
+meshURL: assets/models/Cube_1_Unit_from_origin_XYZ_n.ply
+positionXYZ: vec3(0.000000, -50.000000, 0.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(0.000000, 0.000000, 1.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: cube2
+meshName: cubeMesh
+meshURL: assets/models/Cube_1_Unit_from_origin_XYZ_n.ply
+positionXYZ: vec3(1.000000, 0.000000, 0.000000)
+rotationXYZ: vec3(1.000000, 0.000000, 1.000000)
+objectColourRGBA: vec4(0.000000, 0.000000, 1.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: cube3
+meshName: cubeMesh
+meshURL: assets/models/Cube_1_Unit_from_origin_XYZ_n.ply
+positionXYZ: vec3(50.000000, -5.000000, 0.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(0.000000, 0.000000, 1.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(-2.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: donut
+meshName: donutMesh
+meshURL: assets/models/donut.ply
+positionXYZ: vec3(0.000000, 0.000000, 0.000000)
+rotationXYZ: vec3(1.600000, 0.000000, 0.000000)
+objectColourRGBA: vec4(0.000000, 0.000000, 1.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: sphere
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n.ply
+positionXYZ: vec3(0.000000, 20.000000, 0.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(1.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: sphere2
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n.ply
+positionXYZ: vec3(4.000000, 30.000000, 0.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(1.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: sphere3
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n.ply
+positionXYZ: vec3(-4.000000, 25.000000, 0.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(1.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: sphere4
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n.ply
+positionXYZ: vec3(0.000000, 15.000000, 4.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(1.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: sphere5
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n.ply
+positionXYZ: vec3(0.000000, 30.000000, -4.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(1.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: sphere6
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n.ply
+positionXYZ: vec3(8.000000, 30.000000, 0.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(1.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: sphere7
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n.ply
+positionXYZ: vec3(-8.000000, 25.000000, 0.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(1.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: sphere8
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n.ply
+positionXYZ: vec3(0.000000, 15.000000, 8.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(1.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: sphere9
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n.ply
+positionXYZ: vec3(0.000000, 30.000000, 8.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(1.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: sphere10
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n.ply
+positionXYZ: vec3(0.000000, 15.000000, 8.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(1.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: spherePlayer
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n.ply
+positionXYZ: vec3(-4.000000, 30.000000, -4.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(1.000000, 0.000000, 1.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: sphere11
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n.ply
+positionXYZ: vec3(1.000000, 25.000000, 0.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(1.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: sphere12
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n.ply
+positionXYZ: vec3(3.000000, 35.000000, 0.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(1.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: sphere13
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n.ply
+positionXYZ: vec3(-1.000000, 45.000000, 2.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(1.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: sphere14
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n.ply
+positionXYZ: vec3(2.000000, 15.000000, 2.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(1.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: sphere15
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n.ply
+positionXYZ: vec3(0.000000, 38.000000, -2.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(1.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: sphere16
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n.ply
+positionXYZ: vec3(3.000000, 40.000000, 0.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(1.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: sphere17
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n.ply
+positionXYZ: vec3(-1.000000, 45.000000, 0.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(1.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: sphere18
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n.ply
+positionXYZ: vec3(1.000000, 55.000000, 1.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(1.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: sphere19
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n.ply
+positionXYZ: vec3(0.000000, 35.000000, 8.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(1.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+firendlyName: sphere20
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n.ply
+positionXYZ: vec3(1.000000, 15.000000, -2.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(1.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)

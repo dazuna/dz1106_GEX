@@ -189,6 +189,14 @@
     <None Include="..\TODO_Feeney.notes" />
     <None Include="assets\shaders\fragmentShader01.glsl" />
     <None Include="assets\shaders\vertexShader01.glsl" />
+    <None Include="configFiles\2spheres.json" />
+    <None Include="configFiles\bkpgameObjects.json" />
+    <None Include="configFiles\gameObjects.json" />
+    <None Include="configFiles\lights.json" />
+    <None Include="configFiles\meshToLoad.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="configFiles\log.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
