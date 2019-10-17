@@ -42,12 +42,13 @@ void drawGameObjectXYZ(cDebugRenderer* pDebugRenderer);
 void setWindowTitle(std::stringstream* ssTitle);
 std::string GLMvec3toString(glm::vec3 theGLMvec3);
 glm::mat4 calculateWorldMatrix(cGameObject* pCurrentObject);
+void drawPyramidPlayer(cDebugRenderer* pDebugRenderer);
 void DrawObject(glm::mat4 m,
 	cGameObject* pCurrentObject,
 	GLint shaderProgID,
 	cVAOManager* pVAOManager);
 
-glm::vec3 cameraEye = glm::vec3(0.0f, 30.0f, 100.0f);
+glm::vec3 cameraEye = glm::vec3(0.0f, 50.0f, 100.0f);
 glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
 glm::vec3 visionVector = glm::normalize(cameraTarget - cameraEye);
 glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -60,6 +61,7 @@ glm::vec3 sexyLightSpotDirection = glm::vec3(0.0f, -1.0f, 0.0f);
 //bool bLightDebugSheresOn = false;
 bool bLightDebugSheresOn = true;
 std::string console;
+cDebugRenderer* pDebugRenderer = new cDebugRenderer();
 
 // Load up my "scene" objects (now global)
 std::map<std::string, cMesh*> g_map_Mesh;
@@ -119,7 +121,6 @@ int main(void)
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	glfwSwapInterval(1);
 
-	cDebugRenderer* pDebugRenderer = new cDebugRenderer();
 	pDebugRenderer->initialize();
 
 	//	OpenGL and GLFW are good to go, so load the model
@@ -151,7 +152,7 @@ int main(void)
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
 
-	cPhysics* pPhsyics = new cPhysics();
+	cPhysics* pPhysic = new cPhysics();
 	cLowPassFilter avgDeltaTimeThingy;
 
 	// Let there be lights.. I guess
@@ -247,13 +248,14 @@ int main(void)
 		case selectedType::LIGHT:drawLightXYZ(pDebugRenderer);break;
 		case selectedType::SOUND:break;
 		}
+		drawPyramidPlayer(pDebugRenderer);
 		
 
 		//	Update the objects through physics
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
-		pPhsyics->IntegrationStep(::g_map_GameObjects, (float)averageDeltaTime);
-
-		pPhsyics->TestForCollisions(::g_map_GameObjects);
+		pPhysic->IntegrationStep(::g_map_GameObjects, (float)averageDeltaTime);
+		pPhysic->TestForCollisions(::g_map_GameObjects);
+		//collisionPOC(pPhysic, pDebugRenderer);
 		
 		pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
 
@@ -527,4 +529,38 @@ void setWindowTitle(std::stringstream* ssTitle)
 	//*ssTitle << "   Tgt: " << GLMvec3toString(cameraTarget);
 	//*ssTitle << "   Vis: " << GLMvec3toString(visionVector);
 	//*ssTitle << "   XYZ: " << GLMvec3toString(visionVector);
+}
+
+void drawPyramidPlayer(cDebugRenderer* pDebugRenderer)
+{
+	// draw pyramid on top of object
+	// x triangle
+	pDebugRenderer->addTriangle(
+		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(0.0f, 3.0f, 0.0f),
+		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
+		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
+		glm::vec3(1.0f, 1.0f, 1.0f));
+	// z triangle
+	pDebugRenderer->addTriangle(
+		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(0.0f, 3.0f, 0.0f),
+		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
+		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
+		glm::vec3(1.0f, 1.0f, 1.0f));
+	// square
+	pDebugRenderer->addLine(
+		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
+		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
+		glm::vec3(1.0f, 1.0f, 1.0f));
+	pDebugRenderer->addLine(
+		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
+		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
+		glm::vec3(1.0f, 1.0f, 1.0f));
+	pDebugRenderer->addLine(
+		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
+		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
+		glm::vec3(1.0f, 1.0f, 1.0f));
+	pDebugRenderer->addLine(
+		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
+		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
+		glm::vec3(1.0f, 1.0f, 1.0f));
 }

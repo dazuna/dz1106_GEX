@@ -3,6 +3,9 @@
 #include "cGameObject.h"
 #include "cLight.h"
 #include "cVAOManager.h"
+#include <glm/glm.hpp>
+#include <glm/vec3.hpp>
+#include <glm/gtx/string_cast.hpp>
 #include <nlohmann/json.hpp>
 #include <iostream>	
 #include <fstream>	

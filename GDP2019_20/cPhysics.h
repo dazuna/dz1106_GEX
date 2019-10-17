@@ -3,9 +3,13 @@
 
 #include "cGameObject.h"
 #include "cMesh.h"
+#include "globalStuff.h"
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
+#include <glm/gtx/string_cast.hpp>
 #include <vector>
+#include <iostream>
+#include <random>
 
 class cPhysics
 {
@@ -52,13 +56,16 @@ public:
 	// This can be used as a "closest triangles to sphere"
 	void GetClosestTrianglesToSphere( cGameObject &testSphere, float distanceRange, cMesh &mesh, std::vector<sPhysicsTriangle> &vecClosestTriangles );
 
-
 	// Taken from Ericson's book:
 	Point ClosestPtPointTriangle(Point p, Point a, Point b, Point c);
 	int TestSphereTriangle(Sphere s, Point a, Point b, Point c, Point& p);
 
 	void setGravity( glm::vec3 newGravityValue );
 	glm::vec3 getGravity(void);
+
+	// Takes a mesh in "model space" and converts it into "world space"
+	void CalculateTransformedMesh(cMesh& originalMesh, glm::mat4 matWorld,
+		cMesh& mesh_transformedInWorld);
 
 private:
 
@@ -68,10 +75,11 @@ private:
 									  sCollisionInfo &collisionInfo );
 	bool DoShphereMeshCollisionTest( cGameObject* pA, cGameObject* pB,
 									 sCollisionInfo &collisionInfo );
-
-
+	bool objectsAlreadyCollided(cGameObject* pA, cGameObject* pB,
+							std::vector<sCollisionInfo> vecCollisions);
+	float get_random(float min, float max);
 	glm::vec3  m_Gravity;
-
+	float dampSpeed;
 };
 
 #endif
