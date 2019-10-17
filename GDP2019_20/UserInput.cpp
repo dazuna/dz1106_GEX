@@ -22,7 +22,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 {
 	glm::mat4 matRotX,matRotY;
 	glm::vec3 invVisVec;
-	cGameObject* playerSphere = ::g_map_GameObjects["spherePlayer"];
+	//cGameObject* playerSphere = ::g_map_GameObjects["spherePlayer"];
 	const float CAMERASPEED = 1.0f;
 	const float DEGREESOFROTATION = 3.0f;
 
@@ -93,32 +93,32 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		// </Camera Rotattion> ******************************************************
 
 		// <Sphere Movement> ******************************************************
-		if (key == GLFW_KEY_J)
-		{
-			playerSphere->velocity += glm::vec3(1.0f, 0.0f, 0.0f);
-		}
-		if (key == GLFW_KEY_L)
-		{
-			playerSphere->velocity += glm::vec3(-1.0f, 0.0f, 0.0f);
-		}
+		//if (key == GLFW_KEY_J)
+		//{
+		//	playerSphere->velocity += glm::vec3(1.0f, 0.0f, 0.0f);
+		//}
+		//if (key == GLFW_KEY_L)
+		//{
+		//	playerSphere->velocity += glm::vec3(-1.0f, 0.0f, 0.0f);
+		//}
 
-		if (key == GLFW_KEY_U)
-		{
-			playerSphere->velocity += glm::vec3(0.0f, 1.0f, 0.0f);
-		}
-		if (key == GLFW_KEY_O)
-		{
-			playerSphere->velocity += glm::vec3(0.0f, -1.0f, 0.0f);
-		}
+		//if (key == GLFW_KEY_U)
+		//{
+		//	playerSphere->velocity += glm::vec3(0.0f, 1.0f, 0.0f);
+		//}
+		//if (key == GLFW_KEY_O)
+		//{
+		//	playerSphere->velocity += glm::vec3(0.0f, -1.0f, 0.0f);
+		//}
 
-		if (key == GLFW_KEY_I)
-		{
-			playerSphere->velocity += glm::vec3(0.0f, 0.0f, 1.0f);
-		}
-		if (key == GLFW_KEY_K)
-		{
-			playerSphere->velocity += glm::vec3(0.0f, 0.0f, -1.0f);
-		}
+		//if (key == GLFW_KEY_I)
+		//{
+		//	playerSphere->velocity += glm::vec3(0.0f, 0.0f, 1.0f);
+		//}
+		//if (key == GLFW_KEY_K)
+		//{
+		//	playerSphere->velocity += glm::vec3(0.0f, 0.0f, -1.0f);
+		//}
 		// </Sphere Movement> ******************************************************
 
 		if (key == GLFW_KEY_TAB && action == GLFW_PRESS)

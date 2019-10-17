@@ -252,9 +252,9 @@ int main(void)
 		
 
 		//	Update the objects through physics
-		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
-		pPhysic->IntegrationStep(::g_map_GameObjects, (float)averageDeltaTime);
-		pPhysic->TestForCollisions(::g_map_GameObjects);
+		//double averageDeltaTime = avgDeltaTimeThingy.getAverage();
+		//pPhysic->IntegrationStep(::g_map_GameObjects, (float)averageDeltaTime);
+		//pPhysic->TestForCollisions(::g_map_GameObjects);
 		//collisionPOC(pPhysic, pDebugRenderer);
 		
 		pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
