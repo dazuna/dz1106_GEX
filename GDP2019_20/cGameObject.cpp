@@ -28,6 +28,31 @@ cGameObject::cGameObject()
 	return;
 }
 
+cGameObject::cGameObject(cGameObject* newGO)
+{
+	//  set this to the instance variable
+	this->m_uniqueID = cGameObject::next_uniqueID;
+	// Then increment the static variable
+	cGameObject::next_uniqueID++;
+
+	this->accel = newGO->accel;
+	this->debugColour=newGO->debugColour;
+	this->diffuseColour=newGO->diffuseColour;
+	this->friendlyName=(newGO->friendlyName+"_"+ std::to_string(this->m_uniqueID));
+	this->inverseMass=newGO->inverseMass;
+	this->isVisible=newGO->isVisible;
+	this->isWireframe=newGO->isWireframe;
+	this->meshName=newGO->meshName;
+	this->meshURL=newGO->meshURL;
+	this->objectColourRGBA=newGO->objectColourRGBA;
+	this->physicsShapeType=newGO->physicsShapeType;
+	this->positionXYZ=newGO->positionXYZ;
+	this->rotationXYZ=newGO->rotationXYZ;
+	this->scale=newGO->scale;
+	this->specularColour=newGO->specularColour;
+	this->velocity=newGO->velocity;
+}
+
 
 unsigned int cGameObject::getUniqueID(void)
 {

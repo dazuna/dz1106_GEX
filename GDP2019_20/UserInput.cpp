@@ -16,15 +16,21 @@
 bool isShiftKeyDownByAlone(int mods);
 bool isCtrlKeyDownByAlone(int mods);
 void getStatus();
+void makeAllWireFrame(bool wireAll);
 
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	glm::mat4 matRotX,matRotY;
 	glm::vec3 invVisVec;
+	glm::vec3 vecX1 = glm::vec3(1.0f, 0.0f, 0.0f);
+	glm::vec3 vecY1 = glm::vec3(0.0f, 1.0f, 0.0f);
+	glm::vec3 vecZ1 = glm::vec3(0.0f, 0.0f, 1.0f);
 	//cGameObject* playerSphere = ::g_map_GameObjects["spherePlayer"];
 	const float CAMERASPEED = 1.0f;
 	const float DEGREESOFROTATION = 3.0f;
+	cGameObject* theSelectedGO = selectedGameObject->second;
+	cLight* theSelectedL = &(selectedLight->second);
 
 	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 	{
@@ -92,35 +98,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 		// </Camera Rotattion> ******************************************************
 
-		// <Sphere Movement> ******************************************************
-		//if (key == GLFW_KEY_J)
-		//{
-		//	playerSphere->velocity += glm::vec3(1.0f, 0.0f, 0.0f);
-		//}
-		//if (key == GLFW_KEY_L)
-		//{
-		//	playerSphere->velocity += glm::vec3(-1.0f, 0.0f, 0.0f);
-		//}
-
-		//if (key == GLFW_KEY_U)
-		//{
-		//	playerSphere->velocity += glm::vec3(0.0f, 1.0f, 0.0f);
-		//}
-		//if (key == GLFW_KEY_O)
-		//{
-		//	playerSphere->velocity += glm::vec3(0.0f, -1.0f, 0.0f);
-		//}
-
-		//if (key == GLFW_KEY_I)
-		//{
-		//	playerSphere->velocity += glm::vec3(0.0f, 0.0f, 1.0f);
-		//}
-		//if (key == GLFW_KEY_K)
-		//{
-		//	playerSphere->velocity += glm::vec3(0.0f, 0.0f, -1.0f);
-		//}
-		// </Sphere Movement> ******************************************************
-
 		if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
 		{
 			switch (cursorType)
@@ -167,8 +144,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			switch (cursorType)
 			{
-			case selectedType::GAMEOBJECT:	selectedGameObject->second->positionXYZ.x -= CAMERASPEED; break;
-			case selectedType::LIGHT:		selectedLight->second.positionXYZ.x -= CAMERASPEED;	break;
+			case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.x -= CAMERASPEED; break;
+			case selectedType::LIGHT:		theSelectedL->positionXYZ.x -= (CAMERASPEED*0.5f);	break;
 			case selectedType::SOUND:		break;
 			}
 		}
@@ -176,8 +153,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			switch (cursorType)
 			{
-			case selectedType::GAMEOBJECT:	selectedGameObject->second->positionXYZ.x += CAMERASPEED; break;
-			case selectedType::LIGHT:		selectedLight->second.positionXYZ.x += CAMERASPEED;	break;
+			case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.x += CAMERASPEED; break;
+			case selectedType::LIGHT:		theSelectedL->positionXYZ.x += (CAMERASPEED*0.5f);	break;
 			case selectedType::SOUND:		break;
 			}
 		}
@@ -187,8 +164,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			switch (cursorType)
 			{
-			case selectedType::GAMEOBJECT:	selectedGameObject->second->positionXYZ.y -= CAMERASPEED; break;
-			case selectedType::LIGHT:		selectedLight->second.positionXYZ.y -= CAMERASPEED;	break;
+			case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.y -= CAMERASPEED; break;
+			case selectedType::LIGHT:		theSelectedL->positionXYZ.y -= (CAMERASPEED*0.5f);	break;
 			case selectedType::SOUND:		break;
 			}
 		}
@@ -196,8 +173,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			switch (cursorType)
 			{
-			case selectedType::GAMEOBJECT:	selectedGameObject->second->positionXYZ.y += CAMERASPEED; break;
-			case selectedType::LIGHT:		selectedLight->second.positionXYZ.y += CAMERASPEED;	break;
+			case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.y += CAMERASPEED; break;
+			case selectedType::LIGHT:		theSelectedL->positionXYZ.y += (CAMERASPEED*0.5f);	break;
 			case selectedType::SOUND:		break;
 			}
 		}
@@ -207,8 +184,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			switch (cursorType)
 			{
-			case selectedType::GAMEOBJECT:	selectedGameObject->second->positionXYZ.z -= CAMERASPEED; break;
-			case selectedType::LIGHT:		selectedLight->second.positionXYZ.z -= CAMERASPEED;	break;
+			case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.z -= CAMERASPEED; break;
+			case selectedType::LIGHT:		theSelectedL->positionXYZ.z -= (CAMERASPEED*0.5f);	break;
 			case selectedType::SOUND:		break;
 			}
 		}
@@ -216,59 +193,70 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			switch (cursorType)
 			{
-			case selectedType::GAMEOBJECT:	selectedGameObject->second->positionXYZ.z += CAMERASPEED; break;
-			case selectedType::LIGHT:		selectedLight->second.positionXYZ.z += CAMERASPEED;	break;
+			case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.z += CAMERASPEED; break;
+			case selectedType::LIGHT:		theSelectedL->positionXYZ.z += (CAMERASPEED*0.5f);	break;
 			case selectedType::SOUND:		break;
 			}
 		}
 		//if (key == GLFW_KEY_1)
 		//{
-		//	selectedLight->second.ConstAtten *= 0.99f;			// 99% of what it was
+		//	theSelectedL->ConstAtten *= 0.99f;			// 99% of what it was
 		//}
 		//if (key == GLFW_KEY_2)
 		//{
-		//	selectedLight->second.ConstAtten *= 1.01f;			// 1% more of what it was
+		//	theSelectedL->ConstAtten *= 1.01f;			// 1% more of what it was
 		//}		
 		if (key == GLFW_KEY_3)
 		{
-			selectedLight->second.LinearAtten *= 0.99f;			// 99% of what it was
+			theSelectedL->LinearAtten *= 0.99f;			// 99% of what it was
 		}
 		if (key == GLFW_KEY_4)
 		{
-			selectedLight->second.LinearAtten *= 1.01f;			// 1% more of what it was
+			theSelectedL->LinearAtten *= 1.01f;			// 1% more of what it was
 		}
 		if (key == GLFW_KEY_5)
 		{
-			selectedLight->second.QuadraticAtten *= 0.99f;			// 99% of what it was
+			theSelectedL->QuadraticAtten *= 0.99f;			// 99% of what it was
 		}
 		if (key == GLFW_KEY_6)
 		{
-			selectedLight->second.QuadraticAtten *= 1.01f;			// 1% more of what it was
+			theSelectedL->QuadraticAtten *= 1.01f;			// 1% more of what it was
 		}
-		//if (key == GLFW_KEY_V)
-		//{
-		//	selectedLight->second.SpotInnerAngle -= 0.1f;
-		//}
-		//if (key == GLFW_KEY_B)
-		//{
-		//	selectedLight->second.SpotInnerAngle += 0.1f;
-		//}
-		//if (key == GLFW_KEY_N)
-		//{
-		//	selectedLight->second.SpotOuterAngle -= 0.1f;
-		//}
-		//if (key == GLFW_KEY_M)
-		//{
-		//	selectedLight->second.SpotOuterAngle += 0.1f;
-		//}
-		if (key == GLFW_KEY_9)
+		if (key == GLFW_KEY_0 && action == GLFW_PRESS)
 		{
-			bLightDebugSheresOn = false;			
+			if (theSelectedL->lightSwitch == 1.0f)
+			{
+				theSelectedL->lightSwitch = 0.0f;
+			}
+			else 
+			{
+				theSelectedL->lightSwitch = 1.0f;
+			}			
 		}
-		if (key == GLFW_KEY_0)
+		if (key == GLFW_KEY_V)
 		{
-			bLightDebugSheresOn = true; 
+			theSelectedL->innerAngle -= 0.1f;
 		}
+		if (key == GLFW_KEY_B)
+		{
+			theSelectedL->innerAngle += 0.1f;
+		}
+		if (key == GLFW_KEY_N)
+		{
+			theSelectedL->outerAngle -= 0.1f;
+		}
+		if (key == GLFW_KEY_M)
+		{
+			theSelectedL->outerAngle += 0.1f;
+		}
+		//if (key == GLFW_KEY_9)
+		//{
+		//	bLightDebugSheresOn = false;			
+		//}
+		//if (key == GLFW_KEY_0)
+		//{
+		//	bLightDebugSheresOn = true; 
+		//}
 		if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
 		{
 			switch (cursorType)
@@ -286,12 +274,96 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			case selectedType::SOUND:break;
 			}
 		}
-		//if (key == GLFW_KEY_R && action == GLFW_PRESS)
-		//{
-		//	::g_map_GameObjects.clear();
-		//	selectedGameObject = ::g_map_GameObjects.begin();
-		//	JSONLoadGameObjects(&::g_map_GameObjects);
-		//}
+		// <Object Rotation> ******************************************************
+		if (key == GLFW_KEY_J && action == GLFW_PRESS)
+		{
+			switch (cursorType)
+			{
+			case selectedType::GAMEOBJECT:	theSelectedGO->rotationXYZ += (vecZ1*0.1f); break;
+			case selectedType::LIGHT:		theSelectedL->direction += (vecZ1*0.1f);	break;
+			case selectedType::SOUND:		break;
+			}
+		}
+		if (key == GLFW_KEY_L && action == GLFW_PRESS)
+		{
+			switch (cursorType)
+			{
+			case selectedType::GAMEOBJECT:	theSelectedGO->rotationXYZ -= (vecZ1*0.1f); break;
+			case selectedType::LIGHT:		theSelectedL->direction -= (vecZ1*0.1f);	break;
+			case selectedType::SOUND:		break;
+			}
+		}
+
+		if (key == GLFW_KEY_U && action == GLFW_PRESS)
+		{
+			switch (cursorType)
+			{
+			case selectedType::GAMEOBJECT:	theSelectedGO->rotationXYZ += (vecY1*0.1f); break;
+			case selectedType::LIGHT:		theSelectedL->direction += (vecY1*0.1f);	break;
+			case selectedType::SOUND:		break;
+			}
+		}
+		if (key == GLFW_KEY_O && action == GLFW_PRESS)
+		{
+			switch (cursorType)
+			{
+			case selectedType::GAMEOBJECT:	theSelectedGO->rotationXYZ -= (vecY1*0.1f); break;
+			case selectedType::LIGHT:		theSelectedL->direction -= (vecY1*0.1f);	break;
+			case selectedType::SOUND:		break;
+			}
+		}
+
+		if (key == GLFW_KEY_I && action == GLFW_PRESS)
+		{
+			switch (cursorType)
+			{
+			case selectedType::GAMEOBJECT:	theSelectedGO->rotationXYZ -= (vecX1*0.1f); break;
+			case selectedType::LIGHT:		theSelectedL->direction -= (vecX1*0.1f);	break;
+			case selectedType::SOUND:		break;
+			}
+		}
+		if (key == GLFW_KEY_K && action == GLFW_PRESS)
+		{
+			switch (cursorType)
+			{
+			case selectedType::GAMEOBJECT:	theSelectedGO->rotationXYZ += (vecX1*0.1f); break;
+			case selectedType::LIGHT:		theSelectedL->direction += (vecX1*0.1f);	break;
+			case selectedType::SOUND:		break;
+			}
+		}
+		// </Object Rotation> ******************************************************
+
+		// <Color Moving> **********************************************************
+		// move the light
+		if (key == GLFW_KEY_UP)
+		{
+			theSelectedGO->objectColourRGBA.r -= 0.2f;
+		}
+		if (key == GLFW_KEY_UP)
+		{
+			theSelectedGO->objectColourRGBA.r += 0.2f;
+		}
+
+		// Move the camera (Q & E for up and down, along the y axis)
+		if (key == GLFW_KEY_LEFT)
+		{
+			theSelectedGO->objectColourRGBA.g += 0.2f;
+		}
+		if (key == GLFW_KEY_RIGHT)
+		{
+			theSelectedGO->objectColourRGBA.g -= 0.2f;
+		}
+
+		// Move the camera (W & S for towards and away, along the z axis)
+		if (key == GLFW_KEY_PERIOD)
+		{
+			theSelectedGO->objectColourRGBA.b += 0.2f;
+		}
+		if (key == GLFW_KEY_COMMA)
+		{
+			theSelectedGO->objectColourRGBA.b -= 0.2f;
+		}
+		// </Color Moving>****************************************************************************
 
 	}//if (isShiftKeyDownByAlone(mods))
 
@@ -302,35 +374,40 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			JSONSaveLights(&::g_map_pLights);
 			JSONSaveGameObjects(&::g_map_GameObjects);
 		}
+		if (key == GLFW_KEY_W && action == GLFW_PRESS)
+		{
+			makeAllWireFrame(true);
+		}
+		if (key == GLFW_KEY_Q && action == GLFW_PRESS)
+		{
+			makeAllWireFrame(false);
+		}
+		if (key == GLFW_KEY_P && action == GLFW_PRESS)
+		{
+			::g_map_pLights["light8"].lightSwitch = 1.0f;
+			::g_map_pLights["light9"].lightSwitch = 1.0f;
+		}
+		if (key == GLFW_KEY_O && action == GLFW_PRESS)
+		{
+			::g_map_pLights["light8"].lightSwitch = 0.0f;
+			::g_map_pLights["light9"].lightSwitch = 0.0f;
+		}
+		//if (key == GLFW_KEY_D && action == GLFW_PRESS)
+		//{
+		//	cGameObject* tempGO = new cGameObject(selectedGameObject->second);
+		//	cLight* tempLight = new cLight(selectedLight->second);
+		//	switch (cursorType)
+		//	{
+		//	case selectedType::GAMEOBJECT:				
+		//		::g_map_GameObjects.insert({ tempGO->friendlyName.c_str(), tempGO });
+		//		break;
+		//	case selectedType::LIGHT:		
+		//		::g_map_pLights.insert({ tempLight->getName(),*tempLight });
+		//		break;
+		//	case selectedType::SOUND:		break;
+		//	}
+		//}
 	}
-
-	//// Moving the pirate ship in a certain direction
-	//if (isCtrlKeyDownByAlone(mods))
-	//{
-	//	const float SHIP_SPEED_CHANGE = 0.01f;
-	//	const float SHIP_ANGLE_CHANGE = 0.01f;
-
-	//	cGameObject* pShip = pFindObjectByFriendlyName("PirateShip");
-	//	// Turn the ship around
-	//	if (key == GLFW_KEY_A)
-	//	{	// Left
-	//		pShip->HACK_AngleAroundYAxis -= SHIP_ANGLE_CHANGE;
-	//		pShip->rotationXYZ.y = pShip->HACK_AngleAroundYAxis;
-	//	}
-	//	if (key == GLFW_KEY_D)
-	//	{	// Right
-	//		pShip->HACK_AngleAroundYAxis += SHIP_ANGLE_CHANGE;
-	//		pShip->rotationXYZ.y = pShip->HACK_AngleAroundYAxis;
-	//	}
-	//	if (key == GLFW_KEY_W)
-	//	{	// Faster
-	//		pShip->HACK_speed += SHIP_SPEED_CHANGE;
-	//	}
-	//	if (key == GLFW_KEY_S)
-	//	{	// Slower
-	//		pShip->HACK_speed -= SHIP_SPEED_CHANGE;
-	//	}
-	//}
 
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
@@ -344,8 +421,6 @@ bool isShiftKeyDownByAlone(int mods)
 		// Shift key is down all by itself
 		return true;
 	}
-	//// Ignore other keys and see if the shift key is down
-	//if ((mods & GLFW_MOD_SHIFT) == GLFW_MOD_SHIFT){}
 	return false;
 }
 
@@ -383,3 +458,54 @@ void getStatus()
 	}
 	console += tempSS.str();
 }
+
+void makeAllWireFrame(bool wireAll)
+{
+	if (wireAll)
+	{
+		for (std::map<std::string, cGameObject*>::iterator itGO = g_map_GameObjects.begin();
+			itGO != ::g_map_GameObjects.end();
+			itGO++)
+		{
+			itGO->second->isWireframe = true;
+		}
+	}
+	else
+	{
+		for (std::map<std::string, cGameObject*>::iterator itGO = g_map_GameObjects.begin();
+			itGO != ::g_map_GameObjects.end();
+			itGO++)
+		{
+			itGO->second->isWireframe = false;
+		}
+	}
+}
+
+// <Sphere Movement> ******************************************************
+		//if (key == GLFW_KEY_J)
+		//{
+		//	playerSphere->velocity += glm::(vec3*0.1f)(1.0f, 0.0f, 0.0f);
+		//}
+		//if (key == GLFW_KEY_L)
+		//{
+		//	playerSphere->velocity += glm::vec3(-1.0f, 0.0f, 0.0f);
+		//}
+
+		//if (key == GLFW_KEY_U)
+		//{
+		//	playerSphere->velocity += glm::vec3(0.0f, 1.0f, 0.0f);
+		//}
+		//if (key == GLFW_KEY_O)
+		//{
+		//	playerSphere->velocity += glm::vec3(0.0f, -1.0f, 0.0f);
+		//}
+
+		//if (key == GLFW_KEY_I)
+		//{
+		//	playerSphere->velocity += glm::vec3(0.0f, 0.0f, 1.0f);
+		//}
+		//if (key == GLFW_KEY_K)
+		//{
+		//	playerSphere->velocity += glm::vec3(0.0f, 0.0f, -1.0f);
+		//}
+		// </Sphere Movement> ******************************************************

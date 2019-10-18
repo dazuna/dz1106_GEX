@@ -17,6 +17,25 @@ cLight::cLight(
 	getUniforms(ID);
 }
 
+cLight::cLight(cLight* newLight)
+{
+	this->LinearAtten = newLight->LinearAtten;
+    this->QuadraticAtten = newLight->QuadraticAtten;
+    this->diffuse = newLight->diffuse;
+    this->direction = newLight->direction;
+    this->innerAngle = newLight->innerAngle;
+    this->lightSwitch = newLight->lightSwitch;
+    this->lightW = newLight->lightW;
+    this->name = (newLight->name+"_a"+std::to_string(newLight->lightID++));
+    this->outerAngle = newLight->outerAngle;
+    this->positionXYZ = newLight->positionXYZ;
+    this->specular = newLight->specular;
+    this->type = newLight->type;
+	this->shaderVar=newLight->shaderVar;
+	this->shaderProgID=newLight->shaderProgID;
+	this->lightID=newLight->lightID;
+}
+
 std::string cLight::getName()
 {
 	return name;

@@ -22,6 +22,7 @@ class cGameObject
 {
 public:
 	cGameObject();
+	cGameObject(cGameObject* newGO);
 	// Used to draw this mesh
 	std::string meshName;
 	std::string meshURL;

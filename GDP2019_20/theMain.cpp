@@ -49,7 +49,7 @@ void DrawObject(glm::mat4 m,
 	cVAOManager* pVAOManager);
 
 glm::vec3 cameraEye = glm::vec3(0.0f, 50.0f, 100.0f);
-glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+glm::vec3 cameraTarget = glm::vec3(0.0f, 25.0f, 0.0f);
 glm::vec3 visionVector = glm::normalize(cameraTarget - cameraEye);
 glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -60,6 +60,7 @@ glm::vec3 sexyLightSpotDirection = glm::vec3(0.0f, -1.0f, 0.0f);
 
 //bool bLightDebugSheresOn = false;
 bool bLightDebugSheresOn = true;
+bool everythingWireFrame = false;
 std::string console;
 cDebugRenderer* pDebugRenderer = new cDebugRenderer();
 
@@ -77,23 +78,14 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
 	//// Move the sphere to where the camera is and shoot the ball from there...
 	//cGameObject* pTheBall = pFindObjectByFriendlyNameMap("sphere");
-
 	//// What's the velocity
 	//// Target - eye = direction
 	//glm::vec3 direction = glm::normalize(cameraTarget - cameraEye);
-
 	//float speed = 10.0f;
-
 	//pTheBall->velocity = direction * speed;
 	//pTheBall->positionXYZ = cameraEye;
-
 	return;
 }
-
-// Make a class with a vector of doubles. 
-// Set this vector to all zeros. 
-// Add a method: addTime();
-// Add a method: getAgerage();
 
 int main(void)
 {
@@ -159,6 +151,13 @@ int main(void)
 	cLightHelper* pLightHelper = new cLightHelper();
 	JSONLoadLights(&::g_map_pLights,shaderProgID);
 	selectedLight = ::g_map_pLights.begin();
+
+	// Adjust camera to first position (if existent in map)
+	if (pFindObjectByFriendlyNameMap("cameraPosition0"))
+	{
+		cameraEye = ::g_map_GameObjects["cameraPosition0"]->positionXYZ;
+		cameraTarget = cameraEye + visionVector;
+	}
 
 	// Get the initial time
 	double lastTime = glfwGetTime();
@@ -236,9 +235,10 @@ int main(void)
 														itGO++)
 		{
 			glm::mat4 matModel = glm::mat4(1.0f);
-
-			DrawObject(matModel, itGO->second,
-				shaderProgID, pTheVAOManager);
+			if (itGO->second->isVisible)
+			{
+				DrawObject(matModel, itGO->second, shaderProgID, pTheVAOManager);
+			}
 
 		}//for (int index...
 
@@ -248,8 +248,7 @@ int main(void)
 		case selectedType::LIGHT:drawLightXYZ(pDebugRenderer);break;
 		case selectedType::SOUND:break;
 		}
-		drawPyramidPlayer(pDebugRenderer);
-		
+		//drawPyramidPlayer(pDebugRenderer);		
 
 		//	Update the objects through physics
 		//double averageDeltaTime = avgDeltaTimeThingy.getAverage();
@@ -364,10 +363,10 @@ void DrawObject(glm::mat4 m,
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);		// LINES
 		glUniform4f(debugColour_UL,
-			pCurrentObject->debugColour.r,
-			pCurrentObject->debugColour.g,
-			pCurrentObject->debugColour.b,
-			pCurrentObject->debugColour.a);
+			pCurrentObject->objectColourRGBA.r,
+			pCurrentObject->objectColourRGBA.g,
+			pCurrentObject->objectColourRGBA.b,
+			pCurrentObject->objectColourRGBA.a);
 		glUniform1f(bDoNotLight_UL, (float)GL_TRUE);
 	}
 	else
@@ -460,6 +459,15 @@ void drawLightXYZ(cDebugRenderer* pDebugRenderer)
 		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
 		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
 		glm::vec3(1.0f, 1.0f, 1.0f));
+	if (selectedLight->second.type == 1.0f)
+	{
+		glm::vec3 spotNormal = selectedLight->second.direction;
+		spotNormal = glm::normalize(spotNormal);
+		pDebugRenderer->addLine(
+			selectedLight->second.positionXYZ,
+			selectedLight->second.positionXYZ + spotNormal,
+			glm::vec3(1.0f, 1.0f, 1.0f));
+	}
 }
 
 void drawGameObjectXYZ(cDebugRenderer* pDebugRenderer)
@@ -519,10 +527,17 @@ void setWindowTitle(std::stringstream* ssTitle)
 {
 	switch (cursorType)
 	{
-	case selectedType::GAMEOBJECT:*ssTitle << " object: " << selectedGameObject->first.c_str()
-		<< " posXYZ: " << GLMvec3toString(selectedGameObject->second->positionXYZ); break;
-	case selectedType::LIGHT:*ssTitle << " light: " << selectedLight->first.c_str()
-		<< " posXYZ: " << GLMvec3toString(selectedLight->second.positionXYZ); break;
+	case selectedType::GAMEOBJECT:
+		*ssTitle << " object: " << selectedGameObject->first.c_str()
+			<< " posXYZ: " << GLMvec3toString(selectedGameObject->second->positionXYZ)
+			<< " colRGB: " << GLMvec3toString(selectedGameObject->second->objectColourRGBA);
+		break;
+	case selectedType::LIGHT:
+		*ssTitle << " light: " << selectedLight->first.c_str()
+		<< " posXYZ: " << GLMvec3toString(selectedLight->second.positionXYZ)
+		<< " linearA: "<< selectedLight->second.LinearAtten
+		<< " quadA: " << selectedLight->second.QuadraticAtten;
+		break;
 	case selectedType::SOUND:break;
 	}
 	//*ssTitle << "   Eye: " << GLMvec3toString(cameraEye);

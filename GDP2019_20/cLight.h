@@ -44,6 +44,7 @@ public:
 	float lightSwitch = 1.0f;
 	/* /Modifiable stuff*/
 	cLight();
+	cLight(cLight* newLight);
 	cLight(
 		std::string shaderLocation,
 		std::string name,

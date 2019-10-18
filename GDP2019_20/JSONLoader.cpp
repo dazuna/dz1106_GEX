@@ -3,6 +3,8 @@
 using json = nlohmann::json;
 std::string LIGHT_JSON  = "./configFiles/lights.json";
 std::string GAMEOBJECTS_JSON = "./configFiles/gameObjects.json";
+std::string BKP_LIGHT_JSON = "./configFiles/bkplights.json";
+std::string BKP_GAMEOBJECTS_JSON = "./configFiles/bkpgameObjects.json";
 
 bool JSONLoadMeshes(std::map<std::string, cMesh*>* g_map_Mesh, cModelLoader* pTheModelLoader)
 {
@@ -29,6 +31,7 @@ bool JSONLoadLights(std::map<std::string, cLight>* g_map_pLights, GLuint shadPro
 {
 	std::cout << "loading lights...";
 	std::ifstream inFile(LIGHT_JSON.c_str());
+	std::ofstream outFile(BKP_LIGHT_JSON.c_str());
 	json jsonArray;
 	int index = 0;
 	inFile >> jsonArray;
@@ -77,6 +80,7 @@ bool JSONLoadLights(std::map<std::string, cLight>* g_map_pLights, GLuint shadPro
 	}
 	//std::cout << j;
 	std::cout << "[OK]\n" << index << " lights loaded" << std::endl;
+	outFile << jsonArray;
 	return true;
 }
 
@@ -86,6 +90,7 @@ bool JSONLoadGameObjects(
 	std::cout << "loading objects...";
 	std::ifstream inFile(GAMEOBJECTS_JSON.c_str());
 	std::ofstream outFile("./configFiles/log.txt");
+	std::ofstream outFile2(BKP_GAMEOBJECTS_JSON.c_str());
 	json jsonArray;
 	int index = 0;
 	inFile >> jsonArray;
@@ -169,6 +174,7 @@ bool JSONLoadGameObjects(
 	}
 	//std::cout << j;
 	std::cout << "[OK]\n" << index << " objects loaded" << std::endl;
+	outFile2 << jsonArray;
 	return true;
 }
 
@@ -191,7 +197,7 @@ bool loadMeshToGPU(cVAOManager* pTheVAOManager,
 bool JSONSaveLights(std::map<std::string, cLight>* g_map_pLights)
 {
 	std::cout << "saving lights...";
-	std::ofstream outFile("./configFiles/lights2.json");
+	std::ofstream outFile("./configFiles/lights.json");
 	std::map<std::string, cLight>::iterator index = g_map_pLights->begin();
 	int x = 0;
 	json jsonArray;
@@ -230,7 +236,7 @@ bool JSONSaveLights(std::map<std::string, cLight>* g_map_pLights)
 bool JSONSaveGameObjects(std::map<std::string, cGameObject*>* g_map_GameObjects)
 {
 	std::cout << "saving gameObjects...";
-	std::ofstream outFile("./configFiles/gameObjects2.json");
+	std::ofstream outFile("./configFiles/gameObjects.json");
 	std::map<std::string, cGameObject*>::iterator index = g_map_GameObjects->begin();
 	int x = 0;
 	json jsonArray;
