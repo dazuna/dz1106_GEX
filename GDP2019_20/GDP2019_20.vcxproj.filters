@@ -37,6 +37,9 @@
     <Filter Include="configFiles">
       <UniqueIdentifier>{17f36e9e-9cac-4c13-a543-c29c46c73637}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Particles">
+      <UniqueIdentifier>{d64bf26b-e5c3-4d25-8c2b-fa15f7dd68e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -102,6 +105,9 @@
     <ClCompile Include="JSONLoader.cpp">
       <Filter>JSON</Filter>
     </ClCompile>
+    <ClCompile Include="Particle\cParticleEmitter.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -160,6 +166,9 @@
     </ClInclude>
     <ClInclude Include="JSONLoader.h">
       <Filter>JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle\cParticleEmitter.h">
+      <Filter>Particles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

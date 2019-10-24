@@ -1,0 +1,5 @@
+1. Make classes for audioItem and audioListener.
+2. Give gameObject the ability to become Item, Light or Sound.
+3. Check the particles code in the reference code.
+4. Implement particle emitters into scene, just to prevent future headaches.
+5. ??

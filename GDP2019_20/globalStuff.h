@@ -20,9 +20,6 @@ extern glm::vec3 cameraTarget;
 extern glm::vec3 visionVector;
 extern glm::vec3 upVector;
 
-extern float sexyLightSpotInnerAngle;
-extern float sexyLightSpotOuterAngle;
-
 extern glm::vec3 sexyLightSpotDirection;
 extern bool bLightDebugSheresOn;
 extern std::string console;

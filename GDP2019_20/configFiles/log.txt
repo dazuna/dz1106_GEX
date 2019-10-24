@@ -122,7 +122,7 @@ debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 firendlyName: tree1
 meshName: tree1Mesh
 meshURL: assets/models/lowpolytree.ply
-positionXYZ: vec3(-2.000000, -1.000000, 29.000000)
+positionXYZ: vec3(-35.000000, -1.000000, 29.000000)
 rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
 objectColourRGBA: vec4(1.000000, 1.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)

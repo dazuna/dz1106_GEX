@@ -53,8 +53,6 @@ glm::vec3 cameraTarget = glm::vec3(0.0f, 25.0f, 0.0f);
 glm::vec3 visionVector = glm::normalize(cameraTarget - cameraEye);
 glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
-float sexyLightSpotInnerAngle = 5.0f;
-float sexyLightSpotOuterAngle = 7.5f;
 // This is a "normalized" direction (i.e. the length is 1.0f)
 glm::vec3 sexyLightSpotDirection = glm::vec3(0.0f, -1.0f, 0.0f);
 
