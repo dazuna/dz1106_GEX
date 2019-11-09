@@ -51,6 +51,13 @@ public:
 	float HACK_speed;
 	float HACK_AngleAroundYAxis;		// Angle, around the y axis
 
+	static const int NUMBEROFTEXTURES = 4;
+	std::string textures[NUMBEROFTEXTURES];
+	float textureRatio[NUMBEROFTEXTURES];
+
+	std::string tag = "";
+	int lifetime = 0;
+
 
 	// If the object has an inverse mass of 0.0
 	//	then it's not updated by the physics code

@@ -1,11 +1,11 @@
-#version 420
+#version 410
 
 in vec4 fColour;	
 in vec4 fVertWorldLocation;
 in vec4 fNormal;
 in vec4 fUVx2;
 	
-uniform vec4 diffuseColour;				
+uniform vec4 diffuseColour;				// use a for transparency		
 uniform vec4 specularColour;
 
 // Used to draw debug (or unlit) objects
@@ -13,6 +13,26 @@ uniform vec4 debugColour;
 uniform bool bDoNotLight;		
 
 uniform vec4 eyeLocation;
+
+// Texture samplers
+uniform sampler2D textSamp00;
+uniform sampler2D textSamp01;
+uniform sampler2D textSamp02;
+uniform sampler2D textSamp03;
+//uniform sampler2D textSamp04;
+//uniform sampler2D textSamp05;
+//uniform sampler2D textSamp06;
+//uniform sampler2D textSamp07;
+
+uniform sampler2D textureWhatTheWhat;
+
+uniform vec4 tex_0_3_ratio;		// x = 0, y = 1, z = 2, w = 3
+//uniform vec4 tex_4_7_ratio;
+
+// Apparently, you can now load samplers into arrays, 
+// instead of using the sample2DArray sampler;
+// uniform sampler2D textures[10]; 	// for instance
+
 
 out vec4 pixelColour;			// RGB A   (0 to 1) 
 
@@ -36,7 +56,7 @@ const int SPOT_LIGHT_TYPE = 1;
 const int DIRECTIONAL_LIGHT_TYPE = 2;
 
 //const int NUMBEROFLIGHTS = 10;
-const int NUMBEROFLIGHTS = 10;
+const int NUMBEROFLIGHTS = 1;
 uniform sLight theLights[NUMBEROFLIGHTS];  	// 80 uniforms
 
 // Really appears as:
@@ -53,6 +73,7 @@ vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal,
 	 
 void main()  
 {
+	// Shader Type #1  	
 	if ( bDoNotLight )
 	{
 		pixelColour.rgb = debugColour.rgb;
@@ -60,19 +81,45 @@ void main()
 		return;
 	}
 	
+	
+	// Shader Type #2
 	vec4 materialColour = diffuseColour;
 //	vec4 materialColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 //	vec4 specColour = vec4(0.0f,0.0f,0.0f,1.0f);// materialColour;
 	
-	vec4 outColour = calcualteLightContrib( materialColour.rgb, fNormal.xyz, 
+	vec3 tex0_RGB = texture( textSamp00, fUVx2.st ).rgb;
+	vec3 tex1_RGB = texture( textSamp01, fUVx2.st ).rgb;
+	vec3 tex2_RGB = texture( textSamp02, fUVx2.st ).rgb;
+	vec3 tex3_RGB = texture( textSamp03, fUVx2.st ).rgb;
+		
+	vec3 texRGB =   ( tex_0_3_ratio.x * tex0_RGB ) 
+				  + ( tex_0_3_ratio.y * tex1_RGB )
+				  + ( tex_0_3_ratio.z * tex2_RGB )
+				  + ( tex_0_3_ratio.w * tex3_RGB );
+				  
+				  	  
+				  
+	
+	
+	vec4 outColour = calcualteLightContrib( texRGB.rgb, fNormal.xyz, 
 	                                        fVertWorldLocation.xyz, specularColour );
-				
+
+											
 	pixelColour = outColour;
 	
-//	pixelColour.rgb += vec3(0.5f, 0.5f, 0.5f);
-//	pixelColour.rgb += fNormal.xyz;
-//	pixelColour.rgb += fVertWorldLocation.xyz;
-}	// Ooops
+	// Set the "a" of diffuse to set the transparency
+//	pixelColour.a = diffuseColour.a; 		// "a" for alpha, same as "w"
+	
+	// Control the alpha channel from the texture	  
+	pixelColour.a = 1.0f;
+//	if ( tex0_RGB.r <= 0.01f )		// Basically "black"
+//	{
+//		discard;
+//		//pixelColour.a = 0.0f;
+//	}
+	
+
+}	
 
 
 vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal, 

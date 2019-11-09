@@ -23,6 +23,7 @@
     <ProjectGuid>{AC89A0D6-36A9-4B42-948D-5A55BA436D9A}</ProjectGuid>
     <RootNamespace>GDP201920</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>SimpleEngine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -162,6 +163,10 @@
     <ClCompile Include="LightManager\cLightHelper.cpp" />
     <ClCompile Include="Particle\cParticleEmitter.cpp" />
     <ClCompile Include="PhysicsStuff.cpp" />
+    <ClCompile Include="TextureManager\C24BitBMPpixel.cpp" />
+    <ClCompile Include="TextureManager\cBasicTextureManager.cpp" />
+    <ClCompile Include="TextureManager\cGLColourHelper.cpp" />
+    <ClCompile Include="TextureManager\CTextureFromBMP.cpp" />
     <ClCompile Include="theMain.cpp" />
     <ClCompile Include="UserInput.cpp" />
   </ItemGroup>
@@ -186,6 +191,10 @@
     <ClInclude Include="LightManager\cLightHelper.h" />
     <ClInclude Include="Particle\cParticleEmitter.h" />
     <ClInclude Include="PhysicsStuff.h" />
+    <ClInclude Include="TextureManager\C24BitBMPpixel.h" />
+    <ClInclude Include="TextureManager\cBasicTextureManager.h" />
+    <ClInclude Include="TextureManager\cGLColourHelper.h" />
+    <ClInclude Include="TextureManager\CTextureFromBMP.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TODO_Feeney.notes" />

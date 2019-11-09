@@ -72,9 +72,9 @@ void cPhysics::GetClosestTriangleToPoint(Point pointXYZ, cMesh& mesh,
 		sPlyTriangle& curTriangle = mesh.vecTriangles[triIndex];
 
 		// Get the vertices of the triangle
-		sPlyVertexXYZ_N triVert1 = mesh.vecVertices[curTriangle.vert_index_1];
-		sPlyVertexXYZ_N triVert2 = mesh.vecVertices[curTriangle.vert_index_2];
-		sPlyVertexXYZ_N triVert3 = mesh.vecVertices[curTriangle.vert_index_3];
+		sPlyVertexXYZ_N_UV triVert1 = mesh.vecVertices[curTriangle.vert_index_1];
+		sPlyVertexXYZ_N_UV triVert2 = mesh.vecVertices[curTriangle.vert_index_2];
+		sPlyVertexXYZ_N_UV triVert3 = mesh.vecVertices[curTriangle.vert_index_3];
 
 		Point triVertPoint1;
 		triVertPoint1.x = triVert1.x;
@@ -315,6 +315,48 @@ bool cPhysics::DoShphereMeshCollisionTest(cGameObject* pSphere, cGameObject* pB,
 	return false;
 }
 
+bool cPhysics::DoShphereMeshCollisionTest(cGameObject* pSphere, cGameObject* pB)
+{
+	//**********************************************************
+	// 	Collisions in World
+	//**********************************************************
+	//cGameObject* pSphere = ::g_map_GameObjects["sphere"];
+	glm::vec3 closestPoint = glm::vec3(0.0f, 0.0f, 0.0f);
+	cPhysics::sPhysicsTriangle closestTriangle;
+	glm::mat4 matWorld = calculateWorldMatrix(pB);
+	cMesh transMesh;
+	CalculateTransformedMesh(*::g_map_Mesh[pB->meshName.c_str()], matWorld, transMesh);
+	GetClosestTriangleToPoint(pSphere->positionXYZ, transMesh, closestPoint, closestTriangle);
+
+	// Highlight the triangle that I'm closest to
+	//pDebugRenderer->addTriangle(closestTriangle.verts[0],
+	//	closestTriangle.verts[1],
+	//	closestTriangle.verts[2],
+		//glm::vec3(1.0f, 0.0f, 0.0f));
+
+	// Highlight the triangle that I'm closest to
+	// To draw the normal, calculate the average of the 3 vertices, 
+	// then draw that average + the normal (the normal starts at the 0,0,0 OF THE TRIANGLE)
+	glm::vec3 centreOfTriangle = (closestTriangle.verts[0] +
+		closestTriangle.verts[1] +
+		closestTriangle.verts[2]) / 3.0f;		// Average
+
+	glm::vec3 normalInWorld = centreOfTriangle + (closestTriangle.normal * 20.0f);	// Normal x 10 length
+
+	//pDebugRenderer->addLine(centreOfTriangle,
+	//	normalInWorld,
+	//	glm::vec3(1.0f, 1.0f, 0.0f));
+
+	// Are we hitting the triangle? 
+	float distance = glm::length(pSphere->positionXYZ - closestPoint);
+
+	if (distance <= (pSphere->scale / 2))
+	{
+		return true;
+	}
+	return false;
+}
+
 // Takes a mesh in "model space" and converts it into "world space"
 void cPhysics::CalculateTransformedMesh(cMesh& originalMesh, glm::mat4 matWorld,
 	cMesh& mesh_transformedInWorld)
@@ -326,7 +368,7 @@ void cPhysics::CalculateTransformedMesh(cMesh& originalMesh, glm::mat4 matWorld,
 	// we transform the vertices of the mesh by the world matrix
 	// fVertWorldLocation = matModel * vec4(vertPosition.xyz, 1.0);
 
-	for (std::vector<sPlyVertexXYZ_N>::iterator itVert = mesh_transformedInWorld.vecVertices.begin();
+	for (std::vector<sPlyVertexXYZ_N_UV>::iterator itVert = mesh_transformedInWorld.vecVertices.begin();
 		itVert != mesh_transformedInWorld.vecVertices.end(); itVert++)
 	{
 		glm::vec4 vertex = glm::vec4(itVert->x, itVert->y, itVert->z, 1.0f);
@@ -383,3 +425,86 @@ float cPhysics::get_random(float min,float max)
 	static std::uniform_real_distribution<> dis(min, max); // rage 0 - 1
 	return dis(e);
 }
+
+// *********************************************************************************
+// FOR THE PATTERNS AND FRAMEWORKS MID-TERM
+// 
+// This is like the method above, but doesn't test for the y axis, which gives you the 
+// TRIANGLE (not the point) that that point is over (or under). 
+// 
+void cPhysics::GetClosestTriangleToPoint_FRAMEWORKS_AND_PATTERNS(Point pointXYZ, cMesh& mesh, sPhysicsTriangle& closestTriangle)
+{
+	// Assume the closest distance is REALLY far away
+	float closestDistanceSoFar = FLT_MAX;
+
+
+	for (unsigned int triIndex = 0;
+		 triIndex != mesh.vecTriangles.size();
+		 triIndex++)
+	{
+		sPlyTriangle& curTriangle = mesh.vecTriangles[triIndex];
+
+		// Get the vertices of the triangle
+		sPlyVertexXYZ_N_UV triVert1 = mesh.vecVertices[curTriangle.vert_index_1];
+		sPlyVertexXYZ_N_UV triVert2 = mesh.vecVertices[curTriangle.vert_index_2];
+		sPlyVertexXYZ_N_UV triVert3 = mesh.vecVertices[curTriangle.vert_index_3];
+
+		Point triVertPoint1;
+		triVertPoint1.x = triVert1.x;
+		triVertPoint1.y = triVert1.y;
+		triVertPoint1.z = triVert1.z;
+
+		Point triVertPoint2;
+		triVertPoint2.x = triVert2.x;
+		triVertPoint2.y = triVert2.y;
+		triVertPoint2.z = triVert2.z;
+
+		Point triVertPoint3;
+		triVertPoint3.x = triVert3.x;
+		triVertPoint3.y = triVert3.y;
+		triVertPoint3.z = triVert3.z;
+
+
+		// Now clear the y values for the actual test
+		glm::vec3 triVertPoint1_y_is_zero = triVertPoint1;
+		glm::vec3 triVertPoint2_y_is_zero = triVertPoint2;
+		glm::vec3 triVertPoint3_y_is_zero = triVertPoint3;
+		glm::vec3 testPoint_y_is_zero = pointXYZ;
+
+
+		triVertPoint1_y_is_zero.y = 0.0f;
+		triVertPoint2_y_is_zero.y = 0.0f;
+		triVertPoint3_y_is_zero.y = 0.0f;
+		testPoint_y_is_zero.y = 0.0f;
+
+		glm::vec3 curClosetPoint = ClosestPtPointTriangle(testPoint_y_is_zero,
+														  triVertPoint1_y_is_zero, triVertPoint2_y_is_zero, triVertPoint3_y_is_zero);
+
+		// Is this the closest so far?
+		float distanceNow = glm::distance(curClosetPoint, pointXYZ);
+
+		// is this closer than the closest distance
+		if (distanceNow <= closestDistanceSoFar)
+		{
+			closestDistanceSoFar = distanceNow;
+
+			// Copy the triangle information...
+			closestTriangle.verts[0].x = triVert1.x;
+			closestTriangle.verts[0].y = triVert1.y;
+			closestTriangle.verts[0].z = triVert1.z;
+			closestTriangle.verts[1].x = triVert2.x;
+			closestTriangle.verts[1].y = triVert2.y;
+			closestTriangle.verts[1].z = triVert2.z;
+			closestTriangle.verts[2].x = triVert3.x;
+			closestTriangle.verts[2].y = triVert3.y;
+			closestTriangle.verts[2].z = triVert3.z;
+		}
+
+	}//for (unsigned int triIndex = 0;
+
+	return;
+
+
+
+}
+// *********************************************************************************

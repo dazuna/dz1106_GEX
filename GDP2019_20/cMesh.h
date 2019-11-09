@@ -12,7 +12,12 @@ struct sPlyVertexXYZ_N
 	float x, y, z;
 	float nx, ny, nz;		// NOW with NORMALS!!
 };
-
+struct sPlyVertexXYZ_N_UV
+{
+	float x, y, z;
+	float nx, ny, nz;
+	float u, v;				// NOW with TEXTURE COORDINATES!!!
+};
 struct sPlyTriangle
 {
 	unsigned int vert_index_1;
@@ -26,7 +31,7 @@ public:
 	cMesh() {};			// Empty c'tor
 	~cMesh() {};		// Empty d'tor
 	// Store the vertices
-	std::vector<sPlyVertexXYZ_N> vecVertices;
+	std::vector<sPlyVertexXYZ_N_UV> vecVertices;
 
 	// Store the triangles
 	std::vector<sPlyTriangle> vecTriangles;

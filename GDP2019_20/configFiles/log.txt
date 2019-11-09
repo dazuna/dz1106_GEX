@@ -1,18 +1,40 @@
-firendlyName: Z3
-meshName: Z3mesh
-meshURL: assets/models/Z3.ply
-positionXYZ: vec3(10.000000, 0.000000, 38.000000)
-rotationXYZ: vec3(0.000000, -1.600000, 0.000000)
-objectColourRGBA: vec4(2.000000, 0.800000, 8.000000, 1.000000)
+friendlyName: bunnyModel
+meshName: bunnyMesh
+meshURL: assets/models/bunny_XYZ_n_UV.ply
+positionXYZ: vec3(1.000000, 1.000000, 1.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 velocity: vec3(0.000000, 0.000000, 0.000000)
 accel: vec3(0.000000, 0.000000, 0.000000)
 debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: cameraPosition0
+friendlyName: teapot
+meshName: teapotMesh
+meshURL: assets/models/Utah_Teapot_xyz_n_uv.ply
+positionXYZ: vec3(5.000000, 1.000000, 1.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+friendlyName: cube
+meshName: cubeMesh
+meshURL: assets/models/cube1_xyx_n_uv.ply
+positionXYZ: vec3(5.000000, 1.000000, 1.000000)
+rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+friendlyName: cameraPosition0
 meshName: cubeMesh
 meshURL: assets/models/Cube_1_Unit_from_origin_XYZ_n.ply
-positionXYZ: vec3(0.000000, 20.000000, 90.000000)
+positionXYZ: vec3(21.594578, 22.674059, 38.715027)
 rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
@@ -20,276 +42,23 @@ specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 velocity: vec3(0.000000, 0.000000, 0.000000)
 accel: vec3(0.000000, 0.000000, 0.000000)
 debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: cube
+friendlyName: cameraTarget0
 meshName: cubeMesh
 meshURL: assets/models/Cube_1_Unit_from_origin_XYZ_n.ply
-positionXYZ: vec3(0.000000, -50.000000, 0.000000)
+positionXYZ: vec3(0.000000, 0.000000, 0.000000)
 rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.000000, 50.000000, 50.000000, 1.000000)
+objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 velocity: vec3(0.000000, 0.000000, 0.000000)
 accel: vec3(0.000000, 0.000000, 0.000000)
 debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: lamp
-meshName: lampMesh
-meshURL: assets/models/street_lamp.ply
-positionXYZ: vec3(-15.000000, 9.000000, 43.000000)
+friendlyName: sphereModel
+meshName: sphereMesh
+meshURL: assets/models/Sphere_Radius_1_XYZ_n_uv.ply
+positionXYZ: vec3(15.000000, 15.000000, 15.000000)
 rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.000000, 1.000000, 1.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: lamp2
-meshName: lampMesh
-meshURL: assets/models/street_lamp.ply
-positionXYZ: vec3(-15.000000, 9.000000, 13.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.000000, 1.000000, 1.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: lamp3
-meshName: lampMesh
-meshURL: assets/models/street_lamp.ply
-positionXYZ: vec3(-15.000000, 9.000000, -17.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.000000, 1.000000, 1.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: lamp4
-meshName: lampMesh
-meshURL: assets/models/street_lamp.ply
-positionXYZ: vec3(25.000000, 9.000000, 43.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.000000, 1.000000, 1.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: lamp5
-meshName: lampMesh
-meshURL: assets/models/street_lamp.ply
-positionXYZ: vec3(25.000000, 9.000000, 13.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.000000, 1.000000, 1.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: lamp6
-meshName: lampMesh
-meshURL: assets/models/street_lamp.ply
-positionXYZ: vec3(25.000000, 9.000000, -17.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.000000, 1.000000, 1.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: mountain1
-meshName: mountainMesh
-meshURL: assets/models/lowpolymountains.ply
-positionXYZ: vec3(-83.000000, 7.000000, -39.000000)
-rotationXYZ: vec3(-0.000000, 1.100000, -0.200000)
-objectColourRGBA: vec4(1.000000, 4.400000, 1.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: mountain2
-meshName: mountainMesh
-meshURL: assets/models/lowpolymountains.ply
-positionXYZ: vec3(118.000000, -15.000000, -21.000000)
-rotationXYZ: vec3(0.000000, -1.800000, -0.100000)
-objectColourRGBA: vec4(1.000000, 4.800000, 1.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: tree1
-meshName: tree1Mesh
-meshURL: assets/models/lowpolytree.ply
-positionXYZ: vec3(-35.000000, -1.000000, 29.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(1.000000, 1.000000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: tree11
-meshName: tree1Mesh
-meshURL: assets/models/lowpolytree.ply
-positionXYZ: vec3(45.000000, -1.000000, 29.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(1.000000, 1.000000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: tree12
-meshName: tree1Mesh
-meshURL: assets/models/lowpolytree.ply
-positionXYZ: vec3(45.000000, -1.000000, 18.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(1.000000, 1.800000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: tree13
-meshName: tree1Mesh
-meshURL: assets/models/lowpolytree.ply
-positionXYZ: vec3(45.000000, -1.000000, 7.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(1.000000, 0.600000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: tree14
-meshName: tree1Mesh
-meshURL: assets/models/lowpolytree.ply
-positionXYZ: vec3(45.000000, -1.000000, -4.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(1.000000, 1.000000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: tree15
-meshName: tree1Mesh
-meshURL: assets/models/lowpolytree.ply
-positionXYZ: vec3(45.000000, -1.000000, -15.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(1.000000, 1.400000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: tree16
-meshName: tree1Mesh
-meshURL: assets/models/lowpolytree.ply
-positionXYZ: vec3(45.000000, -1.000000, -26.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(1.000000, 1.000000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: tree17
-meshName: tree1Mesh
-meshURL: assets/models/lowpolytree.ply
-positionXYZ: vec3(45.000000, -1.000000, -37.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(1.000000, 0.600000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: tree18
-meshName: tree1Mesh
-meshURL: assets/models/lowpolytree.ply
-positionXYZ: vec3(45.000000, -1.000000, -48.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(1.000000, 1.800000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: tree2
-meshName: tree1Mesh
-meshURL: assets/models/lowpolytree.ply
-positionXYZ: vec3(-30.000000, -1.000000, 18.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(1.000000, 1.800000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: tree3
-meshName: tree1Mesh
-meshURL: assets/models/lowpolytree.ply
-positionXYZ: vec3(-30.000000, -1.000000, 7.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(1.000000, 0.600000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: tree4
-meshName: tree1Mesh
-meshURL: assets/models/lowpolytree.ply
-positionXYZ: vec3(-30.000000, -1.000000, -4.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(1.000000, 1.000000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: tree5
-meshName: tree1Mesh
-meshURL: assets/models/lowpolytree.ply
-positionXYZ: vec3(-30.000000, -1.000000, -15.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(1.000000, 1.400000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: tree6
-meshName: tree1Mesh
-meshURL: assets/models/lowpolytree.ply
-positionXYZ: vec3(-30.000000, -1.000000, -26.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(1.000000, 1.000000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: tree7
-meshName: tree1Mesh
-meshURL: assets/models/lowpolytree.ply
-positionXYZ: vec3(-30.000000, -1.000000, -37.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(1.000000, 0.600000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-firendlyName: tree8
-meshName: tree1Mesh
-meshURL: assets/models/lowpolytree.ply
-positionXYZ: vec3(-30.000000, -1.000000, -48.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(1.000000, 1.800000, 0.000000, 1.000000)
+objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 velocity: vec3(0.000000, 0.000000, 0.000000)

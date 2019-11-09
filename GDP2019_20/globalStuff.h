@@ -4,13 +4,15 @@
 #include "cLight.h"
 #include "cMesh.h"
 #include "DebugRenderer/cDebugRenderer.h"
+#include "cPhysics.h"
+#include "TextureManager/cBasicTextureManager.h"
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include <vector>
 
 // returns NULL (0) if we didn't find it.
-cGameObject* pFindObjectByFriendlyNameMap( std::string name );
+bool pFindObjectByFriendlyNameMap( std::string name );
 glm::mat4 calculateWorldMatrix(cGameObject* pCurrentObject);
 std::string GLMvec3toString(glm::vec3 theGLMvec3);
 
@@ -34,3 +36,6 @@ extern std::map<std::string, cLight>::iterator selectedLight;
 extern enum class selectedType { GAMEOBJECT, LIGHT, SOUND };
 extern selectedType cursorType;
 extern cDebugRenderer* pDebugRenderer;
+extern cBasicTextureManager* pTextureManager;
+extern double timer;
+extern bool isDroneOn;

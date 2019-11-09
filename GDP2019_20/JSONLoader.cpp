@@ -98,7 +98,7 @@ bool JSONLoadGameObjects(
 	for (index = 0; index < jsonArray.size(); index++)
 	{
 		std::string friendlyName = jsonArray[index]["friendlyName"];
-		outFile << "firendlyName: " << friendlyName << std::endl;
+		outFile << "friendlyName: " << friendlyName << std::endl;
 		std::string meshName = jsonArray[index]["meshName"];
 		outFile << "meshName: " << meshName << std::endl;
 		std::string meshURL = jsonArray[index]["meshURL"];
@@ -153,7 +153,23 @@ bool JSONLoadGameObjects(
 			jsonArray[index]["debugColour"][3]);
 		outFile << "debugColour: " << glm::to_string(debugColour) << std::endl;
 		bool isVisible = jsonArray[index]["isVisible"];
+
 		cGameObject* tempGameObject = new cGameObject();
+		if (jsonArray[index].find("texture") != jsonArray[index].end())
+		{
+			for (int i = 0; i < jsonArray[index]["texture"].size(); i++)
+			{
+				tempGameObject->textures[i] = jsonArray[index]["texture"][i];
+			}
+		}
+		if (jsonArray[index].find("textureRatio") != jsonArray[index].end())
+		{
+			for (int i = 0; i < jsonArray[index]["textureRatio"].size(); i++)
+			{
+				tempGameObject->textureRatio[i] = jsonArray[index]["textureRatio"][i];
+			}
+		}
+
 		tempGameObject->friendlyName = friendlyName;
 		tempGameObject->meshName = meshName;
 		tempGameObject->meshURL = meshURL;
@@ -175,6 +191,7 @@ bool JSONLoadGameObjects(
 	//std::cout << j;
 	std::cout << "[OK]\n" << index << " objects loaded" << std::endl;
 	outFile2 << jsonArray;
+	JSONLoadTextures();
 	return true;
 }
 
@@ -279,6 +296,14 @@ bool JSONSaveGameObjects(std::map<std::string, cGameObject*>* g_map_GameObjects)
 		jsonObject["debugColour"][1] = index->second->debugColour.y;
 		jsonObject["debugColour"][2] = index->second->debugColour.z;
 		jsonObject["debugColour"][3] = index->second->debugColour.w;
+		jsonObject["texture"][0] = index->second->textures[0];
+		jsonObject["texture"][1] = index->second->textures[1];
+		jsonObject["texture"][2] = index->second->textures[2];
+		jsonObject["texture"][3] = index->second->textures[3];
+		jsonObject["textureRatio"][0] = index->second->textureRatio[0];
+		jsonObject["textureRatio"][1] = index->second->textureRatio[1];
+		jsonObject["textureRatio"][2] = index->second->textureRatio[2];
+		jsonObject["textureRatio"][3] = index->second->textureRatio[3];
 		jsonObject["isVisible"] = index->second->isVisible;
 		jsonArray[x] = jsonObject;
 	}
@@ -286,4 +311,82 @@ bool JSONSaveGameObjects(std::map<std::string, cGameObject*>* g_map_GameObjects)
 	outFile << jsonArray;
 	std::cout << "[OK]\n" << x << " lights saved!" << std::endl;
 	return true;
+}
+
+bool JSONLoadTextures()
+{
+	for (std::map<std::string, cGameObject*>::iterator itGO = g_map_GameObjects.begin();
+		itGO != ::g_map_GameObjects.end();
+		itGO++)
+	{
+		for (int i = 0; i < itGO->second->NUMBEROFTEXTURES; i++)
+		{
+			if (itGO->second->textures[i] != "");
+			{
+				::pTextureManager->Create2DTextureFromBMPFile(itGO->second->textures[i].c_str(), true);
+			}
+		}
+	}
+	return true;
+}
+
+void SetUpTextureBindingsForObject(cGameObject* pCurrentObject,GLint shaderProgID)
+{
+
+	//// Tie the texture to the texture unit
+	//GLuint texSamp0_UL = ::pTextureManager->getTextureIDFromName("Pizza.bmp");
+	//glActiveTexture(GL_TEXTURE0);				// Texture Unit 0
+	//glBindTexture(GL_TEXTURE_2D, texSamp0_UL);	// Texture now assoc with texture unit 0
+
+	// Tie the texture to the texture unit
+	GLuint texSamp0_UL = ::pTextureManager->getTextureIDFromName(pCurrentObject->textures[0]);
+	glActiveTexture(GL_TEXTURE0);				// Texture Unit 0
+	glBindTexture(GL_TEXTURE_2D, texSamp0_UL);	// Texture now assoc with texture unit 0
+
+	GLuint texSamp1_UL = ::pTextureManager->getTextureIDFromName(pCurrentObject->textures[1]);
+	glActiveTexture(GL_TEXTURE1);				// Texture Unit 1
+	glBindTexture(GL_TEXTURE_2D, texSamp1_UL);	// Texture now assoc with texture unit 0
+
+	GLuint texSamp2_UL = ::pTextureManager->getTextureIDFromName(pCurrentObject->textures[2]);
+	glActiveTexture(GL_TEXTURE2);				// Texture Unit 2
+	glBindTexture(GL_TEXTURE_2D, texSamp2_UL);	// Texture now assoc with texture unit 0
+
+	GLuint texSamp3_UL = ::pTextureManager->getTextureIDFromName(pCurrentObject->textures[3]);
+	glActiveTexture(GL_TEXTURE3);				// Texture Unit 3
+	glBindTexture(GL_TEXTURE_2D, texSamp3_UL);	// Texture now assoc with texture unit 0
+
+	// Tie the texture units to the samplers in the shader
+	GLint textSamp00_UL = glGetUniformLocation(shaderProgID, "textSamp00");
+	glUniform1i(textSamp00_UL, 0);	// Texture unit 0
+
+	GLint textSamp01_UL = glGetUniformLocation(shaderProgID, "textSamp01");
+	glUniform1i(textSamp01_UL, 1);	// Texture unit 1
+
+	GLint textSamp02_UL = glGetUniformLocation(shaderProgID, "textSamp02");
+	glUniform1i(textSamp02_UL, 2);	// Texture unit 2
+
+	GLint textSamp03_UL = glGetUniformLocation(shaderProgID, "textSamp03");
+	glUniform1i(textSamp03_UL, 3);	// Texture unit 3
+
+
+	GLint tex0_ratio_UL = glGetUniformLocation(shaderProgID, "tex_0_3_ratio");
+	glUniform4f(tex0_ratio_UL,
+		pCurrentObject->textureRatio[0],		// 1.0
+		pCurrentObject->textureRatio[1],
+		pCurrentObject->textureRatio[2],
+		pCurrentObject->textureRatio[3]);
+
+	{
+		//textureWhatTheWhat
+		GLuint texSampWHAT_ID = ::pTextureManager->getTextureIDFromName("WhatTheWhat.bmp");
+		glActiveTexture(GL_TEXTURE13);				// Texture Unit 13
+		glBindTexture(GL_TEXTURE_2D, texSampWHAT_ID);	// Texture now assoc with texture unit 0
+
+		GLint textureWhatTheWhat_UL = glGetUniformLocation(shaderProgID, "textureWhatTheWhat");
+		glUniform1i(textureWhatTheWhat_UL, 13);	// Texture unit 13
+	}
+
+
+
+	return;
 }

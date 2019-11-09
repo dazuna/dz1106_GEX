@@ -7,7 +7,6 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp>	// glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
@@ -16,21 +15,18 @@
 #include <limits.h>
 #include <float.h>
 #include <string>
-
 #include "cModelLoader.h"			
 #include "cVAOManager.h"		// NEW
 #include "cGameObject.h"
 #include "cShaderManager.h"
-
+#include "TextureManager/cBasicTextureManager.h"
 // JSON Stuff
 #include "JSONLoader.h"
-
 // The Physics function
 #include "PhysicsStuff.h"
 #include "cPhysics.h"
 #include "cLowPassFilter.h"
 #include "DebugRenderer/cDebugRenderer.h"
-
 // Used to visualize the attenuation of the lights...
 #include "cLight.h"
 #include "LightManager/cLightHelper.h"
@@ -48,8 +44,21 @@ void DrawObject(glm::mat4 m,
 	GLint shaderProgID,
 	cVAOManager* pVAOManager);
 
+
+void makeSkullEyesFlicker();
+void makeCameraDroneAround(bool isDroneOn);
+
+template <class T>
+T randInRange(T min, T max)
+{
+	double value =
+		min + static_cast <double> (rand())
+		/ (static_cast <double> (RAND_MAX / (static_cast<double>(max - min))));
+	return static_cast<T>(value);
+};
+
 glm::vec3 cameraEye = glm::vec3(0.0f, 50.0f, 100.0f);
-glm::vec3 cameraTarget = glm::vec3(0.0f, 25.0f, 0.0f);
+glm::vec3 cameraTarget = glm::vec3(0.0f, 50.0f, 0.0f);
 glm::vec3 visionVector = glm::normalize(cameraTarget - cameraEye);
 glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -61,6 +70,12 @@ bool bLightDebugSheresOn = true;
 bool everythingWireFrame = false;
 std::string console;
 cDebugRenderer* pDebugRenderer = new cDebugRenderer();
+cPhysics* pPhysic = new cPhysics();
+cBasicTextureManager* pTextureManager = NULL;
+
+// pirateStuff
+double timer = 0.0;
+bool isDroneOn = false;
 
 // Load up my "scene" objects (now global)
 std::map<std::string, cMesh*> g_map_Mesh;
@@ -97,7 +112,7 @@ int main(void)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-	window = glfwCreateWindow(640, 480, "Simple example", NULL, NULL);
+	window = glfwCreateWindow(1280, 720, "Simple example", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -112,9 +127,11 @@ int main(void)
 	glfwSwapInterval(1);
 
 	pDebugRenderer->initialize();
+	// ::pTextureManager = new cBasicTextureManager();
+	// ::pTextureManager->SetBasePath("assets/textures");
 
 	//	OpenGL and GLFW are good to go, so load the model
-	cModelLoader* pTheModelLoader = new cModelLoader();	// Heap
+	cModelLoader* pTheModelLoader = new cModelLoader();
 
 	cShaderManager* pTheShaderManager = new cShaderManager();
 	cShaderManager::cShader vertexShad;
@@ -132,6 +149,9 @@ int main(void)
 	// Create a VAO Manager...
 	cVAOManager* pTheVAOManager = new cVAOManager();
 
+	::pTextureManager = new cBasicTextureManager();
+	::pTextureManager->SetBasePath("assets/textures");
+
 	//JSON Loader for objects
 	JSONLoadMeshes(&g_map_Mesh, pTheModelLoader);
 	JSONLoadGameObjects(&::g_map_GameObjects);
@@ -142,7 +162,7 @@ int main(void)
 	glEnable(GL_DEPTH);			// Write to the depth buffer
 	glEnable(GL_DEPTH_TEST);	// Test with buffer when drawing
 
-	cPhysics* pPhysic = new cPhysics();
+	//cPhysics* pPhysic = new cPhysics();
 	cLowPassFilter avgDeltaTimeThingy;
 
 	// Let there be lights.. I guess
@@ -154,12 +174,30 @@ int main(void)
 	if (pFindObjectByFriendlyNameMap("cameraPosition0"))
 	{
 		cameraEye = ::g_map_GameObjects["cameraPosition0"]->positionXYZ;
+		if (pFindObjectByFriendlyNameMap("cameraTarget0"))
+		{
+			cameraTarget = ::g_map_GameObjects["cameraTarget0"]->positionXYZ;
+			visionVector = glm::normalize(cameraTarget - cameraEye);
+		}
 		cameraTarget = cameraEye + visionVector;
 	}
 
 	// Get the initial time
 	double lastTime = glfwGetTime();
 	std::cout << "start loop!" << std::endl;
+
+	//cGameObject* pLargeBunny = new cGameObject();			// HEAP
+	//pLargeBunny->meshName = "bunnyMesh";
+	//pLargeBunny->friendlyName = "largeBunny";
+	//pLargeBunny->positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
+	//pLargeBunny->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
+	//pLargeBunny->scale = 1.0f;	//***** SCALE = 1.0f *****/
+	//pLargeBunny->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	//pLargeBunny->physicsShapeType = MESH;
+	//pLargeBunny->inverseMass = 0.0f;	// Ignored during update
+	//pLargeBunny->textures[0] = "pebbles-beach-textures.bmp";
+	//pLargeBunny->textureRatio[0] = 1.0f;
+	//::g_map_GameObjects.insert({ "large_bunny", pLargeBunny });
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -168,6 +206,7 @@ int main(void)
 		double currentTime = glfwGetTime();
 		// Frame time... (how many seconds since last frame)
 		double deltaTime = currentTime - lastTime;
+		timer += currentTime - lastTime;
 		lastTime = currentTime;
 
 		const double SOME_HUGE_TIME = 0.1;	// 100 ms;
@@ -246,10 +285,14 @@ int main(void)
 		case selectedType::LIGHT:drawLightXYZ(pDebugRenderer);break;
 		case selectedType::SOUND:break;
 		}
-		//drawPyramidPlayer(pDebugRenderer);		
+		//drawPyramidPlayer(pDebugRenderer);
+
+		//makeSkullEyesFlicker();
+		//makeCameraDroneAround(isDroneOn);
 
 		//	Update the objects through physics
-		//double averageDeltaTime = avgDeltaTimeThingy.getAverage();
+		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
+		
 		//pPhysic->IntegrationStep(::g_map_GameObjects, (float)averageDeltaTime);
 		//pPhysic->TestForCollisions(::g_map_GameObjects);
 		//collisionPOC(pPhysic, pDebugRenderer);
@@ -315,6 +358,7 @@ void DrawObject(glm::mat4 m,
 	GLint shaderProgID,
 	cVAOManager* pVAOManager)
 {
+	SetUpTextureBindingsForObject(pCurrentObject, shaderProgID);
 	m = calculateWorldMatrix(pCurrentObject);
 	GLint matModel_UL = glGetUniformLocation(shaderProgID, "matModel");
 
@@ -407,10 +451,14 @@ void DrawObject(glm::mat4 m,
 } // DrawObject;
 
 // returns NULL (0) if we didn't find it.
-cGameObject* pFindObjectByFriendlyNameMap(std::string name)
+bool pFindObjectByFriendlyNameMap(std::string name)
 {
 	//std::map<std::string, cGameObject*> g_map_GameObjectsByFriendlyName;
-	return ::g_map_GameObjects[name];
+	std::map<std::string, cGameObject*>::iterator itGO = ::g_map_GameObjects.find(name);
+	if (itGO != ::g_map_GameObjects.end())
+		return true;
+	else
+		return false;
 }
 
 void drawLightXYZ(cDebugRenderer* pDebugRenderer)
@@ -532,13 +580,15 @@ void setWindowTitle(std::stringstream* ssTitle)
 		break;
 	case selectedType::LIGHT:
 		*ssTitle << " light: " << selectedLight->first.c_str()
-		<< " posXYZ: " << GLMvec3toString(selectedLight->second.positionXYZ)
-		<< " linearA: "<< selectedLight->second.LinearAtten
-		<< " quadA: " << selectedLight->second.QuadraticAtten;
+			<< " posXYZ: " << GLMvec3toString(selectedLight->second.positionXYZ)
+			<< " linearA: " << selectedLight->second.LinearAtten
+			<< " quadA: " << selectedLight->second.QuadraticAtten
+			<< " inner: " << selectedLight->second.innerAngle
+			<< " outer: " << selectedLight->second.outerAngle;
 		break;
 	case selectedType::SOUND:break;
 	}
-	//*ssTitle << "   Eye: " << GLMvec3toString(cameraEye);
+	*ssTitle << " isDroneOn: " << isDroneOn;
 	//*ssTitle << "   Tgt: " << GLMvec3toString(cameraTarget);
 	//*ssTitle << "   Vis: " << GLMvec3toString(visionVector);
 	//*ssTitle << "   XYZ: " << GLMvec3toString(visionVector);
@@ -577,3 +627,46 @@ void drawPyramidPlayer(cDebugRenderer* pDebugRenderer)
 		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
 		glm::vec3(1.0f, 1.0f, 1.0f));
 }
+
+void makeSkullEyesFlicker()
+{
+	//std::map<std::string, cLight> g_map_pLights;
+	std::map<std::string, cLight>::iterator itLite;
+
+	if (timer >= 0.1)
+	{
+		timer = 0.0;
+		itLite = ::g_map_pLights.find("eye1");
+		if (itLite != g_map_pLights.end())
+		{
+			itLite->second.QuadraticAtten = randInRange(0.03f, 0.6f);
+		}
+		itLite = ::g_map_pLights.find("eye2");
+		if (itLite != g_map_pLights.end())
+		{
+			itLite->second.QuadraticAtten = randInRange(0.03f, 0.6f);
+		}
+		makeCameraDroneAround(isDroneOn);
+	}	
+}
+
+void makeCameraDroneAround(bool isDroneOn)
+{
+	// printf("makeCameraDroneAround");
+	if (pFindObjectByFriendlyNameMap("cameraPosition0")  && isDroneOn)
+	{
+		glm::mat4 matRotY = glm::rotate(glm::mat4(1.0f), -glm::radians(0.099f), glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::vec3 objectVector = ::g_map_GameObjects["cameraPosition0"]->positionXYZ - ::g_map_GameObjects["cameraTarget0"]->positionXYZ;
+		objectVector = glm::vec3(matRotY * glm::vec4(objectVector, 1.0));
+		::g_map_GameObjects["cameraPosition0"]->positionXYZ = ::g_map_GameObjects["cameraTarget0"]->positionXYZ + objectVector;
+
+		cameraEye = ::g_map_GameObjects["cameraPosition0"]->positionXYZ;
+		if (pFindObjectByFriendlyNameMap("cameraTarget0"))
+		{
+			cameraTarget = ::g_map_GameObjects["cameraTarget0"]->positionXYZ;
+			visionVector = glm::normalize(cameraTarget - cameraEye);
+		}
+		cameraTarget = cameraEye + visionVector;
+	}
+}
+

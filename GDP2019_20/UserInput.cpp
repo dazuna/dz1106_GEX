@@ -37,36 +37,36 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		// <Camera Movement> ******************************************************
 		if (key == GLFW_KEY_A)
 		{
-			cameraEye.x -= CAMERASPEED;
+			cameraEye.x -= CAMERASPEED*5.0f;
 			cameraTarget = cameraEye + visionVector;
 		}
 		if (key == GLFW_KEY_D)
 		{
-			cameraEye.x += CAMERASPEED;
+			cameraEye.x += CAMERASPEED* 5.0f;
 			cameraTarget = cameraEye + visionVector;
 		}
 
 		if (key == GLFW_KEY_Q)
 		{
-			cameraEye.y -= CAMERASPEED;
+			cameraEye.y -= CAMERASPEED* 5.0f;
 			cameraTarget = cameraEye + visionVector;
 		}
 		if (key == GLFW_KEY_E)
 		{
-			cameraEye.y += CAMERASPEED;
+			cameraEye.y += CAMERASPEED* 5.0f;
 			cameraTarget = cameraEye + visionVector;
 		}
 
 		if (key == GLFW_KEY_W)
 		{
 			//cameraEye.z -= CAMERASPEED;
-			cameraEye = cameraEye + glm::normalize(visionVector);
+			cameraEye = cameraEye + (glm::normalize(visionVector)* 5.0f);
 			cameraTarget = cameraEye + visionVector;
 		}
 		if (key == GLFW_KEY_S)
 		{
 			//cameraEye.z += CAMERASPEED;
-			cameraEye = cameraEye - glm::normalize(visionVector);
+			cameraEye = cameraEye - (glm::normalize(visionVector)* 5.0f);
 			cameraTarget = cameraEye + visionVector;
 		}
 		// </Camera Movement> ******************************************************
@@ -130,10 +130,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			case selectedType::SOUND:break;
 			}
 		}
+		if (key == GLFW_KEY_F2 && action == GLFW_PRESS)
+		{
+			isDroneOn = !isDroneOn;
+		}
 		if (key == GLFW_KEY_Z && action == GLFW_PRESS)
 		{
-			::g_map_GameObjects["sphere"]->positionXYZ = glm::vec3(2.0f, 10.0f, 0.0f);
-			::g_map_GameObjects["sphere"]->velocity = glm::vec3(0.0f, 0.0f, 0.0f);
+			::g_map_GameObjects["cameraPosition0"]->positionXYZ = cameraEye;
 		}
 	}
 
@@ -198,6 +201,28 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			case selectedType::SOUND:		break;
 			}
 		}
+
+		// ***************************** Scale Objects *****************************
+		if (key == GLFW_KEY_1 && action == GLFW_PRESS)
+		{
+			switch (cursorType)
+			{
+			case selectedType::GAMEOBJECT:	theSelectedGO->scale -= 0.5f; break;
+			case selectedType::LIGHT:		break;
+			case selectedType::SOUND:		break;
+			}
+		}
+		if (key == GLFW_KEY_2 && action == GLFW_PRESS)
+		{
+			switch (cursorType)
+			{
+			case selectedType::GAMEOBJECT:	theSelectedGO->scale += 0.5f; break;
+			case selectedType::LIGHT:		break;
+			case selectedType::SOUND:		break;
+			}
+		}
+		// ***************************** Scale Objects *****************************
+
 		//if (key == GLFW_KEY_1)
 		//{
 		//	theSelectedL->ConstAtten *= 0.99f;			// 99% of what it was
@@ -208,19 +233,19 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		//}		
 		if (key == GLFW_KEY_3)
 		{
-			theSelectedL->LinearAtten *= 0.99f;			// 99% of what it was
+			theSelectedL->LinearAtten *= 0.90f;			// 99% of what it was
 		}
 		if (key == GLFW_KEY_4)
 		{
-			theSelectedL->LinearAtten *= 1.01f;			// 1% more of what it was
+			theSelectedL->LinearAtten *= 1.10f;			// 1% more of what it was
 		}
 		if (key == GLFW_KEY_5)
 		{
-			theSelectedL->QuadraticAtten *= 0.99f;			// 99% of what it was
+			theSelectedL->QuadraticAtten *= 0.90f;			// 99% of what it was
 		}
 		if (key == GLFW_KEY_6)
 		{
-			theSelectedL->QuadraticAtten *= 1.01f;			// 1% more of what it was
+			theSelectedL->QuadraticAtten *= 1.10f;			// 1% more of what it was
 		}
 		if (key == GLFW_KEY_0 && action == GLFW_PRESS)
 		{
@@ -382,16 +407,16 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			makeAllWireFrame(false);
 		}
-		if (key == GLFW_KEY_P && action == GLFW_PRESS)
-		{
-			::g_map_pLights["light8"].lightSwitch = 1.0f;
-			::g_map_pLights["light9"].lightSwitch = 1.0f;
-		}
-		if (key == GLFW_KEY_O && action == GLFW_PRESS)
-		{
-			::g_map_pLights["light8"].lightSwitch = 0.0f;
-			::g_map_pLights["light9"].lightSwitch = 0.0f;
-		}
+		// if (key == GLFW_KEY_P && action == GLFW_PRESS)
+		// {
+		// 	::g_map_pLights["light8"].lightSwitch = 1.0f;
+		// 	::g_map_pLights["light9"].lightSwitch = 1.0f;
+		// }
+		// if (key == GLFW_KEY_O && action == GLFW_PRESS)
+		// {
+		// 	::g_map_pLights["light8"].lightSwitch = 0.0f;
+		// 	::g_map_pLights["light9"].lightSwitch = 0.0f;
+		// }
 		//if (key == GLFW_KEY_D && action == GLFW_PRESS)
 		//{
 		//	cGameObject* tempGO = new cGameObject(selectedGameObject->second);
@@ -407,6 +432,45 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		//	case selectedType::SOUND:		break;
 		//	}
 		//}
+		if (key == GLFW_KEY_1 && action == GLFW_PRESS)
+		{
+			if (pFindObjectByFriendlyNameMap("cameraPosition1"))
+			{
+				cameraEye = ::g_map_GameObjects["cameraPosition1"]->positionXYZ;
+				if (pFindObjectByFriendlyNameMap("cameraTarget1"))
+				{
+					cameraTarget = ::g_map_GameObjects["cameraTarget1"]->positionXYZ;
+					visionVector = glm::normalize(cameraTarget - cameraEye);
+				}
+				cameraTarget = cameraEye + visionVector;
+			}
+		}
+		if (key == GLFW_KEY_2 && action == GLFW_PRESS)
+		{
+			if (pFindObjectByFriendlyNameMap("cameraPosition2"))
+			{
+				cameraEye = ::g_map_GameObjects["cameraPosition2"]->positionXYZ;
+				if (pFindObjectByFriendlyNameMap("cameraTarget2"))
+				{
+					cameraTarget = ::g_map_GameObjects["cameraTarget2"]->positionXYZ;
+					visionVector = glm::normalize(cameraTarget - cameraEye);
+				}
+				cameraTarget = cameraEye + visionVector;
+			}
+		}
+		if (key == GLFW_KEY_3 && action == GLFW_PRESS)
+		{
+			if (pFindObjectByFriendlyNameMap("cameraPosition3"))
+			{
+				cameraEye = ::g_map_GameObjects["cameraPosition3"]->positionXYZ;
+				if (pFindObjectByFriendlyNameMap("cameraTarget3"))
+				{
+					cameraTarget = ::g_map_GameObjects["cameraTarget3"]->positionXYZ;
+					visionVector = glm::normalize(cameraTarget - cameraEye);
+				}
+				cameraTarget = cameraEye + visionVector;
+			}
+		}
 	}
 
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)

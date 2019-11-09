@@ -13,8 +13,8 @@ public:
 
 	// Takes the filename to load
 	// Returns by ref the mesh
-	bool LoadPlyModel(std::string filename,
-		              cMesh &theMesh);		// Note the & (by reference)
+	bool LoadPlyModel(std::string filename, cMesh &theMesh);
+	// bool LoadPlyModelNoTextures(std::string filename, cMesh& theMesh);
 
 };
 

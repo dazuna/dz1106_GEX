@@ -3,6 +3,7 @@
 #include "cGameObject.h"
 #include "cLight.h"
 #include "cVAOManager.h"
+#include "globalStuff.h"
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
 #include <glm/gtx/string_cast.hpp>
@@ -29,3 +30,7 @@ bool JSONSaveLights(
 	std::map<std::string, cLight>* g_map_pLights);
 bool JSONSaveGameObjects(
 	std::map<std::string, cGameObject*>* g_map_GameObjects);
+bool JSONLoadTextures();
+void SetUpTextureBindingsForObject(
+	cGameObject* pCurrentObject,
+	GLint shaderProgID);

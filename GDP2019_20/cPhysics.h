@@ -50,7 +50,8 @@ public:
 	void TestForCollisions(std::map<std::string, cGameObject*> g_map_GameObjects);
 
 	// Returns all the triangles and the closest points
-	void GetClosestTriangleToPoint( Point pointXYZ, cMesh &mesh, glm::vec3 &closestPoint, sPhysicsTriangle &closestTriangle );
+	void GetClosestTriangleToPoint( 
+		Point pointXYZ, cMesh &mesh, glm::vec3 &closestPoint, sPhysicsTriangle &closestTriangle );
 
 	// Will return the closest triangles that are within the range "distanceRange".
 	// This can be used as a "closest triangles to sphere"
@@ -67,14 +68,21 @@ public:
 	void CalculateTransformedMesh(cMesh& originalMesh, glm::mat4 matWorld,
 		cMesh& mesh_transformedInWorld);
 
+	void GetClosestTriangleToPoint_FRAMEWORKS_AND_PATTERNS(
+		Point pointXYZ, cMesh& mesh, sPhysicsTriangle& closestTriangle);
+
+	bool DoShphereMeshCollisionTest(cGameObject* pA, cGameObject* pB,
+		sCollisionInfo& collisionInfo);
+
+	bool DoShphereMeshCollisionTest(cGameObject* pA, cGameObject* pB);
+
 private:
 
 	// Does collision test and returns collision information
 	// Returns true if collision, and will load collisionInfo struct
 	bool DoSphereSphereCollisionTest( cGameObject* pA, cGameObject *pB, 
 									  sCollisionInfo &collisionInfo );
-	bool DoShphereMeshCollisionTest( cGameObject* pA, cGameObject* pB,
-									 sCollisionInfo &collisionInfo );
+	
 	bool objectsAlreadyCollided(cGameObject* pA, cGameObject* pB,
 							std::vector<sCollisionInfo> vecCollisions);
 	float get_random(float min, float max);
