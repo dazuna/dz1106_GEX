@@ -6,6 +6,8 @@ uniform mat4 matModelInverseTranspose;		// For normal calculation
 uniform mat4 matView; 		// View or camera
 uniform mat4 matProj;		// Projection transform
 
+//uniform sampler2D textSamp00;
+
 in vec4 vColour;				// Was vec3
 in vec4 vPosition;				// Was vec3
 in vec4 vNormal;				// Vertex normal
@@ -34,8 +36,16 @@ void main()
 	
 	vec3 theNormal = normalize(vNormal.xyz);
  	fNormal = matModelInverseTranspose * vec4(theNormal, 1.0f);
+	fNormal.xyz = normalize(fNormal.xyz); 
 	
 	// Pass the colour and UV unchanged.
     fColour = vColour;	
 	fUVx2 = vUVx2;
+	
+	// 
+//	vec3 tex0_RGB = texture( textSamp00, fUVx2.st ).rgb;
+//	if ( tex0_RGB.r <= 0.01f )		// Basically "black"
+//	{
+//		discard;
+//	}
 }

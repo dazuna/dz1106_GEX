@@ -2,7 +2,7 @@
 
 cGameObject::cGameObject()
 {
-	this->scale = 0.0f;
+	this->scale = 1.0f;
 	this->isVisible = true;
 
 	this->isWireframe = false;
@@ -24,6 +24,7 @@ cGameObject::cGameObject()
 	this->disableDepthBufferWrite = false;
 
 	this->m_pDebugRenderer = NULL;
+	this->alphaTransparency = 1.0f;
 
 	return;
 }
@@ -51,6 +52,7 @@ cGameObject::cGameObject(cGameObject* newGO)
 	this->scale=newGO->scale;
 	this->specularColour=newGO->specularColour;
 	this->velocity=newGO->velocity;
+	this->alphaTransparency = newGO->alphaTransparency;
 }
 
 

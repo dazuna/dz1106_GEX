@@ -87,12 +87,12 @@ std::string cBasicTextureManager::PickRandomTexture(void)
 }
 
 
-bool cBasicTextureManager::CreateCubeTextureFromBMPFiles( 
-                                    std::string cubeMapName, 
-		                            std::string posX_fileName, std::string negX_fileName, 
-		                            std::string posY_fileName, std::string negY_fileName, 
-									std::string posZ_fileName, std::string negZ_fileName, 
-									bool bIsSeamless, std::string &errorString )
+bool cBasicTextureManager::CreateCubeTextureFromBMPFiles(
+	std::string cubeMapName,
+	std::string posX_fileName, std::string negX_fileName,
+	std::string posY_fileName, std::string negY_fileName,
+	std::string posZ_fileName, std::string negZ_fileName,
+	bool bIsSeamless, std::string& errorString)
 {
 	std::string posX_fileName_FullPath = this->m_basePath + "/" + posX_fileName;
 	std::string negX_fileName_FullPath = this->m_basePath + "/" + negX_fileName;
@@ -101,30 +101,31 @@ bool cBasicTextureManager::CreateCubeTextureFromBMPFiles(
 	std::string posZ_fileName_FullPath = this->m_basePath + "/" + posZ_fileName;
 	std::string negZ_fileName_FullPath = this->m_basePath + "/" + negZ_fileName;
 
+
 	GLenum errorEnum;
 	std::string errorDetails;
 	CTextureFromBMP* pTempTexture = new CTextureFromBMP();
-	if ( ! pTempTexture->CreateNewCubeTextureFromBMPFiles( 
-				cubeMapName, 
-				posX_fileName_FullPath, negX_fileName_FullPath, 
-	            posY_fileName_FullPath, negY_fileName_FullPath, 
-	            posZ_fileName_FullPath, negZ_fileName_FullPath, 
-	            bIsSeamless, errorEnum, errorString, errorDetails ) )
+	if (!pTempTexture->CreateNewCubeTextureFromBMPFiles(
+		cubeMapName,
+		posX_fileName_FullPath, negX_fileName_FullPath,
+		posY_fileName_FullPath, negY_fileName_FullPath,
+		posZ_fileName_FullPath, negZ_fileName_FullPath,
+		bIsSeamless, errorEnum, errorString, errorDetails))
 	{
-		this->m_appendErrorString( "Can't load " );
-		this->m_appendErrorString( cubeMapName );
-		this->m_appendErrorString( " because:\n" );
-		this->m_appendErrorString( errorString );
-		this->m_appendErrorString( "\n" );
-		this->m_appendErrorString( errorDetails );
+		this->m_appendErrorString("Can't load ");
+		this->m_appendErrorString(cubeMapName);
+		this->m_appendErrorString(" because:\n");
+		this->m_appendErrorString(errorString);
+		this->m_appendErrorString("\n");
+		this->m_appendErrorString(errorDetails);
 		errorString += ("\n" + errorDetails);
 		return false;
 	}//if ( ! pTempTexture->CreateNewCubeTextureFromBMPFiles()
 
 	// Texture is loaded OK
 	//this->m_nextTextureUnitOffset++;
-	
-	this->m_map_TexNameToTexture[ cubeMapName ] = pTempTexture;
+
+	this->m_map_TexNameToTexture[cubeMapName] = pTempTexture;
 
 	return true;
 }

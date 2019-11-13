@@ -159,17 +159,20 @@ bool JSONLoadGameObjects(
 		{
 			for (int i = 0; i < jsonArray[index]["texture"].size(); i++)
 			{
-				tempGameObject->textures[i] = jsonArray[index]["texture"][i];
+				tempGameObject->textures.push_back(jsonArray[index]["texture"][i]);
 			}
 		}
 		if (jsonArray[index].find("textureRatio") != jsonArray[index].end())
 		{
 			for (int i = 0; i < jsonArray[index]["textureRatio"].size(); i++)
 			{
-				tempGameObject->textureRatio[i] = jsonArray[index]["textureRatio"][i];
+				tempGameObject->textureRatio.push_back(jsonArray[index]["textureRatio"][i]);
 			}
 		}
-
+		if (jsonArray[index].find("alphaTransparency") != jsonArray[index].end())
+		{
+			tempGameObject->alphaTransparency = jsonArray[index]["alphaTransparency"];
+		}
 		tempGameObject->friendlyName = friendlyName;
 		tempGameObject->meshName = meshName;
 		tempGameObject->meshURL = meshURL;
@@ -305,6 +308,7 @@ bool JSONSaveGameObjects(std::map<std::string, cGameObject*>* g_map_GameObjects)
 		jsonObject["textureRatio"][2] = index->second->textureRatio[2];
 		jsonObject["textureRatio"][3] = index->second->textureRatio[3];
 		jsonObject["isVisible"] = index->second->isVisible;
+		jsonObject["alphaTransparency"] = index->second->alphaTransparency;
 		jsonArray[x] = jsonObject;
 	}
 	//std::cout << jsonArray;

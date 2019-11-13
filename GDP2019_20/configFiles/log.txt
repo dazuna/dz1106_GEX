@@ -1,29 +1,7 @@
 friendlyName: bunnyModel
 meshName: bunnyMesh
 meshURL: assets/models/bunny_XYZ_n_UV.ply
-positionXYZ: vec3(1.000000, 1.000000, 1.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: teapot
-meshName: teapotMesh
-meshURL: assets/models/Utah_Teapot_xyz_n_uv.ply
-positionXYZ: vec3(5.000000, 1.000000, 1.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: cube
-meshName: cubeMesh
-meshURL: assets/models/cube1_xyx_n_uv.ply
-positionXYZ: vec3(5.000000, 1.000000, 1.000000)
+positionXYZ: vec3(-3.000000, 1.000000, 1.000000)
 rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
 objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
@@ -34,7 +12,7 @@ debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 friendlyName: cameraPosition0
 meshName: cubeMesh
 meshURL: assets/models/Cube_1_Unit_from_origin_XYZ_n.ply
-positionXYZ: vec3(21.594578, 22.674059, 38.715027)
+positionXYZ: vec3(0.000000, 8.000000, -38.000000)
 rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
@@ -56,9 +34,9 @@ debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 friendlyName: sphereModel
 meshName: sphereMesh
 meshURL: assets/models/Sphere_Radius_1_XYZ_n_uv.ply
-positionXYZ: vec3(15.000000, 15.000000, 15.000000)
+positionXYZ: vec3(-1.000000, 5.000000, -22.000000)
 rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 1.000000)
+objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 velocity: vec3(0.000000, 0.000000, 0.000000)

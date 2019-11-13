@@ -4,6 +4,7 @@
 #include "cLight.h"
 #include "cVAOManager.h"
 #include "globalStuff.h"
+#include "util/tools.h"
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
 #include <glm/gtx/string_cast.hpp>

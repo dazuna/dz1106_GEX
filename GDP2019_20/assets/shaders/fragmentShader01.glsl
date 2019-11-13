@@ -24,6 +24,9 @@ uniform sampler2D textSamp03;
 //uniform sampler2D textSamp06;
 //uniform sampler2D textSamp07;
 
+uniform samplerCube skyBox;
+uniform bool bIsSkyBox;
+
 uniform sampler2D textureWhatTheWhat;
 
 uniform vec4 tex_0_3_ratio;		// x = 0, y = 1, z = 2, w = 3
@@ -81,6 +84,21 @@ void main()
 		return;
 	}
 	
+
+	if ( bIsSkyBox )
+	{
+		// I sample the skybox using the normal from the surface
+		vec3 skyColour = texture( skyBox, fNormal.xyz ).rgb;
+		pixelColour.rgb = skyColour.rgb;
+		//pixelColour.r = 1.0f;
+		//pixelColour.rgb *= 0.01f;
+		//pixelColour.rgb = fNormal.xyz;
+		pixelColour.a = 1.0f;				// NOT transparent		
+		//pixelColour.rgb *= 1.5f;		// Make it a little brighter
+		return;
+	}
+	
+		
 	
 	// Shader Type #2
 	vec4 materialColour = diffuseColour;
@@ -91,7 +109,7 @@ void main()
 	vec3 tex1_RGB = texture( textSamp01, fUVx2.st ).rgb;
 	vec3 tex2_RGB = texture( textSamp02, fUVx2.st ).rgb;
 	vec3 tex3_RGB = texture( textSamp03, fUVx2.st ).rgb;
-		
+	
 	vec3 texRGB =   ( tex_0_3_ratio.x * tex0_RGB ) 
 				  + ( tex_0_3_ratio.y * tex1_RGB )
 				  + ( tex_0_3_ratio.z * tex2_RGB )
@@ -99,6 +117,9 @@ void main()
 				  
 				  	  
 				  
+//	vec3 ChromeColour = texture( skyBox, refract(fNormal.xyz ).rgb;
+//	texRGB.rgb *= 0.001f;
+//	texRGB.rgb = ChromeColour.rgb;
 	
 	
 	vec4 outColour = calcualteLightContrib( texRGB.rgb, fNormal.xyz, 
@@ -108,10 +129,10 @@ void main()
 	pixelColour = outColour;
 	
 	// Set the "a" of diffuse to set the transparency
-//	pixelColour.a = diffuseColour.a; 		// "a" for alpha, same as "w"
+	pixelColour.a = diffuseColour.a; 		// "a" for alpha, same as "w"
 	
 	// Control the alpha channel from the texture	  
-	pixelColour.a = 1.0f;
+	// pixelColour.a = 1.0f;
 //	if ( tex0_RGB.r <= 0.01f )		// Basically "black"
 //	{
 //		discard;
@@ -198,8 +219,8 @@ vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal,
 		// To simplify, we are NOT using the light specular value, just the object’s.
 		float objectSpecularPower = vertexSpecular.w; 
 		
-//		lightSpecularContrib = pow( max(0.0f, dot( eyeVector, reflectVector) ), objectSpecularPower )
-//			                   * vertexSpecular.rgb;	//* theLights[lightIndex].Specular.rgb
+	//		lightSpecularContrib = pow( max(0.0f, dot( eyeVector, reflectVector) ), objectSpecularPower )
+	//			                   * vertexSpecular.rgb;	//* theLights[lightIndex].Specular.rgb
 		lightSpecularContrib = pow( max(0.0f, dot( eyeVector, reflectVector) ), objectSpecularPower )
 			                   * theLights[index].specular.rgb;
 							   

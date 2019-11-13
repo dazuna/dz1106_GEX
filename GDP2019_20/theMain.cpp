@@ -1,6 +1,7 @@
 #include "GLCommon.h"
 
 #include "globalStuff.h"
+#include "util/tools.h"
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp> // glm::vec3
 #include <glm/vec4.hpp> // glm::vec4
@@ -16,7 +17,7 @@
 #include <float.h>
 #include <string>
 #include "cModelLoader.h"			
-#include "cVAOManager.h"		// NEW
+#include "cVAOManager.h"
 #include "cGameObject.h"
 #include "cShaderManager.h"
 #include "TextureManager/cBasicTextureManager.h"
@@ -30,37 +31,18 @@
 // Used to visualize the attenuation of the lights...
 #include "cLight.h"
 #include "LightManager/cLightHelper.h"
+#include "cFlyCamera/cFlyCamera.h"
+#include "skybox/skybox.h"
 // Keyboard, error, mouse, etc. are now here
 #include "GFLW_callbacks.h"
 
-void drawLightXYZ(cDebugRenderer* pDebugRenderer);
-void drawGameObjectXYZ(cDebugRenderer* pDebugRenderer);
-void setWindowTitle(std::stringstream* ssTitle);
-std::string GLMvec3toString(glm::vec3 theGLMvec3);
-glm::mat4 calculateWorldMatrix(cGameObject* pCurrentObject);
-void drawPyramidPlayer(cDebugRenderer* pDebugRenderer);
-void DrawObject(glm::mat4 m,
-	cGameObject* pCurrentObject,
-	GLint shaderProgID,
-	cVAOManager* pVAOManager);
-
-
-void makeSkullEyesFlicker();
-void makeCameraDroneAround(bool isDroneOn);
-
-template <class T>
-T randInRange(T min, T max)
-{
-	double value =
-		min + static_cast <double> (rand())
-		/ (static_cast <double> (RAND_MAX / (static_cast<double>(max - min))));
-	return static_cast<T>(value);
-};
-
+cFlyCamera* g_pFlyCamera = NULL;
+cGameObject* pSkyBox = new cGameObject();
 glm::vec3 cameraEye = glm::vec3(0.0f, 50.0f, 100.0f);
 glm::vec3 cameraTarget = glm::vec3(0.0f, 50.0f, 0.0f);
 glm::vec3 visionVector = glm::normalize(cameraTarget - cameraEye);
 glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
+// vec3(21.258450, 22.228125, 37.885464)
 
 // This is a "normalized" direction (i.e. the length is 1.0f)
 glm::vec3 sexyLightSpotDirection = glm::vec3(0.0f, -1.0f, 0.0f);
@@ -69,6 +51,9 @@ glm::vec3 sexyLightSpotDirection = glm::vec3(0.0f, -1.0f, 0.0f);
 bool bLightDebugSheresOn = true;
 bool everythingWireFrame = false;
 std::string console;
+GLuint shaderProgID;
+cVAOManager* pTheVAOManager = new cVAOManager();
+cModelLoader* pTheModelLoader = new cModelLoader();
 cDebugRenderer* pDebugRenderer = new cDebugRenderer();
 cPhysics* pPhysic = new cPhysics();
 cBasicTextureManager* pTextureManager = NULL;
@@ -80,25 +65,13 @@ bool isDroneOn = false;
 // Load up my "scene" objects (now global)
 std::map<std::string, cMesh*> g_map_Mesh;
 std::map<std::string, cGameObject*> g_map_GameObjects;
+std::map<float, cGameObject*> closestTransparentObjects;
 std::map<std::string, cGameObject*>::iterator selectedGameObject = g_map_GameObjects.begin();
 std::map<std::string, cLight> g_map_pLights;
 std::map<std::string, cLight>::iterator selectedLight = g_map_pLights.begin();
 //bool g_BallCollided = false;
 
 selectedType cursorType = selectedType::GAMEOBJECT;
-
-void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
-{
-	//// Move the sphere to where the camera is and shoot the ball from there...
-	//cGameObject* pTheBall = pFindObjectByFriendlyNameMap("sphere");
-	//// What's the velocity
-	//// Target - eye = direction
-	//glm::vec3 direction = glm::normalize(cameraTarget - cameraEye);
-	//float speed = 10.0f;
-	//pTheBall->velocity = direction * speed;
-	//pTheBall->positionXYZ = cameraEye;
-	return;
-}
 
 int main(void)
 {
@@ -120,18 +93,27 @@ int main(void)
 	}
 
 	glfwSetKeyCallback(window, key_callback);
-	glfwSetMouseButtonCallback(window, mouse_button_callback);
-
+	// glfwSetMouseButtonCallback(window, mouse_button_callback);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	glfwSwapInterval(1);
+
+	// Mouse callbacks
+	glfwSetCursorPosCallback(window, cursor_position_callback);
+	glfwSetMouseButtonCallback(window, mouse_button_callback);
+	glfwSetCursorEnterCallback(window, cursor_enter_callback);
+	glfwSetScrollCallback(window, scroll_callback);
+	glfwSetMouseButtonCallback(window, mouse_button_callback);
+
+	void ProcessAsyncMouse(GLFWwindow * window);
+	void ProcessAsyncKeys(GLFWwindow * window);
 
 	pDebugRenderer->initialize();
 	// ::pTextureManager = new cBasicTextureManager();
 	// ::pTextureManager->SetBasePath("assets/textures");
 
 	//	OpenGL and GLFW are good to go, so load the model
-	cModelLoader* pTheModelLoader = new cModelLoader();
+	// cModelLoader* pTheModelLoader = new cModelLoader();
 
 	cShaderManager* pTheShaderManager = new cShaderManager();
 	cShaderManager::cShader vertexShad;
@@ -144,12 +126,16 @@ int main(void)
 		std::cout << pTheShaderManager->getLastError();
 		return -1;
 	}
-	GLuint shaderProgID = pTheShaderManager->getIDFromFriendlyName("SimpleShader");
+	shaderProgID = pTheShaderManager->getIDFromFriendlyName("SimpleShader");
 
 	// Create a VAO Manager...
-	cVAOManager* pTheVAOManager = new cVAOManager();
+	// cVAOManager* pTheVAOManager = new cVAOManager();
 
-	::pTextureManager = new cBasicTextureManager();
+	::pTextureManager = new cBasicTextureManager();	
+
+	// SkyBoxTexture
+	setSkyBoxTexture();
+
 	::pTextureManager->SetBasePath("assets/textures");
 
 	//JSON Loader for objects
@@ -182,22 +168,15 @@ int main(void)
 		cameraTarget = cameraEye + visionVector;
 	}
 
+	::g_pFlyCamera = new cFlyCamera(visionVector);
+	//::g_pFlyCamera = new cFlyCamera();
+	::g_pFlyCamera->eye = cameraEye;
+
 	// Get the initial time
 	double lastTime = glfwGetTime();
 	std::cout << "start loop!" << std::endl;
 
-	//cGameObject* pLargeBunny = new cGameObject();			// HEAP
-	//pLargeBunny->meshName = "bunnyMesh";
-	//pLargeBunny->friendlyName = "largeBunny";
-	//pLargeBunny->positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	//pLargeBunny->rotationXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	//pLargeBunny->scale = 1.0f;	//***** SCALE = 1.0f *****/
-	//pLargeBunny->objectColourRGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	//pLargeBunny->physicsShapeType = MESH;
-	//pLargeBunny->inverseMass = 0.0f;	// Ignored during update
-	//pLargeBunny->textures[0] = "pebbles-beach-textures.bmp";
-	//pLargeBunny->textureRatio[0] = 1.0f;
-	//::g_map_GameObjects.insert({ "large_bunny", pLargeBunny });
+	createSkyBoxObject();
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -212,6 +191,9 @@ int main(void)
 		const double SOME_HUGE_TIME = 0.1;	// 100 ms;
 		if (deltaTime > SOME_HUGE_TIME) { deltaTime = SOME_HUGE_TIME; }
 		avgDeltaTimeThingy.addValue(deltaTime);
+
+		ProcessAsyncKeys(window);
+		ProcessAsyncMouse(window);
 
 		glUseProgram(shaderProgID);
 
@@ -231,9 +213,13 @@ int main(void)
 		// View matrix
 		v = glm::mat4(1.0f);
 
-		v = glm::lookAt(cameraEye,
-			cameraTarget,
-			upVector);
+		// v = glm::lookAt(cameraEye,
+		// 	cameraTarget,
+		// 	upVector);
+
+		v = glm::lookAt( ::g_pFlyCamera->eye, 
+						 ::g_pFlyCamera->getAtInWorldSpace(), 
+						 ::g_pFlyCamera->getUpVector() );
 
 		glViewport(0, 0, width, height);
 
@@ -241,8 +227,7 @@ int main(void)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		for (std::map<std::string, cLight>::iterator itLight = ::g_map_pLights.begin();
-													itLight != ::g_map_pLights.end();
-													itLight++)
+			itLight != ::g_map_pLights.end();itLight++)
 		{
 			itLight->second.setUniforms();
 		}
@@ -252,7 +237,9 @@ int main(void)
 		GLint eyeLocation_UL = glGetUniformLocation(shaderProgID, "eyeLocation");
 
 		glUniform4f(eyeLocation_UL,
-			cameraEye.x, cameraEye.y, cameraEye.z, 1.0f);
+			::g_pFlyCamera->eye.x,
+			::g_pFlyCamera->eye.y,
+			::g_pFlyCamera->eye.z, 1.0f);
 
 		std::stringstream ssTitle;
 		setWindowTitle(&ssTitle);
@@ -264,19 +251,21 @@ int main(void)
 		glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
 		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
 
-		// **************************************************
+		drawSkyBox();
+
+		// ************************** order transparent objects **************************
+		makeTransparentObjectsMap();
+		std::vector<cGameObject*> theWorldVector = getWorldMapAsVector();
+
 		// **************************************************
 		// Loop to draw everything in the scene
-		for (std::map<std::string, cGameObject*>::iterator itGO = g_map_GameObjects.begin();
-														itGO != ::g_map_GameObjects.end();
-														itGO++)
+		for (int index = 0; index < theWorldVector.size(); index++)
 		{
 			glm::mat4 matModel = glm::mat4(1.0f);
-			if (itGO->second->isVisible)
+			if (theWorldVector[index]->isVisible)
 			{
-				DrawObject(matModel, itGO->second, shaderProgID, pTheVAOManager);
+				DrawObject(matModel, theWorldVector[index], shaderProgID, pTheVAOManager);
 			}
-
 		}//for (int index...
 
 		switch (cursorType)
@@ -312,361 +301,3 @@ int main(void)
 
 	exit(EXIT_SUCCESS);
 }
-
-glm::mat4 calculateWorldMatrix(cGameObject* pCurrentObject)
-{
-	glm::mat4 matWorld = glm::mat4(1.0f);
-	// ******* TRANSLATION TRANSFORM *********
-	glm::mat4 matTrans
-		= glm::translate(glm::mat4(1.0f),
-			glm::vec3(pCurrentObject->positionXYZ.x,
-				pCurrentObject->positionXYZ.y,
-				pCurrentObject->positionXYZ.z));
-	matWorld = matWorld * matTrans;
-	// ******* TRANSLATION TRANSFORM *********
-
-	// ******* ROTATION TRANSFORM *********
-	// ROTATE Z
-	glm::mat4 rotateZ = glm::rotate(glm::mat4(1.0f),
-		pCurrentObject->rotationXYZ.z,
-		glm::vec3(0.0f, 0.0f, 1.0f));
-	matWorld = matWorld * rotateZ;
-	// ROTATE Y
-	glm::mat4 rotateY = glm::rotate(glm::mat4(1.0f),
-		pCurrentObject->rotationXYZ.y,
-		glm::vec3(0.0f, 1.0f, 0.0f));
-	matWorld = matWorld * rotateY;
-	// ROTATE X
-	glm::mat4 rotateX = glm::rotate(glm::mat4(1.0f),
-		pCurrentObject->rotationXYZ.x,
-		glm::vec3(1.0f, 0.0f, 0.0f));
-	matWorld = matWorld * rotateX;
-	// ******* ROTATION TRANSFORM *********
-
-	// ******* SCALE TRANSFORM *********
-	glm::mat4 scale = glm::scale(glm::mat4(1.0f),
-		glm::vec3(pCurrentObject->scale,
-			pCurrentObject->scale,
-			pCurrentObject->scale));
-	matWorld = matWorld * scale;
-	// ******* SCALE TRANSFORM *********
-	return matWorld;
-}
-
-void DrawObject(glm::mat4 m,
-	cGameObject* pCurrentObject,
-	GLint shaderProgID,
-	cVAOManager* pVAOManager)
-{
-	SetUpTextureBindingsForObject(pCurrentObject, shaderProgID);
-	m = calculateWorldMatrix(pCurrentObject);
-	GLint matModel_UL = glGetUniformLocation(shaderProgID, "matModel");
-
-	glUniformMatrix4fv(matModel_UL, 1, GL_FALSE, glm::value_ptr(m));
-	//	glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
-	//	glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
-
-	//	Calculate the inverse transpose of the model matrix and pass that...
-	//	Stripping away scaling and translation, leaving only rotation
-	//	Because the normal is only a direction, really
-	GLint matModelIT_UL = glGetUniformLocation(shaderProgID, "matModelInverseTranspose");
-	glm::mat4 matModelInverseTranspose = glm::inverse(glm::transpose(m));
-	glUniformMatrix4fv(matModelIT_UL, 1, GL_FALSE, glm::value_ptr(matModelInverseTranspose));
-
-	// Find the location of the uniform variable newColour
-	GLint newColour_location = glGetUniformLocation(shaderProgID, "newColour");
-
-	glUniform3f(newColour_location,
-		pCurrentObject->objectColourRGBA.r,
-		pCurrentObject->objectColourRGBA.g,
-		pCurrentObject->objectColourRGBA.b);
-
-	GLint diffuseColour_UL = glGetUniformLocation(shaderProgID, "diffuseColour");
-	glUniform4f(diffuseColour_UL,
-		pCurrentObject->objectColourRGBA.r,
-		pCurrentObject->objectColourRGBA.g,
-		pCurrentObject->objectColourRGBA.b,
-		pCurrentObject->objectColourRGBA.a);	// 
-
-	GLint specularColour_UL = glGetUniformLocation(shaderProgID, "specularColour");
-	glUniform4f(specularColour_UL,
-		1.0f,	// R
-		1.0f,	// G
-		1.0f,	// B
-		1000.0f);	// Specular "power" (how shinny the object is)
-					// 1.0 to really big (10000.0f)
-
-	//	uniform vec4 debugColour;
-	//	uniform bool bDoNotLight;
-	GLint debugColour_UL = glGetUniformLocation(shaderProgID, "debugColour");
-	GLint bDoNotLight_UL = glGetUniformLocation(shaderProgID, "bDoNotLight");
-
-	if (pCurrentObject->isWireframe)
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);		// LINES
-		glUniform4f(debugColour_UL,
-			pCurrentObject->objectColourRGBA.r,
-			pCurrentObject->objectColourRGBA.g,
-			pCurrentObject->objectColourRGBA.b,
-			pCurrentObject->objectColourRGBA.a);
-		glUniform1f(bDoNotLight_UL, (float)GL_TRUE);
-	}
-	else
-	{	// Regular object (lit and not wireframe)
-		glUniform1f(bDoNotLight_UL, (float)GL_FALSE);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		// SOLID
-	}
-	//glPointSize(15.0f);
-
-	if (pCurrentObject->disableDepthBufferTest)
-	{
-		glDisable(GL_DEPTH_TEST);					// DEPTH Test OFF
-	}
-	else
-	{
-		glEnable(GL_DEPTH_TEST);						// Turn ON depth test
-	}
-
-	if (pCurrentObject->disableDepthBufferWrite)
-	{
-		glDisable(GL_DEPTH);						// DON'T Write to depth buffer
-	}
-	else
-	{
-		glEnable(GL_DEPTH);								// Write to depth buffer
-	}
-
-	sModelDrawInfo drawInfo;
-	if (pVAOManager->FindDrawInfoByModelName(pCurrentObject->meshName, drawInfo))
-	{
-		glBindVertexArray(drawInfo.VAO_ID);
-		glDrawElements(GL_TRIANGLES,
-			drawInfo.numberOfIndices,
-			GL_UNSIGNED_INT,
-			0);
-		glBindVertexArray(0);
-	}
-
-	return;
-} // DrawObject;
-
-// returns NULL (0) if we didn't find it.
-bool pFindObjectByFriendlyNameMap(std::string name)
-{
-	//std::map<std::string, cGameObject*> g_map_GameObjectsByFriendlyName;
-	std::map<std::string, cGameObject*>::iterator itGO = ::g_map_GameObjects.find(name);
-	if (itGO != ::g_map_GameObjects.end())
-		return true;
-	else
-		return false;
-}
-
-void drawLightXYZ(cDebugRenderer* pDebugRenderer)
-{
-	pDebugRenderer->addLine(
-		selectedLight->second.positionXYZ,
-		(selectedLight->second.positionXYZ + glm::vec3(2.0f, 0.0f, 0.0f)),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	pDebugRenderer->addLine(
-		selectedLight->second.positionXYZ,
-		(selectedLight->second.positionXYZ + glm::vec3(0.0f, 2.0f, 0.0f)),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	pDebugRenderer->addLine(
-		selectedLight->second.positionXYZ,
-		(selectedLight->second.positionXYZ + glm::vec3(0.0f, 0.0f, 2.0f)),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	// draw pyramid on top of object
-	// x triangle
-	pDebugRenderer->addTriangle(
-		selectedLight->second.positionXYZ + glm::vec3(0.0f, 3.0f, 0.0f),
-		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
-		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	// z triangle
-	pDebugRenderer->addTriangle(
-		selectedLight->second.positionXYZ + glm::vec3(0.0f, 3.0f, 0.0f),
-		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
-		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	// square
-	pDebugRenderer->addLine(
-		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
-		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	pDebugRenderer->addLine(
-		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
-		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	pDebugRenderer->addLine(
-		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
-		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	pDebugRenderer->addLine(
-		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
-		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	if (selectedLight->second.type == 1.0f)
-	{
-		glm::vec3 spotNormal = selectedLight->second.direction;
-		spotNormal = glm::normalize(spotNormal);
-		pDebugRenderer->addLine(
-			selectedLight->second.positionXYZ,
-			selectedLight->second.positionXYZ + spotNormal,
-			glm::vec3(1.0f, 1.0f, 1.0f));
-	}
-}
-
-void drawGameObjectXYZ(cDebugRenderer* pDebugRenderer)
-{
-	pDebugRenderer->addLine(
-		selectedGameObject->second->positionXYZ,
-		(selectedGameObject->second->positionXYZ + glm::vec3(2.0f, 0.0f, 0.0f)),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	pDebugRenderer->addLine(
-		selectedGameObject->second->positionXYZ,
-		(selectedGameObject->second->positionXYZ + glm::vec3(0.0f, 2.0f, 0.0f)),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	pDebugRenderer->addLine(
-		selectedGameObject->second->positionXYZ,
-		(selectedGameObject->second->positionXYZ + glm::vec3(0.0f, 0.0f, 2.0f)),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	// draw pyramid on top of object
-	// x triangle
-	pDebugRenderer->addTriangle(
-		selectedGameObject->second->positionXYZ + glm::vec3(0.0f, 3.0f, 0.0f),
-		selectedGameObject->second->positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
-		selectedGameObject->second->positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	// z triangle
-	pDebugRenderer->addTriangle(
-		selectedGameObject->second->positionXYZ + glm::vec3(0.0f, 3.0f, 0.0f),
-		selectedGameObject->second->positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
-		selectedGameObject->second->positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	// square
-	pDebugRenderer->addLine(
-		selectedGameObject->second->positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
-		selectedGameObject->second->positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	pDebugRenderer->addLine(
-		selectedGameObject->second->positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
-		selectedGameObject->second->positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	pDebugRenderer->addLine(
-		selectedGameObject->second->positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
-		selectedGameObject->second->positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	pDebugRenderer->addLine(
-		selectedGameObject->second->positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
-		selectedGameObject->second->positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-}
-
-std::string GLMvec3toString(glm::vec3 theGLMvec3)
-{
-	std::stringstream out;
-	out << theGLMvec3.x << ", " << theGLMvec3.y << ", " << theGLMvec3.z;
-	return out.str();
-}
-
-void setWindowTitle(std::stringstream* ssTitle)
-{
-	switch (cursorType)
-	{
-	case selectedType::GAMEOBJECT:
-		*ssTitle << " object: " << selectedGameObject->first.c_str()
-			<< " posXYZ: " << GLMvec3toString(selectedGameObject->second->positionXYZ)
-			<< " colRGB: " << GLMvec3toString(selectedGameObject->second->objectColourRGBA);
-		break;
-	case selectedType::LIGHT:
-		*ssTitle << " light: " << selectedLight->first.c_str()
-			<< " posXYZ: " << GLMvec3toString(selectedLight->second.positionXYZ)
-			<< " linearA: " << selectedLight->second.LinearAtten
-			<< " quadA: " << selectedLight->second.QuadraticAtten
-			<< " inner: " << selectedLight->second.innerAngle
-			<< " outer: " << selectedLight->second.outerAngle;
-		break;
-	case selectedType::SOUND:break;
-	}
-	*ssTitle << " isDroneOn: " << isDroneOn;
-	//*ssTitle << "   Tgt: " << GLMvec3toString(cameraTarget);
-	//*ssTitle << "   Vis: " << GLMvec3toString(visionVector);
-	//*ssTitle << "   XYZ: " << GLMvec3toString(visionVector);
-}
-
-void drawPyramidPlayer(cDebugRenderer* pDebugRenderer)
-{
-	// draw pyramid on top of object
-	// x triangle
-	pDebugRenderer->addTriangle(
-		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(0.0f, 3.0f, 0.0f),
-		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
-		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	// z triangle
-	pDebugRenderer->addTriangle(
-		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(0.0f, 3.0f, 0.0f),
-		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
-		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	// square
-	pDebugRenderer->addLine(
-		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
-		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	pDebugRenderer->addLine(
-		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
-		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	pDebugRenderer->addLine(
-		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
-		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-	pDebugRenderer->addLine(
-		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
-		::g_map_GameObjects["spherePlayer"]->positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
-}
-
-void makeSkullEyesFlicker()
-{
-	//std::map<std::string, cLight> g_map_pLights;
-	std::map<std::string, cLight>::iterator itLite;
-
-	if (timer >= 0.1)
-	{
-		timer = 0.0;
-		itLite = ::g_map_pLights.find("eye1");
-		if (itLite != g_map_pLights.end())
-		{
-			itLite->second.QuadraticAtten = randInRange(0.03f, 0.6f);
-		}
-		itLite = ::g_map_pLights.find("eye2");
-		if (itLite != g_map_pLights.end())
-		{
-			itLite->second.QuadraticAtten = randInRange(0.03f, 0.6f);
-		}
-		makeCameraDroneAround(isDroneOn);
-	}	
-}
-
-void makeCameraDroneAround(bool isDroneOn)
-{
-	// printf("makeCameraDroneAround");
-	if (pFindObjectByFriendlyNameMap("cameraPosition0")  && isDroneOn)
-	{
-		glm::mat4 matRotY = glm::rotate(glm::mat4(1.0f), -glm::radians(0.099f), glm::vec3(0.0f, 1.0f, 0.0f));
-		glm::vec3 objectVector = ::g_map_GameObjects["cameraPosition0"]->positionXYZ - ::g_map_GameObjects["cameraTarget0"]->positionXYZ;
-		objectVector = glm::vec3(matRotY * glm::vec4(objectVector, 1.0));
-		::g_map_GameObjects["cameraPosition0"]->positionXYZ = ::g_map_GameObjects["cameraTarget0"]->positionXYZ + objectVector;
-
-		cameraEye = ::g_map_GameObjects["cameraPosition0"]->positionXYZ;
-		if (pFindObjectByFriendlyNameMap("cameraTarget0"))
-		{
-			cameraTarget = ::g_map_GameObjects["cameraTarget0"]->positionXYZ;
-			visionVector = glm::normalize(cameraTarget - cameraEye);
-		}
-		cameraTarget = cameraEye + visionVector;
-	}
-}
-

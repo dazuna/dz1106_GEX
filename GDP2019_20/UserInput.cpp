@@ -6,17 +6,48 @@
 #include "GFLW_callbacks.h"
 #include "globalStuff.h"			// for finding object
 #include "JSONLoader.h"
+#include "util/tools.h"
 
 #include "cLight.h"
 #include <iostream>
 #include <stdio.h>		// for fprintf()
 #include <string>
 #include <sstream>
+#include "cFlyCamera/cFlyCamera.h"
+
+bool isOnlyShiftKeyDown(int mods);
+bool isOnlyCtrlKeyDown(int mods);
+bool isOnlyAltKeyDown(int mods);
+bool isShiftDown(GLFWwindow* window);
+bool isCtrlDown(GLFWwindow* window);
+bool isAltDown(GLFWwindow* window);
+bool areAllModifiersUp(GLFWwindow* window);
+
+bool g_MouseIsInsideWindow = false;
+bool g_MouseLeftButtonIsDown = false;
+
+// Declared in theMain
+extern cFlyCamera* g_pFlyCamera;
 
 bool isShiftKeyDownByAlone(int mods);
 bool isCtrlKeyDownByAlone(int mods);
 void getStatus();
 void makeAllWireFrame(bool wireAll);
+
+void cursor_enter_callback(GLFWwindow* window, int entered)
+{
+	if (entered)
+	{
+		::g_MouseIsInsideWindow = true;
+		std::cout << "Mouse moved inside window" << std::endl;
+	}
+	else
+	{
+		::g_MouseIsInsideWindow = false;
+		std::cout << "Mouse moved outside window" << std::endl;
+	}
+	return;
+}
 
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -34,70 +65,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 	{
-		// <Camera Movement> ******************************************************
-		if (key == GLFW_KEY_A)
-		{
-			cameraEye.x -= CAMERASPEED*5.0f;
-			cameraTarget = cameraEye + visionVector;
-		}
-		if (key == GLFW_KEY_D)
-		{
-			cameraEye.x += CAMERASPEED* 5.0f;
-			cameraTarget = cameraEye + visionVector;
-		}
-
-		if (key == GLFW_KEY_Q)
-		{
-			cameraEye.y -= CAMERASPEED* 5.0f;
-			cameraTarget = cameraEye + visionVector;
-		}
-		if (key == GLFW_KEY_E)
-		{
-			cameraEye.y += CAMERASPEED* 5.0f;
-			cameraTarget = cameraEye + visionVector;
-		}
-
-		if (key == GLFW_KEY_W)
-		{
-			//cameraEye.z -= CAMERASPEED;
-			cameraEye = cameraEye + (glm::normalize(visionVector)* 5.0f);
-			cameraTarget = cameraEye + visionVector;
-		}
-		if (key == GLFW_KEY_S)
-		{
-			//cameraEye.z += CAMERASPEED;
-			cameraEye = cameraEye - (glm::normalize(visionVector)* 5.0f);
-			cameraTarget = cameraEye + visionVector;
-		}
-		// </Camera Movement> ******************************************************
-
-		// <Camera Rotattion> ******************************************************
-		if (key == GLFW_KEY_DOWN)
-		{
-			matRotX = glm::rotate(glm::mat4(1.0f), -glm::radians(3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			visionVector = glm::vec3(matRotX * glm::vec4(visionVector, 1.0));
-			cameraTarget = cameraEye + visionVector;
-		}
-		if (key == GLFW_KEY_UP)
-		{
-			matRotX = glm::rotate(glm::mat4(1.0f), glm::radians(3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			visionVector = glm::vec3(matRotX * glm::vec4(visionVector, 1.0));
-			cameraTarget = cameraEye + visionVector;
-		}
-		if (key == GLFW_KEY_LEFT)
-		{
-			matRotY = glm::rotate(glm::mat4(1.0f), glm::radians(3.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-			visionVector = glm::vec3(matRotY * glm::vec4(visionVector, 1.0));
-			cameraTarget = cameraEye + visionVector;
-		}
-		if (key == GLFW_KEY_RIGHT)
-		{
-			matRotY = glm::rotate(glm::mat4(1.0f), -glm::radians(3.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-			visionVector = glm::vec3(matRotY * glm::vec4(visionVector, 1.0));
-			cameraTarget = cameraEye + visionVector;
-		}
-		// </Camera Rotattion> ******************************************************
-
 		if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
 		{
 			switch (cursorType)
@@ -134,9 +101,15 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			isDroneOn = !isDroneOn;
 		}
+		if (key == GLFW_KEY_F3 && action == GLFW_PRESS)
+		{
+			bool tempBool;
+			tempBool = ::pSkyBox->isVisible;
+			tempBool = !tempBool;
+		}
 		if (key == GLFW_KEY_Z && action == GLFW_PRESS)
 		{
-			::g_map_GameObjects["cameraPosition0"]->positionXYZ = cameraEye;
+			::g_map_GameObjects["cameraPosition0"]->positionXYZ = ::g_pFlyCamera->eye;
 		}
 	}
 
@@ -147,8 +120,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			switch (cursorType)
 			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.x -= CAMERASPEED; break;
-			case selectedType::LIGHT:		theSelectedL->positionXYZ.x -= (CAMERASPEED*0.5f);	break;
+			case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.x += CAMERASPEED; break;
+			case selectedType::LIGHT:		theSelectedL->positionXYZ.x += (CAMERASPEED*0.5f);	break;
 			case selectedType::SOUND:		break;
 			}
 		}
@@ -156,8 +129,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			switch (cursorType)
 			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.x += CAMERASPEED; break;
-			case selectedType::LIGHT:		theSelectedL->positionXYZ.x += (CAMERASPEED*0.5f);	break;
+			case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.x -= CAMERASPEED; break;
+			case selectedType::LIGHT:		theSelectedL->positionXYZ.x -= (CAMERASPEED*0.5f);	break;
 			case selectedType::SOUND:		break;
 			}
 		}
@@ -187,8 +160,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			switch (cursorType)
 			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.z -= CAMERASPEED; break;
-			case selectedType::LIGHT:		theSelectedL->positionXYZ.z -= (CAMERASPEED*0.5f);	break;
+			case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.z += CAMERASPEED; break;
+			case selectedType::LIGHT:		theSelectedL->positionXYZ.z += (CAMERASPEED*0.5f);	break;
 			case selectedType::SOUND:		break;
 			}
 		}
@@ -196,8 +169,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			switch (cursorType)
 			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.z += CAMERASPEED; break;
-			case selectedType::LIGHT:		theSelectedL->positionXYZ.z += (CAMERASPEED*0.5f);	break;
+			case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.z -= CAMERASPEED; break;
+			case selectedType::LIGHT:		theSelectedL->positionXYZ.z -= (CAMERASPEED*0.5f);	break;
 			case selectedType::SOUND:		break;
 			}
 		}
@@ -407,31 +380,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			makeAllWireFrame(false);
 		}
-		// if (key == GLFW_KEY_P && action == GLFW_PRESS)
-		// {
-		// 	::g_map_pLights["light8"].lightSwitch = 1.0f;
-		// 	::g_map_pLights["light9"].lightSwitch = 1.0f;
-		// }
-		// if (key == GLFW_KEY_O && action == GLFW_PRESS)
-		// {
-		// 	::g_map_pLights["light8"].lightSwitch = 0.0f;
-		// 	::g_map_pLights["light9"].lightSwitch = 0.0f;
-		// }
-		//if (key == GLFW_KEY_D && action == GLFW_PRESS)
-		//{
-		//	cGameObject* tempGO = new cGameObject(selectedGameObject->second);
-		//	cLight* tempLight = new cLight(selectedLight->second);
-		//	switch (cursorType)
-		//	{
-		//	case selectedType::GAMEOBJECT:				
-		//		::g_map_GameObjects.insert({ tempGO->friendlyName.c_str(), tempGO });
-		//		break;
-		//	case selectedType::LIGHT:		
-		//		::g_map_pLights.insert({ tempLight->getName(),*tempLight });
-		//		break;
-		//	case selectedType::SOUND:		break;
-		//	}
-		//}
 		if (key == GLFW_KEY_1 && action == GLFW_PRESS)
 		{
 			if (pFindObjectByFriendlyNameMap("cameraPosition1"))
@@ -501,6 +449,7 @@ void getStatus()
 {
 	system("cls");
 	std::ostringstream tempSS;
+	std::map<float, cGameObject*>::iterator itGO2;
 	switch (cursorType)
 	{
 	case selectedType::GAMEOBJECT:
@@ -509,6 +458,11 @@ void getStatus()
 			<< " y: " << selectedGameObject->second->positionXYZ.y
 			<< " z: " << selectedGameObject->second->positionXYZ.z
 			<< "\n";
+		printGameObject(selectedGameObject->second);
+		for (itGO2 = ::closestTransparentObjects.begin(); itGO2 != ::closestTransparentObjects.end(); itGO2++)
+		{
+			printGameObject(itGO2->second);
+		}
 		break;
 	case selectedType::LIGHT:
 		tempSS << "cursor: " << selectedLight->second.getName()
@@ -520,6 +474,7 @@ void getStatus()
 		break;
 	case selectedType::SOUND:break;
 	}
+	console = "";
 	console += tempSS.str();
 }
 
@@ -545,31 +500,215 @@ void makeAllWireFrame(bool wireAll)
 	}
 }
 
-// <Sphere Movement> ******************************************************
-		//if (key == GLFW_KEY_J)
-		//{
-		//	playerSphere->velocity += glm::(vec3*0.1f)(1.0f, 0.0f, 0.0f);
-		//}
-		//if (key == GLFW_KEY_L)
-		//{
-		//	playerSphere->velocity += glm::vec3(-1.0f, 0.0f, 0.0f);
-		//}
+bool isOnlyShiftKeyDown(int mods)
+{
+	if (mods == GLFW_MOD_SHIFT)
+	{
+		// Shift key is down all by itself
+		return true;
+	}
+	//// Ignore other keys and see if the shift key is down
+	//if ((mods & GLFW_MOD_SHIFT) == GLFW_MOD_SHIFT)
+	//{
 
-		//if (key == GLFW_KEY_U)
-		//{
-		//	playerSphere->velocity += glm::vec3(0.0f, 1.0f, 0.0f);
-		//}
-		//if (key == GLFW_KEY_O)
-		//{
-		//	playerSphere->velocity += glm::vec3(0.0f, -1.0f, 0.0f);
-		//}
+	//}
+	return false;
+}
 
-		//if (key == GLFW_KEY_I)
-		//{
-		//	playerSphere->velocity += glm::vec3(0.0f, 0.0f, 1.0f);
-		//}
-		//if (key == GLFW_KEY_K)
-		//{
-		//	playerSphere->velocity += glm::vec3(0.0f, 0.0f, -1.0f);
-		//}
-		// </Sphere Movement> ******************************************************
+bool isOnlyCtrlKeyDown(int mods)
+{
+	if (mods == GLFW_MOD_CONTROL)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool isOnlyAltKeyDown(int mods)
+{
+	if (mods == GLFW_MOD_ALT)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool isShiftDown(GLFWwindow* window)
+{
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)) { return true; }
+	if (glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT)) { return true; }
+	// both are up
+	return false;
+}
+
+bool isCtrlDown(GLFWwindow* window)
+{
+	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL)) { return true; }
+	if (glfwGetKey(window, GLFW_KEY_RIGHT_CONTROL)) { return true; }
+	// both are up
+	return false;
+}
+
+bool isAltDown(GLFWwindow* window)
+{
+	if (glfwGetKey(window, GLFW_KEY_LEFT_ALT)) { return true; }
+	if (glfwGetKey(window, GLFW_KEY_RIGHT_ALT)) { return true; }
+	// both are up
+	return false;
+}
+
+bool areAllModifiersUp(GLFWwindow* window)
+{
+	if (isShiftDown(window)) { return false; }
+	if (isCtrlDown(window)) { return false; }
+	if (isAltDown(window)) { return false; }
+	// Yup, they are all UP
+	return true;
+}
+
+// Mouse (cursor) callback
+void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
+{return;}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	// A regular mouse wheel returns the y value
+	::g_pFlyCamera->setMouseWheelDelta(yoffset);
+	//	std::cout << "Mouse wheel: " << yoffset << std::endl;
+	return;
+}
+
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+	{
+		::g_MouseLeftButtonIsDown = true;
+	}
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+	{
+		::g_MouseLeftButtonIsDown = false;
+	}
+	return;
+}
+
+void ProcessAsyncMouse(GLFWwindow* window)
+{
+	double x, y;
+	glfwGetCursorPos(window, &x, &y);
+
+	::g_pFlyCamera->setMouseXY(x, y);
+
+	const float MOUSE_SENSITIVITY = 0.1f;
+
+	//	std::cout << ::g_pFlyCamera->getMouseX() << ", " << ::g_pFlyCamera->getMouseY() << std::endl;
+
+		// Mouse left (primary?) button pressed? 
+		// AND the mouse is inside the window...
+	if ((glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+		&& ::g_MouseIsInsideWindow)
+	{
+		// Mouse button is down so turn the camera
+		::g_pFlyCamera->Yaw_LeftRight(-::g_pFlyCamera->getDeltaMouseX() * MOUSE_SENSITIVITY);
+
+		::g_pFlyCamera->Pitch_UpDown(::g_pFlyCamera->getDeltaMouseY() * MOUSE_SENSITIVITY);
+
+	}
+
+	// Adjust the mouse speed
+	if (::g_MouseIsInsideWindow)
+	{
+		const float MOUSE_WHEEL_SENSITIVITY = 0.1f;
+
+		// Adjust the movement speed based on the wheel position
+		::g_pFlyCamera->movementSpeed += (::g_pFlyCamera->getMouseWheel() * MOUSE_WHEEL_SENSITIVITY);
+		if (::g_pFlyCamera->movementSpeed <= 0.0f)
+		{
+			::g_pFlyCamera->movementSpeed = 0.0f;
+		}
+	}
+
+
+	// HACK 
+	::g_pFlyCamera->movementSpeed = 2.0f;
+
+	return;
+}//ProcessAsyncMouse(...
+
+
+void ProcessAsyncKeys(GLFWwindow* window)
+{
+	const float CAMERA_MOVE_SPEED_SLOW = 0.1f;
+	const float CAMERA_MOVE_SPEED_FAST = 1.0f;
+
+	const float CAMERA_TURN_SPEED = 0.1f;
+
+	// WASD + q = "up", e = down		y axis = up and down
+	//									x axis = left and right
+	//									z axis = forward and backward
+
+	//float cameraSpeed = CAMERA_MOVE_SPEED_SLOW;
+	//if ( glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS  )
+	//{
+	//	cameraSpeed = CAMERA_MOVE_SPEED_FAST;
+	//}
+	float cameraMoveSpeed = ::g_pFlyCamera->movementSpeed;
+
+	// If no keys are down, move the camera
+	if (areAllModifiersUp(window))
+	{
+		// Note: The "== GLFW_PRESS" isn't really needed as it's actually "1" 
+		// (so the if() treats the "1" as true...)
+
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		{
+			//			g_CameraEye.z += cameraSpeed;
+			::g_pFlyCamera->MoveForward_Z(+cameraMoveSpeed);
+		}
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)	// "backwards"
+		{
+			//			g_CameraEye.z -= cameraSpeed;
+			::g_pFlyCamera->MoveForward_Z(-cameraMoveSpeed);
+		}
+		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)	// "left"
+		{
+			//			g_CameraEye.x -= cameraSpeed;
+			::g_pFlyCamera->MoveLeftRight_X(-cameraMoveSpeed);
+		}
+		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)	// "right"
+		{
+			//			g_CameraEye.x += cameraSpeed;
+			::g_pFlyCamera->MoveLeftRight_X(+cameraMoveSpeed);
+		}
+		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)	// "up"
+		{
+			::g_pFlyCamera->MoveUpDown_Y(-cameraMoveSpeed);
+			//			::g_pFlyCamera->Roll_CW_CCW( +cameraSpeed );
+		}
+		if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)	// "down"
+		{
+			//			g_CameraEye.y -= cameraSpeed;
+			::g_pFlyCamera->MoveUpDown_Y(+cameraMoveSpeed);
+			//			::g_pFlyCamera->Roll_CW_CCW( -cameraSpeed );
+		}
+	}//if(AreAllModifiersUp(window)
+
+	// If shift is down, do the rotation camera stuff...
+	// If no keys are down, move the camera
+	if (isShiftDown(window))
+	{
+		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)	// "up"
+		{
+			::g_pFlyCamera->Roll_CW_CCW(-CAMERA_TURN_SPEED);
+			//			::g_pFlyCamera->MoveUpDown_Y( +cameraSpeed );
+		}
+		if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)	// "down"
+		{
+			::g_pFlyCamera->Roll_CW_CCW(+CAMERA_TURN_SPEED);
+			//			::g_pFlyCamera->MoveUpDown_Y( -cameraSpeed );
+		}
+	}//IsShiftDown(window)
+
+
+	return;
+}// ProcessAsyncKeys(..

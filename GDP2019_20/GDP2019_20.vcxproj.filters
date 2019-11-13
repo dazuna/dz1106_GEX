@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{60f6bac0-ac95-4493-9e15-40457db95f09}</UniqueIdentifier>
     </Filter>
@@ -42,6 +38,15 @@
     </Filter>
     <Filter Include="TextureManager">
       <UniqueIdentifier>{54217f7b-d8e3-444d-99b0-8a4ad1f2fe50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util">
+      <UniqueIdentifier>{fc38cbc6-e309-47e3-8bfd-610f89a2cd62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cFlyCamera">
+      <UniqueIdentifier>{051328e9-841f-49b8-9b32-723fa307b558}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="skybox">
+      <UniqueIdentifier>{116996f1-557b-426d-aa8c-e94571db01fe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +128,15 @@
     <ClCompile Include="TextureManager\CTextureFromBMP.cpp">
       <Filter>TextureManager</Filter>
     </ClCompile>
+    <ClCompile Include="util\tools.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="cFlyCamera\cFlyCamera.cpp">
+      <Filter>cFlyCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="skybox\skybox.cpp">
+      <Filter>skybox</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -196,6 +210,15 @@
     </ClInclude>
     <ClInclude Include="TextureManager\CTextureFromBMP.h">
       <Filter>TextureManager</Filter>
+    </ClInclude>
+    <ClInclude Include="util\tools.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="cFlyCamera\cFlyCamera.h">
+      <Filter>cFlyCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="skybox\skybox.h">
+      <Filter>skybox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

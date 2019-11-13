@@ -103,8 +103,10 @@ bool cVAOManager::LoadModelIntoVAO(
 		drawInfo.pVertices[index].nw = 1.0f;		// if unsure, set to 1.0f
 
 		// These are the "texture coordinates", and we aren't loading them, yet
-		drawInfo.pVertices[index].u0 = 1.0f;
-		drawInfo.pVertices[index].v0 = 1.0f;
+		//drawInfo.pVertices[index].u0 = 1.0f;
+		//drawInfo.pVertices[index].v0 = 1.0f;
+		drawInfo.pVertices[index].u0 = theMesh.vecVertices[index].u;
+		drawInfo.pVertices[index].v0 = theMesh.vecVertices[index].v;
 		drawInfo.pVertices[index].u1 = 1.0f;
 		drawInfo.pVertices[index].v1 = 1.0f;	
 
