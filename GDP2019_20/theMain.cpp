@@ -50,6 +50,7 @@ glm::vec3 sexyLightSpotDirection = glm::vec3(0.0f, -1.0f, 0.0f);
 //bool bLightDebugSheresOn = false;
 bool bLightDebugSheresOn = true;
 bool everythingWireFrame = false;
+bool debugger = false;
 std::string console;
 GLuint shaderProgID;
 cVAOManager* pTheVAOManager = new cVAOManager();
@@ -276,7 +277,7 @@ int main(void)
 		}
 		//drawPyramidPlayer(pDebugRenderer);
 
-		//makeSkullEyesFlicker();
+		makeSkullEyesFlicker();
 		//makeCameraDroneAround(isDroneOn);
 
 		//	Update the objects through physics

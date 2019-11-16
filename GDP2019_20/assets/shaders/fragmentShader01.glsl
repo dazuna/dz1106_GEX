@@ -10,7 +10,9 @@ uniform vec4 specularColour;
 
 // Used to draw debug (or unlit) objects
 uniform vec4 debugColour;			
-uniform bool bDoNotLight;		
+uniform bool bDoNotLight;
+uniform bool makeHoles;
+uniform bool debugger;
 
 uniform vec4 eyeLocation;
 
@@ -59,7 +61,7 @@ const int SPOT_LIGHT_TYPE = 1;
 const int DIRECTIONAL_LIGHT_TYPE = 2;
 
 //const int NUMBEROFLIGHTS = 10;
-const int NUMBEROFLIGHTS = 1;
+const int NUMBEROFLIGHTS = 100;
 uniform sLight theLights[NUMBEROFLIGHTS];  	// 80 uniforms
 
 // Really appears as:
@@ -83,23 +85,15 @@ void main()
 		pixelColour.a = 1.0f;				// NOT transparent
 		return;
 	}
-	
 
 	if ( bIsSkyBox )
 	{
-		// I sample the skybox using the normal from the surface
 		vec3 skyColour = texture( skyBox, fNormal.xyz ).rgb;
 		pixelColour.rgb = skyColour.rgb;
-		//pixelColour.r = 1.0f;
-		//pixelColour.rgb *= 0.01f;
-		//pixelColour.rgb = fNormal.xyz;
-		pixelColour.a = 1.0f;				// NOT transparent		
-		//pixelColour.rgb *= 1.5f;		// Make it a little brighter
+		pixelColour.a = 1.0f;
 		return;
 	}
-	
-		
-	
+
 	// Shader Type #2
 	vec4 materialColour = diffuseColour;
 //	vec4 materialColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -115,31 +109,28 @@ void main()
 				  + ( tex_0_3_ratio.z * tex2_RGB )
 				  + ( tex_0_3_ratio.w * tex3_RGB );
 				  
-				  	  
-				  
 //	vec3 ChromeColour = texture( skyBox, refract(fNormal.xyz ).rgb;
 //	texRGB.rgb *= 0.001f;
 //	texRGB.rgb = ChromeColour.rgb;
-	
-	
 	vec4 outColour = calcualteLightContrib( texRGB.rgb, fNormal.xyz, 
 	                                        fVertWorldLocation.xyz, specularColour );
+	if( debugger )
+	{
+		pixelColour = outColour;
+		pixelColour.a = 1.0f;				// NOT transparent
+		return;
+	}
 
-											
 	pixelColour = outColour;
-	
-	// Set the "a" of diffuse to set the transparency
 	pixelColour.a = diffuseColour.a; 		// "a" for alpha, same as "w"
 	
-	// Control the alpha channel from the texture	  
-	// pixelColour.a = 1.0f;
-//	if ( tex0_RGB.r <= 0.01f )		// Basically "black"
-//	{
-//		discard;
-//		//pixelColour.a = 0.0f;
-//	}
-	
-
+	if( makeHoles )
+	{
+		if ( tex3_RGB.r <= 0.01f )		// Basically "black"
+		{
+			discard;
+		}
+	}
 }	
 
 

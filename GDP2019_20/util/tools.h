@@ -50,6 +50,7 @@ void DrawObject(glm::mat4 m,cGameObject* pCurrentObject,GLint shaderProgID,cVAOM
 bool pFindObjectByFriendlyNameMap(std::string name);
 void drawLightXYZ(cDebugRenderer* pDebugRenderer);
 void drawGameObjectXYZ(cDebugRenderer* pDebugRenderer);
+void drawNormalsXYZ(cDebugRenderer* pDebugRenderer);
 std::string GLMvec3toString(glm::vec3 theGLMvec3);
 void setWindowTitle(std::stringstream* ssTitle);
 void drawPyramidPlayer(cDebugRenderer* pDebugRenderer);
@@ -59,3 +60,4 @@ std::vector<cGameObject*> getWorldMapAsVector();
 std::vector<cGameObject*> getClosestTransparentObjectsAsVector();
 void printGameObject(cGameObject* theGO);
 void makeTransparentObjectsMap();
+void CalculateTransformedMesh(cMesh& originalMesh, glm::mat4 matWorld, cMesh& mesh_transformedInWorld);

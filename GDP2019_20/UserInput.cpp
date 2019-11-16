@@ -380,6 +380,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			makeAllWireFrame(false);
 		}
+		if (key == GLFW_KEY_E && action == GLFW_PRESS)
+		{
+			::debugger = !::debugger;
+		}
 		if (key == GLFW_KEY_1 && action == GLFW_PRESS)
 		{
 			if (pFindObjectByFriendlyNameMap("cameraPosition1"))

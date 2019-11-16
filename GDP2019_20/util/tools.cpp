@@ -135,6 +135,22 @@ void DrawObject(glm::mat4 m,
 		glEnable(GL_DEPTH);								// Write to depth buffer
 	}
 
+	if (pCurrentObject->friendlyName == "wallBack")
+	{
+		GLint bMakeHoles_UL = glGetUniformLocation(shaderProgID, "makeHoles");
+		glUniform1f(bMakeHoles_UL, (float)GL_TRUE);
+	}
+	else
+	{
+		GLint bMakeHoles_UL = glGetUniformLocation(shaderProgID, "makeHoles");
+		glUniform1f(bMakeHoles_UL, (float)GL_FALSE);
+	}
+
+	if (debugger)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+
 	// ************************** SKYBOX **************************
 	// glCullFace(GL_BACK) only front facing tris are drawn. --> EVERYTHING ELSE IS DISABLED
 	// make a draw skybox subfunction... :D
@@ -266,6 +282,23 @@ void drawGameObjectXYZ(cDebugRenderer* pDebugRenderer)
 		glm::vec3(1.0f, 1.0f, 1.0f));
 }
 
+void drawNormalsXYZ(cDebugRenderer* pDebugRenderer)
+{
+	//selectedGameObject->second;
+	cMesh transMesh;
+	glm::mat4 matWorld = glm::mat4(1.0f);
+	CalculateTransformedMesh(*::g_map_Mesh[selectedGameObject->second->meshName.c_str()], matWorld, transMesh);
+	//std::vector<sPlyVertexXYZ_N_UV> vecVertices;
+	std::vector<sPlyVertexXYZ_N_UV>::iterator itVerts;
+	for (itVerts = transMesh.vecVertices.begin(); itVerts != transMesh.vecVertices.end(); itVerts++)
+	{
+		pDebugRenderer->addLine(
+			glm::vec3(itVerts->x, itVerts->y, itVerts->z),
+			glm::vec3(itVerts->nx, itVerts->ny, itVerts->nz),
+			glm::vec3(1.0f, 1.0f, 1.0f));
+	}
+}
+
 std::string GLMvec3toString(glm::vec3 theGLMvec3)
 {
 	std::stringstream out;
@@ -340,15 +373,20 @@ void makeSkullEyesFlicker()
 	if (timer >= 0.1)
 	{
 		timer = 0.0;
-		itLite = ::g_map_pLights.find("eye1");
+		itLite = ::g_map_pLights.find("candleLight1");
 		if (itLite != g_map_pLights.end())
 		{
-			itLite->second.QuadraticAtten = randInRange(0.03f, 0.6f);
+			itLite->second.QuadraticAtten = randInRange(0.0001f, 0.001f);
 		}
-		itLite = ::g_map_pLights.find("eye2");
+		itLite = ::g_map_pLights.find("candleLight2");
 		if (itLite != g_map_pLights.end())
 		{
-			itLite->second.QuadraticAtten = randInRange(0.03f, 0.6f);
+			itLite->second.QuadraticAtten = randInRange(0.0001f, 0.001f);
+		}
+		itLite = ::g_map_pLights.find("candleLight3");
+		if (itLite != g_map_pLights.end())
+		{
+			itLite->second.QuadraticAtten = randInRange(0.0001f, 0.001f);
 		}
 		makeCameraDroneAround(isDroneOn);
 	}
@@ -474,4 +512,31 @@ void makeTransparentObjectsMap()
 			closestTransparentObjects.insert({ distance,itGO->second });
 		}
 	}
+}
+
+// Takes a mesh in "model space" and converts it into "world space"
+void CalculateTransformedMesh(cMesh& originalMesh, glm::mat4 matWorld,cMesh& mesh_transformedInWorld)
+{
+	mesh_transformedInWorld = originalMesh;
+	for (std::vector<sPlyVertexXYZ_N_UV>::iterator itVert = mesh_transformedInWorld.vecVertices.begin();
+		itVert != mesh_transformedInWorld.vecVertices.end(); itVert++)
+	{
+		glm::vec4 vertex = glm::vec4(itVert->x, itVert->y, itVert->z, 1.0f);
+		glm::vec4 vertexWorldTransformed = matWorld * vertex;
+		// Update 
+		itVert->x = vertexWorldTransformed.x;
+		itVert->y = vertexWorldTransformed.y;
+		itVert->z = vertexWorldTransformed.z;
+		// CALCAULTE THE NORMALS for the this mesh, too (for the response)
+		// for the normal, do the inverse transpose of the world matrix
+		glm::mat4 matWorld_Inv_Transp = glm::inverse(glm::transpose(matWorld));
+		glm::vec4 normal = glm::vec4(itVert->nx, itVert->ny, itVert->nz, 1.0f);
+		glm::vec4 normalWorldTransformed = matWorld_Inv_Transp * normal;
+		// Update 
+		itVert->nx = normalWorldTransformed.x;
+		itVert->ny = normalWorldTransformed.y;
+		itVert->nz = normalWorldTransformed.z;
+	}
+
+	return;
 }

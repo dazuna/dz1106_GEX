@@ -27,6 +27,7 @@ extern glm::vec3 upVector;
 
 extern glm::vec3 sexyLightSpotDirection;
 extern bool bLightDebugSheresOn;
+extern bool debugger;
 extern std::string console;
 
 // Load up my "scene" objects (now global)
