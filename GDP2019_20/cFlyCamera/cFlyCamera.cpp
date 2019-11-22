@@ -17,7 +17,7 @@ cFlyCamera::cFlyCamera()
 	this->m_upIsYVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
 
-	this->movementSpeed = 0.1f;
+	this->movementSpeed = 4.0f;
 
 
 	// Set initial orientation (all zero on Euler axes)
@@ -46,21 +46,15 @@ cFlyCamera::cFlyCamera(glm::vec3 visionVec3)
 
 	// This will be constant
 	this->m_frontOfCamera = glm::vec3(0.0f, 0.0f, 1.0f);
-
 	this->m_upIsYVector = glm::vec3(0.0f, 1.0f, 0.0f);
-
-
-	this->movementSpeed = 0.1f;
-
+	this->movementSpeed = 4.0f;
 
 	// Set initial orientation (all zero on Euler axes)
-	//this->qOrientation = glm::quat(glm::vec3(0.0f, 0.0f, 0.0f));
-	this->qOrientation = glm::quat(visionVec3);
+	this->qOrientation = glm::quat(glm::vec3(0.0f, 0.0f, 0.0f));
+	//this->qOrientation = glm::quat(visionVec3);
 
 	this->m_UpdateAtFromOrientation();
 	this->m_UpdateUpFromOrientation();
-
-	//this->m_at = visionVec3;
 
 	//// Initial "at" is 1 unit in front of the camera, along z
 	//this->at = this->m_frontOfCamera;
@@ -217,6 +211,28 @@ void cFlyCamera::adjMeshOrientationEulerAngles(float x, float y, float z, bool b
 void cFlyCamera::adjMeshOrientationQ(glm::quat adjOrientQ)
 {
 	this->qOrientation *= adjOrientQ;
+	return;
+}
+
+void cFlyCamera::followPlayer(playerController* cPlayer, bool isFollowON)
+{
+	if (!isFollowON) { return; } // Do not follow player
+
+	glm::vec3 origin = cPlayer->pPlayer->positionXYZ;
+	glm::vec3 newAt = glm::vec3(0, 0, -1);
+	newAt *= 100.0f;
+	this->eye = newAt + origin;
+
+	return;
+}
+
+void cFlyCamera::watchPlayer(playerController* cPlayer)
+{
+	glm::quat orientation = glm::conjugate(glm::toQuat(glm::lookAt(cPlayer->pPlayer->positionXYZ, this->eye, this->getUpVector())));
+	this->qOrientation = orientation;
+	this->m_UpdateAtFromOrientation();
+	this->m_UpdateUpFromOrientation();
+
 	return;
 }
 

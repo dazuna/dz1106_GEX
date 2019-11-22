@@ -5,6 +5,10 @@
 #include <glm/glm.hpp>
 #define GLM_ENABLE_EXPERIMENTAL		// To get glm quaternion stuff to compile
 #include <glm/gtx/quaternion.hpp>	// Note strange folder
+#include "../DebugRenderer/cDebugRenderer.h"	
+#include "../playerController/playerController.h"
+
+extern cDebugRenderer* pDebugRenderer;
 
 class cFlyCamera
 {
@@ -73,13 +77,15 @@ public:
 	void adjMeshOrientationEulerAngles(glm::vec3 adjAngleEuler, bool bIsDegrees = false);
 	void adjMeshOrientationEulerAngles(float x, float y, float z, bool bIsDegrees = false);
 	void adjMeshOrientationQ(glm::quat adjOrientQ);
+
+	void followPlayer(playerController* cPlayer, bool isFollowON);
+	void watchPlayer(playerController* cPlayer);
 private:
 	// This will lead to direction, etc.
 	glm::quat qOrientation;
 
 	void m_UpdateAtFromOrientation(void);
 	void m_UpdateUpFromOrientation(void);
-
 
 };
 

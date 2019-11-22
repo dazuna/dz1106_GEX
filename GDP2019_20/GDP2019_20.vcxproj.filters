@@ -48,6 +48,12 @@
     <Filter Include="skybox">
       <UniqueIdentifier>{116996f1-557b-426d-aa8c-e94571db01fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cAABB">
+      <UniqueIdentifier>{b6dc76ca-4208-423c-8290-c92f4a4326ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="playerController">
+      <UniqueIdentifier>{508ef16c-3212-496e-8596-e5d16befb8ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -137,6 +143,12 @@
     <ClCompile Include="skybox\skybox.cpp">
       <Filter>skybox</Filter>
     </ClCompile>
+    <ClCompile Include="cAABB\PhysicsAABBStuff.cpp">
+      <Filter>cAABB</Filter>
+    </ClCompile>
+    <ClCompile Include="playerController\playerController.cpp">
+      <Filter>playerController</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -219,6 +231,15 @@
     </ClInclude>
     <ClInclude Include="skybox\skybox.h">
       <Filter>skybox</Filter>
+    </ClInclude>
+    <ClInclude Include="cAABB\cAABB.h">
+      <Filter>cAABB</Filter>
+    </ClInclude>
+    <ClInclude Include="cAABB\PhysicsAABBStuff.h">
+      <Filter>cAABB</Filter>
+    </ClInclude>
+    <ClInclude Include="playerController\playerController.h">
+      <Filter>playerController</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

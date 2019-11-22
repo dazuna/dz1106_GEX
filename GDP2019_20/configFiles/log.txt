@@ -1,96 +1,8 @@
-friendlyName: beer1
-meshName: beerMesh
-meshURL: assets/models/beerCrown.ply
-positionXYZ: vec3(-29.000000, 16.000000, -10.000000)
-rotationXYZ: vec3(0.000000, -3.099999, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: cApple1
-meshName: appleMesh
-meshURL: assets/models/tApple.ply
-positionXYZ: vec3(-3.000000, 10.000000, -12.000000)
-rotationXYZ: vec3(0.000000, -3.099999, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: cBanana1
-meshName: bananaMesh
-meshURL: assets/models/tBanana.ply
-positionXYZ: vec3(1.000000, 10.000000, -16.000000)
-rotationXYZ: vec3(0.000000, -4.899998, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: cCorn1
-meshName: cornMesh
-meshURL: assets/models/tCorn.ply
-positionXYZ: vec3(-2.000000, 12.000000, -6.000000)
-rotationXYZ: vec3(0.700000, -3.199999, 1.500000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: cOrange1
-meshName: orangeMesh
-meshURL: assets/models/tOrange.ply
-positionXYZ: vec3(-5.000000, 10.000000, -20.000000)
-rotationXYZ: vec3(0.000000, -3.099999, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: cOrange2
-meshName: orangeMesh
-meshURL: assets/models/tOrange.ply
-positionXYZ: vec3(3.000000, 10.000000, -10.000000)
-rotationXYZ: vec3(0.000000, -3.099999, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: cPepper1
-meshName: pepperMesh
-meshURL: assets/models/tPepper.ply
-positionXYZ: vec3(-9.000000, 10.000000, -16.000000)
-rotationXYZ: vec3(0.000000, -3.599999, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: cTable
-meshName: cTableMesh
-meshURL: assets/models/simpleTable.ply
-positionXYZ: vec3(-3.000000, 0.000000, -22.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 friendlyName: cameraPosition0
 meshName: cubeMesh
-meshURL: assets/models/Cube_1_Unit_from_origin_XYZ_n.ply
-positionXYZ: vec3(10.000000, 22.000000, -125.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+meshURL: assets/models/cube1_xyx_n_uv.ply
+positionXYZ: vec3(-386.661011, -30.976843, -817.965088)
+rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
@@ -99,251 +11,31 @@ accel: vec3(0.000000, 0.000000, 0.000000)
 debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 friendlyName: cameraTarget0
 meshName: cubeMesh
-meshURL: assets/models/Cube_1_Unit_from_origin_XYZ_n.ply
-positionXYZ: vec3(0.000000, 0.000000, 0.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+meshURL: assets/models/cube1_xyx_n_uv.ply
+positionXYZ: vec3(0.000000, 30.000000, 0.000000)
+rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 velocity: vec3(0.000000, 0.000000, 0.000000)
 accel: vec3(0.000000, 0.000000, 0.000000)
 debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: chair
-meshName: chairMesh
-meshURL: assets/models/designChair.ply
-positionXYZ: vec3(62.000000, 0.000000, 135.000000)
-rotationXYZ: vec3(0.000000, -2.000000, 0.000000)
+friendlyName: tieInterceptor
+meshName: tieInterceptorMesh
+meshURL: assets/models/TieInterceptorUV.ply
+positionXYZ: vec3(-373.000000, -38.000000, -728.000000)
+rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
 objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 velocity: vec3(0.000000, 0.000000, 0.000000)
 accel: vec3(0.000000, 0.000000, 0.000000)
 debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: chair1
-meshName: chair2Mesh
-meshURL: assets/models/simpleChair.ply
-positionXYZ: vec3(25.000000, 0.000000, -22.000000)
-rotationXYZ: vec3(0.000000, -1.600000, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: chair2
-meshName: chair2Mesh
-meshURL: assets/models/simpleChair.ply
-positionXYZ: vec3(-31.000000, 0.000000, -22.000000)
-rotationXYZ: vec3(0.000000, -4.599998, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: chair3
-meshName: chair2Mesh
-meshURL: assets/models/simpleChair.ply
-positionXYZ: vec3(10.000000, 0.000000, -4.000000)
-rotationXYZ: vec3(0.000000, -3.099999, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: chair4
-meshName: chair2Mesh
-meshURL: assets/models/simpleChair.ply
-positionXYZ: vec3(-14.000000, 0.000000, -4.000000)
-rotationXYZ: vec3(0.000000, -3.099999, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: sLamp1
-meshName: lampMesh
-meshURL: assets/models/sLamp.ply
-positionXYZ: vec3(115.000000, 28.000000, 145.000000)
-rotationXYZ: vec3(0.000000, -3.599999, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: sSofa1
-meshName: sofaMesh
-meshURL: assets/models/sSofa.ply
-positionXYZ: vec3(-36.000000, -6.000000, 135.000000)
-rotationXYZ: vec3(0.000000, -1.500000, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: spherLamp1
-meshName: sphereMesh
-meshURL: assets/models/Sphere_Radius_1_XYZ_n_uv.ply
-positionXYZ: vec3(6.000000, 67.000000, 143.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: spherLamp2
-meshName: sphereMesh
-meshURL: assets/models/Sphere_Radius_1_XYZ_n_uv.ply
-positionXYZ: vec3(-27.000000, 67.000000, 143.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: spherLamp3
-meshName: sphereMesh
-meshURL: assets/models/Sphere_Radius_1_XYZ_n_uv.ply
-positionXYZ: vec3(-66.000000, 67.000000, 143.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: tCandelabrum1
-meshName: candelabrumMesh
-meshURL: assets/models/tCandelabrum.ply
-positionXYZ: vec3(19.000000, 10.000000, -12.000000)
-rotationXYZ: vec3(0.000000, -2.700000, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: wallBack
-meshName: wallvMesh
-meshURL: assets/models/wall_vertical_XYZ_n_uv.ply
-positionXYZ: vec3(11.000000, 29.000000, 163.000000)
-rotationXYZ: vec3(0.000000, -1.600000, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: wallCeil
-meshName: wallhMesh
-meshURL: assets/models/wall_horiz_XYZ_n_uv.ply
-positionXYZ: vec3(-6.000000, 76.000000, -10.000000)
-rotationXYZ: vec3(0.000000, -3.099999, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: wallFloor
-meshName: wallhMesh
-meshURL: assets/models/wall_horiz_XYZ_n_uv.ply
-positionXYZ: vec3(-6.000000, -15.000000, -10.000000)
-rotationXYZ: vec3(0.000000, -3.099999, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: wallLeft1
-meshName: wallvMesh
-meshURL: assets/models/wall_vertical_XYZ_n_uv.ply
-positionXYZ: vec3(108.000000, 28.000000, 68.000000)
-rotationXYZ: vec3(0.000000, -3.099999, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: wallLeft2
-meshName: wallvMesh
-meshURL: assets/models/wall_vertical_XYZ_n_uv.ply
-positionXYZ: vec3(100.000000, 28.000000, -124.000000)
-rotationXYZ: vec3(0.000000, -3.099999, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: wallRight
-meshName: wallvMesh
-meshURL: assets/models/wall_vertical_XYZ_n_uv.ply
-positionXYZ: vec3(-93.000000, 27.000000, 63.000000)
-rotationXYZ: vec3(0.000000, -3.099999, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: wallRight2
-meshName: wallvMesh
-meshURL: assets/models/wall_vertical_XYZ_n_uv.ply
-positionXYZ: vec3(-101.000000, 27.000000, -136.000000)
-rotationXYZ: vec3(0.000000, -3.099999, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: wineGlass
-meshName: wineGlassMesh
-meshURL: assets/models/wineGlass.ply
-positionXYZ: vec3(-29.000000, 15.000000, -16.000000)
-rotationXYZ: vec3(0.000000, -3.099999, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: wineGlass2
-meshName: wineGlassMesh
-meshURL: assets/models/wineGlass.ply
-positionXYZ: vec3(-25.000000, 15.000000, -12.000000)
-rotationXYZ: vec3(0.000000, -3.099999, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: wineGlass3
-meshName: wineGlassMesh
-meshURL: assets/models/wineGlass.ply
-positionXYZ: vec3(-29.000000, 15.000000, -22.000000)
-rotationXYZ: vec3(0.000000, -3.099999, 0.000000)
-objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: wineGlass4
-meshName: wineGlassMesh
-meshURL: assets/models/wineGlass.ply
-positionXYZ: vec3(-25.000000, 15.000000, -17.000000)
-rotationXYZ: vec3(0.000000, -3.099999, 0.000000)
+friendlyName: ztarDestroyer
+meshName: ztarDestroyerMesh
+meshURL: assets/models/Stardestroyer_xyz_n_uv.ply
+positionXYZ: vec3(0.000000, 0.000000, 0.000000)
+rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
 objectColourRGBA: vec4(0.500000, 0.500000, 0.500000, 0.500000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)

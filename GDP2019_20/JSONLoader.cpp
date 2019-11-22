@@ -177,7 +177,7 @@ bool JSONLoadGameObjects(
 		tempGameObject->meshName = meshName;
 		tempGameObject->meshURL = meshURL;
 		tempGameObject->positionXYZ = positionXYZ;
-		tempGameObject->rotationXYZ = rotationXYZ;
+		tempGameObject->setOrientation(rotationXYZ);
 		tempGameObject->scale = scale;
 		tempGameObject->objectColourRGBA = objectColourRGBA;
 		tempGameObject->diffuseColour = diffuseColour;
@@ -270,9 +270,9 @@ bool JSONSaveGameObjects(std::map<std::string, cGameObject*>* g_map_GameObjects)
 		jsonObject["positionXYZ"][0] = index->second->positionXYZ.x;
 		jsonObject["positionXYZ"][1] = index->second->positionXYZ.y;
 		jsonObject["positionXYZ"][2] = index->second->positionXYZ.z;
-		jsonObject["rotationXYZ"][0] = index->second->rotationXYZ.x;
-		jsonObject["rotationXYZ"][1] = index->second->rotationXYZ.y;
-		jsonObject["rotationXYZ"][2] = index->second->rotationXYZ.z;
+		jsonObject["rotationXYZ"][0] = index->second->getEulerAngle().x;
+		jsonObject["rotationXYZ"][1] = index->second->getEulerAngle().y;
+		jsonObject["rotationXYZ"][2] = index->second->getEulerAngle().z;
 		jsonObject["scale"] = index->second->scale;
 		jsonObject["objectColourRGBA"][0] = index->second->objectColourRGBA.x;
 		jsonObject["objectColourRGBA"][1] = index->second->objectColourRGBA.y;

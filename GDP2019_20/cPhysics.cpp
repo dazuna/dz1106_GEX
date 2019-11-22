@@ -64,7 +64,6 @@ void cPhysics::GetClosestTriangleToPoint(Point pointXYZ, cMesh& mesh,
 	// Assume the closest distance is REALLY far away
 	float closestDistanceSoFar = FLT_MAX;
 
-
 	for (unsigned int triIndex = 0;
 		 triIndex != mesh.vecTriangles.size();
 		 triIndex++)
@@ -499,12 +498,7 @@ void cPhysics::GetClosestTriangleToPoint_FRAMEWORKS_AND_PATTERNS(Point pointXYZ,
 			closestTriangle.verts[2].y = triVert3.y;
 			closestTriangle.verts[2].z = triVert3.z;
 		}
-
 	}//for (unsigned int triIndex = 0;
-
 	return;
-
-
-
 }
 // *********************************************************************************

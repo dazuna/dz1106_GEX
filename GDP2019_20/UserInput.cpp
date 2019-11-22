@@ -14,6 +14,7 @@
 #include <string>
 #include <sstream>
 #include "cFlyCamera/cFlyCamera.h"
+#include "playerController/playerController.h"
 
 bool isOnlyShiftKeyDown(int mods);
 bool isOnlyCtrlKeyDown(int mods);
@@ -28,6 +29,8 @@ bool g_MouseLeftButtonIsDown = false;
 
 // Declared in theMain
 extern cFlyCamera* g_pFlyCamera;
+extern playerController* pPlayerControl;
+extern bool cameraFollowPlayer;
 
 bool isShiftKeyDownByAlone(int mods);
 bool isCtrlKeyDownByAlone(int mods);
@@ -110,6 +113,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		if (key == GLFW_KEY_Z && action == GLFW_PRESS)
 		{
 			::g_map_GameObjects["cameraPosition0"]->positionXYZ = ::g_pFlyCamera->eye;
+		}
+		if (key == GLFW_KEY_C && action == GLFW_PRESS)	// "down"
+		{
+			cameraFollowPlayer = !cameraFollowPlayer;
+			std::cout << "cameraFoolow?: " << ((cameraFollowPlayer) ? "YES" : "NO") << std::endl;
+			::g_pFlyCamera->watchPlayer(pPlayerControl);
 		}
 	}
 
@@ -220,7 +229,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			theSelectedL->QuadraticAtten *= 1.10f;			// 1% more of what it was
 		}
-		if (key == GLFW_KEY_0 && action == GLFW_PRESS)
+		//lightSwitch
+		if (key == GLFW_KEY_0 && action == GLFW_PRESS)	
 		{
 			if (theSelectedL->lightSwitch == 1.0f)
 			{
@@ -247,14 +257,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			theSelectedL->outerAngle += 0.1f;
 		}
-		//if (key == GLFW_KEY_9)
-		//{
-		//	bLightDebugSheresOn = false;			
-		//}
-		//if (key == GLFW_KEY_0)
-		//{
-		//	bLightDebugSheresOn = true; 
-		//}
 		if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
 		{
 			switch (cursorType)
@@ -277,7 +279,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			switch (cursorType)
 			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->rotationXYZ += (vecZ1*0.1f); break;
+			case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecZ1 * 5.0f)); break;
 			case selectedType::LIGHT:		theSelectedL->direction += (vecZ1*0.1f);	break;
 			case selectedType::SOUND:		break;
 			}
@@ -286,7 +288,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			switch (cursorType)
 			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->rotationXYZ -= (vecZ1*0.1f); break;
+			case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecZ1* 5.0f)); break;
 			case selectedType::LIGHT:		theSelectedL->direction -= (vecZ1*0.1f);	break;
 			case selectedType::SOUND:		break;
 			}
@@ -296,7 +298,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			switch (cursorType)
 			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->rotationXYZ += (vecY1*0.1f); break;
+			case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecY1* 5.0f)); break;
 			case selectedType::LIGHT:		theSelectedL->direction += (vecY1*0.1f);	break;
 			case selectedType::SOUND:		break;
 			}
@@ -305,7 +307,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			switch (cursorType)
 			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->rotationXYZ -= (vecY1*0.1f); break;
+			case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecY1* 5.0f)); break;
 			case selectedType::LIGHT:		theSelectedL->direction -= (vecY1*0.1f);	break;
 			case selectedType::SOUND:		break;
 			}
@@ -315,7 +317,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			switch (cursorType)
 			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->rotationXYZ -= (vecX1*0.1f); break;
+			case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecX1* 5.0f)); break;
 			case selectedType::LIGHT:		theSelectedL->direction -= (vecX1*0.1f);	break;
 			case selectedType::SOUND:		break;
 			}
@@ -324,7 +326,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			switch (cursorType)
 			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->rotationXYZ += (vecX1*0.1f); break;
+			case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecX1* 5.0f)); break;
 			case selectedType::LIGHT:		theSelectedL->direction += (vecX1*0.1f);	break;
 			case selectedType::SOUND:		break;
 			}
@@ -582,7 +584,6 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 	return;
 }
 
-
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
@@ -639,12 +640,10 @@ void ProcessAsyncMouse(GLFWwindow* window)
 	return;
 }//ProcessAsyncMouse(...
 
-
 void ProcessAsyncKeys(GLFWwindow* window)
 {
 	const float CAMERA_MOVE_SPEED_SLOW = 0.1f;
 	const float CAMERA_MOVE_SPEED_FAST = 1.0f;
-
 	const float CAMERA_TURN_SPEED = 0.1f;
 
 	// WASD + q = "up", e = down		y axis = up and down
@@ -657,13 +656,14 @@ void ProcessAsyncKeys(GLFWwindow* window)
 	//	cameraSpeed = CAMERA_MOVE_SPEED_FAST;
 	//}
 	float cameraMoveSpeed = ::g_pFlyCamera->movementSpeed;
+	float playerVSpeed = 2.0f;
+	float playerAngle = 0.5f;
 
 	// If no keys are down, move the camera
 	if (areAllModifiersUp(window))
 	{
 		// Note: The "== GLFW_PRESS" isn't really needed as it's actually "1" 
 		// (so the if() treats the "1" as true...)
-
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		{
 			//			g_CameraEye.z += cameraSpeed;
@@ -695,6 +695,51 @@ void ProcessAsyncKeys(GLFWwindow* window)
 			::g_pFlyCamera->MoveUpDown_Y(+cameraMoveSpeed);
 			//			::g_pFlyCamera->Roll_CW_CCW( -cameraSpeed );
 		}
+
+		// Player Control
+		if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS)
+		{
+			pPlayerControl->MoveForward_Z(playerVSpeed);
+		}
+		if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
+		{
+			pPlayerControl->MoveForward_Z(-playerVSpeed);
+		}
+		if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+		{
+			pPlayerControl->MoveUpDown_Y(-playerAngle);
+		}
+		if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
+		{
+			pPlayerControl->MoveUpDown_Y(playerAngle);
+		}
+		if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
+		{
+			pPlayerControl->MoveLeftRight_X(-playerAngle);
+		}
+		if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
+		{
+			pPlayerControl->MoveLeftRight_X(playerAngle);
+		}
+		// Rotate ship
+		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+		{
+			pPlayerControl->Pitch_UpDown(-playerAngle);
+		}
+		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+		{
+			pPlayerControl->Pitch_UpDown(playerAngle);
+		}
+		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+		{
+			pPlayerControl->Yaw_LeftRight(playerAngle);
+		}
+		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+		{
+			pPlayerControl->Yaw_LeftRight(-playerAngle);
+		}
+		// Player Control
+
 	}//if(AreAllModifiersUp(window)
 
 	// If shift is down, do the rotation camera stuff...
@@ -712,7 +757,6 @@ void ProcessAsyncKeys(GLFWwindow* window)
 			//			::g_pFlyCamera->MoveUpDown_Y( -cameraSpeed );
 		}
 	}//IsShiftDown(window)
-
-
+	
 	return;
 }// ProcessAsyncKeys(..

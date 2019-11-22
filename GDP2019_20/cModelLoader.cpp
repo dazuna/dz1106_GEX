@@ -108,6 +108,42 @@ bool cModelLoader::LoadPlyModel(
 
 		// Add this triangle
 		theMesh.vecTriangles.push_back(tempTriangle);
+
+		AABBTriangle tempABT;
+		sPlyVertexXYZ_N_UV pvA, pvB, pvC;
+		pvA = theMesh.vecVertices[tempTriangle.vert_index_1];
+		pvB = theMesh.vecVertices[tempTriangle.vert_index_2];
+		pvC = theMesh.vecVertices[tempTriangle.vert_index_3];
+
+		tempABT.a.x = pvA.x;
+		tempABT.a.y = pvA.y;
+		tempABT.a.z = pvA.z;
+
+		tempABT.b.x = pvB.x;
+		tempABT.b.y = pvB.y;
+		tempABT.b.z = pvB.z;
+
+		tempABT.c.x = pvC.x;
+		tempABT.c.y = pvC.y;
+		tempABT.c.z = pvC.z;
+
+		glm::vec3 Tn1, Tn2, Tn3;
+		Tn1.x = pvA.nx;
+		Tn1.y = pvA.ny;
+		Tn1.z = pvA.nz;
+
+		Tn2.x = pvB.nx;
+		Tn2.y = pvB.ny;
+		Tn2.z = pvB.nz;
+
+		Tn3.x = pvC.nx;
+		Tn3.y = pvC.ny;
+		Tn3.z = pvC.nz;
+
+		glm::vec3 theNormalofNormalsToRuleThemAll = (Tn1 + Tn2 + Tn3) / 3.0f;
+		theNormalofNormalsToRuleThemAll = glm::normalize(theNormalofNormalsToRuleThemAll);
+		tempABT.n = theNormalofNormalsToRuleThemAll;
+		theMesh.vecABTriangles.push_back(tempABT);
 	}
 
 

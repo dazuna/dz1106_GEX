@@ -26,6 +26,8 @@
 #include "../PhysicsStuff.h"
 #include "../cPhysics.h"
 #include "../cLowPassFilter.h"
+#include "../cAABB/cAABB.h"
+#include "../cAABB/PhysicsAABBStuff.h"
 #include "../DebugRenderer/cDebugRenderer.h"
 // Used to visualize the attenuation of the lights...
 #include "../cLight.h"
@@ -44,6 +46,7 @@ T randInRange(T min, T max)
 };
 
 extern cFlyCamera* g_pFlyCamera;
+extern std::map<unsigned long long /*ID*/, cAABB*> g_mapAABBs_World;
 
 glm::mat4 calculateWorldMatrix(cGameObject* pCurrentObject);
 void DrawObject(glm::mat4 m,cGameObject* pCurrentObject,GLint shaderProgID,cVAOManager* pVAOManager);
@@ -61,3 +64,4 @@ std::vector<cGameObject*> getClosestTransparentObjectsAsVector();
 void printGameObject(cGameObject* theGO);
 void makeTransparentObjectsMap();
 void CalculateTransformedMesh(cMesh& originalMesh, glm::mat4 matWorld, cMesh& mesh_transformedInWorld);
+void drawAABBs();

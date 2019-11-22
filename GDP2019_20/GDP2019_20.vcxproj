@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cAABB\PhysicsAABBStuff.cpp" />
     <ClCompile Include="cFlyCamera\cFlyCamera.cpp" />
     <ClCompile Include="cGameObject.cpp" />
     <ClCompile Include="cLight.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="LightManager\cLightHelper.cpp" />
     <ClCompile Include="Particle\cParticleEmitter.cpp" />
     <ClCompile Include="PhysicsStuff.cpp" />
+    <ClCompile Include="playerController\playerController.cpp" />
     <ClCompile Include="skybox\skybox.cpp" />
     <ClCompile Include="TextureManager\C24BitBMPpixel.cpp" />
     <ClCompile Include="TextureManager\cBasicTextureManager.cpp" />
@@ -174,6 +176,8 @@
     <ClCompile Include="util\tools.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cAABB\cAABB.h" />
+    <ClInclude Include="cAABB\PhysicsAABBStuff.h" />
     <ClInclude Include="cFlyCamera\cFlyCamera.h" />
     <ClInclude Include="cGameObject.h" />
     <ClInclude Include="cLight.h" />
@@ -195,6 +199,7 @@
     <ClInclude Include="LightManager\cLightHelper.h" />
     <ClInclude Include="Particle\cParticleEmitter.h" />
     <ClInclude Include="PhysicsStuff.h" />
+    <ClInclude Include="playerController\playerController.h" />
     <ClInclude Include="skybox\skybox.h" />
     <ClInclude Include="TextureManager\C24BitBMPpixel.h" />
     <ClInclude Include="TextureManager\cBasicTextureManager.h" />

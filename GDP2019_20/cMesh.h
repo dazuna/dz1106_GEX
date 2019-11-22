@@ -24,6 +24,13 @@ struct sPlyTriangle
 	unsigned int vert_index_2;
 	unsigned int vert_index_3;
 };
+struct AABBTriangle
+{
+	glm::vec3 a;
+	glm::vec3 b;
+	glm::vec3 c;
+	glm::vec3 n;
+};
 
 class cMesh
 {
@@ -32,10 +39,10 @@ public:
 	~cMesh() {};		// Empty d'tor
 	// Store the vertices
 	std::vector<sPlyVertexXYZ_N_UV> vecVertices;
-
 	// Store the triangles
 	std::vector<sPlyTriangle> vecTriangles;
-
+	// Store elegant
+	std::vector<AABBTriangle> vecABTriangles;
 };
 
 #endif 

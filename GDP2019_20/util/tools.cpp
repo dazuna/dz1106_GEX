@@ -14,20 +14,22 @@ glm::mat4 calculateWorldMatrix(cGameObject* pCurrentObject)
 
 	// ******* ROTATION TRANSFORM *********
 	// ROTATE Z
-	glm::mat4 rotateZ = glm::rotate(glm::mat4(1.0f),
-		pCurrentObject->rotationXYZ.z,
-		glm::vec3(0.0f, 0.0f, 1.0f));
-	matWorld = matWorld * rotateZ;
-	// ROTATE Y
-	glm::mat4 rotateY = glm::rotate(glm::mat4(1.0f),
-		pCurrentObject->rotationXYZ.y,
-		glm::vec3(0.0f, 1.0f, 0.0f));
-	matWorld = matWorld * rotateY;
-	// ROTATE X
-	glm::mat4 rotateX = glm::rotate(glm::mat4(1.0f),
-		pCurrentObject->rotationXYZ.x,
-		glm::vec3(1.0f, 0.0f, 0.0f));
-	matWorld = matWorld * rotateX;
+	//glm::mat4 rotateZ = glm::rotate(glm::mat4(1.0f),
+	//	pCurrentObject->rotationXYZ.z,
+	//	glm::vec3(0.0f, 0.0f, 1.0f));
+	//matWorld = matWorld * rotateZ;
+	//// ROTATE Y
+	//glm::mat4 rotateY = glm::rotate(glm::mat4(1.0f),
+	//	pCurrentObject->rotationXYZ.y,
+	//	glm::vec3(0.0f, 1.0f, 0.0f));
+	//matWorld = matWorld * rotateY;
+	//// ROTATE X
+	//glm::mat4 rotateX = glm::rotate(glm::mat4(1.0f),
+	//	pCurrentObject->rotationXYZ.x,
+	//	glm::vec3(1.0f, 0.0f, 0.0f));
+	//matWorld = matWorld * rotateX;
+	glm::mat4 matRotation = glm::mat4(pCurrentObject->getQOrientation());
+	matWorld = matWorld * matRotation;
 	// ******* ROTATION TRANSFORM *********
 
 	// ******* SCALE TRANSFORM *********
@@ -474,7 +476,7 @@ void printGameObject(cGameObject* theGO)
 	std::cout << "meshName:\t" << theGO->meshName << std::endl;			
 	std::cout << "meshURL:\t" << theGO->meshURL << std::endl;			
 	std::cout << "positionXYZ:\t" << glm::to_string(theGO->positionXYZ) << std::endl;			
-	std::cout << "rotationXYZ:\t" << glm::to_string(theGO->rotationXYZ) << std::endl;			
+	//std::cout << "rotationXYZ:\t" << glm::to_string(theGO->rotationXYZ) << std::endl;			
 	std::cout << "objectColourRGBA:\t" << glm::to_string(theGO->objectColourRGBA) << std::endl;			
 	std::cout << "alphaTransparency:\t" << theGO->alphaTransparency << std::endl;			
 	std::cout << "diffuseColour:\t" << glm::to_string(theGO->diffuseColour) << std::endl;			
@@ -539,4 +541,13 @@ void CalculateTransformedMesh(cMesh& originalMesh, glm::mat4 matWorld,cMesh& mes
 	}
 
 	return;
+}
+
+void drawAABBs()
+{
+	std::map<unsigned long long, cAABB*>::iterator itAABB;
+	for (itAABB = ::g_mapAABBs_World.begin(); itAABB != ::g_mapAABBs_World.end(); itAABB++)
+	{
+		itAABB->second->drawAABBSelf(::pDebugRenderer);
+	}
 }

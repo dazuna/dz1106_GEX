@@ -21,20 +21,19 @@
 #include "cGameObject.h"
 #include "cShaderManager.h"
 #include "TextureManager/cBasicTextureManager.h"
-// JSON Stuff
-#include "JSONLoader.h"
-// The Physics function
-#include "PhysicsStuff.h"
+#include "JSONLoader.h"// JSON Stuff	
+#include "PhysicsStuff.h"// The Physics function
 #include "cPhysics.h"
 #include "cLowPassFilter.h"
-#include "DebugRenderer/cDebugRenderer.h"
-// Used to visualize the attenuation of the lights...
-#include "cLight.h"
+#include "cAABB/cAABB.h"
+#include "cAABB/PhysicsAABBStuff.h"
+#include "DebugRenderer/cDebugRenderer.h"	
+#include "cLight.h"// Used to visualize the attenuation of the lights...
 #include "LightManager/cLightHelper.h"
 #include "cFlyCamera/cFlyCamera.h"
 #include "skybox/skybox.h"
-// Keyboard, error, mouse, etc. are now here
-#include "GFLW_callbacks.h"
+#include "GFLW_callbacks.h"// Keyboard, error, mouse, etc. are now here
+#include "playerController/playerController.h"// playing
 
 cFlyCamera* g_pFlyCamera = NULL;
 cGameObject* pSkyBox = new cGameObject();
@@ -56,12 +55,16 @@ GLuint shaderProgID;
 cVAOManager* pTheVAOManager = new cVAOManager();
 cModelLoader* pTheModelLoader = new cModelLoader();
 cDebugRenderer* pDebugRenderer = new cDebugRenderer();
-cPhysics* pPhysic = new cPhysics();
+//cPhysics* pPhysic = new cPhysics();
 cBasicTextureManager* pTextureManager = NULL;
+extern std::map<unsigned long long /*ID*/, cAABB*> g_mapAABBs_World;
+playerController* pPlayerControl;
+//extern std::map<unsigned long long /*ID*/, cAABB*> g_vecAABBs_World;
 
 // pirateStuff
 double timer = 0.0;
 bool isDroneOn = false;
+bool cameraFollowPlayer = false;
 
 // Load up my "scene" objects (now global)
 std::map<std::string, cMesh*> g_map_Mesh;
@@ -110,8 +113,6 @@ int main(void)
 	void ProcessAsyncKeys(GLFWwindow * window);
 
 	pDebugRenderer->initialize();
-	// ::pTextureManager = new cBasicTextureManager();
-	// ::pTextureManager->SetBasePath("assets/textures");
 
 	//	OpenGL and GLFW are good to go, so load the model
 	// cModelLoader* pTheModelLoader = new cModelLoader();
@@ -172,12 +173,16 @@ int main(void)
 	::g_pFlyCamera = new cFlyCamera(visionVector);
 	//::g_pFlyCamera = new cFlyCamera();
 	::g_pFlyCamera->eye = cameraEye;
+	::g_pFlyCamera->movementSpeed = 10.0f;
 
 	// Get the initial time
 	double lastTime = glfwGetTime();
 	std::cout << "start loop!" << std::endl;
 
 	createSkyBoxObject();
+	CalcAABBsForMeshModel(::g_map_Mesh["ztarDestroyerMesh"]); //ztarDestroyer
+	positionPlayerColliders("tieInterceptor");
+	pPlayerControl = new playerController(::g_map_GameObjects["tieInterceptor"]);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -209,7 +214,7 @@ int main(void)
 		p = glm::perspective(0.6f,		// FOV
 			ratio,			// Aspect ratio
 			0.1f,			// Near clipping plane
-			1000.0f);		// Far clipping plane
+			15000.0f);		// Far clipping plane
 
 		// View matrix
 		v = glm::mat4(1.0f);
@@ -275,17 +280,24 @@ int main(void)
 		case selectedType::LIGHT:drawLightXYZ(pDebugRenderer);break;
 		case selectedType::SOUND:break;
 		}
-		//drawPyramidPlayer(pDebugRenderer);
-
-		makeSkullEyesFlicker();
-		//makeCameraDroneAround(isDroneOn);
 
 		//	Update the objects through physics
 		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		
 		//pPhysic->IntegrationStep(::g_map_GameObjects, (float)averageDeltaTime);
 		//pPhysic->TestForCollisions(::g_map_GameObjects);
-		//collisionPOC(pPhysic, pDebugRenderer);
+
+		// ********************** AABB Runtime Stuff ********************************************
+
+		// drawAABBs();
+		//drawAABBAndTrisWherePlayerPresent(::g_map_GameObjects["tieInterceptor"]);
+		// drawPlayerColliders(::g_map_GameObjects["tieInterceptor"]);
+		testCollisions_AABB(::g_map_GameObjects["tieInterceptor"]);
+		IntegrationStep_AAB(::g_map_GameObjects, (float)averageDeltaTime);
+		::g_pFlyCamera->followPlayer(pPlayerControl, cameraFollowPlayer);
+		//::pPlayerControl->drawSelf();
+
+		// ********************** AABB Runtime Stuff ********************************************
 		
 		pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
 
@@ -298,7 +310,6 @@ int main(void)
 	// Delete everything
 	delete pTheModelLoader;
 	//	delete pTheVAOManager;
-	//	Watch out!!
 
 	exit(EXIT_SUCCESS);
 }

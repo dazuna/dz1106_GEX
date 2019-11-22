@@ -3,7 +3,10 @@
 
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/string_cast.hpp>
 #include <string>
+#include <iostream>
 
 // NOTE: We are including the INTERFACE, not the actual renderer
 #include "DebugRenderer/iDebugRenderer.h"
@@ -30,7 +33,7 @@ public:
 	unsigned int friendlyIDNumber;
 	std::string friendlyName;
 	glm::vec3  positionXYZ;
-	glm::vec3  rotationXYZ;
+	// glm::vec3  rotationXYZ;
 	glm::vec4  objectColourRGBA;
 	float alphaTransparency;
 	glm::vec4 diffuseColour;		
@@ -59,6 +62,19 @@ public:
 	bool disableDepthBufferTest;
 	bool disableDepthBufferWrite;
 
+public:
+	glm::quat getQOrientation(void);
+	// Overwrite the orientation
+	void setOrientation(glm::vec3 EulerAngleDegreesXYZ);
+	void setOrientation(glm::quat qAngle);
+	// Updates the existing angle
+	void updateOrientation(glm::vec3 EulerAngleDegreesXYZ);
+	void updateOrientation(glm::quat qAngle);
+	glm::vec3 getEulerAngle(void);
+	void getVecColliders(std::vector<glm::vec3>* vecColliders);
+	void setVecCollider(std::vector<glm::vec3> vecColliders);
+	glm::mat4 getWorldMatrix();
+	// ID
 	unsigned int getUniqueID(void);
 	void setDebugRenderer(iDebugRenderer* pDebugRenderer);
 
@@ -69,6 +85,8 @@ private:
 	static unsigned int next_uniqueID;
 	unsigned int m_uniqueID;
 	iDebugRenderer* m_pDebugRenderer;
+	glm::quat m_qRotation;		// Orientation as a quaternion
+	std::vector<glm::vec3> vecColliders;
 };
 
 #endif
