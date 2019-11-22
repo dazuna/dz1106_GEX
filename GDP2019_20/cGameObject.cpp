@@ -53,6 +53,8 @@ cGameObject::cGameObject(cGameObject* newGO)
 	this->specularColour=newGO->specularColour;
 	this->velocity=newGO->velocity;
 	this->alphaTransparency = newGO->alphaTransparency;
+	this->textures = newGO->textures;
+	this->textureRatio = newGO->textureRatio;
 }
 
 unsigned int cGameObject::getUniqueID(void)

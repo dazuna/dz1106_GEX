@@ -117,7 +117,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		if (key == GLFW_KEY_C && action == GLFW_PRESS)	// "down"
 		{
 			cameraFollowPlayer = !cameraFollowPlayer;
-			std::cout << "cameraFoolow?: " << ((cameraFollowPlayer) ? "YES" : "NO") << std::endl;
+			std::cout << "cameraFollow?: " << ((cameraFollowPlayer) ? "YES" : "NO") << std::endl;
 			::g_pFlyCamera->watchPlayer(pPlayerControl);
 		}
 	}
@@ -737,6 +737,14 @@ void ProcessAsyncKeys(GLFWwindow* window)
 		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 		{
 			pPlayerControl->Yaw_LeftRight(-playerAngle);
+		}
+		if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
+		{
+			pPlayerControl->Roll_CW_CCW(-playerAngle);
+		}
+		if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
+		{
+			pPlayerControl->Roll_CW_CCW(playerAngle);
 		}
 		// Player Control
 

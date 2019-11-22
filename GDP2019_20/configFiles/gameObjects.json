@@ -82,5 +82,26 @@
     "texture": ["fx3Panels.bmp", "Red.bmp", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0],
     "velocity": [0.0, 0.0, 0.0]
+  },
+  {
+    "accel": [0.0, 0.0, 0.0],
+    "alphaTransparency": 1.0,
+    "debugColour": [1.0, 1.0, 1.0, 1.0],
+    "diffuseColour": [1.0, 1.0, 1.0, 1.0],
+    "friendlyName": "sphere",
+    "inverseMass": 0.0,
+    "isVisible": false,
+    "isWireframe": false,
+    "meshName": "sphereMesh",
+    "meshURL": "assets/models/Sphere_Radius_1_XYZ_n_uv.ply",
+    "objectColourRGBA": [0.0, 0.0, 0.0, 1.0],
+    "physicsShapeType": 4,
+    "positionXYZ": [500,500,500],
+    "rotationXYZ": [0.0, -0.0, 0.0],
+    "scale": 1.0,
+    "specularColour": [1.0, 1.0, 1.0, 1.0],
+    "texture": ["Red.bmp", "", "", ""],
+    "textureRatio": [0.0, 0.0, 0.0, 0.0],
+    "velocity": [0.0, 0.0, 0.0]
   }
 ]

@@ -220,7 +220,7 @@ void cFlyCamera::followPlayer(playerController* cPlayer, bool isFollowON)
 
 	glm::vec3 origin = cPlayer->pPlayer->positionXYZ;
 	glm::vec3 newAt = glm::vec3(0, 0, -1);
-	newAt *= 100.0f;
+	newAt *= 80.0f;
 	this->eye = newAt + origin;
 
 	return;

@@ -10,7 +10,7 @@ extern playerController* pPlayerControl;
 // Figure out which triangles are in which AABB
 void CalcAABBsForMeshModel(cMesh* theMesh)
 {
-	// For the space station, I'll make a size of -5,000 to 5,000
+	// For the star destroyer
 	const float WorldSize = 900.0f;
 	
 	// XYZ for that generates the cool boxes :D
@@ -208,7 +208,8 @@ void drawPlayerColliders(cGameObject* pPlayer)
 	pPlayer->getVecColliders(&vecColls);
 	for (itVC = vecColls.begin(); itVC != vecColls.end(); itVC++)
 	{
-		::pDebugRenderer->addLine(origin, *itVC, cyan, 0.5f);
+		//::pDebugRenderer->addLine(origin, *itVC, cyan, 0.5f);
+		drawSphere(*itVC,"Red.bmp", 1.0f, 1.0f, 0.5f);
 	}
 }
 
@@ -258,8 +259,9 @@ void testCollisions_AABB(cGameObject* pPlayer)
 
 				pPlayer->positionXYZ += (vecPositionAdjust);
 
-				pDebugRenderer->addDebugSphere(*itVC, blue, 2.0f, 1.0f);
-				pDebugRenderer->addTriangle(clTriangle.a, clTriangle.b, clTriangle.c, yellow);
+				pDebugRenderer->addTriangle(clTriangle.a, clTriangle.b, clTriangle.c, yellow, 2.0f);
+				//drawAABBAndTrisWherePlayerPresent(pPlayer);
+				drawSphere(*itVC, "Red.bmp", 1.0f, 1.0f, 0.5f);
 
 				// Calculate the response vector off the triangle.
 				//glm::vec3 velocityVector = glm::normalize(pPlayer->velocity);
@@ -335,6 +337,7 @@ void IntegrationStep_AAB(std::map<std::string, cGameObject*> g_map_GameObjects, 
 		{
 			pCurObj->positionXYZ += pCurObj->velocity * deltaTime;
 		}
+		lifetimeValidation(pCurObj);
 	}
 	pPlayerControl->updatePosition(pPlayerControl->pPlayer->positionXYZ);
 	return;

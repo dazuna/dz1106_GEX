@@ -13,21 +13,6 @@ glm::mat4 calculateWorldMatrix(cGameObject* pCurrentObject)
 	// ******* TRANSLATION TRANSFORM *********
 
 	// ******* ROTATION TRANSFORM *********
-	// ROTATE Z
-	//glm::mat4 rotateZ = glm::rotate(glm::mat4(1.0f),
-	//	pCurrentObject->rotationXYZ.z,
-	//	glm::vec3(0.0f, 0.0f, 1.0f));
-	//matWorld = matWorld * rotateZ;
-	//// ROTATE Y
-	//glm::mat4 rotateY = glm::rotate(glm::mat4(1.0f),
-	//	pCurrentObject->rotationXYZ.y,
-	//	glm::vec3(0.0f, 1.0f, 0.0f));
-	//matWorld = matWorld * rotateY;
-	//// ROTATE X
-	//glm::mat4 rotateX = glm::rotate(glm::mat4(1.0f),
-	//	pCurrentObject->rotationXYZ.x,
-	//	glm::vec3(1.0f, 0.0f, 0.0f));
-	//matWorld = matWorld * rotateX;
 	glm::mat4 matRotation = glm::mat4(pCurrentObject->getQOrientation());
 	matWorld = matWorld * matRotation;
 	// ******* ROTATION TRANSFORM *********
@@ -549,5 +534,34 @@ void drawAABBs()
 	for (itAABB = ::g_mapAABBs_World.begin(); itAABB != ::g_mapAABBs_World.end(); itAABB++)
 	{
 		itAABB->second->drawAABBSelf(::pDebugRenderer);
+	}
+}
+
+void drawSphere(glm::vec3 position, std::string texture, float sscale, float alphaT, float lifetime)
+{
+	cGameObject* pGO = new cGameObject(::g_map_GameObjects["sphere"]);
+	pGO->positionXYZ = position;
+	if (texture != "")
+	{
+		pGO->textures[0] = texture;
+		pGO->textureRatio[0] = 1.0f;
+	}
+	pGO->alphaTransparency = alphaT;
+	pGO->tag = "lifetime";
+	pGO->lifetime = 10.0f;
+	pGO->scale = sscale;
+	pGO->isVisible = true;
+	::g_map_GameObjects.insert({ pGO->friendlyName,pGO });
+}
+
+void lifetimeValidation(cGameObject* pCurObject)
+{
+	if (pCurObject->tag == "lifetime")
+	{
+		if (pCurObject->lifetime < 1.0f)
+		{
+			::g_map_GameObjects.erase(pCurObject->friendlyName.c_str());
+		}
+		pCurObject->lifetime -= 1.0f;
 	}
 }

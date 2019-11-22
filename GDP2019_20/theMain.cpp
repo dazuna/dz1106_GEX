@@ -291,7 +291,7 @@ int main(void)
 
 		// drawAABBs();
 		//drawAABBAndTrisWherePlayerPresent(::g_map_GameObjects["tieInterceptor"]);
-		// drawPlayerColliders(::g_map_GameObjects["tieInterceptor"]);
+		//drawPlayerColliders(::g_map_GameObjects["tieInterceptor"]);
 		testCollisions_AABB(::g_map_GameObjects["tieInterceptor"]);
 		IntegrationStep_AAB(::g_map_GameObjects, (float)averageDeltaTime);
 		::g_pFlyCamera->followPlayer(pPlayerControl, cameraFollowPlayer);
