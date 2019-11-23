@@ -52,7 +52,6 @@ void cursor_enter_callback(GLFWwindow* window, int entered)
 	return;
 }
 
-
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	glm::mat4 matRotX,matRotY;
@@ -113,12 +112,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		if (key == GLFW_KEY_Z && action == GLFW_PRESS)
 		{
 			::g_map_GameObjects["cameraPosition0"]->positionXYZ = ::g_pFlyCamera->eye;
-		}
-		if (key == GLFW_KEY_C && action == GLFW_PRESS)	// "down"
-		{
-			cameraFollowPlayer = !cameraFollowPlayer;
-			std::cout << "cameraFollow?: " << ((cameraFollowPlayer) ? "YES" : "NO") << std::endl;
-			::g_pFlyCamera->watchPlayer(pPlayerControl);
 		}
 	}
 
@@ -385,6 +378,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		if (key == GLFW_KEY_E && action == GLFW_PRESS)
 		{
 			::debugger = !::debugger;
+		}
+		if (key == GLFW_KEY_R && action == GLFW_PRESS)
+		{
+			::g_map_GameObjects.clear();
+			JSONLoadGameObjects(&::g_map_GameObjects);
+			::selectedGameObject = ::g_map_GameObjects.begin();
 		}
 		if (key == GLFW_KEY_1 && action == GLFW_PRESS)
 		{
@@ -696,57 +695,58 @@ void ProcessAsyncKeys(GLFWwindow* window)
 			//			::g_pFlyCamera->Roll_CW_CCW( -cameraSpeed );
 		}
 
-		// Player Control
-		if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS)
-		{
-			pPlayerControl->MoveForward_Z(playerVSpeed);
-		}
-		if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
-		{
-			pPlayerControl->MoveForward_Z(-playerVSpeed);
-		}
-		if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-		{
-			pPlayerControl->MoveUpDown_Y(-playerAngle);
-		}
-		if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
-		{
-			pPlayerControl->MoveUpDown_Y(playerAngle);
-		}
-		if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
-		{
-			pPlayerControl->MoveLeftRight_X(-playerAngle);
-		}
-		if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
-		{
-			pPlayerControl->MoveLeftRight_X(playerAngle);
-		}
-		// Rotate ship
-		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-		{
-			pPlayerControl->Pitch_UpDown(-playerAngle);
-		}
-		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-		{
-			pPlayerControl->Pitch_UpDown(playerAngle);
-		}
-		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-		{
-			pPlayerControl->Yaw_LeftRight(playerAngle);
-		}
-		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-		{
-			pPlayerControl->Yaw_LeftRight(-playerAngle);
-		}
-		if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
-		{
-			pPlayerControl->Roll_CW_CCW(-playerAngle);
-		}
-		if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
-		{
-			pPlayerControl->Roll_CW_CCW(playerAngle);
-		}
-		// Player Control
+		//// Player Control
+
+		//if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS)
+		//{
+		//	pPlayerControl->MoveForward_Z(playerVSpeed);
+		//}
+		//if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
+		//{
+		//	pPlayerControl->MoveForward_Z(-playerVSpeed);
+		//}
+		//if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+		//{
+		//	pPlayerControl->MoveUpDown_Y(-playerAngle);
+		//}
+		//if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
+		//{
+		//	pPlayerControl->MoveUpDown_Y(playerAngle);
+		//}
+		//if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
+		//{
+		//	pPlayerControl->MoveLeftRight_X(-playerAngle);
+		//}
+		//if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
+		//{
+		//	pPlayerControl->MoveLeftRight_X(playerAngle);
+		//}
+		//// Rotate ship
+		//if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+		//{
+		//	pPlayerControl->Pitch_UpDown(-playerAngle);
+		//}
+		//if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+		//{
+		//	pPlayerControl->Pitch_UpDown(playerAngle);
+		//}
+		//if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+		//{
+		//	pPlayerControl->Yaw_LeftRight(playerAngle);
+		//}
+		//if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+		//{
+		//	pPlayerControl->Yaw_LeftRight(-playerAngle);
+		//}
+		//if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
+		//{
+		//	pPlayerControl->Roll_CW_CCW(-playerAngle);
+		//}
+		//if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
+		//{
+		//	pPlayerControl->Roll_CW_CCW(playerAngle);
+		//}
+		//// Player Control
 
 	}//if(AreAllModifiersUp(window)
 

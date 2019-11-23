@@ -170,9 +170,9 @@ int main(void)
 		cameraTarget = cameraEye + visionVector;
 	}
 
-	::g_pFlyCamera = new cFlyCamera(visionVector);
-	//::g_pFlyCamera = new cFlyCamera();
+	::g_pFlyCamera = new cFlyCamera();
 	::g_pFlyCamera->eye = cameraEye;
+	::g_pFlyCamera->cameraLookAt(cameraTarget);
 	::g_pFlyCamera->movementSpeed = 10.0f;
 
 	// Get the initial time
@@ -180,9 +180,6 @@ int main(void)
 	std::cout << "start loop!" << std::endl;
 
 	createSkyBoxObject();
-	CalcAABBsForMeshModel(::g_map_Mesh["ztarDestroyerMesh"]); //ztarDestroyer
-	positionPlayerColliders("tieInterceptor");
-	pPlayerControl = new playerController(::g_map_GameObjects["tieInterceptor"]);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -286,17 +283,9 @@ int main(void)
 		
 		//pPhysic->IntegrationStep(::g_map_GameObjects, (float)averageDeltaTime);
 		//pPhysic->TestForCollisions(::g_map_GameObjects);
-
 		// ********************** AABB Runtime Stuff ********************************************
-
-		// drawAABBs();
-		//drawAABBAndTrisWherePlayerPresent(::g_map_GameObjects["tieInterceptor"]);
-		//drawPlayerColliders(::g_map_GameObjects["tieInterceptor"]);
-		testCollisions_AABB(::g_map_GameObjects["tieInterceptor"]);
-		IntegrationStep_AAB(::g_map_GameObjects, (float)averageDeltaTime);
-		::g_pFlyCamera->followPlayer(pPlayerControl, cameraFollowPlayer);
-		//::pPlayerControl->drawSelf();
-
+		//testCollisions_AABB(::g_map_GameObjects["tieInterceptor"]);
+		//IntegrationStep_AAB(::g_map_GameObjects, (float)averageDeltaTime);
 		// ********************** AABB Runtime Stuff ********************************************
 		
 		pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
