@@ -80,6 +80,7 @@ public:
 
 	void followPlayer(playerController* cPlayer, bool isFollowON);
 	void watchPlayer(playerController* cPlayer);
+	void cameraLookAt(glm::vec3 target);
 private:
 	// This will lead to direction, etc.
 	glm::quat qOrientation;

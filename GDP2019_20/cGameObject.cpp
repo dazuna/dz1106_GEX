@@ -101,7 +101,6 @@ void cGameObject::setOrientation(glm::quat qAngle)
 // Updates the existing angle
 void cGameObject::updateOrientation(glm::vec3 EulerAngleDegreesXYZ)
 {
-	// Create a quaternion of this angle...
 	glm::vec3 EulerAngleRadians;
 	EulerAngleRadians.x = glm::radians(EulerAngleDegreesXYZ.x);
 	EulerAngleRadians.y = glm::radians(EulerAngleDegreesXYZ.y);
@@ -109,7 +108,6 @@ void cGameObject::updateOrientation(glm::vec3 EulerAngleDegreesXYZ)
 
 	glm::quat angleChange = glm::quat(EulerAngleRadians);
 
-	// ...apply it to the exiting rotation
 	this->m_qRotation *= angleChange;
 }
 
@@ -167,3 +165,4 @@ glm::mat4 cGameObject::getWorldMatrix()
 	// ******* SCALE TRANSFORM *********
 	return matWorld;
 }
+

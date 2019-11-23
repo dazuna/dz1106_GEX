@@ -232,7 +232,15 @@ void cFlyCamera::watchPlayer(playerController* cPlayer)
 	this->qOrientation = orientation;
 	this->m_UpdateAtFromOrientation();
 	this->m_UpdateUpFromOrientation();
+	return;
+}
 
+void cFlyCamera::cameraLookAt(glm::vec3 target)
+{
+	glm::quat orientation = glm::conjugate(glm::toQuat(glm::lookAt(target, this->eye, this->getUpVector())));
+	this->qOrientation = orientation;
+	this->m_UpdateAtFromOrientation();
+	this->m_UpdateUpFromOrientation();
 	return;
 }
 
