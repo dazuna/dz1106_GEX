@@ -54,6 +54,9 @@
     <Filter Include="playerController">
       <UniqueIdentifier>{508ef16c-3212-496e-8596-e5d16befb8ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Commands">
+      <UniqueIdentifier>{61bebe0b-da01-4b7d-b48f-52903fa3d656}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -149,6 +152,12 @@
     <ClCompile Include="playerController\playerController.cpp">
       <Filter>playerController</Filter>
     </ClCompile>
+    <ClCompile Include="cCommands\cMoveTo_AB_time.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="cCommands\cCommandGroupSerial.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -240,6 +249,18 @@
     </ClInclude>
     <ClInclude Include="playerController\playerController.h">
       <Filter>playerController</Filter>
+    </ClInclude>
+    <ClInclude Include="cCommands\cCommandGroupParallel.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="cCommands\cCommandGroupSerial.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="cCommands\cMoveTo_AB_Time.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="cCommands\iCommand.h">
+      <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

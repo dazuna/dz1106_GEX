@@ -312,7 +312,8 @@ void setWindowTitle(std::stringstream* ssTitle)
 		break;
 	case selectedType::SOUND:break;
 	}
-	*ssTitle << " isDroneOn: " << isDroneOn;
+	*ssTitle << "FPS: " << (1 / averageDeltaTime);
+	//*ssTitle << " isDroneOn: " << isDroneOn;
 	//*ssTitle << "   Tgt: " << GLMvec3toString(cameraTarget);
 	//*ssTitle << "   Vis: " << GLMvec3toString(visionVector);
 	//*ssTitle << "   XYZ: " << GLMvec3toString(visionVector);

@@ -34,6 +34,7 @@
 #include "skybox/skybox.h"
 #include "GFLW_callbacks.h"// Keyboard, error, mouse, etc. are now here
 #include "playerController/playerController.h"// playing
+#include "cCommands/cMoveTo_AB_Time.h"
 
 cFlyCamera* g_pFlyCamera = NULL;
 cGameObject* pSkyBox = new cGameObject();
@@ -63,6 +64,7 @@ playerController* pPlayerControl;
 
 // pirateStuff
 double timer = 0.0;
+double averageDeltaTime;
 bool isDroneOn = false;
 bool cameraFollowPlayer = false;
 
@@ -181,9 +183,12 @@ int main(void)
 
 	createSkyBoxObject();
 
+	cGameObject* pSphere = ::g_map_GameObjects["sphere"];
+	//cMoveTo_AB_Time* moveTo = new cMoveTo_AB_Time(pSphere, pSphere->positionXYZ, glm::vec3(20, 20, 0), 10.0f, 4.0f, 4.0f);
+	cMoveTo_AB_Time* moveTo = new cMoveTo_AB_Time(pSphere, pSphere->positionXYZ, glm::vec3(20, 20, 0), 10.0f, 0.0f, 0.0f);
+
 	while (!glfwWindowShouldClose(window))
 	{
-
 		// Get the initial time
 		double currentTime = glfwGetTime();
 		// Frame time... (how many seconds since last frame)
@@ -279,8 +284,10 @@ int main(void)
 		}
 
 		//	Update the objects through physics
-		double averageDeltaTime = avgDeltaTimeThingy.getAverage();
+		averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		
+		if(!moveTo->IsDone())
+			moveTo->Update(averageDeltaTime);
 		//pPhysic->IntegrationStep(::g_map_GameObjects, (float)averageDeltaTime);
 		//pPhysic->TestForCollisions(::g_map_GameObjects);
 		// ********************** AABB Runtime Stuff ********************************************

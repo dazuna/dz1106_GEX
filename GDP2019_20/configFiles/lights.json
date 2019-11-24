@@ -9,7 +9,7 @@
     "lightW": 0.0,
     "name": "daylight1",
     "outerAngle": 48.40000915527344,
-    "positionXYZ": [2000.0, 2000.0, 0.0],
+    "positionXYZ": [2000.0, 2000.0, -1000.0],
     "specular": [1.0, 1.0, 1.0],
     "type": 0.0
   }

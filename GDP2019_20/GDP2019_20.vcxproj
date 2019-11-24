@@ -144,6 +144,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cAABB\PhysicsAABBStuff.cpp" />
+    <ClCompile Include="cCommands\cCommandGroupSerial.cpp" />
+    <ClCompile Include="cCommands\cMoveTo_AB_time.cpp" />
     <ClCompile Include="cFlyCamera\cFlyCamera.cpp" />
     <ClCompile Include="cGameObject.cpp" />
     <ClCompile Include="cLight.cpp" />
@@ -178,6 +180,10 @@
   <ItemGroup>
     <ClInclude Include="cAABB\cAABB.h" />
     <ClInclude Include="cAABB\PhysicsAABBStuff.h" />
+    <ClInclude Include="cCommands\cCommandGroupParallel.h" />
+    <ClInclude Include="cCommands\cCommandGroupSerial.h" />
+    <ClInclude Include="cCommands\cMoveTo_AB_Time.h" />
+    <ClInclude Include="cCommands\iCommand.h" />
     <ClInclude Include="cFlyCamera\cFlyCamera.h" />
     <ClInclude Include="cGameObject.h" />
     <ClInclude Include="cLight.h" />

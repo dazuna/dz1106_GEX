@@ -47,6 +47,7 @@ T randInRange(T min, T max)
 
 extern cFlyCamera* g_pFlyCamera;
 extern std::map<unsigned long long /*ID*/, cAABB*> g_mapAABBs_World;
+extern double averageDeltaTime;
 
 glm::mat4 calculateWorldMatrix(cGameObject* pCurrentObject);
 void DrawObject(glm::mat4 m,cGameObject* pCurrentObject,GLint shaderProgID,cVAOManager* pVAOManager);
