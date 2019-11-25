@@ -74,55 +74,6 @@ void cGameObject::setDebugRenderer(iDebugRenderer* pDebugRenderer)
 //static 
 unsigned int cGameObject::next_uniqueID = 1000;	// Starting at 1000, just because
 
-//glm::quat m_qRotation;		// Orientation as a quaternion
-glm::quat cGameObject::getQOrientation(void)
-{
-	return this->m_qRotation;
-}
-
-// Overwrite the orientation
-void cGameObject::setOrientation(glm::vec3 EulerAngleDegreesXYZ)
-{
-	// c'tor of the glm quaternion converts Euler 
-	//	to quaternion representation. 
-	glm::vec3 EulerAngleRadians;
-	EulerAngleRadians.x = glm::radians(EulerAngleDegreesXYZ.x);
-	EulerAngleRadians.y = glm::radians(EulerAngleDegreesXYZ.y);
-	EulerAngleRadians.z = glm::radians(EulerAngleDegreesXYZ.z);
-
-	this->m_qRotation = glm::quat(EulerAngleRadians);
-}
-
-void cGameObject::setOrientation(glm::quat qAngle)
-{
-	this->m_qRotation = qAngle;
-}
-
-// Updates the existing angle
-void cGameObject::updateOrientation(glm::vec3 EulerAngleDegreesXYZ)
-{
-	glm::vec3 EulerAngleRadians;
-	EulerAngleRadians.x = glm::radians(EulerAngleDegreesXYZ.x);
-	EulerAngleRadians.y = glm::radians(EulerAngleDegreesXYZ.y);
-	EulerAngleRadians.z = glm::radians(EulerAngleDegreesXYZ.z);
-
-	glm::quat angleChange = glm::quat(EulerAngleRadians);
-
-	this->m_qRotation *= angleChange;
-}
-
-void cGameObject::updateOrientation(glm::quat qAngleChange)
-{
-	this->m_qRotation *= qAngleChange;
-}
-
-glm::vec3 cGameObject::getEulerAngle(void)
-{
-	// In glm::gtx (a bunch of helpful things there)
-	glm::vec3 EulerAngle = glm::eulerAngles(this->m_qRotation);
-	EulerAngle = glm::degrees(EulerAngle);
-	return EulerAngle;
-}
 
 void cGameObject::getVecColliders(std::vector<glm::vec3>* vecColliders)
 {
@@ -166,3 +117,53 @@ glm::mat4 cGameObject::getWorldMatrix()
 	return matWorld;
 }
 
+
+// //glm::quat m_qRotation;		// Orientation as a quaternion
+// glm::quat cGameObject::getQOrientation(void)
+// {
+// 	return this->m_qRotation;
+// }
+
+// // Overwrite the orientation
+// void cGameObject::setOrientation(glm::vec3 EulerAngleDegreesXYZ)
+// {
+// 	// c'tor of the glm quaternion converts Euler 
+// 	//	to quaternion representation. 
+// 	glm::vec3 EulerAngleRadians;
+// 	EulerAngleRadians.x = glm::radians(EulerAngleDegreesXYZ.x);
+// 	EulerAngleRadians.y = glm::radians(EulerAngleDegreesXYZ.y);
+// 	EulerAngleRadians.z = glm::radians(EulerAngleDegreesXYZ.z);
+
+// 	this->m_qRotation = glm::quat(EulerAngleRadians);
+// }
+
+// void cGameObject::setOrientation(glm::quat qAngle)
+// {
+// 	this->m_qRotation = qAngle;
+// }
+
+// // Updates the existing angle
+// void cGameObject::updateOrientation(glm::vec3 EulerAngleDegreesXYZ)
+// {
+// 	glm::vec3 EulerAngleRadians;
+// 	EulerAngleRadians.x = glm::radians(EulerAngleDegreesXYZ.x);
+// 	EulerAngleRadians.y = glm::radians(EulerAngleDegreesXYZ.y);
+// 	EulerAngleRadians.z = glm::radians(EulerAngleDegreesXYZ.z);
+
+// 	glm::quat angleChange = glm::quat(EulerAngleRadians);
+
+// 	this->m_qRotation *= angleChange;
+// }
+
+// void cGameObject::updateOrientation(glm::quat qAngleChange)
+// {
+// 	this->m_qRotation *= qAngleChange;
+// }
+
+// glm::vec3 cGameObject::getEulerAngle(void)
+// {
+// 	// In glm::gtx (a bunch of helpful things there)
+// 	glm::vec3 EulerAngle = glm::eulerAngles(this->m_qRotation);
+// 	EulerAngle = glm::degrees(EulerAngle);
+// 	return EulerAngle;
+// }

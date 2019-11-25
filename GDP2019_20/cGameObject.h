@@ -10,6 +10,7 @@
 
 // NOTE: We are including the INTERFACE, not the actual renderer
 #include "DebugRenderer/iDebugRenderer.h"
+#include "bRotatable/bRotatable.hpp"
 
 enum eShapeTypes
 {
@@ -21,7 +22,7 @@ enum eShapeTypes
 	UNKNOWN
 };
 
-class cGameObject
+class cGameObject : public bRotatable
 {
 public:
 	cGameObject();
@@ -63,14 +64,14 @@ public:
 	bool disableDepthBufferWrite;
 
 public:
-	glm::quat getQOrientation(void);
-	// Overwrite the orientation
-	void setOrientation(glm::vec3 EulerAngleDegreesXYZ);
-	void setOrientation(glm::quat qAngle);
-	// Updates the existing angle
-	void updateOrientation(glm::vec3 EulerAngleDegreesXYZ);
-	void updateOrientation(glm::quat qAngle);
-	glm::vec3 getEulerAngle(void);
+	// glm::quat getQOrientation(void);
+	// // Overwrite the orientation
+	// void setOrientation(glm::vec3 EulerAngleDegreesXYZ);
+	// void setOrientation(glm::quat qAngle);
+	// // Updates the existing angle
+	// void updateOrientation(glm::vec3 EulerAngleDegreesXYZ);
+	// void updateOrientation(glm::quat qAngle);
+	// glm::vec3 getEulerAngle(void);
 	void getVecColliders(std::vector<glm::vec3>* vecColliders);
 	void setVecCollider(std::vector<glm::vec3> vecColliders);
 	glm::mat4 getWorldMatrix();

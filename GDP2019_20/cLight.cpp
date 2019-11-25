@@ -22,7 +22,7 @@ cLight::cLight(cLight* newLight)
 	this->LinearAtten = newLight->LinearAtten;
     this->QuadraticAtten = newLight->QuadraticAtten;
     this->diffuse = newLight->diffuse;
-    this->direction = newLight->direction;
+	this->setOrientation(newLight->getQOrientation());
     this->innerAngle = newLight->innerAngle;
     this->lightSwitch = newLight->lightSwitch;
     this->lightW = newLight->lightW;
@@ -57,7 +57,7 @@ void cLight::setUniforms()
 	glUniform4f(ULposition,positionXYZ.x,positionXYZ.y,positionXYZ.z,1.0f);
 	glUniform4f(ULdiffuse,diffuse.r,diffuse.g,diffuse.b, 1.0f);	// White
 	glUniform4f(ULspecular,specular.r,specular.g,specular.b, 1.0f);	// White
-	glUniform4f(ULdirection,direction.r,direction.g,direction.b, 1.0f);	// White
+	glUniform4f(ULdirection, getCurrentAT().x, getCurrentAT().y, getCurrentAT().z, 1.0f);	// White
 	glUniform4f(ULparam1, type, innerAngle, outerAngle, 1.0f);
 	glUniform4f(ULparam2, lightSwitch, 0.0f, 0.0f, 1.0f);
 	glUniform4f(ULatten, 0.0f,  // constant attenuation

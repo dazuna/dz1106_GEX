@@ -7,8 +7,9 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp>	// glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
+#include "bRotatable/bRotatable.hpp"
 
-class cLight
+class cLight : public bRotatable
 {
 private:
 	/* Shader Stuff */
@@ -34,7 +35,7 @@ public:
 	float QuadraticAtten = 0.0000001f;
 	glm::vec3 diffuse = glm::vec3(1.0f, 1.0f, 1.0f);
 	glm::vec3 specular = glm::vec3(1.0f, 1.0f, 1.0f);
-	glm::vec3 direction = glm::vec3(1.0f, 1.0f, 1.0f);
+	//glm::vec3 direction = glm::vec3(1.0f, 1.0f, 1.0f);
 	// param1 x = lightType, y = inner angle, z = outer angle, w = TBD
 	// 0 = pointlight // 1 = spotlight // 2 = directionallight
 	float type = 0.0f;
