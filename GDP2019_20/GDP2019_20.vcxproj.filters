@@ -158,9 +158,6 @@
     <ClCompile Include="playerController\playerController.cpp">
       <Filter>playerController</Filter>
     </ClCompile>
-    <ClCompile Include="cCommands\cMoveTo_AB_time.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
     <ClCompile Include="cCommands\cCommandGroupSerial.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
@@ -177,6 +174,12 @@
       <Filter>Commands</Filter>
     </ClCompile>
     <ClCompile Include="cCommands\cOrientTo_Time.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="cCommands\cMoveTo_AB_Time.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="cCommands\cFollowObject.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
   </ItemGroup>
@@ -293,6 +296,9 @@
       <Filter>Commands</Filter>
     </ClInclude>
     <ClInclude Include="cCommands\cOrientTo_Time.hpp">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="cCommands\cFollowObject.hpp">
       <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>

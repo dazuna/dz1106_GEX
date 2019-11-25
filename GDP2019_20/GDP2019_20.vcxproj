@@ -147,7 +147,8 @@
     <ClCompile Include="cAABB\PhysicsAABBStuff.cpp" />
     <ClCompile Include="cCommands\cCommandGroupParallel.cpp" />
     <ClCompile Include="cCommands\cCommandGroupSerial.cpp" />
-    <ClCompile Include="cCommands\cMoveTo_AB_time.cpp" />
+    <ClCompile Include="cCommands\cFollowObject.cpp" />
+    <ClCompile Include="cCommands\cMoveTo_AB_Time.cpp" />
     <ClCompile Include="cCommands\cOrientTo_Time.cpp" />
     <ClCompile Include="cCommands\cRotateTo_Time.cpp" />
     <ClCompile Include="cFlyCamera\cFlyCamera.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="cAABB\PhysicsAABBStuff.h" />
     <ClInclude Include="cCommands\cCommandGroupParallel.h" />
     <ClInclude Include="cCommands\cCommandGroupSerial.h" />
+    <ClInclude Include="cCommands\cFollowObject.hpp" />
     <ClInclude Include="cCommands\cMoveTo_AB_Time.h" />
     <ClInclude Include="cCommands\cOrientTo_Time.hpp" />
     <ClInclude Include="cCommands\cRotateTo_Time.hpp" />
