@@ -7,7 +7,7 @@
 class cCommandGroupParallel : public iCommand
 {
 public: 
-	cCommandGroupParallel();
+	cCommandGroupParallel(std::string name, std::string type);
 	virtual void SetGameObject(cGameObject* pGO);
 	virtual void Update(double deltaTime);
 	virtual bool IsDone(void);
@@ -18,8 +18,7 @@ public:
     virtual void setType(std::string type) { this->m_Type = type; }
 	virtual std::string getType(void) { return this->m_Type; }
 
-	void AddCommandSerial(iCommand* pCommand);
-	void AddCommandsParallel(std::vector<iCommand*> vec_pCommands);
+	void AddCommandParallel(iCommand* pCommand);
 
 private:
 	std::string m_Name;
