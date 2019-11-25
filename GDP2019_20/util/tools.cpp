@@ -1,5 +1,13 @@
 #include "tools.h"
 
+static glm::vec3 white = glm::vec3(1, 1, 1);
+static glm::vec3 red = glm::vec3(1, 0, 0);
+static glm::vec3 green = glm::vec3(0, 1, 0);
+static glm::vec3 blue = glm::vec3(0, 0, 1);
+static glm::vec3 cyan = glm::vec3(0, 1, 1);
+static glm::vec3 yellow = glm::vec3(1, 1, 0);
+
+
 glm::mat4 calculateWorldMatrix(cGameObject* pCurrentObject)
 {
 	glm::mat4 matWorld = glm::mat4(1.0f);
@@ -173,53 +181,53 @@ void drawLightXYZ(cDebugRenderer* pDebugRenderer)
 	pDebugRenderer->addLine(
 		selectedLight->second.positionXYZ,
 		(selectedLight->second.positionXYZ + glm::vec3(2.0f, 0.0f, 0.0f)),
-		glm::vec3(1.0f, 1.0f, 1.0f));
+		white);
 	pDebugRenderer->addLine(
 		selectedLight->second.positionXYZ,
 		(selectedLight->second.positionXYZ + glm::vec3(0.0f, 2.0f, 0.0f)),
-		glm::vec3(1.0f, 1.0f, 1.0f));
+		white);
 	pDebugRenderer->addLine(
 		selectedLight->second.positionXYZ,
 		(selectedLight->second.positionXYZ + glm::vec3(0.0f, 0.0f, 2.0f)),
-		glm::vec3(1.0f, 1.0f, 1.0f));
+		white);
 	// draw pyramid on top of object
 	// x triangle
 	pDebugRenderer->addTriangle(
 		selectedLight->second.positionXYZ + glm::vec3(0.0f, 3.0f, 0.0f),
 		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
 		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
+		white);
 	// z triangle
 	pDebugRenderer->addTriangle(
 		selectedLight->second.positionXYZ + glm::vec3(0.0f, 3.0f, 0.0f),
 		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
 		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
+		white);
 	// square
 	pDebugRenderer->addLine(
 		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
 		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
+		white);
 	pDebugRenderer->addLine(
 		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
 		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
+		white);
 	pDebugRenderer->addLine(
 		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
 		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
+		white);
 	pDebugRenderer->addLine(
 		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
 		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
+		white);
 	if (selectedLight->second.type == 1.0f)
 	{
-		glm::vec3 spotNormal = selectedLight->second.direction;
+		glm::vec3 spotNormal = selectedLight->second.getCurrentAT();
 		spotNormal = glm::normalize(spotNormal);
 		pDebugRenderer->addLine(
 			selectedLight->second.positionXYZ,
-			selectedLight->second.positionXYZ + spotNormal,
-			glm::vec3(1.0f, 1.0f, 1.0f));
+			selectedLight->second.positionXYZ + (spotNormal*2.0f),
+			yellow);
 	}
 }
 
@@ -228,45 +236,54 @@ void drawGameObjectXYZ(cDebugRenderer* pDebugRenderer)
 	pDebugRenderer->addLine(
 		selectedGameObject->second->positionXYZ,
 		(selectedGameObject->second->positionXYZ + glm::vec3(2.0f, 0.0f, 0.0f)),
-		glm::vec3(1.0f, 1.0f, 1.0f));
+		white);
 	pDebugRenderer->addLine(
 		selectedGameObject->second->positionXYZ,
 		(selectedGameObject->second->positionXYZ + glm::vec3(0.0f, 2.0f, 0.0f)),
-		glm::vec3(1.0f, 1.0f, 1.0f));
+		white);
 	pDebugRenderer->addLine(
 		selectedGameObject->second->positionXYZ,
 		(selectedGameObject->second->positionXYZ + glm::vec3(0.0f, 0.0f, 2.0f)),
-		glm::vec3(1.0f, 1.0f, 1.0f));
+		white);
 	// draw pyramid on top of object
 	// x triangle
 	pDebugRenderer->addTriangle(
 		selectedGameObject->second->positionXYZ + glm::vec3(0.0f, 3.0f, 0.0f),
 		selectedGameObject->second->positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
 		selectedGameObject->second->positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
+		white);
 	// z triangle
 	pDebugRenderer->addTriangle(
 		selectedGameObject->second->positionXYZ + glm::vec3(0.0f, 3.0f, 0.0f),
 		selectedGameObject->second->positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
 		selectedGameObject->second->positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
+		white);
 	// square
 	pDebugRenderer->addLine(
 		selectedGameObject->second->positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
 		selectedGameObject->second->positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
+		white);
 	pDebugRenderer->addLine(
 		selectedGameObject->second->positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
 		selectedGameObject->second->positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
+		white);
 	pDebugRenderer->addLine(
 		selectedGameObject->second->positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
 		selectedGameObject->second->positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
+		white);
 	pDebugRenderer->addLine(
 		selectedGameObject->second->positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
 		selectedGameObject->second->positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
-		glm::vec3(1.0f, 1.0f, 1.0f));
+		white);
+	// AT & UP
+	pDebugRenderer->addLine(
+		selectedGameObject->second->positionXYZ,
+		(selectedGameObject->second->positionXYZ + (selectedGameObject->second->getCurrentAT()*3.0f)),
+		cyan);
+	pDebugRenderer->addLine(
+		selectedGameObject->second->positionXYZ,
+		(selectedGameObject->second->positionXYZ + (selectedGameObject->second->getCurrentUP() * 3.0f)),
+		yellow);
 }
 
 void drawNormalsXYZ(cDebugRenderer* pDebugRenderer)
@@ -312,7 +329,7 @@ void setWindowTitle(std::stringstream* ssTitle)
 		break;
 	case selectedType::SOUND:break;
 	}
-	*ssTitle << "FPS: " << (1 / averageDeltaTime);
+	*ssTitle << " || FPS: " << (int)(1 / averageDeltaTime);
 	//*ssTitle << " isDroneOn: " << isDroneOn;
 	//*ssTitle << "   Tgt: " << GLMvec3toString(cameraTarget);
 	//*ssTitle << "   Vis: " << GLMvec3toString(visionVector);

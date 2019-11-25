@@ -33,8 +33,12 @@
 #include "cFlyCamera/cFlyCamera.h"
 #include "skybox/skybox.h"
 #include "GFLW_callbacks.h"// Keyboard, error, mouse, etc. are now here
-#include "playerController/playerController.h"// playing
-#include "cCommands/cMoveTo_AB_Time.h"
+//#include "playerController/playerController.h" // playing
+#include "cCommands/cMoveTo_AB_Time.h" //
+#include "cCommands/cCommandGroupSerial.h"
+#include "cCommands/cCommandGroupParallel.h"
+#include "cCommands/cRotateTo_Time.hpp"
+#include "cCommands/cOrientTo_Time.hpp"
 
 cFlyCamera* g_pFlyCamera = NULL;
 cGameObject* pSkyBox = new cGameObject();
@@ -184,8 +188,27 @@ int main(void)
 	createSkyBoxObject();
 
 	cGameObject* pSphere = ::g_map_GameObjects["sphere"];
-	//cMoveTo_AB_Time* moveTo = new cMoveTo_AB_Time(pSphere, pSphere->positionXYZ, glm::vec3(20, 20, 0), 10.0f, 4.0f, 4.0f);
-	cMoveTo_AB_Time* moveTo = new cMoveTo_AB_Time(pSphere, pSphere->positionXYZ, glm::vec3(20, 20, 0), 10.0f, 0.0f, 0.0f);
+	cGameObject* pSphere2 = ::g_map_GameObjects["sphere2"];
+	cGameObject* pTie = ::g_map_GameObjects["cube1"];
+
+	cMoveTo_AB_Time* moveTo = new cMoveTo_AB_Time(pSphere, pSphere->positionXYZ, glm::vec3(20, 20, 0), 10.0f, 2.0f, 2.0f);
+	cMoveTo_AB_Time* moveTo2 = new cMoveTo_AB_Time(pSphere2, pSphere2->positionXYZ, glm::vec3(-20, -20, 0), 10.0f, 2.0f, 2.0f);
+	cRotateTo_Time* rollTo = new cRotateTo_Time("roll1", "roll1", pTie, glm::vec3(90, 0, 0), 5.0f);
+	cRotateTo_Time* rollTo2 = new cRotateTo_Time("roll2", "roll2", pTie, glm::vec3(0, 90, 0), 5.0f);
+	cOrientTo_Time* oriTo = new cOrientTo_Time("ori1", "ori1", pTie, glm::vec3(1,0,1), 5.0f);
+
+
+	cCommandGroupSerial* CGSerial = new cCommandGroupSerial("thoseMoves", "movingCoolSerial");
+	cCommandGroupParallel* CGParallel = new cCommandGroupParallel("thoseMoves", "movingCoolParallel");
+	//CGSerial->AddCommandSerial(moveTo);
+	//CGSerial->AddCommandSerial(moveTo2);
+	//CGSerial->AddCommandSerial(rollTo);
+	CGSerial->AddCommandSerial(oriTo);
+	
+	//CGParallel->AddCommandParallel(moveTo);
+	//CGParallel->AddCommandParallel(moveTo2);
+	//CGParallel->AddCommandParallel(rollTo);
+
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -235,7 +258,7 @@ int main(void)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		for (std::map<std::string, cLight>::iterator itLight = ::g_map_pLights.begin();
-			itLight != ::g_map_pLights.end();itLight++)
+			itLight != ::g_map_pLights.end(); itLight++)
 		{
 			itLight->second.setUniforms();
 		}
@@ -286,8 +309,10 @@ int main(void)
 		//	Update the objects through physics
 		averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		
-		if(!moveTo->IsDone())
-			moveTo->Update(averageDeltaTime);
+		if(!CGParallel->IsDone())
+			CGParallel->Update(averageDeltaTime);
+		if(!CGSerial->IsDone())
+			CGSerial->Update(averageDeltaTime);
 		//pPhysic->IntegrationStep(::g_map_GameObjects, (float)averageDeltaTime);
 		//pPhysic->TestForCollisions(::g_map_GameObjects);
 		// ********************** AABB Runtime Stuff ********************************************

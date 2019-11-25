@@ -272,8 +272,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			switch (cursorType)
 			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecZ1 * 5.0f)); break;
-			case selectedType::LIGHT:		theSelectedL->direction += (vecZ1*0.1f);	break;
+			case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecZ1* -5.0f)); break;
+			case selectedType::LIGHT:		theSelectedL->updateOrientation((vecZ1 * -5.0f));  break;
 			case selectedType::SOUND:		break;
 			}
 		}
@@ -282,7 +282,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			switch (cursorType)
 			{
 			case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecZ1* 5.0f)); break;
-			case selectedType::LIGHT:		theSelectedL->direction -= (vecZ1*0.1f);	break;
+			case selectedType::LIGHT:		theSelectedL->updateOrientation((vecZ1 * 5.0f)); break;
 			case selectedType::SOUND:		break;
 			}
 		}
@@ -291,8 +291,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			switch (cursorType)
 			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecY1* 5.0f)); break;
-			case selectedType::LIGHT:		theSelectedL->direction += (vecY1*0.1f);	break;
+			case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecY1* -5.0f)); break;
+			case selectedType::LIGHT:		theSelectedL->updateOrientation((vecY1 * -5.0f)); break;
 			case selectedType::SOUND:		break;
 			}
 		}
@@ -301,7 +301,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			switch (cursorType)
 			{
 			case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecY1* 5.0f)); break;
-			case selectedType::LIGHT:		theSelectedL->direction -= (vecY1*0.1f);	break;
+			case selectedType::LIGHT:		theSelectedL->updateOrientation((vecY1 * 5.0f)); break;
 			case selectedType::SOUND:		break;
 			}
 		}
@@ -311,7 +311,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			switch (cursorType)
 			{
 			case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecX1* 5.0f)); break;
-			case selectedType::LIGHT:		theSelectedL->direction -= (vecX1*0.1f);	break;
+			case selectedType::LIGHT:		theSelectedL->updateOrientation((vecX1 * 5.0f)); break;
 			case selectedType::SOUND:		break;
 			}
 		}
@@ -319,8 +319,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			switch (cursorType)
 			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecX1* 5.0f)); break;
-			case selectedType::LIGHT:		theSelectedL->direction += (vecX1*0.1f);	break;
+			case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecX1* -5.0f)); break;
+			case selectedType::LIGHT:		theSelectedL->updateOrientation((vecX1 * -5.0f)); break;
 			case selectedType::SOUND:		break;
 			}
 		}

@@ -68,8 +68,8 @@ bool JSONLoadLights(std::map<std::string, cLight>* g_map_pLights, GLuint shadPro
 		tempLight.LinearAtten = LinearAtten;
 		tempLight.QuadraticAtten = QuadraticAtten;
 		tempLight.diffuse = diffuse;
-		tempLight.specular = specular	;
-		tempLight.direction = direction;
+		tempLight.specular = specular;
+		tempLight.setAT(direction);
 		tempLight.type = type;
 		tempLight.innerAngle = innerAngle;
 		tempLight.outerAngle = outerAngle;
@@ -237,9 +237,9 @@ bool JSONSaveLights(std::map<std::string, cLight>* g_map_pLights)
 		jsonObject["specular"][0] = index->second.specular.x;
 		jsonObject["specular"][1] = index->second.specular.y;
 		jsonObject["specular"][2] = index->second.specular.z;
-		jsonObject["direction"][0] = index->second.direction.x;
-		jsonObject["direction"][1] = index->second.direction.y;
-		jsonObject["direction"][2] = index->second.direction.z;
+		jsonObject["direction"][0] = index->second.getEulerAngle().x;
+		jsonObject["direction"][1] = index->second.getEulerAngle().y;
+		jsonObject["direction"][2] = index->second.getEulerAngle().z;
 		jsonObject["type"] = index->second.type;
 		jsonObject["innerAngle"] = index->second.innerAngle;
 		jsonObject["outerAngle"] = index->second.outerAngle;

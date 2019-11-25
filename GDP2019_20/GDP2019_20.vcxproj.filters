@@ -57,6 +57,12 @@
     <Filter Include="Commands">
       <UniqueIdentifier>{61bebe0b-da01-4b7d-b48f-52903fa3d656}</UniqueIdentifier>
     </Filter>
+    <Filter Include="bRotatable">
+      <UniqueIdentifier>{7d4292ca-5792-46a2-a2f5-c7428a494b9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="quaternion_utils">
+      <UniqueIdentifier>{6526f2c0-e57a-4e6d-ae2a-4e15f75e3f5a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -156,6 +162,21 @@
       <Filter>Commands</Filter>
     </ClCompile>
     <ClCompile Include="cCommands\cCommandGroupSerial.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="cCommands\cCommandGroupParallel.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="bRotatable\bRotatable.cpp">
+      <Filter>bRotatable</Filter>
+    </ClCompile>
+    <ClCompile Include="quaternion_utils\quaternion_utils.cpp">
+      <Filter>quaternion_utils</Filter>
+    </ClCompile>
+    <ClCompile Include="cCommands\cRotateTo_Time.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="cCommands\cOrientTo_Time.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
   </ItemGroup>
@@ -260,6 +281,18 @@
       <Filter>Commands</Filter>
     </ClInclude>
     <ClInclude Include="cCommands\iCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="bRotatable\bRotatable.hpp">
+      <Filter>bRotatable</Filter>
+    </ClInclude>
+    <ClInclude Include="quaternion_utils\quaternion_utils.hpp">
+      <Filter>quaternion_utils</Filter>
+    </ClInclude>
+    <ClInclude Include="cCommands\cRotateTo_Time.hpp">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="cCommands\cOrientTo_Time.hpp">
       <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>

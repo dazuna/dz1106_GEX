@@ -12,5 +12,19 @@
     "positionXYZ": [2000.0, 2000.0, -1000.0],
     "specular": [1.0, 1.0, 1.0],
     "type": 0.0
+  },
+  {
+    "LinearAtten": 0.002,
+    "QuadraticAtten": 0.003,
+    "diffuse": [1.0, 1.0, 1.0],
+    "direction": [0,-1,0],
+    "innerAngle": 20,
+    "lightSwitch": 0.0,
+    "lightW": 0.0,
+    "name": "spotlight1",
+    "outerAngle": 30,
+    "positionXYZ": [0,0,0],
+    "specular": [1.0, 1.0, 1.0],
+    "type": 1.0
   }
 ]

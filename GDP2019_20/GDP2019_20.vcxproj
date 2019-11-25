@@ -143,9 +143,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bRotatable\bRotatable.cpp" />
     <ClCompile Include="cAABB\PhysicsAABBStuff.cpp" />
+    <ClCompile Include="cCommands\cCommandGroupParallel.cpp" />
     <ClCompile Include="cCommands\cCommandGroupSerial.cpp" />
     <ClCompile Include="cCommands\cMoveTo_AB_time.cpp" />
+    <ClCompile Include="cCommands\cOrientTo_Time.cpp" />
+    <ClCompile Include="cCommands\cRotateTo_Time.cpp" />
     <ClCompile Include="cFlyCamera\cFlyCamera.cpp" />
     <ClCompile Include="cGameObject.cpp" />
     <ClCompile Include="cLight.cpp" />
@@ -168,6 +172,7 @@
     <ClCompile Include="Particle\cParticleEmitter.cpp" />
     <ClCompile Include="PhysicsStuff.cpp" />
     <ClCompile Include="playerController\playerController.cpp" />
+    <ClCompile Include="quaternion_utils\quaternion_utils.cpp" />
     <ClCompile Include="skybox\skybox.cpp" />
     <ClCompile Include="TextureManager\C24BitBMPpixel.cpp" />
     <ClCompile Include="TextureManager\cBasicTextureManager.cpp" />
@@ -178,11 +183,14 @@
     <ClCompile Include="util\tools.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bRotatable\bRotatable.hpp" />
     <ClInclude Include="cAABB\cAABB.h" />
     <ClInclude Include="cAABB\PhysicsAABBStuff.h" />
     <ClInclude Include="cCommands\cCommandGroupParallel.h" />
     <ClInclude Include="cCommands\cCommandGroupSerial.h" />
     <ClInclude Include="cCommands\cMoveTo_AB_Time.h" />
+    <ClInclude Include="cCommands\cOrientTo_Time.hpp" />
+    <ClInclude Include="cCommands\cRotateTo_Time.hpp" />
     <ClInclude Include="cCommands\iCommand.h" />
     <ClInclude Include="cFlyCamera\cFlyCamera.h" />
     <ClInclude Include="cGameObject.h" />
@@ -206,6 +214,7 @@
     <ClInclude Include="Particle\cParticleEmitter.h" />
     <ClInclude Include="PhysicsStuff.h" />
     <ClInclude Include="playerController\playerController.h" />
+    <ClInclude Include="quaternion_utils\quaternion_utils.hpp" />
     <ClInclude Include="skybox\skybox.h" />
     <ClInclude Include="TextureManager\C24BitBMPpixel.h" />
     <ClInclude Include="TextureManager\cBasicTextureManager.h" />
