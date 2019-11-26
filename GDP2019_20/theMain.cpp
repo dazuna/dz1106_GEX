@@ -40,6 +40,7 @@
 #include "cCommands/cRotateTo_Time.hpp"
 #include "cCommands/cOrientTo_Time.hpp"
 #include "cCommands/cFollowObject.hpp"
+#include "cCommands/cBezierCurve.hpp"
 
 cFlyCamera* g_pFlyCamera = NULL;
 cGameObject* pSkyBox = new cGameObject();
@@ -192,14 +193,14 @@ int main(void)
 	cGameObject* pSphere2 = ::g_map_GameObjects["sphere2"];
 	cGameObject* pTie = ::g_map_GameObjects["cube1"];
 
-	cMoveTo_AB_Time* moveTo = new cMoveTo_AB_Time(pSphere, pSphere->positionXYZ, glm::vec3(200, 200, 0), 30.0f, 2.0f, 2.0f);
+	cMoveTo_AB_Time* moveTo = new cMoveTo_AB_Time(pSphere, pSphere->positionXYZ, glm::vec3(20, 20, 0), 20.0f, 2.0f, 2.0f);
 	cMoveTo_AB_Time* moveTo2 = new cMoveTo_AB_Time(pSphere2, pSphere2->positionXYZ, glm::vec3(-20, -20, 0), 10.0f, 2.0f, 2.0f);
 	cRotateTo_Time* rollTo = new cRotateTo_Time("roll1", "roll1", pTie, glm::vec3(90, 0, 0), 5.0f);
 	cRotateTo_Time* rollTo2 = new cRotateTo_Time("roll2", "roll2", pTie, glm::vec3(0, 90, 0), 5.0f);
 	cOrientTo_Time* oriTo = new cOrientTo_Time("ori1", "ori1", pTie, glm::vec3(1,0,1), 5.0f);
 	//cFollowObject* follow = new cFollowObject("foll1", "foll1", &(pSphere->positionXYZ), &(pTie->positionXYZ), 50.0f, glm::vec3(0, 5, -2), 10.0f, 1.0f, 20.0f);
-	cFollowObject* follow = new cFollowObject("foll1", "foll1", &(::g_pFlyCamera->eye), &(pSphere->positionXYZ), 10.0f, glm::vec3(0, 5, -20), 10.0f, 1.0f, 20.0f);
-
+	cFollowObject* follow = new cFollowObject("foll1", "foll1", &(pSphere2->positionXYZ), &(pSphere->positionXYZ), 50.0f, glm::vec3(0, 5, -20), 10.0f, 1.0f, 20.0f);
+	cBezierCurve* bezier = new cBezierCurve("bez1", "bez1", &(pSphere2->positionXYZ), pSphere2->positionXYZ, glm::vec3(-8, 10, 0), glm::vec3(0, 20, 5), 5.0f);
 
 	cCommandGroupSerial* CGSerial = new cCommandGroupSerial("thoseMoves", "movingCoolSerial");
 	cCommandGroupParallel* CGParallel = new cCommandGroupParallel("thoseMoves", "movingCoolParallel");
@@ -211,8 +212,9 @@ int main(void)
 	
 	CGParallel->AddCommandParallel(moveTo);
 	//CGParallel->AddCommandParallel(moveTo2);
-	//CGParallel->AddCommandParallel(rollTo);
+	CGParallel->AddCommandParallel(rollTo);
 	CGParallel->AddCommandParallel(follow);
+	CGParallel->AddCommandParallel(bezier);
 
 	while (!glfwWindowShouldClose(window))
 	{

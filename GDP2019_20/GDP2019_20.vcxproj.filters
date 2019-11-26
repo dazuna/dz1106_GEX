@@ -182,6 +182,9 @@
     <ClCompile Include="cCommands\cFollowObject.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
+    <ClCompile Include="cCommands\cBezierCurve.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -299,6 +302,9 @@
       <Filter>Commands</Filter>
     </ClInclude>
     <ClInclude Include="cCommands\cFollowObject.hpp">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="cCommands\cBezierCurve.hpp">
       <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>
