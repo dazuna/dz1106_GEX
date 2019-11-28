@@ -4,7 +4,10 @@
 class cRotateTo_Time : public iCommand
 {
 public:
-	cRotateTo_Time(std::string name, std::string type, cGameObject* pGO,glm::vec3 EulerAngles, float timeTR);
+	cRotateTo_Time(std::string name, std::string type, cGameObject* pGO,
+		glm::vec3 EulerAngles, float timeTR);
+	cRotateTo_Time(std::string name, std::string type, cGameObject* pGO, 
+		glm::vec3 EulerAngles, float timeTR, int easeIn, int easeOut);
 	virtual void SetGameObject(cGameObject* pGO);
 	virtual void Update(double deltaTime);
 	virtual bool IsDone(void);
@@ -18,7 +21,7 @@ public:
 private:
 
 	// Flag to see if update has been called once
-	bool m_UpdateHasBeeCalled;
+	bool m_UpdateHasBeenCalled;
 	std::string m_Type;
 	static unsigned int next_uniqueID;
 	unsigned int m_uniqueID;
@@ -31,5 +34,8 @@ private:
 	glm::quat m_rotationalSpeed;		// Like velocity
 	float m_TimeToRotate;
 
-	double m_TimeElapsed;
+	float m_easeIn, m_easeOut,
+		m_easeOutBegin, m_deltaRotation;
+	glm::quat m_firstEaseOutRotation;
+	double m_timer;
 };
