@@ -6,8 +6,9 @@ class cBezierCurve : public iCommand
 public:
 	cBezierCurve(std::string name, std::string type,
 		glm::vec3* itemToMove,
-		glm::vec3 startPos, glm::vec3 endPos, 
-		glm::vec3 ctlPos, float timeToMove);
+		glm::vec3 startPos, glm::vec3 endPos,
+		glm::vec3 ctlPos, float timeToMove,
+		float easeIn, float easeOut);
 	virtual void SetGameObject(cGameObject* pGO);
 	virtual void Update(double deltaTime);
 	virtual bool IsDone(void);
@@ -27,6 +28,11 @@ private:
 
 	float m_timer;
 	float m_TimeToCurve;
+	float m_easeIn;
+	float m_easeOut;
+	float m_easeOutBegin;
+	float max_Vel;
+	float t;
 
 	glm::vec3* m_itemToMove;
 	glm::vec3 m_startPos;
