@@ -42,6 +42,7 @@
 #include "cCommands/cFollowObject.hpp"
 #include "cCommands/cBezierCurve.hpp"
 #include "cCommands/cTrigger.hpp"
+#include "cLuaBrain/cLuaBrain.h"
 
 cFlyCamera* g_pFlyCamera = NULL;
 cGameObject* pSkyBox = new cGameObject();
@@ -67,6 +68,7 @@ cDebugRenderer* pDebugRenderer = new cDebugRenderer();
 cBasicTextureManager* pTextureManager = NULL;
 extern std::map<unsigned long long /*ID*/, cAABB*> g_mapAABBs_World;
 playerController* pPlayerControl;
+cLuaBrain* p_LuaScripts;
 //extern std::map<unsigned long long /*ID*/, cAABB*> g_vecAABBs_World;
 
 // pirateStuff
@@ -213,12 +215,14 @@ int main(void)
 	//CGSerial->AddCommandSerial(oriTo);
 	//CGSerial->AddCommandSerial(triggs);
 
-	
 	//CGParallel->AddCommandParallel(moveTo);
 	//CGParallel->AddCommandParallel(moveTo2);
 	//CGParallel->AddCommandParallel(rollTo);
 	//CGParallel->AddCommandParallel(follow);
-	CGParallel->AddCommandParallel(bezier);
+	//CGParallel->AddCommandParallel(bezier);
+
+	::p_LuaScripts = new cLuaBrain();
+	::p_LuaScripts->LoadScript("./cLuaBrain/script.lua");
 
 	while (!glfwWindowShouldClose(window))
 	{

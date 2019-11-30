@@ -63,6 +63,9 @@
     <Filter Include="quaternion_utils">
       <UniqueIdentifier>{6526f2c0-e57a-4e6d-ae2a-4e15f75e3f5a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cLuaBrain">
+      <UniqueIdentifier>{0a456b4d-3ac2-48a1-b980-5eb370b054f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -188,6 +191,12 @@
     <ClCompile Include="cCommands\cTrigger.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
+    <ClCompile Include="cLuaBrain\cLuaBrain.cpp">
+      <Filter>cLuaBrain</Filter>
+    </ClCompile>
+    <ClCompile Include="cLuaBrain\cLuaToCommand.cpp">
+      <Filter>cLuaBrain</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -312,6 +321,12 @@
     </ClInclude>
     <ClInclude Include="cCommands\cTrigger.hpp">
       <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="cLuaBrain\cLuaBrain.h">
+      <Filter>cLuaBrain</Filter>
+    </ClInclude>
+    <ClInclude Include="cLuaBrain\cLuaToCommand.hpp">
+      <Filter>cLuaBrain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
