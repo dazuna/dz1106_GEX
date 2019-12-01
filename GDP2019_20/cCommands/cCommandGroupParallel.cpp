@@ -34,7 +34,15 @@ void cCommandGroupParallel::Update(double deltaTime)
 bool cCommandGroupParallel::IsDone(void)
 {
 	if (this->vecCommands.empty()) { return true; }
-	return false;
+
+	bool allDone = true;
+	std::vector< iCommand* >::iterator itCmds;
+	for (itCmds = this->vecCommands.begin(); itCmds != this->vecCommands.end(); itCmds++)
+	{
+		iCommand* pCmd = *itCmds;
+		allDone &= pCmd->IsDone();
+	}
+	return allDone;
 }
 
 void cCommandGroupParallel::AddCommandParallel(iCommand* pCommand)

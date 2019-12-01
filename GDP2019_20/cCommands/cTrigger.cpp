@@ -25,7 +25,7 @@ cTrigger::cTrigger(std::string name, std::string type,
 void cTrigger::Update(double deltaTime)
 {
 	float distance = glm::distance(this->m_position,*(this->m_target));
-	std::cout << "dist: " << distance << std::endl;
+	//std::cout << "dist: " << distance << std::endl;
 	if(distance <= this->m_radius)
 	{
 		this->m_isTriggerOn = true;
@@ -35,6 +35,7 @@ void cTrigger::Update(double deltaTime)
 		this->m_theCommand->Update(deltaTime);
 		if(this->m_theCommand->IsDone())
 		{
+			std::cout << "trigger is done!!" << std::endl;
 			this->m_isTriggerOn = false;
 		}
 	}
@@ -46,7 +47,15 @@ bool cTrigger::IsDone(void)
 {
 	if(!this->m_isTriggerOn)
 	{
-		if (this->m_timer >= this->m_TimeToExist) {return true;}
+		// std::cout << "trigger is off" 
+		// << " timer: " << this->m_timer
+		// << " timeToLive: " << this->m_TimeToExist
+		// << std::endl;
+		if (this->m_timer >= this->m_TimeToExist) 
+		{
+			std::cout << "trigger finished" << std::endl;
+			return true;
+		}
 		return false;
 	}
 	else
