@@ -151,6 +151,7 @@
     <ClCompile Include="cCommands\cFollowObject.cpp" />
     <ClCompile Include="cCommands\cMoveTo_AB_Time.cpp" />
     <ClCompile Include="cCommands\cOrientTo_Time.cpp" />
+    <ClCompile Include="cCommands\cRotateTo_Light.cpp" />
     <ClCompile Include="cCommands\cRotateTo_Time.cpp" />
     <ClCompile Include="cCommands\cTrigger.cpp" />
     <ClCompile Include="cFlyCamera\cFlyCamera.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="cCommands\cFollowObject.hpp" />
     <ClInclude Include="cCommands\cMoveTo_AB_Time.h" />
     <ClInclude Include="cCommands\cOrientTo_Time.hpp" />
+    <ClInclude Include="cCommands\cRotateTo_Light.hpp" />
     <ClInclude Include="cCommands\cRotateTo_Time.hpp" />
     <ClInclude Include="cCommands\cTrigger.hpp" />
     <ClInclude Include="cCommands\iCommand.h" />
