@@ -237,9 +237,9 @@ bool JSONSaveLights(std::map<std::string, cLight>* g_map_pLights)
 		jsonObject["specular"][0] = index->second.specular.x;
 		jsonObject["specular"][1] = index->second.specular.y;
 		jsonObject["specular"][2] = index->second.specular.z;
-		jsonObject["direction"][0] = index->second.getEulerAngle().x;
-		jsonObject["direction"][1] = index->second.getEulerAngle().y;
-		jsonObject["direction"][2] = index->second.getEulerAngle().z;
+		jsonObject["direction"][0] = index->second.getCurrentAT().x;
+		jsonObject["direction"][1] = index->second.getCurrentAT().y;
+		jsonObject["direction"][2] = index->second.getCurrentAT().z;
 		jsonObject["type"] = index->second.type;
 		jsonObject["innerAngle"] = index->second.innerAngle;
 		jsonObject["outerAngle"] = index->second.outerAngle;
