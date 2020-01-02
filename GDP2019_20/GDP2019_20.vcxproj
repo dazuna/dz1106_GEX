@@ -146,6 +146,7 @@
     <ClCompile Include="bRotatable\bRotatable.cpp" />
     <ClCompile Include="cAABB\PhysicsAABBStuff.cpp" />
     <ClCompile Include="cCommands\cBezierCurve.cpp" />
+    <ClCompile Include="cCommands\cCamLookAt.cpp" />
     <ClCompile Include="cCommands\cCommandGroupParallel.cpp" />
     <ClCompile Include="cCommands\cCommandGroupSerial.cpp" />
     <ClCompile Include="cCommands\cFollowObject.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="cAABB\cAABB.h" />
     <ClInclude Include="cAABB\PhysicsAABBStuff.h" />
     <ClInclude Include="cCommands\cBezierCurve.hpp" />
+    <ClInclude Include="cCommands\cCamLookAt.h" />
     <ClInclude Include="cCommands\cCommandGroupParallel.h" />
     <ClInclude Include="cCommands\cCommandGroupSerial.h" />
     <ClInclude Include="cCommands\cFollowObject.hpp" />

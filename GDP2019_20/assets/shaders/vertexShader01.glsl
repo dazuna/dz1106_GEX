@@ -20,11 +20,19 @@ out vec4 fVertWorldLocation;
 out vec4 fNormal;
 out vec4 fUVx2;
 
+uniform bool itsDeadJim;
+uniform float offset;
+
 void main()
 {
     vec4 vertPosition = vPosition;
 	
     mat4 matMVP = matProj * matView * matModel;
+
+	if(itsDeadJim)
+	{
+		vertPosition.xyz *= (vNormal.xyz * offset);
+	}
 	
 	gl_Position = matMVP * vec4(vertPosition.xyz, 1.0);
 	

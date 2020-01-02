@@ -78,7 +78,7 @@ public:
 	void adjMeshOrientationEulerAngles(float x, float y, float z, bool bIsDegrees = false);
 	void adjMeshOrientationQ(glm::quat adjOrientQ);
 
-	void followPlayer(playerController* cPlayer, bool isFollowON);
+	void followPlayer(cGameObject* cPlayer, bool isFollowON);
 	void watchPlayer(playerController* cPlayer);
 	void cameraLookAt(glm::vec3 target);
 private:

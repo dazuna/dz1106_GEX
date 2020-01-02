@@ -200,6 +200,9 @@
     <ClCompile Include="cCommands\cRotateTo_Light.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
+    <ClCompile Include="cCommands\cCamLookAt.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -332,6 +335,9 @@
       <Filter>cLuaBrain</Filter>
     </ClInclude>
     <ClInclude Include="cCommands\cRotateTo_Light.hpp">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="cCommands\cCamLookAt.h">
       <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>

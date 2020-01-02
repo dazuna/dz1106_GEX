@@ -67,4 +67,5 @@ void makeTransparentObjectsMap();
 void CalculateTransformedMesh(cMesh& originalMesh, glm::mat4 matWorld, cMesh& mesh_transformedInWorld);
 void drawAABBs();
 void drawSphere(glm::vec3 position, std::string texture, float sscale, float alphaT, float lifetime);
+void duplicateSphere(glm::vec3 position, std::string texture, float sscale, float alphaT, float lifetime);
 void lifetimeValidation(cGameObject* pCurObject);

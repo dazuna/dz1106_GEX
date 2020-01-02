@@ -44,9 +44,9 @@ public:
 		//ulX = ((unsigned long long) fabs(floor(testLocation.x / 100))) * 100;
 		//ulY = ((unsigned long long) fabs(floor(testLocation.y / 100))) * 100;
 		//ulZ = ((unsigned long long) fabs(floor(testLocation.z / 100))) * 100;
-		ulX = ((unsigned long long) fabs(floor(testLocation.x / 150))) * 150;
-		ulY = ((unsigned long long) fabs(floor(testLocation.y / 150))) * 150;
-		ulZ = ((unsigned long long) fabs(floor(testLocation.z / 150))) * 150;
+		ulX = ((unsigned long long) fabs(floor(testLocation.x / 100))) * 100;
+		ulY = ((unsigned long long) fabs(floor(testLocation.y / 100))) * 100;
+		ulZ = ((unsigned long long) fabs(floor(testLocation.z / 100))) * 100;
 
 		// Are these negative
 		if (testLocation.x < 0.0f)

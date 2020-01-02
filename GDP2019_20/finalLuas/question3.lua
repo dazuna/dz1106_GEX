@@ -20,6 +20,7 @@
 -- Trigger()    -> cTrigger(std::string name, std::string type, 
 -- 	    glm::vec3* itemToMonitor, glm::vec3 startPos, iCommand* theCommand,
 -- 	    float radius, float TimeToExist = 10.0f);
+-- cCamLookAt(std::string name, std::string type, glm::vec3* posXYZ, float TimeToLook)
 -- newSerial()  -> newSerial(name,type)
 -- newParallel()    -> newParallel(name,type)
 -- addToSerial()    -> addToSerial(name,cmdGrp)
@@ -46,3 +47,14 @@
 -- MoveTo("mvSph5","move","sphere5",    25.0, 10.0, 0.0,     -25.0, 10.0, 0.0,    10,3,3)
 -- MoveTo("mvSph6","move","sphere6",     -25.0, 8.0, 0.0,     25.0, 8.0, 0.0,    10,3,3)
 
+-- addToParallel("crvTie1","follSphere")
+-- addToParallel("rtTie2","follSphere")
+-- addToSerial("follSphere","shipNavigation")
+-- addToSerial("mvShp2","shipNavigation")
+
+MoveTo("mvCam","move","cam",    340,271,-325,    250,150,190,   5,1,1)
+CamLookAt("camLook","lookC","pirateShip2",7)
+newParallel("shipNavigation","mainCG")
+addToParallel("camLook","shipNavigation")
+addToParallel("mvCam","shipNavigation")
+setTheCommandMasterToRuleThemAll("shipNavigation")

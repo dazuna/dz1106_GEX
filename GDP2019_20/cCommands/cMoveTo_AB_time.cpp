@@ -64,9 +64,8 @@ void cMoveTo_AB_Time::Update(double deltaTime)
 
 bool cMoveTo_AB_Time::IsDone(void)
 {
-	float distance = glm::distance(*(this->m_posXYZ), this->m_startPosition );
-
-	if (distance >= this->m_totalDistance) { return true; }
+	//float distance = glm::distance(*(this->m_posXYZ), this->m_startPosition );
+	//if (distance >= this->m_totalDistance) { return true; }
 	if (this->m_timer >= this->m_TimeToMove) { return true; }
 	return false;
 }

@@ -29,6 +29,9 @@ cLuaBrain::cLuaBrain()
 	lua_setglobal(this->m_pLuaState, "Orient");
 	lua_pushcfunction(this->m_pLuaState,Trigger);
 	lua_setglobal(this->m_pLuaState, "Trigger");
+	
+	lua_pushcfunction(this->m_pLuaState,CamLookAt);
+	lua_setglobal(this->m_pLuaState, "CamLookAt");
 
 	lua_pushcfunction(this->m_pLuaState, MoveLightTo);
 	lua_setglobal(this->m_pLuaState, "MoveLightTo");
@@ -125,11 +128,8 @@ void cLuaBrain::DeleteScript( std::string scriptName )
 
 void cLuaBrain::Update(float deltaTime)
 {
-	//std::cout << "cLuaBrain::Update() called" << std::endl;
-	//if(!masterCommandGroup->IsDone())
-	//{
+	if(masterCommandGroup)
 		masterCommandGroup->Update(deltaTime);
-	//}
 	return;
 }
 

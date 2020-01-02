@@ -3,8 +3,16 @@
 
 // This will hold the AABBs for 
 std::map<unsigned long long /*ID*/, cAABB*> g_mapAABBs_World;
-const float AABBsize = 150.0f;
+const float AABBsize = 100.0f;
 extern playerController* pPlayerControl;
+std::vector<cGameObject*> vecSpheres;
+glm::vec3 attackDirection = glm::vec3(0,0,1);
+cGameObject* xwing = NULL;
+
+float leftShieldHealth = 100.0f;
+float rightShieldHealth = 100.0f;
+bool itsDeadJim = false;
+float offset = 0.0f;
 
 // Take the space station model
 // Figure out which triangles are in which AABB
@@ -62,7 +70,7 @@ void drawAABBAndTrisWherePlayerPresent(cGameObject* pPlayer)
 	else
 	{
 		//system("cls");
-		//std::cout << "Player is inside AABB: " << playerAABB_ID << "!!" << std::endl;
+		std::cout << "Player is inside AABB: " << playerAABB_ID << "!!" << std::endl;
 		itAABB->second->drawAABBSelf(pDebugRenderer);
 		itAABB->second->drawAABBSelfTriangles(pDebugRenderer);
 	}
@@ -181,16 +189,17 @@ void positionPlayerColliders(std::string objsFriendlyName)
 	glm::vec3 origin = pPlayer->positionXYZ;
 	std::vector<glm::vec3> vecColls;
 
-	vecColls.push_back(glm::vec3(-7.3, 0.0, -9.2));
-	vecColls.push_back(glm::vec3(7.3, 0.0, -9.2));
-	vecColls.push_back(glm::vec3(-7.3, 2.4, 9.2));
-	vecColls.push_back(glm::vec3(7.3, 2.4, 9.2));
-	vecColls.push_back(glm::vec3(-7.3, -2.4, 9.2));
-	vecColls.push_back(glm::vec3(7.3, -2.4, 9.2));
-	vecColls.push_back(glm::vec3(3.9, 6.0, -3.0));
-	vecColls.push_back(glm::vec3(-3.9, 6.0, -3.0));
-	vecColls.push_back(glm::vec3(3.9, -6.0, -3.0));
-	vecColls.push_back(glm::vec3(-3.9, -6.0, -3.0));
+	//vecColls.push_back(glm::vec3(-7.3, 0.0, -9.2));
+	//vecColls.push_back(glm::vec3(7.3, 0.0, -9.2));
+	//vecColls.push_back(glm::vec3(-7.3, 2.4, 9.2));
+	//vecColls.push_back(glm::vec3(7.3, 2.4, 9.2));
+	//vecColls.push_back(glm::vec3(-7.3, -2.4, 9.2));
+	//vecColls.push_back(glm::vec3(7.3, -2.4, 9.2));
+	//vecColls.push_back(glm::vec3(3.9, 6.0, -3.0));
+	//vecColls.push_back(glm::vec3(-3.9, 6.0, -3.0));
+	//vecColls.push_back(glm::vec3(3.9, -6.0, -3.0));
+	//vecColls.push_back(glm::vec3(-3.9, -6.0, -3.0));
+	vecColls.push_back(glm::vec3(0));
 
 	pPlayer->setVecCollider(vecColls);
 }
@@ -247,9 +256,10 @@ void testCollisions_AABB(cGameObject* pPlayer)
 			//pDebugRenderer->addLine(centreOfTriangle,normalInWorld,yellow);
 			// Are we hitting the triangle?
 			float distance = glm::length(*itVC - closestPoint);
-			if (distance <= 2.0f)
+			if (distance <= 20.0f)
 			{
 				// 1. Calculate vector from centre of sphere to closest point
+				std::cout << "collision detected" << std::endl;
 				glm::vec3 vecSphereToClosestPoint = closestPoint - *itVC;
 				float centreToContractDistance = glm::length(vecSphereToClosestPoint);
 				float lengthPositionAdjustment = 2.0f - centreToContractDistance;
@@ -337,8 +347,204 @@ void IntegrationStep_AAB(std::map<std::string, cGameObject*> g_map_GameObjects, 
 		{
 			pCurObj->positionXYZ += pCurObj->velocity * deltaTime;
 		}
+		if (pCurObj->friendlyName == "xwing")
+		{
+
+		}
 		lifetimeValidation(pCurObj);
 	}
-	pPlayerControl->updatePosition(pPlayerControl->pPlayer->positionXYZ);
+	//pPlayerControl->updatePosition(pPlayerControl->pPlayer->positionXYZ);
 	return;
+}
+
+void AttackRun()
+{
+	system("cls");
+
+	// question 2
+	std::cout << "Iniciating attack run..." << std::endl;
+	glm::vec3 firstPoint, secondPoint;
+	generateTwoRandomPoints(&firstPoint, &secondPoint);
+	drawSphereLineBetweenPoints(firstPoint, secondPoint);
+
+	// question 3
+	std::cout << "Setting up X-Wing for attack..." << std::endl;
+	setXWingPosOri(secondPoint);
+	std::cout << "Succesfully set X-Wing" << std::endl;
+
+}
+
+void generateTwoRandomPoints(glm::vec3* firstPoint, glm::vec3* secondPoint)
+{
+	*firstPoint = glm::vec3(randInRange(-800, 800), randInRange(-500, 500), randInRange(0, 1200));
+	std::cout << "Point Alpha: " << GLMvec3toString(*firstPoint) << std::endl;
+	while((firstPoint->x <= 532 && firstPoint->x >= -532) || (firstPoint->y <= 267 && firstPoint->y >= -267) || firstPoint->z <= 805)
+	{
+		std::cout << "Picked a point inside the Star Destroyer. Picking another point..." << std::endl;
+		*firstPoint = glm::vec3(randInRange(-800, 800), randInRange(-500, 500), randInRange(0, 1200));
+		std::cout << "Point Alpha: " << GLMvec3toString(*firstPoint) << std::endl;
+	}
+
+	*secondPoint = glm::vec3(randInRange(-800, 800), randInRange(-500, 500), randInRange(0, -1200));
+	std::cout << "Point Omega: " << GLMvec3toString(*secondPoint) << std::endl;
+	while ((secondPoint->x <= 532 && secondPoint->x >= -532) || (secondPoint->y <= 267 && secondPoint->y >= -267) || secondPoint->z >= -805)
+	{
+		std::cout << "Picked a point inside the Star Destroyer. Picking another point..." << std::endl;
+		*secondPoint = glm::vec3(randInRange(-800, 800), randInRange(-500, 500), randInRange(0, -1200));
+		std::cout << "Point Omega: " << GLMvec3toString(*secondPoint) << std::endl;
+	}
+
+	std::cout << "\n\nPoints Picked Succesfully:" << std::endl;
+	std::cout << "------------------------------------------------------------" << std::endl;
+	std::cout << "Point Alpha: " << GLMvec3toString(*firstPoint) << std::endl;
+	std::cout << "Point Omega: " << GLMvec3toString(*secondPoint) << std::endl;
+	std::cout << "------------------------------------------------------------" << std::endl;
+
+	std::cout << "\n\nDrawing points in simulation...";
+	duplicateSphere(*firstPoint, "red", 20.0f, 1.0f, 100000.0f);
+	duplicateSphere(*secondPoint, "yellow", 20.0f, 1.0f, 100000.0f);
+	std::cout << "[OK]" << std::endl;
+}
+
+void drawSphereLineBetweenPoints(glm::vec3 firstPoint, glm::vec3 secondPoint)
+{
+	float distance = floor(glm::distance(firstPoint, secondPoint));
+	std::cout << "\nDistance between points: " << distance << std::endl;
+	int sphereAmount = distance / 10.0f;
+	std::cout << "\nAmount of Spheres to Draw: " << sphereAmount << std::endl;
+	attackDirection = glm::normalize(firstPoint - secondPoint);
+	attackDirection *= 10.0f;
+	glm::vec3 tempPosition = secondPoint;
+	for (int sp = 0; sp < sphereAmount; sp++)
+	{
+		vecSpheres[sp]->positionXYZ = tempPosition + attackDirection;
+		::g_map_GameObjects.insert({ vecSpheres[sp]->friendlyName,vecSpheres[sp] });
+		tempPosition += attackDirection;
+	}
+}
+
+void setXWingPosOri(glm::vec3 secondPoint)
+{
+	xwing = ::g_map_GameObjects["xwing"];
+	xwing->positionXYZ = secondPoint;
+	xwing->setAT(-attackDirection);
+	xwing->velocity = attackDirection*20.0f;
+}
+
+void bufferSphereLine()
+{
+	for (int i = 0; i < 1000; i++)
+	{
+		cGameObject* pGO = new cGameObject(::g_map_GameObjects["sphereWhite"]);
+		pGO->positionXYZ = glm::vec3(0);
+		pGO->alphaTransparency = 1.0f;
+		pGO->tag = "lifetime";
+		pGO->lifetime = 100000.0f;
+		pGO->scale = 2.0f;
+		pGO->isVisible = true;
+		//::g_map_GameObjects.insert({ pGO->friendlyName,pGO });
+		vecSpheres.push_back(pGO);
+	}
+}
+
+void testCollisions_AABB_singlePoint(cGameObject* pPlayer)
+{
+	glm::vec3 blue = glm::vec3(0.0f, 0.0f, 1.0f);
+	glm::vec3 white = glm::vec3(1.0f, 1.0f, 1.0f);
+	glm::vec3 red = glm::vec3(1.0f, 0.0f, 0.0f);
+	glm::vec3 cyan = glm::vec3(0.0f, 1.0f, 1.0f);
+	glm::vec3 yellow = glm::vec3(1.0f, 1.0f, 0.0f);
+
+	glm::vec3 origin = pPlayer->positionXYZ;
+	std::vector<glm::vec3>::iterator itVC;
+	unsigned long long playerAABB_ID = cAABB::getIDAABB8(pPlayer->positionXYZ);
+	std::map<unsigned long long, cAABB* >::iterator itAABB = ::g_mapAABBs_World.find(playerAABB_ID);
+	std::vector<glm::vec3> vecColls;
+	pPlayer->getVecColliders(&vecColls);
+	if (itAABB == ::g_mapAABBs_World.end()) { return; }
+	else
+	{
+		//::pDebugRenderer->addLine(origin, *itVC, cyan, 0.5f);
+		glm::vec3 closestPoint = glm::vec3(0.0f, 0.0f, 0.0f);
+		AABBTriangle clTriangle;
+		GetClosestTriangleToPoint_AABB(origin, itAABB->second, closestPoint, clTriangle);
+		// Highlight the triangle that I'm closest to
+		pDebugRenderer->addTriangle(clTriangle.a,clTriangle.b,clTriangle.c,red);
+		glm::vec3 centreOfTriangle = (clTriangle.a + clTriangle.b + clTriangle.c) / 3.0f;
+		glm::vec3 normalInWorld = centreOfTriangle + (clTriangle.n * 20.0f);
+		// Are we hitting the triangle?
+		float distance = glm::length(origin - closestPoint);
+		if (distance <= 200.0f)
+		{
+			// 1. Calculate vector from centre of sphere to closest point
+			//std::cout << "collision detected" << std::endl;
+			if (pPlayer->friendlyName == "xwing")
+			{
+				shootBullet(pPlayer);
+				pPlayer->velocity *= -1.0f;
+				pPlayer->setAT(attackDirection);
+			}
+			if (distance <= 10.0f && pPlayer->friendlyName == "bullet")
+			{
+				std::cout << "bulletHit!" << std::endl;
+				makeBulletHit(pPlayer);
+			}
+			return;
+		}
+	}
+}
+
+void shootBullet(cGameObject* xwing)
+{
+	cGameObject* bullet = ::g_map_GameObjects["bullet"];
+	bullet->positionXYZ = xwing->positionXYZ;
+	bullet->setAT(glm::normalize(xwing->velocity));
+	bullet->velocity = xwing->velocity;
+	//bullet->tag = "lifetime";
+	//bullet->lifetime = 100.0f;
+}
+
+void makeBulletHit(cGameObject* bullet)
+{
+	duplicateSphere(bullet->positionXYZ, "red", 7.0f, 0.5f, 10000.0f);
+
+	// validate the hit was to the Shield Generator
+	glm::vec3 leftGenerator = glm::vec3(101, 245, 556);
+	glm::vec3 rightGenerator = glm::vec3(-101, 245, 556);
+	float distLeft = glm::distance(leftGenerator, bullet->positionXYZ);
+	float distRight = glm::distance(rightGenerator, bullet->positionXYZ);
+	if (distLeft <= 200.0f)
+	{
+		decreaseLife("left");
+	}
+	if (distRight <= 200.0f)
+	{
+		decreaseLife("right");
+	}
+
+	bullet->velocity = glm::vec3(0);
+	bullet->positionXYZ = glm::vec3(10000, 0, 0);
+
+}
+
+void decreaseLife(std::string side)
+{
+	if (side == "left")
+	{
+		leftShieldHealth -= 25.0f;
+	}
+	if (side == "right")
+	{
+		rightShieldHealth -= 25.0f;
+	}
+}
+
+void shouldStarDestroyerExplode(float averageDeltaTime)
+{
+	float totalHealth = leftShieldHealth + rightShieldHealth;
+	if (totalHealth <= 0.0f)
+	{
+		itsDeadJim = true;
+		offset += averageDeltaTime;
+	}
 }

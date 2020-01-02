@@ -201,6 +201,26 @@ int Trigger(lua_State* L)
 	return 0;
 }
 
+int CamLookAt(lua_State* L)
+{
+	// cCamLookAt(std::string name, std::string type, 
+	// glm::vec3* posXYZ, float TimeToLook);
+	std::string name = lua_tostring(L, 1);
+	std::string type = lua_tostring(L, 2);
+
+	std::string objt = lua_tostring(L, 3);
+	cGameObject* pGO = ::g_map_GameObjects[objt];
+	glm::vec3* itemToMonitor;
+	itemToMonitor = &(pGO->positionXYZ);
+
+	float TimeToMove = lua_tonumber(L, 4);
+
+	iCommand* nComm = new cCamLookAt(name,type,itemToMonitor,TimeToMove);
+	::cmdDictionary.insert({name,nComm});
+
+	return 0;
+}
+
 // light specifics
 int MoveLightTo(lua_State* L)
 {

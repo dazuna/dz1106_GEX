@@ -46,12 +46,12 @@ void cursor_enter_callback(GLFWwindow* window, int entered)
 	if (entered)
 	{
 		::g_MouseIsInsideWindow = true;
-		std::cout << "Mouse moved inside window" << std::endl;
+		//std::cout << "Mouse moved inside window" << std::endl;
 	}
 	else
 	{
 		::g_MouseIsInsideWindow = false;
-		std::cout << "Mouse moved outside window" << std::endl;
+		//std::cout << "Mouse moved outside window" << std::endl;
 	}
 	return;
 }
@@ -117,6 +117,77 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			::g_map_GameObjects["cameraPosition0"]->positionXYZ = ::g_pFlyCamera->eye;
 		}
+		if (key == GLFW_KEY_2 && action == GLFW_PRESS)
+		{
+			::g_map_GameObjects.clear();
+			JSONLoadGameObjects(&::g_map_GameObjects);
+			::selectedGameObject = ::g_map_GameObjects.begin();
+
+			//TODO call the attack run function!
+			AttackRun();
+			isDroneOn = true;
+		}
+
+		if (key == GLFW_KEY_9 && action == GLFW_PRESS)
+		{
+			decreaseLife("left");
+		}
+		if (key == GLFW_KEY_0 && action == GLFW_PRESS)
+		{
+			decreaseLife("right");
+		}
+
+		//// The scenes we'll view 
+		//if (key == GLFW_KEY_3 && action == GLFW_PRESS)
+		//{
+		//	::g_map_GameObjects.clear();
+		//	JSONLoadGameObjects(&::g_map_GameObjects);
+		//	::selectedGameObject = ::g_map_GameObjects.begin();
+		//
+		//	::cmdDictionary.clear();
+		//	::masterCommandGroup = NULL;
+		//	::p_LuaScripts->LoadScript("./finalLuas/question3.lua");
+		//}
+		//if (key == GLFW_KEY_4 && action == GLFW_PRESS)
+		//{
+		//	::g_map_GameObjects.clear();
+		//	JSONLoadGameObjects(&::g_map_GameObjects);
+		//	::selectedGameObject = ::g_map_GameObjects.begin();
+		//
+		//	::cmdDictionary.clear();
+		//	::masterCommandGroup = NULL;
+		//	::p_LuaScripts->LoadScript("./finalLuas/question4.lua");
+		//}
+		//if (key == GLFW_KEY_5 && action == GLFW_PRESS)
+		//{
+		//	::g_map_GameObjects.clear();
+		//	JSONLoadGameObjects(&::g_map_GameObjects);
+		//	::selectedGameObject = ::g_map_GameObjects.begin();
+		//
+		//	::cmdDictionary.clear();
+		//	::masterCommandGroup = NULL;
+		//	::p_LuaScripts->LoadScript("./finalLuas/question5.lua");
+		//}
+		//if (key == GLFW_KEY_6 && action == GLFW_PRESS)
+		//{
+		//	::g_map_GameObjects.clear();
+		//	JSONLoadGameObjects(&::g_map_GameObjects);
+		//	::selectedGameObject = ::g_map_GameObjects.begin();
+		//
+		//	::cmdDictionary.clear();
+		//	::masterCommandGroup = NULL;
+		//	::p_LuaScripts->LoadScript("./finalLuas/question6.lua");
+		//}
+		//if (key == GLFW_KEY_7 && action == GLFW_PRESS)
+		//{
+		//	::g_map_GameObjects.clear();
+		//	JSONLoadGameObjects(&::g_map_GameObjects);
+		//	::selectedGameObject = ::g_map_GameObjects.begin();
+		//
+		//	::cmdDictionary.clear();
+		//	::masterCommandGroup = NULL;
+		//	::p_LuaScripts->LoadScript("./finalLuas/question7.lua");
+		//}
 	}
 
 	if (isShiftKeyDownByAlone(mods))
@@ -389,9 +460,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			JSONLoadGameObjects(&::g_map_GameObjects);
 			::selectedGameObject = ::g_map_GameObjects.begin();
 			
-			::cmdDictionary.clear();
-			::masterCommandGroup = NULL;
-			::p_LuaScripts->LoadScript("./cLuaBrain/script.lua");
+			//::cmdDictionary.clear();
+			//::masterCommandGroup = NULL;
+			//::p_LuaScripts->LoadScript("./cLuaBrain/script.lua");
 		}
 		if (key == GLFW_KEY_1 && action == GLFW_PRESS)
 		{

@@ -146,6 +146,19 @@ void DrawObject(glm::mat4 m,
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
 
+	if (itsDeadJim && pCurrentObject->friendlyName == "ztarDestroyer")
+	{
+		GLint bMakeHoles_UL = glGetUniformLocation(shaderProgID, "itsDeadJim");
+		glUniform1f(bMakeHoles_UL, (float)GL_TRUE);
+		GLint boffset_UL = glGetUniformLocation(shaderProgID, "offset");
+		glUniform1f(boffset_UL, ::offset);
+	}
+	else
+	{
+		GLint bMakeHoles_UL = glGetUniformLocation(shaderProgID, "itsDeadJim");
+		glUniform1f(bMakeHoles_UL, (float)GL_FALSE);
+	}
+
 	// ************************** SKYBOX **************************
 	// glCullFace(GL_BACK) only front facing tris are drawn. --> EVERYTHING ELSE IS DISABLED
 	// make a draw skybox subfunction... :D
@@ -330,6 +343,12 @@ void setWindowTitle(std::stringstream* ssTitle)
 	case selectedType::SOUND:break;
 	}
 	*ssTitle << " || FPS: " << (int)(1 / averageDeltaTime);
+	*ssTitle << " || leftShield: " << leftShieldHealth;
+	*ssTitle << " || rightShield: " << rightShieldHealth;
+	if (itsDeadJim)
+	{
+		*ssTitle << "You've destroyed the Star Destroyer!";
+	}
 	//*ssTitle << " isDroneOn: " << isDroneOn;
 	//*ssTitle << "   Tgt: " << GLMvec3toString(cameraTarget);
 	//*ssTitle << "   Vis: " << GLMvec3toString(visionVector);
@@ -561,12 +580,37 @@ void drawSphere(glm::vec3 position, std::string texture, float sscale, float alp
 	pGO->positionXYZ = position;
 	if (texture != "")
 	{
-		pGO->textures[0] = texture;
-		pGO->textureRatio[0] = 1.0f;
+		pGO->textures[3] = texture;
+		pGO->textureRatio[3] = 1.0f;
+		pGO->textureRatio[0] = 0.0f;
 	}
 	pGO->alphaTransparency = alphaT;
 	pGO->tag = "lifetime";
 	pGO->lifetime = 10.0f;
+	pGO->scale = sscale;
+	pGO->isVisible = true;
+	::g_map_GameObjects.insert({ pGO->friendlyName,pGO });
+}
+
+void duplicateSphere(glm::vec3 position, std::string texture, float sscale, float alphaT, float lifetime)
+{
+	cGameObject* pGO = new cGameObject(::g_map_GameObjects["sphere"]);
+	if (texture == "red")
+	{
+		pGO = new cGameObject(::g_map_GameObjects["sphereRed"]);
+	}
+	if (texture == "yellow")
+	{
+		pGO = new cGameObject(::g_map_GameObjects["sphereYellow"]);
+	}
+	if (texture == "white")
+	{
+		pGO = new cGameObject(::g_map_GameObjects["sphereWhite"]);
+	}
+	pGO->positionXYZ = position;
+	pGO->alphaTransparency = alphaT;
+	pGO->tag = "lifetime";
+	pGO->lifetime = lifetime;
 	pGO->scale = sscale;
 	pGO->isVisible = true;
 	::g_map_GameObjects.insert({ pGO->friendlyName,pGO });

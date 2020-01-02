@@ -23,6 +23,7 @@ extern "C"
 #include "../cCommands/cBezierCurve.hpp"
 #include "../cCommands/cTrigger.hpp"
 #include "../cCommands/cRotateTo_Light.hpp"
+#include "../cCommands/cCamLookAt.h"
 
 extern cFlyCamera* g_pFlyCamera;
 extern std::map<std::string, iCommand*> cmdDictionary;
@@ -35,6 +36,8 @@ int Curve(lua_State* L);
 int Rotate(lua_State* L);
 int Orient(lua_State* L);
 int Trigger(lua_State* L);
+
+int CamLookAt(lua_State* L);
 
 int MoveLightTo(lua_State* L);
 int FollowLight(lua_State* L);

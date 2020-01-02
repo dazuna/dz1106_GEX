@@ -20,6 +20,7 @@
 -- Trigger()    -> cTrigger(std::string name, std::string type, 
 -- 	    glm::vec3* itemToMonitor, glm::vec3 startPos, iCommand* theCommand,
 -- 	    float radius, float TimeToExist = 10.0f);
+-- cCamLookAt(std::string name, std::string type, glm::vec3* posXYZ, float TimeToLook)
 -- newSerial()  -> newSerial(name,type)
 -- newParallel()    -> newParallel(name,type)
 -- addToSerial()    -> addToSerial(name,cmdGrp)
@@ -46,3 +47,40 @@
 -- MoveTo("mvSph5","move","sphere5",    25.0, 10.0, 0.0,     -25.0, 10.0, 0.0,    10,3,3)
 -- MoveTo("mvSph6","move","sphere6",     -25.0, 8.0, 0.0,     25.0, 8.0, 0.0,    10,3,3)
 
+-- addToParallel("crvTie1","follSphere")
+-- addToParallel("rtTie2","follSphere")
+-- addToSerial("follSphere","shipNavigation")
+-- addToSerial("mvShp2","shipNavigation")
+
+MoveTo("mvShp1","move","pirateShip1",    202,146,165,    13,182,22,   10,1,0)
+
+Curve("crvShp1","curv","pirateShip1",    13,182,22,    -30,182,-77,    -54,182,9,    10,0,2)
+Rotate("rtShp1","rott","pirateShip1",    0,-45,0,    7,0,0)
+
+newSerial("shipNavigation","mainCG")
+addToSerial("mvShp1","shipNavigation")
+
+newParallel("curveAndRotateShip","midGroup")
+addToParallel("crvShp1","curveAndRotateShip")
+addToParallel("rtShp1","curveAndRotateShip")
+
+addToSerial("curveAndRotateShip","shipNavigation") -- Ship thing
+
+-- Camera Part
+MoveTo("mkTime","move","cube",    0,0,0,    -121.0, 181.0, -34.0,   10,1,0)
+MoveTo("mvCam","move","cam",    250,150,190,    -100,202,96,   30,1,1)
+CamLookAt("camLook","lookC","markerQuestion4",40)
+
+newParallel("cameraMoveAndLook","midGroup")
+addToParallel("mvCam","cameraMoveAndLook")
+addToParallel("camLook","cameraMoveAndLook")
+
+newSerial("CameraStuff","Serial2")
+addToSerial("mkTime","CameraStuff")
+addToSerial("cameraMoveAndLook","CameraStuff")
+
+newParallel("masterCMD","master")
+addToParallel("shipNavigation","masterCMD")
+addToParallel("CameraStuff","masterCMD")
+
+setTheCommandMasterToRuleThemAll("masterCMD")

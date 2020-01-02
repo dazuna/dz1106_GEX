@@ -214,13 +214,13 @@ void cFlyCamera::adjMeshOrientationQ(glm::quat adjOrientQ)
 	return;
 }
 
-void cFlyCamera::followPlayer(playerController* cPlayer, bool isFollowON)
+void cFlyCamera::followPlayer(cGameObject* cPlayer, bool isFollowON)
 {
 	if (!isFollowON) { return; } // Do not follow player
 
-	glm::vec3 origin = cPlayer->pPlayer->positionXYZ;
-	glm::vec3 newAt = glm::vec3(0, 0, -1);
-	newAt *= 80.0f;
+	glm::vec3 origin = cPlayer->positionXYZ;
+	glm::vec3 newAt = glm::vec3(1, 0, 0);
+	newAt *= 200.0f;
 	this->eye = newAt + origin;
 
 	return;
