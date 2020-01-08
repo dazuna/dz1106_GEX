@@ -25,15 +25,16 @@
 #include "PhysicsStuff.h"// The Physics function
 #include "cPhysics.h"
 #include "cLowPassFilter.h"
-#include "cAABB/cAABB.h"
-#include "cAABB/PhysicsAABBStuff.h"
+//#include "cAABB/cAABB.h"
+//#include "cAABB/PhysicsAABBStuff.h"
 #include "DebugRenderer/cDebugRenderer.h"	
 #include "cLight.h"// Used to visualize the attenuation of the lights...
 #include "LightManager/cLightHelper.h"
 #include "cFlyCamera/cFlyCamera.h"
 #include "skybox/skybox.h"
 #include "GFLW_callbacks.h"// Keyboard, error, mouse, etc. are now here
-#include "cLuaBrain/cLuaBrain.h"
+//#include "cLuaBrain/cLuaBrain.h"
+#include "cFBO/cFBO.h"
 
 cFlyCamera* g_pFlyCamera = NULL;
 cGameObject* pSkyBox = new cGameObject();
@@ -59,7 +60,7 @@ cDebugRenderer* pDebugRenderer = new cDebugRenderer();
 cBasicTextureManager* pTextureManager = NULL;
 extern std::map<unsigned long long /*ID*/, cAABB*> g_mapAABBs_World;
 playerController* pPlayerControl;
-cLuaBrain* p_LuaScripts;
+//cLuaBrain* p_LuaScripts;
 //extern std::map<unsigned long long /*ID*/, cAABB*> g_vecAABBs_World;
 
 // pirateStuff
@@ -183,13 +184,6 @@ int main(void)
 
 	createSkyBoxObject();
 
-	 CalcAABBsForMeshModel(::g_map_Mesh["ztarDestroyerMesh"]); //ztarDestroyer
-	 bufferSphereLine();
-	 positionPlayerColliders("xwing");
-
-	/*::p_LuaScripts = new cLuaBrain();
-	::p_LuaScripts->LoadScript("./cLuaBrain/script.lua");*/
-
 	while (!glfwWindowShouldClose(window))
 	{
 		// Get the initial time
@@ -288,20 +282,6 @@ int main(void)
 
 		//	Update the objects through physics
 		averageDeltaTime = avgDeltaTimeThingy.getAverage();
-		//::p_LuaScripts->Update(averageDeltaTime);
-		//::g_pFlyCamera->cameraLookAt(glm::vec3(200, 140, 160));
-		
-		//pPhysic->IntegrationStep(::g_map_GameObjects, (float)averageDeltaTime);
-		//pPhysic->TestForCollisions(::g_map_GameObjects);
-		// ********************** AABB Runtime Stuff ********************************************
-		//drawAABBs();
-		//drawAABBAndTrisWherePlayerPresent(::g_map_GameObjects["xwing"]);
-		testCollisions_AABB_singlePoint(::g_map_GameObjects["xwing"]);
-		testCollisions_AABB_singlePoint(::g_map_GameObjects["bullet"]);
-		IntegrationStep_AAB(::g_map_GameObjects, (float)averageDeltaTime);
-		::g_pFlyCamera->followPlayer(::g_map_GameObjects["xwing"], isDroneOn);
-		shouldStarDestroyerExplode(averageDeltaTime);
-		// ********************** AABB Runtime Stuff ********************************************
 		
 		pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
 
