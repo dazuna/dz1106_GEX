@@ -155,6 +155,7 @@
     <ClCompile Include="cCommands\cRotateTo_Light.cpp" />
     <ClCompile Include="cCommands\cRotateTo_Time.cpp" />
     <ClCompile Include="cCommands\cTrigger.cpp" />
+    <ClCompile Include="cFBO\cFBO.cpp" />
     <ClCompile Include="cFlyCamera\cFlyCamera.cpp" />
     <ClCompile Include="cGameObject.cpp" />
     <ClCompile Include="cLight.cpp" />
@@ -204,6 +205,7 @@
     <ClInclude Include="cCommands\cRotateTo_Time.hpp" />
     <ClInclude Include="cCommands\cTrigger.hpp" />
     <ClInclude Include="cCommands\iCommand.h" />
+    <ClInclude Include="cFBO\cFBO.h" />
     <ClInclude Include="cFlyCamera\cFlyCamera.h" />
     <ClInclude Include="cGameObject.h" />
     <ClInclude Include="cLight.h" />

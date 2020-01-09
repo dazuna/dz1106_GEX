@@ -25,6 +25,7 @@ uniform sampler2D textSamp03;
 //uniform sampler2D textSamp05;
 //uniform sampler2D textSamp06;
 //uniform sampler2D textSamp07;
+uniform sampler2D secondPassColourTexture;
 
 uniform samplerCube skyBox;
 uniform bool bIsSkyBox;
@@ -64,6 +65,8 @@ const int DIRECTIONAL_LIGHT_TYPE = 2;
 const int NUMBEROFLIGHTS = 100;
 uniform sLight theLights[NUMBEROFLIGHTS];  	// 80 uniforms
 
+uniform int passNumber; 
+
 // Really appears as:
 // uniform vec4 theLights[0].position
 // uniform vec4 theLights[0].diffuse
@@ -78,6 +81,25 @@ vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal,
 	 
 void main()  
 {
+	if ( passNumber == 1 )
+	{
+		// It's the 2nd pass
+		//pixelColour = vec4( 0.0f, 1.0f, 0.0f, 1.0f );
+		vec3 texRGB = texture( secondPassColourTexture, fUVx2.st ).rgb;
+		// This will calculate the screen texture coordinates based 
+		// on what's actually being rendered on the screen. 
+		// So you just need to FILL the ENTIRE screen with something.
+//		vec2 textCoords = vec2( gl_FragCoord.x / screenWidth, 
+//		                         gl_FragCoord.y / screenHeight );
+//		vec3 texRGB = texture( secondPassColourTexture, textCoords.st ).rgb;
+		pixelColour.rgb = (texRGB);
+		pixelColour.a = 1.0f;		
+//		float depthValue = texture( secondPassColourTexture, textCoords.st ).r;
+//		depthValue /= 10.0f;
+//		pixelColour.rgb = vec3(depthValue,depthValue,depthValue);
+//		pixelColour.a = 1.0f;	
+		return;
+	}
 	// Shader Type #1  	
 	if ( bDoNotLight )
 	{

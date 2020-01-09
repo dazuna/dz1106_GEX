@@ -36,6 +36,8 @@
 //#include "cLuaBrain/cLuaBrain.h"
 #include "cFBO/cFBO.h"
 
+cFBO* pTheFBO = NULL;
+
 cFlyCamera* g_pFlyCamera = NULL;
 cGameObject* pSkyBox = new cGameObject();
 glm::vec3 cameraEye = glm::vec3(0.0f, 50.0f, 100.0f);
@@ -184,8 +186,29 @@ int main(void)
 
 	createSkyBoxObject();
 
+	// Set up the FBO object
+	pTheFBO = new cFBO();
+	// Usually we make this the size of the screen.
+	std::string FBOError;
+	if (pTheFBO->init(1920, 1080, FBOError))
+	{
+		std::cout << "Frame buffer is OK" << std::endl;
+	}
+	else
+	{
+		std::cout << "FBO Error: " << FBOError << std::endl;
+	}
+
 	while (!glfwWindowShouldClose(window))
 	{
+		// Draw everything to the external frame buffer
+		// (I get the frame buffer ID, and use that)
+		glBindFramebuffer(GL_FRAMEBUFFER, pTheFBO->ID);
+		pTheFBO->clearBuffers(true, true);
+		// Set the passNumber to 0
+		GLint passNumber_UniLoc = glGetUniformLocation(shaderProgID, "passNumber");
+		glUniform1i(passNumber_UniLoc, 0);  //"passNumber"
+
 		// Get the initial time
 		double currentTime = glfwGetTime();
 		// Frame time... (how many seconds since last frame)
@@ -283,7 +306,68 @@ int main(void)
 		//	Update the objects through physics
 		averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		
-		pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
+		//pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
+
+		// *******
+		// Start of 2nd pass
+		// The whole scene is now drawn (to the FBO)
+
+		// 1. Disable the FBO
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		// 2. Clear the ACTUAL screen buffer
+		glViewport(0, 0, width, height);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		// 3. Use the FBO colour texture as the texture on that quad
+		glUniform1i(passNumber_UniLoc, 1);  //"passNumber"
+
+		// Tie the texture to the texture unit
+		glActiveTexture(GL_TEXTURE0 + 40);				// Texture Unit 40!!
+		glBindTexture(GL_TEXTURE_2D, pTheFBO->colourTexture_0_ID);	// Texture now assoc with texture unit 0
+//		glBindTexture(GL_TEXTURE_2D, pTheFBO->depthTexture_ID);	// Texture now assoc with texture unit 0
+		GLint textSamp00_UL = glGetUniformLocation(shaderProgID, "secondPassColourTexture");
+		glUniform1i(textSamp00_UL, 40);	// Texture unit 40
+
+		// 4. Draw a single object (a triangle or quad)
+		cGameObject* pQuadOrIsIt = NULL;
+		if (pFindObjectByFriendlyNameMap("theQuad"))
+		{
+			pQuadOrIsIt = ::g_map_GameObjects["theQuad"];
+		}
+		float oldScale = pQuadOrIsIt->scale;
+		pQuadOrIsIt->scale = 40.0f;
+		pQuadOrIsIt->isVisible = true;
+		pQuadOrIsIt->setOrientation(glm::vec3(0.0f, 0.0f, -90.0f));
+		pQuadOrIsIt->positionXYZ = glm::vec3(0.0f, -20.0f, 0.0f);
+
+		// Move the camera
+		// Maybe set it to orthographic, etc.
+
+		v = glm::lookAt(glm::vec3(0.0f, 0.0f, -50.0f),		// Eye
+			glm::vec3(0.0f, 0.0f, 0.0f),			// At
+			glm::vec3(0.0f, 1.0f, 0.0f));		// Up
+
+		glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
+
+		//// Set the actual screen size
+		//GLint screenWidth_UnitLoc = glGetUniformLocation(shaderProgID, "screenWidth");
+		//GLint screenHeight_UnitLoc = glGetUniformLocation(shaderProgID, "screenHeight");
+
+		//// Get the "screen" framebuffer size 
+		//glfwGetFramebufferSize(window, &width, &height);
+
+		//glUniform1f(screenWidth_UnitLoc, width);
+		//glUniform1f(screenHeight_UnitLoc, height);
+
+		glm::mat4 matQuad = glm::mat4(1.0f);
+		DrawObject(matQuad, pQuadOrIsIt,
+			shaderProgID, pTheVAOManager);
+
+		pQuadOrIsIt->scale = oldScale;
+		pQuadOrIsIt->isVisible = false;
+		// END OF 2nd pass
+		// ***********
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
