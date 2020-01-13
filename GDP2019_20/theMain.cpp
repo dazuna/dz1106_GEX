@@ -190,7 +190,7 @@ int main(void)
 	pTheFBO = new cFBO();
 	// Usually we make this the size of the screen.
 	std::string FBOError;
-	if (pTheFBO->init(1920, 1080, FBOError))
+	if (pTheFBO->init(1280, 720, FBOError))
 	{
 		std::cout << "Frame buffer is OK" << std::endl;
 	}
@@ -336,29 +336,29 @@ int main(void)
 			pQuadOrIsIt = ::g_map_GameObjects["theQuad"];
 		}
 		float oldScale = pQuadOrIsIt->scale;
-		pQuadOrIsIt->scale = 40.0f;
+		pQuadOrIsIt->scale = 50.0f;
 		pQuadOrIsIt->isVisible = true;
-		pQuadOrIsIt->setOrientation(glm::vec3(0.0f, 0.0f, -90.0f));
-		pQuadOrIsIt->positionXYZ = glm::vec3(0.0f, -20.0f, 0.0f);
+		pQuadOrIsIt->setOrientation(glm::vec3(0.0f, 180.0f, 0.0f));
+		pQuadOrIsIt->positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 
 		// Move the camera
 		// Maybe set it to orthographic, etc.
 
-		v = glm::lookAt(glm::vec3(0.0f, 0.0f, -50.0f),		// Eye
+		v = glm::lookAt(glm::vec3(0.0f, 0.0f, -30.0f),		// Eye
 			glm::vec3(0.0f, 0.0f, 0.0f),			// At
 			glm::vec3(0.0f, 1.0f, 0.0f));		// Up
 
 		glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
 
-		//// Set the actual screen size
-		//GLint screenWidth_UnitLoc = glGetUniformLocation(shaderProgID, "screenWidth");
-		//GLint screenHeight_UnitLoc = glGetUniformLocation(shaderProgID, "screenHeight");
+		// Set the actual screen size
+		GLint screenWidth_UnitLoc = glGetUniformLocation(shaderProgID, "screenWidth");
+		GLint screenHeight_UnitLoc = glGetUniformLocation(shaderProgID, "screenHeight");
 
-		//// Get the "screen" framebuffer size 
-		//glfwGetFramebufferSize(window, &width, &height);
+		// Get the "screen" framebuffer size 
+		glfwGetFramebufferSize(window, &width, &height);
 
-		//glUniform1f(screenWidth_UnitLoc, width);
-		//glUniform1f(screenHeight_UnitLoc, height);
+		glUniform1f(screenWidth_UnitLoc, width);
+		glUniform1f(screenHeight_UnitLoc, height);
 
 		glm::mat4 matQuad = glm::mat4(1.0f);
 		DrawObject(matQuad, pQuadOrIsIt,
