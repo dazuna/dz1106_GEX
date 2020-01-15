@@ -13,168 +13,17 @@
 
 #include "cGLRenderStateHelper.h"
 
+#include <iostream>
+
+
 // Used to hold the default sphere shape
 extern float default_sphere_array [];
 extern unsigned int default_sphere_array_size;
 
-/*static*/ 
-const std::string cDebugRenderer::DEFALUT_VERT_SHADER_SOURCE = "\
-        #version 420                                    \n \
-		                                                \n \
-        uniform mat4 mModel;                            \n \
-        uniform mat4 mView;                             \n \
-        uniform mat4 mProjection;                       \n \
-		                                                \n \
-        in vec4 vPosition;                              \n \
-        in vec4 vColour;                                \n \
-		                                                \n \
-        out vec4 gVertColour;                           \n \
-		                                                \n \
-        void main()                                     \n \
-        {                                               \n \
-            gl_Position = vPosition;                    \n \
-		                                                \n \
-            gVertColour = vColour;                      \n \
-        }\n";
 
-///*static*/ 
-//const std::string cDebugRenderer::DEFALUT_VERT_SHADER_SOURCE = "\
-//        #version 420                                    \n \
-//		                                                \n \
-//        uniform mat4 mModel;                            \n \
-//        uniform mat4 mView;                             \n \
-//        uniform mat4 mProjection;                       \n \
-//		                                                \n \
-//        in vec4 vPosition;                              \n \
-//        in vec4 vColour;                                \n \
-//		                                                \n \
-//        out vec4 gVertColour;                           \n \
-//		                                                \n \
-//        void main()                                     \n \
-//        {                                               \n \
-//            mat4 MVP = mProjection * mView * mModel;    \n \
-//            gl_Position = MVP * vPosition;              \n \
-//		                                                \n \
-//            vertColour = vColour;                       \n \
-//        }\n";
-
-// Default geometry shader is a pass through
-const std::string cDebugRenderer::DEFAULT_GEOM_SHADER_SOURCE_LINES = "\
-        #version 400                                     \n \
-                                                         \n \
-        layout(lines)               in;                  \n \
-        layout(line_strip)          out;                 \n \
-        layout(max_vertices = 2)    out;		         \n \
-	                                                     \n \
-	    in vec4 gVertColour[];                           \n \
-        out vec4 fVertColour;                            \n \
-                                                         \n \
-        uniform mat4 mModel;                             \n \
-        uniform mat4 mView;                              \n \
-        uniform mat4 mProjection;                        \n \
-                                                         \n \
-        void main()                                      \n \
-        {                                                \n \
-           mat4 MVP = mProjection * mView * mModel;      \n \
-                                                         \n \
-           gl_Position = MVP * gl_in[0].gl_Position;     \n \
-           fVertColour = gVertColour[0];                 \n \
-           EmitVertex();                                 \n \
-                                                         \n \
-           gl_Position = MVP * gl_in[1].gl_Position;     \n \
-           fVertColour = gVertColour[1];                 \n \
-           EmitVertex();                                 \n \
-                                                         \n \
-           EndPrimitive();                               \n \
-        } \n";
-
-// Default geometry shader is a pass through
-const std::string cDebugRenderer::DEFAULT_GEOM_SHADER_SOURCE_TRIANGLES = "\
-        #version 400                                     \n \
-                                                         \n \
-        layout(triangles)               in;              \n \
-        layout(triangle_strip)          out;             \n \
-        layout(max_vertices = 3)        out;             \n \
-	                                                     \n \
-	    in vec4 gVertColour[];                           \n \
-        out vec4 fVertColour;                            \n \
-                                                         \n \
-        uniform mat4 mModel;                             \n \
-        uniform mat4 mView;                              \n \
-        uniform mat4 mProjection;                        \n \
-                                                         \n \
-        void main()                                      \n \
-        {                                                \n \
-           mat4 MVP = mProjection * mView * mModel;      \n \
-                                                         \n \
-           gl_Position = MVP * gl_in[0].gl_Position;     \n \
-           fVertColour = gVertColour[0];                 \n \
-           EmitVertex();                                 \n \
-                                                         \n \
-           gl_Position = MVP * gl_in[1].gl_Position;     \n \
-           fVertColour = gVertColour[1];                 \n \
-           EmitVertex();                                 \n \
-                                                         \n \
-           gl_Position = MVP * gl_in[2].gl_Position;     \n \
-           fVertColour = gVertColour[2];                 \n \
-           EmitVertex();                                 \n \
-                                                         \n \
-           EndPrimitive();                               \n \
-        } \n";
-
-/*static*/ 
-const std::string cDebugRenderer::DEFAULT_FRAG_SHADER_SOURCE = "\
-        #version 420                                \n \
-                                                    \n \
-        in vec4 fVertColour;                        \n \
-                                                    \n \
-	    out vec4 outputColour;                      \n \
-                                                    \n \
-        void main()                                 \n \
-        {                                           \n \
-            outputColour.rgb = fVertColour.rgb;     \n \
-            outputColour.a = fVertColour.a;         \n \
-        }\n	";
-
-///*static*/ 
-//const std::string cDebugRenderer::DEFAULT_FRAG_SHADER_SOURCE = "\
-//        #version 420                                \n \
-//                                                    \n \
-//        in vec4 vertColour;                         \n \
-//                                                    \n \
-//        void main()                                 \n \
-//        {                                           \n \
-//            gl_FragColor.rgb = vertColour.rgb;      \n \
-//            gl_FragColor.a = vertColour.a;          \n \
-//        }\n	";
+#include "cDebugRenderer_built_in_shaders.h"
 
 
-
-//class cDebugRenderer::cShaderProgramInfo
-//{
-//public:
-//	cShaderProgramInfo() :
-//		shaderProgramID(0), 
-//		matProjectionUniformLoc(-1), 
-//		matViewUniformLoc(-1),
-//		matModelUniformLoc(-1)
-//	{};
-//	//cShaderManager::cShader vertShader;
-//	//cShaderManager::cShader geomShader;
-//	//cShaderManager::cShader fragShader;
-//
-//	CShaderProgramDescription vertShader;
-//	CShaderProgramDescription geomShader;
-//	CShaderProgramDescription fragShader;
-//
-//	unsigned int shaderProgramID;
-//	// Uniforms in the shader
-//	int matProjectionUniformLoc;
-//	int matViewUniformLoc;
-//	int matModelUniformLoc;
-//};
-
-#include <iostream>
 
 // Used to compile the shader
 void cDebugRenderer::m_parseStringIntoMultiLine( std::string singleLineSource, std::vector<std::string> &vecMultiline )
@@ -329,6 +178,69 @@ bool cDebugRenderer::initialize(void)
 	// (this is deleted once it's used, but that's OK since we only 
 	//  need it to get the shader 'name' or ID)
 
+	std::vector<std::string> multiLineSource;
+	std::string error;
+
+
+//    ___     _     _     ___ _            _          
+//   | _ \___(_)_ _| |_  / __| |_  __ _ __| |___ _ _  
+//   |  _/ _ \ | ' \  _| \__ \ ' \/ _` / _` / -_) '_| 
+//   |_| \___/_|_||_\__| |___/_||_\__,_\__,_\___|_|   
+//                                                    
+	//this->m_pShaderProg_Lines->vertShader.parseStringIntoMultiLine(this->m_vertexShaderSource);
+	//this->m_pShaderProg_Lines->geomShader.parseStringIntoMultiLine(this->m_geometryShaderSource_Lines);
+	//this->m_pShaderProg_Lines->fragShader.parseStringIntoMultiLine(this->m_fragmentShaderSource);
+	
+	GLuint pointVertexShaderID =	glCreateShader(GL_VERTEX_SHADER);
+//	GLuint pointGeometryShaderID = glCreateShader(GL_GEOMETRY_SHADER);
+	GLuint pointFragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+
+	multiLineSource.clear();
+	this->m_parseStringIntoMultiLine( this->m_vertexShaderSource_Points, multiLineSource );
+	if ( ! this->m_compileShaderFromSource( pointVertexShaderID, multiLineSource, error ) )
+	{
+		this->m_lastError = "Can't compile point vertex shader: " + error;
+		return false;
+	}
+
+	// There's no geometry shader for the point renderer
+
+	multiLineSource.clear();
+	this->m_parseStringIntoMultiLine( this->m_fragmentShaderSource_Points, multiLineSource );
+	if ( ! this->m_compileShaderFromSource( pointFragmentShaderID, multiLineSource, error ) )
+	{
+		this->m_lastError = "Can't compile point fragment shader: " + error;
+		return false;
+	}
+	
+	this->m_PointShaderProgramID = glCreateProgram();
+	glAttachShader( this->m_PointShaderProgramID, pointVertexShaderID);
+	glAttachShader( this->m_PointShaderProgramID, pointFragmentShaderID);
+	glLinkProgram( this->m_PointShaderProgramID );
+
+	if ( this->m_wasThereALinkError( this->m_PointShaderProgramID, error ) )
+	{
+		this->m_lastError = "Can't link point shader: " + error;
+		return false;
+	}
+
+
+	// The shader was compiled, so get the shader program number
+//	this->m_pShaderProg_Lines->shaderProgramID = shaderManager.getIDFromFriendlyName("debugShaderLines");
+
+	// Get the uniform variable locations 
+	glUseProgram(this->m_PointShaderProgramID);
+	this->m_PointShader_matModelUniformLoc = glGetUniformLocation(this->m_PointShaderProgramID, "mModel");
+	this->m_PointShader_matViewUniformLoc = glGetUniformLocation(this->m_PointShaderProgramID, "mView");
+	this->m_PointShader_matProjectionUniformLoc = glGetUniformLocation(this->m_PointShaderProgramID, "mProjection");
+
+	//std::cout << "Lines::mModel = " << this->m_pShaderProg_Lines->matModelUniformLoc << std::endl;
+	//std::cout << "Lines::mView = " << this->m_pShaderProg_Lines->matViewUniformLoc << std::endl;
+	//std::cout << "Lines::mProjection = " << this->m_pShaderProg_Lines->matProjectionUniformLoc << std::endl;
+
+	glUseProgram(0);
+
+
 //    _    _            ___ _            _         
 //   | |  (_)_ _  ___  / __| |_  __ _ __| |___ _ _ 
 //   | |__| | ' \/ -_) \__ \ ' \/ _` / _` / -_) '_|
@@ -342,16 +254,15 @@ bool cDebugRenderer::initialize(void)
 	GLuint lineGeometryShaderID = glCreateShader(GL_GEOMETRY_SHADER);
 	GLuint lineFragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
 
-	std::vector<std::string> multiLineSource;
-	std::string error;
-
-	this->m_parseStringIntoMultiLine( this->m_vertexShaderSource, multiLineSource );
+	multiLineSource.clear();
+	this->m_parseStringIntoMultiLine( this->m_vertexShaderSource_Lines, multiLineSource );
 	if ( ! this->m_compileShaderFromSource( lineVertexShaderID, multiLineSource, error ) )
 	{
 		this->m_lastError = "Can't compile line vertex shader: " + error;
 		return false;
 	}
 
+	multiLineSource.clear();
 	this->m_parseStringIntoMultiLine( this->m_geometryShaderSource_Lines, multiLineSource );
 	if ( ! this->m_compileShaderFromSource( lineGeometryShaderID, multiLineSource, error ) )
 	{
@@ -359,7 +270,8 @@ bool cDebugRenderer::initialize(void)
 		return false;
 	}
 
-	this->m_parseStringIntoMultiLine( this->m_fragmentShaderSource, multiLineSource );
+	multiLineSource.clear();
+	this->m_parseStringIntoMultiLine( this->m_fragmentShaderSource_Lines, multiLineSource );
 	if ( ! this->m_compileShaderFromSource( lineFragmentShaderID, multiLineSource, error ) )
 	{
 		this->m_lastError = "Can't compile line fragment shader: " + error;
@@ -404,14 +316,15 @@ bool cDebugRenderer::initialize(void)
 	GLuint triangleGeometryShaderID =	glCreateShader(GL_GEOMETRY_SHADER);
 	GLuint triangleFragmentShaderID =	glCreateShader(GL_FRAGMENT_SHADER);
 
-
-	this->m_parseStringIntoMultiLine( this->m_vertexShaderSource, multiLineSource );
+	multiLineSource.clear();
+	this->m_parseStringIntoMultiLine( this->m_vertexShaderSource_Triangles, multiLineSource );
 	if ( ! this->m_compileShaderFromSource( triangleVertexShaderID, multiLineSource, error ) )
 	{
 		this->m_lastError = "Can't compile line vertex shader: " + error;
 		return false;
 	}
 
+	multiLineSource.clear();
 	this->m_parseStringIntoMultiLine( this->m_geometryShaderSource_Triangles, multiLineSource );
 	if ( ! this->m_compileShaderFromSource( triangleGeometryShaderID, multiLineSource, error ) )
 	{
@@ -419,7 +332,8 @@ bool cDebugRenderer::initialize(void)
 		return false;
 	}
 
-	this->m_parseStringIntoMultiLine( this->m_fragmentShaderSource, multiLineSource );
+	multiLineSource.clear();
+	this->m_parseStringIntoMultiLine( this->m_fragmentShaderSource_Triangles, multiLineSource );
 	if ( ! this->m_compileShaderFromSource( triangleFragmentShaderID, multiLineSource, error ) )
 	{
 		this->m_lastError = "Can't compile line fragment shader: " + error;
@@ -445,15 +359,15 @@ bool cDebugRenderer::initialize(void)
 	this->m_TriangleShader_matViewUniformLoc = glGetUniformLocation(this->m_TriangleShaderProgramID, "mView");
 	this->m_TriangleShader_matProjectionUniformLoc = glGetUniformLocation(this->m_TriangleShaderProgramID, "mProjection");
 
-	//std::cout << "Triangles::mModel = " << this->m_pShaderProg_Triangles->matModelUniformLoc << std::endl;
-	//std::cout << "Triangles::mView = " << this->m_pShaderProg_Triangles->matViewUniformLoc << std::endl;
-	//std::cout << "Triangles::mProjection = " << this->m_pShaderProg_Triangles->matProjectionUniformLoc << std::endl;
+	std::cout << "Triangles::mModel = " << this->m_TriangleShader_matModelUniformLoc << std::endl;
+	std::cout << "Triangles::mView = " << this->m_TriangleShader_matViewUniformLoc << std::endl;
+	std::cout << "Triangles::mProjection = " << this->m_TriangleShader_matProjectionUniformLoc << std::endl;
 
 	glUseProgram(0);
 
 
 	// Set up the VBOs...
-	if ( ! this->resizeBufferForTriangles(cDebugRenderer::DEFAULTNUMBEROFTRIANGLES) )
+	if ( ! this->resizeBufferForPoints(cDebugRenderer::DEFAULTNUMBEROFPOINTS) )
 	{
 		return false;
 	}
@@ -461,7 +375,7 @@ bool cDebugRenderer::initialize(void)
 	{
 		return false;
 	}
-	if ( ! this->resizeBufferForPoints(cDebugRenderer::DEFAULTNUMBEROFPOINTS) )
+	if ( ! this->resizeBufferForTriangles(cDebugRenderer::DEFAULTNUMBEROFTRIANGLES) )
 	{
 		return false;
 	}
@@ -486,8 +400,31 @@ bool cDebugRenderer::initialize(void)
 
 bool cDebugRenderer::resizeBufferForPoints(unsigned int newNumberOfPoints)
 {
-	//TODO
+	// Erase any exisiting buffers 
+	if (this->m_VAOBufferInfoPoints.bIsValid)
+	{	// Assume it exists, so delete it
+		delete[] this->m_VAOBufferInfoPoints.pLocalVertexArray;
+
+		glDeleteBuffers(1, &(this->m_VAOBufferInfoPoints.vertex_buffer_ID));
+
+		glDeleteVertexArrays(1, &(this->m_VAOBufferInfoPoints.VAO_ID));
+	}//if...
+
+	// Add a buffer of 10% to the size, because I'm a pessimist...
+	// (Written this way to avoid a type conversion warning)
+	newNumberOfPoints = (unsigned int)(newNumberOfPoints * 1.1);
+
+	this->m_VAOBufferInfoPoints.bufferSizeObjects = newNumberOfPoints;
+	this->m_VAOBufferInfoPoints.bufferSizeVertices = newNumberOfPoints * 1;
+	this->m_VAOBufferInfoPoints.bufferSizeBytes = 0;
+	this->m_VAOBufferInfoPoints.numberOfObjectsToDraw = 0;
+	this->m_VAOBufferInfoPoints.numberOfVerticesToDraw = 0;
+	this->m_VAOBufferInfoPoints.shaderID = this->m_PointShaderProgramID;
+	return this->m_InitBuffer(this->m_VAOBufferInfoPoints);
+
 	return true;
+
+
 }
 
 //static
@@ -523,7 +460,6 @@ bool cDebugRenderer::resizeBufferForLines(unsigned int newNumberOfLines)
 	this->m_VAOBufferInfoLines.bufferSizeBytes = 0;
 	this->m_VAOBufferInfoLines.numberOfObjectsToDraw = 0;
 	this->m_VAOBufferInfoLines.numberOfVerticesToDraw = 0;
-//	this->m_VAOBufferInfoLines.shaderID = this->m_pShaderProg_Lines->shaderProgramID;
 	this->m_VAOBufferInfoLines.shaderID = this->m_LineShaderProgramID;
 	return this->m_InitBuffer(this->m_VAOBufferInfoLines);
 
@@ -551,7 +487,6 @@ bool cDebugRenderer::resizeBufferForTriangles(unsigned int newNumberOfTriangles)
 	this->m_VAOBufferInfoTriangles.bufferSizeBytes = 0;
 	this->m_VAOBufferInfoTriangles.numberOfObjectsToDraw = 0;
 	this->m_VAOBufferInfoTriangles.numberOfVerticesToDraw = 0;
-//	this->m_VAOBufferInfoTriangles.shaderID = this->m_pShaderProg_Triangles->shaderProgramID;
 	this->m_VAOBufferInfoTriangles.shaderID = this->m_TriangleShaderProgramID;
 	return this->m_InitBuffer(this->m_VAOBufferInfoTriangles);
 }
@@ -643,11 +578,16 @@ bool cDebugRenderer::IsOK(void)
 
 cDebugRenderer::cDebugRenderer()
 {
-	this->m_vertexShaderSource = cDebugRenderer::DEFALUT_VERT_SHADER_SOURCE;
-	this->m_fragmentShaderSource = cDebugRenderer::DEFAULT_FRAG_SHADER_SOURCE;
+	this->m_vertexShaderSource_Points = cDebugRenderer::DEFAULT_VERT_SHADER_SOURCE_POINTS;
+	this->m_fragmentShaderSource_Points = cDebugRenderer::DEFAULT_FRAG_SHADER_SOURCE_POINTS;
 
+	this->m_vertexShaderSource_Lines = cDebugRenderer::DEFAULT_VERT_SHADER_SOURCE_LINES;
 	this->m_geometryShaderSource_Lines = cDebugRenderer::DEFAULT_GEOM_SHADER_SOURCE_LINES;
+	this->m_fragmentShaderSource_Lines = cDebugRenderer::DEFAULT_FRAG_SHADER_SOURCE_LINES;
+
+	this->m_vertexShaderSource_Triangles = cDebugRenderer::DEFAULT_FRAG_SHADER_SOURCE_TRIANGLES;
 	this->m_geometryShaderSource_Triangles = cDebugRenderer::DEFAULT_GEOM_SHADER_SOURCE_TRIANGLES;
+	this->m_fragmentShaderSource_Triangles = cDebugRenderer::DEFAULT_FRAG_SHADER_SOURCE_TRIANGLES;
 
 	//this->m_pShaderProg_Lines = new cShaderProgramInfo();
 	//this->m_pShaderProg_Triangles = new cShaderProgramInfo();
@@ -656,6 +596,8 @@ cDebugRenderer::cDebugRenderer()
 	this->m_TriangleShaderProgramID = 0;
 
 	this->m_pGLRenderState = new cGLRenderStateHelper();
+
+	this->m_PointSize = 1.0f; 
 
 	return;
 }
@@ -676,20 +618,30 @@ cDebugRenderer::~cDebugRenderer()
 	return;
 }
 
+void cDebugRenderer::setPointSize(float newSize)
+{
+	if (newSize < 1.0f)
+	{
+		return;
+	}
+	this->m_PointSize = newSize;
+	return;
+}
+
 
 void cDebugRenderer::RenderDebugObjects(const glm::mat4 &matCameraView, const glm::mat4 &matProjection, double deltaTime)
 {
 	glm::mat4 matView = matCameraView;
 	glm::mat4 matProj = matProjection;
 
-	this->m_copyTrianglesIntoRenderBuffer(deltaTime);
-	this->m_RenderDebugTriangles(matView, matProj, deltaTime);
+	this->m_copyPointsIntoRenderBuffer(deltaTime);
+	this->m_RenderDebugPoints(matView, matProj, deltaTime);
 
 	this->m_copyLinesIntoRenderBuffer(deltaTime);
 	this->m_RenderDebugLines(matView, matProj, deltaTime);
 
-	this->m_copyPointsIntoRenderBuffer(deltaTime);
-	this->m_RenderDebugPoints(matView, matProj, deltaTime);
+	this->m_copyTrianglesIntoRenderBuffer(deltaTime);
+	this->m_RenderDebugTriangles(matView, matProj, deltaTime);
 
 	return;
 }
@@ -703,9 +655,12 @@ cDebugRenderer::sGLDrawState::sGLDrawState()
 	this->GL_polygon_mode_state[1] = GL_FILL; /*GL_BACK*/ 				// 6914
 	this->GL_cull_face_enabled_state = GL_TRUE;
 	this->GL_cull_face_mode_state = GL_BACK;
+	this->currentProgram = 0;
+	this->pointSize = 1.0f;
+	this->pointSizeEnabled = GL_FALSE;
 };
 
-void cDebugRenderer::m_SaveGLState( sGLDrawState &curGLState )
+void cDebugRenderer::m_SaveGLState( cDebugRenderer::sGLDrawState &curGLState )
 {
 	glGetBooleanv( GL_DEPTH_TEST, &(curGLState.GL_depth_test_state) );				// glEnable(GL_DEPTH_TEST);
 	// This returns two values, GL_FRONT and GL_BACK
@@ -713,10 +668,16 @@ void cDebugRenderer::m_SaveGLState( sGLDrawState &curGLState )
 	glGetBooleanv( GL_CULL_FACE, &(curGLState.GL_cull_face_enabled_state) );			// glEnable(GL_CULL_FACE);
 	glGetIntegerv( GL_CULL_FACE_MODE, &(curGLState.GL_cull_face_mode_state) );			// glCullFace(GL_BACK);
 
+	glGetIntegerv(GL_CURRENT_PROGRAM, &(curGLState.currentProgram) );
+
+
+	glGetBooleanv(GL_PROGRAM_POINT_SIZE, &(curGLState.pointSizeEnabled) );
+	glGetFloatv(GL_POINT_SIZE, &(curGLState.pointSize) );
+
 	return;
 }
 
-void cDebugRenderer::m_RestoreGLState( const sGLDrawState &curGLState )
+void cDebugRenderer::m_RestoreGLState( const cDebugRenderer::sGLDrawState &curGLState )
 {
 	glPolygonMode( GL_FRONT, curGLState.GL_polygon_mode_state[0] );	
 	glPolygonMode( GL_BACK, curGLState.GL_polygon_mode_state[1] );		
@@ -740,6 +701,21 @@ void cDebugRenderer::m_RestoreGLState( const sGLDrawState &curGLState )
 	{
 		glDisable(GL_DEPTH_TEST);
 	}
+
+	// Restore the old shader program
+	glUseProgram( curGLState.currentProgram );
+
+	glPointSize( curGLState.pointSize );
+
+	if ( curGLState.pointSizeEnabled == GL_TRUE )
+	{
+		glEnable(GL_PROGRAM_POINT_SIZE);
+	}
+	else
+	{
+		glDisable(GL_PROGRAM_POINT_SIZE);
+	}
+
 	return;
 }
 
@@ -772,12 +748,13 @@ void cDebugRenderer::m_RenderDebugTriangles(const glm::mat4 &matCameraView, cons
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);		// Test for z and store in z buffer
 
-	//glEnable(GL_PROGRAM_POINT_SIZE);
-	//glPointSize(50.0f);
+	glEnable(GL_PROGRAM_POINT_SIZE);
+	glPointSize(50.0f);
 
 	// Draw triangles
 	glBindVertexArray( this->m_VAOBufferInfoTriangles.VAO_ID );
-	glDrawArrays( GL_TRIANGLES, 
+	glDrawArrays( GL_POINTS, 
+	//glDrawArrays( GL_TRIANGLES, 
 				  0,		// 1st vertex
 				  this->m_VAOBufferInfoTriangles.numberOfVerticesToDraw );
 	glBindVertexArray( 0 );
@@ -821,6 +798,7 @@ void cDebugRenderer::m_RenderDebugLines(const glm::mat4 &matCameraView, const gl
 	//glEnable(GL_PROGRAM_POINT_SIZE);
 	//glPointSize(50.0f);
 
+
 	// Draw Lines
 	glBindVertexArray( this->m_VAOBufferInfoLines.VAO_ID );
 	glDrawArrays( GL_LINES, 
@@ -843,8 +821,44 @@ void cDebugRenderer::m_RenderDebugPoints(const glm::mat4 &matCameraView, const g
 	sGLDrawState curGLState;
 	this->m_SaveGLState( curGLState );
 
-	// TODO:
-	
+	// Start rendering 
+	glUseProgram(this->m_PointShaderProgramID);
+
+	glEnable(GL_PROGRAM_POINT_SIZE);
+	glPointSize(this->m_PointSize);
+//	glPointSize(10.0f);
+
+	glUniformMatrix4fv(this->m_PointShader_matViewUniformLoc, 1, GL_FALSE,
+		(const GLfloat*)glm::value_ptr(matCameraView));
+	glUniformMatrix4fv(this->m_PointShader_matProjectionUniformLoc, 1, GL_FALSE,
+		(const GLfloat*)glm::value_ptr(matProjection));
+	// Model matrix is just set to identity. 
+	// In other words, the values in the buffers are in WORLD coordinates (untransformed)
+	glUniformMatrix4fv(this->m_PointShader_matModelUniformLoc, 1, GL_FALSE,
+		(const GLfloat*)glm::value_ptr(glm::mat4(1.0f)));
+
+
+	//TODO: Right now, the objects are drawn WITHOUT the depth buffer
+	//      To be added is the ability to draw objects with and without depth
+	//      (like some objects are draw "in the scene" and others are drawn 
+	//       "on top of" the scene)
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);	// Default
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);		// Test for z and store in z buffer
+
+	//glEnable(GL_PROGRAM_POINT_SIZE);
+	//glPointSize(50.0f);
+
+	// Draw Lines
+	glBindVertexArray(this->m_VAOBufferInfoPoints.VAO_ID);
+	glDrawArrays(GL_POINTS,
+//	glDrawArrays(GL_LINES,
+				 0,		// 1st vertex
+				 this->m_VAOBufferInfoPoints.numberOfVerticesToDraw);
+
+	glBindVertexArray(0);
+
+	glUseProgram(0);
 	// Put everything back as it was 
 	this->m_RestoreGLState( curGLState );
 
@@ -1046,7 +1060,77 @@ void cDebugRenderer::m_copyLinesIntoRenderBuffer(double deltaTime)
 
 void cDebugRenderer::m_copyPointsIntoRenderBuffer(double deltaTime)
 {
-	// TODO: 
+	// Used to keep the "persistent" ones...
+	std::vector<drPoint> vecPointsTemp;
+
+	this->m_VAOBufferInfoPoints.numberOfObjectsToDraw = (unsigned int)this->m_vecPoints.size();
+
+	// Is the draw buffer big enough? 
+	if (this->m_VAOBufferInfoPoints.bufferSizeObjects < this->m_VAOBufferInfoPoints.numberOfObjectsToDraw)
+	{
+		// Resize the buffer
+		this->resizeBufferForPoints(this->m_VAOBufferInfoPoints.numberOfObjectsToDraw);
+	}
+
+	this->m_VAOBufferInfoPoints.numberOfVerticesToDraw
+		= this->m_VAOBufferInfoPoints.numberOfObjectsToDraw * 1;	// Points
+
+	unsigned int vertexIndex = 0;	// index of the vertex buffer to copy into 
+	unsigned int pointIndex = 0;		// index of the triangle buffer
+	for (; pointIndex != this->m_VAOBufferInfoPoints.numberOfObjectsToDraw;
+		 pointIndex++, vertexIndex += 1)
+	{
+		drPoint& curPoint = this->m_vecPoints[pointIndex];
+		this->m_VAOBufferInfoPoints.pLocalVertexArray[vertexIndex + 0].x = curPoint.xyz.x;
+		this->m_VAOBufferInfoPoints.pLocalVertexArray[vertexIndex + 0].y = curPoint.xyz.y;
+		this->m_VAOBufferInfoPoints.pLocalVertexArray[vertexIndex + 0].z = curPoint.xyz.z;
+		this->m_VAOBufferInfoPoints.pLocalVertexArray[vertexIndex + 0].w = curPoint.pointSize;
+		this->m_VAOBufferInfoPoints.pLocalVertexArray[vertexIndex + 0].r = curPoint.colour.r;
+		this->m_VAOBufferInfoPoints.pLocalVertexArray[vertexIndex + 0].g = curPoint.colour.g;
+		this->m_VAOBufferInfoPoints.pLocalVertexArray[vertexIndex + 0].b = curPoint.colour.b;
+		this->m_VAOBufferInfoPoints.pLocalVertexArray[vertexIndex + 0].a = 1.0f;
+
+
+		curPoint.lifeTime -= static_cast<float>(deltaTime);
+
+		// Keep this one? (i.e. is persistent?)
+		if (curPoint.lifeTime > 0.0f)
+		{
+			vecPointsTemp.push_back(curPoint);
+		}
+	}//for (; 
+
+
+	// Clear the point list and push back the persistent ones
+	this->m_vecPoints.clear();
+	for (std::vector<drPoint>::iterator itPoint = vecPointsTemp.begin(); itPoint != vecPointsTemp.end(); itPoint++)
+	{
+		this->m_vecPoints.push_back(*itPoint);
+	}
+
+	// Copy the new vertex information to the vertex buffer
+	// Copy the local vertex array into the GPUs memory
+	unsigned int numberOfBytesToCopy =
+		this->m_VAOBufferInfoPoints.numberOfVerticesToDraw *
+		sizeof(sVertex_xyzw_rgba);
+
+	GLenum err = glGetError();
+
+	glBindBuffer(GL_ARRAY_BUFFER, this->m_VAOBufferInfoPoints.vertex_buffer_ID);
+	glBufferData(GL_ARRAY_BUFFER,
+				 numberOfBytesToCopy,
+				 this->m_VAOBufferInfoPoints.pLocalVertexArray,
+				 GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	err = glGetError();
+	std::string error;
+	std::string errDetails;
+	if (err != GL_NO_ERROR)
+	{
+		//		error = decodeGLErrorFromEnum(err, errDetails);
+		error = COpenGLError::TranslateErrorEnum(err);
+	}
 
 	return;
 }
@@ -1078,7 +1162,15 @@ void cDebugRenderer::addLine(drLine &line)
 	return;
 }
 
-void cDebugRenderer::addPoint(glm::vec3 xyz, glm::vec3 colour, float lifeTime/*=0.0f*/, float pointSize/*=1.0f*/)
+
+void cDebugRenderer::addPoint(glm::vec3 xyz, glm::vec3 colour, float lifeTime/*=0.0f*/)
+{
+	drPoint tempPoint(xyz, colour, lifeTime, 1.0f);
+	this->addPoint(tempPoint);
+	return;
+}
+
+void cDebugRenderer::addPointPointSize(glm::vec3 xyz, glm::vec3 colour, float pointSize, float lifeTime/*=0.0f*/ )
 {
 	drPoint tempPoint(xyz, colour, lifeTime, pointSize);
 	this->addPoint(tempPoint);

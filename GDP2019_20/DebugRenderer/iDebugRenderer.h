@@ -73,8 +73,14 @@ public:
 	virtual void addTriangle(sDebugTri &tri) = 0;
 	virtual void addLine(glm::vec3 startXYZ, glm::vec3 endXYZ, glm::vec3 colour, float lifeTime=0.0f) = 0;
 	virtual void addLine(sDebugLine &line) = 0;
-	virtual void addPoint(glm::vec3 xyz, glm::vec3 colour, float lifeTime=0.0f, float pointSize=1.0f) = 0;
+	virtual void addPoint(glm::vec3 xyz, glm::vec3 colour, float lifeTime=0.0f) = 0;
+	virtual void addPointPointSize(glm::vec3 xyz, glm::vec3 colour, float pointSize, float lifeTime=0.0f ) = 0;
 	virtual void addPoint(sDebugPoint &point) = 0;
+
+	// From 1.0f to whatever
+	// ALL points in the buffer ARE THE SAME SIZE 
+	// (i.e. if you set this, it's set for ALL points in the renderer)
+	virtual void setPointSize(float newSize) = 0;
 
 	//virtual void addDebugMesh(sDebugMesh &mesh) = 0;
 	//virtual void addDebugMesh(std::string name, glm::vec3 xyz, float lifeTime=0.0f) = 0;

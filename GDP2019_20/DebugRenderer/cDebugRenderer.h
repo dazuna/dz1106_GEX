@@ -68,8 +68,12 @@ public:
 	virtual void addTriangle(drTri &tri);
 	virtual void addLine(glm::vec3 startXYZ, glm::vec3 endXYZ, glm::vec3 colour, float lifeTime=0.0f);
 	virtual void addLine(drLine &line);
-	virtual void addPoint(glm::vec3 xyz, glm::vec3 colour, float lifeTime=0.0f, float pointSize=1.0f);
+	virtual void addPoint(glm::vec3 xyz, glm::vec3 colour, float lifeTime=0.0f);
+	virtual void addPointPointSize(glm::vec3 xyz, glm::vec3 colour, float pointSize, float lifeTime=0.0f );
 	virtual void addPoint(drPoint &point);
+
+	virtual void setPointSize(float newSize);
+
 
 	// Replaces the DrawDebugSphere
 	virtual void addDebugSphere(glm::vec3 xyz, glm::vec3 colour, float scale, float lifeTime=0.0f);
@@ -120,11 +124,16 @@ private:
 	}
 
 	// Vertex and Fragment are same for both
-	std::string m_vertexShaderSource;
-	std::string m_fragmentShaderSource;
+	std::string m_vertexShaderSource_Points;
+	std::string m_vertexShaderSource_Lines;
+	std::string m_vertexShaderSource_Triangles;
 
-	std::string m_geometryShaderSource_Triangles;
 	std::string m_geometryShaderSource_Lines;
+	std::string m_geometryShaderSource_Triangles;
+
+	std::string m_fragmentShaderSource_Points;
+	std::string m_fragmentShaderSource_Lines;
+	std::string m_fragmentShaderSource_Triangles;
 
 	// As objects are added (to draw), they are added to these containers
 	std::vector<drTri>   m_vecTriangles;	
@@ -132,10 +141,17 @@ private:
 	std::vector<drPoint> m_vecPoints;	
 	std::vector<drMesh>  m_vecMeshes;	
 
-	static const std::string DEFALUT_VERT_SHADER_SOURCE;
-	static const std::string DEFAULT_FRAG_SHADER_SOURCE;
+	static const std::string DEFAULT_VERT_SHADER_SOURCE_POINTS;
+	static const std::string DEFAULT_FRAG_SHADER_SOURCE_POINTS;
+
+	static const std::string DEFAULT_VERT_SHADER_SOURCE_LINES;
 	static const std::string DEFAULT_GEOM_SHADER_SOURCE_LINES;
+	static const std::string DEFAULT_FRAG_SHADER_SOURCE_LINES;
+
+	static const std::string DEFAULT_VERT_SHADER_SOURCE_TRIANGLES;
 	static const std::string DEFAULT_GEOM_SHADER_SOURCE_TRIANGLES;
+	static const std::string DEFAULT_FRAG_SHADER_SOURCE_TRIANGLES;
+
 
 	// This is the point that's inside the vertex buffer
 	struct sVertex_xyzw_rgba
@@ -214,6 +230,12 @@ private:
 //	cShaderProgramInfo* m_pShaderProg_Lines;
 //	cShaderProgramInfo* m_pShaderProg_Triangles;
 
+	unsigned int m_PointShaderProgramID;
+	int m_PointShader_matModelUniformLoc;
+	int m_PointShader_matViewUniformLoc;
+	int m_PointShader_matProjectionUniformLoc;
+
+
 	unsigned int m_LineShaderProgramID;
 	int m_LineShader_matModelUniformLoc;
 	int m_LineShader_matViewUniformLoc;
@@ -245,9 +267,16 @@ private:
 		int /*GLint*/ GL_polygon_mode_state[2];			// = { GL_FILL /*GL_FRONT*/, GL_FILL /*GL_BACK*/ };				// 6914
 		unsigned char /*GLboolean*/ GL_cull_face_enabled_state;	// = GL_TRUE;
 		int /*GLint*/ GL_cull_face_mode_state;			// = GL_BACK;
+		// 
+		int currentProgram;
+
+		float pointSize;
+		unsigned char /*GLboolean*/ pointSizeEnabled;
 	};
 	void m_SaveGLState( sGLDrawState &curGLState );
 	void m_RestoreGLState( const sGLDrawState &curGLState );
+
+	float m_PointSize;
 };
 
 #endif

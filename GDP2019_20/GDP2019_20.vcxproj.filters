@@ -349,6 +349,9 @@
     <ClInclude Include="cFBO\cFBO.h">
       <Filter>cFBO</Filter>
     </ClInclude>
+    <ClInclude Include="DebugRenderer\cDebugRenderer_built_in_shaders.h">
+      <Filter>DebugRenderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\fragmentShader01.glsl">

@@ -218,6 +218,7 @@
     <ClInclude Include="cShaderManager.h" />
     <ClInclude Include="cVAOManager.h" />
     <ClInclude Include="DebugRenderer\cDebugRenderer.h" />
+    <ClInclude Include="DebugRenderer\cDebugRenderer_built_in_shaders.h" />
     <ClInclude Include="DebugRenderer\CErrorLog.h" />
     <ClInclude Include="DebugRenderer\cGLRenderStateHelper.h" />
     <ClInclude Include="DebugRenderer\COpenGLError.h" />
