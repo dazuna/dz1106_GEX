@@ -11,6 +11,7 @@
 // NOTE: We are including the INTERFACE, not the actual renderer
 #include "DebugRenderer/iDebugRenderer.h"
 #include "bRotatable/bRotatable.hpp"
+#include "PhysicsConfigs/physicsConfigs.h"
 
 enum eShapeTypes
 {
@@ -62,6 +63,8 @@ public:
 	bool isVisible;
 	bool disableDepthBufferTest;
 	bool disableDepthBufferWrite;
+
+	nPhysics::iPhysicsComponent* physicsComponent;
 
 public:
 	// glm::quat getQOrientation(void);

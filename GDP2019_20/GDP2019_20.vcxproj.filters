@@ -63,8 +63,8 @@
     <Filter Include="quaternion_utils">
       <UniqueIdentifier>{6526f2c0-e57a-4e6d-ae2a-4e15f75e3f5a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="cLuaBrain">
-      <UniqueIdentifier>{0a456b4d-3ac2-48a1-b980-5eb370b054f2}</UniqueIdentifier>
+    <Filter Include="PhysicsConfigs">
+      <UniqueIdentifier>{b0e37784-0643-4c54-a045-bf5e9a4867e3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -191,17 +191,14 @@
     <ClCompile Include="cCommands\cTrigger.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
-    <ClCompile Include="cLuaBrain\cLuaBrain.cpp">
-      <Filter>cLuaBrain</Filter>
-    </ClCompile>
-    <ClCompile Include="cLuaBrain\cLuaToCommand.cpp">
-      <Filter>cLuaBrain</Filter>
-    </ClCompile>
     <ClCompile Include="cCommands\cRotateTo_Light.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
     <ClCompile Include="cCommands\cCamLookAt.cpp">
       <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsConfigs\physicsConfigs.cpp">
+      <Filter>PhysicsConfigs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -328,17 +325,14 @@
     <ClInclude Include="cCommands\cTrigger.hpp">
       <Filter>Commands</Filter>
     </ClInclude>
-    <ClInclude Include="cLuaBrain\cLuaBrain.h">
-      <Filter>cLuaBrain</Filter>
-    </ClInclude>
-    <ClInclude Include="cLuaBrain\cLuaToCommand.hpp">
-      <Filter>cLuaBrain</Filter>
-    </ClInclude>
     <ClInclude Include="cCommands\cRotateTo_Light.hpp">
       <Filter>Commands</Filter>
     </ClInclude>
     <ClInclude Include="cCommands\cCamLookAt.h">
       <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsConfigs\physicsConfigs.h">
+      <Filter>PhysicsConfigs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3,17 +3,12 @@
 #include "globalStuff.h"
 #include "util/tools.h"
 #include <glm/glm.hpp>
-#include <glm/vec3.hpp> // glm::vec3
-#include <glm/vec4.hpp> // glm::vec4
-#include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp>	// glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 #include <stdlib.h>
-#include <stdio.h>
 #include <iostream>
 #include <map>		
 #include <sstream>
-#include <limits.h>
 #include <float.h>
 #include <string>
 #include "cModelLoader.h"			
@@ -22,7 +17,7 @@
 #include "cShaderManager.h"
 #include "TextureManager/cBasicTextureManager.h"
 #include "JSONLoader.h"// JSON Stuff	
-#include "PhysicsStuff.h"// The Physics function
+//#include "PhysicsStuff.h"// The Physics function
 #include "cPhysics.h"
 #include "cLowPassFilter.h"
 //#include "cAABB/cAABB.h"
@@ -34,6 +29,7 @@
 #include "skybox/skybox.h"
 #include "GFLW_callbacks.h"// Keyboard, error, mouse, etc. are now here
 //#include "cLuaBrain/cLuaBrain.h"
+#include "PhysicsConfigs/physicsConfigs.h"
 #include "cFBO/cFBO.h"
 
 cFlyCamera* g_pFlyCamera = NULL;
@@ -183,6 +179,8 @@ int main(void)
 	std::cout << "start loop!" << std::endl;
 
 	createSkyBoxObject();
+
+	::g_initPhysics();
 
 	while (!glfwWindowShouldClose(window))
 	{

@@ -71,20 +71,20 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)lib/Debug64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)GameMath;$(ProjectDir)include;$(SolutionDir)PhysicsInterfaces;$(SolutionDir)MyPhysicsWrapper;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OutDir);$(ProjectDir)lib/Debug64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)lib\Release64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)GameMath;$(ProjectDir)include;$(SolutionDir)PhysicsInterfaces;$(SolutionDir)MyPhysicsWrapper;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OutDir);$(ProjectDir)lib\Release64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)lib/Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)GameMath;$(ProjectDir)include;$(SolutionDir)PhysicsInterfaces;$(SolutionDir)MyPhysicsWrapper;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OutDir);$(ProjectDir)lib/Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)lib/Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)GameMath;$(ProjectDir)include;$(SolutionDir)PhysicsInterfaces;$(SolutionDir)MyPhysicsWrapper;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OutDir);$(ProjectDir)lib/Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -159,8 +159,6 @@
     <ClCompile Include="cGameObject.cpp" />
     <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cLowPassFilter.cpp" />
-    <ClCompile Include="cLuaBrain\cLuaBrain.cpp" />
-    <ClCompile Include="cLuaBrain\cLuaToCommand.cpp" />
     <ClCompile Include="cModelLoader.cpp" />
     <ClCompile Include="cPhysics.cpp" />
     <ClCompile Include="cPhysics_Ericson.cpp" />
@@ -177,6 +175,7 @@
     <ClCompile Include="JSONLoader.cpp" />
     <ClCompile Include="LightManager\cLightHelper.cpp" />
     <ClCompile Include="Particle\cParticleEmitter.cpp" />
+    <ClCompile Include="PhysicsConfigs\physicsConfigs.cpp" />
     <ClCompile Include="PhysicsStuff.cpp" />
     <ClCompile Include="playerController\playerController.cpp" />
     <ClCompile Include="quaternion_utils\quaternion_utils.cpp" />
@@ -208,8 +207,6 @@
     <ClInclude Include="cGameObject.h" />
     <ClInclude Include="cLight.h" />
     <ClInclude Include="cLowPassFilter.h" />
-    <ClInclude Include="cLuaBrain\cLuaBrain.h" />
-    <ClInclude Include="cLuaBrain\cLuaToCommand.hpp" />
     <ClInclude Include="cMesh.h" />
     <ClInclude Include="cModelLoader.h" />
     <ClInclude Include="cPhysics.h" />
@@ -226,6 +223,7 @@
     <ClInclude Include="JSONLoader.h" />
     <ClInclude Include="LightManager\cLightHelper.h" />
     <ClInclude Include="Particle\cParticleEmitter.h" />
+    <ClInclude Include="PhysicsConfigs\physicsConfigs.h" />
     <ClInclude Include="PhysicsStuff.h" />
     <ClInclude Include="playerController\playerController.h" />
     <ClInclude Include="quaternion_utils\quaternion_utils.hpp" />

@@ -17,6 +17,8 @@ glm::mat4 calculateWorldMatrix(cGameObject* pCurrentObject)
 			glm::vec3(pCurrentObject->positionXYZ.x,
 				pCurrentObject->positionXYZ.y,
 				pCurrentObject->positionXYZ.z));
+	//glm::mat4 matTrans;
+	//pCurrentObject->physicsComponent->GetTransform(matTrans);
 	matWorld = matWorld * matTrans;
 	// ******* TRANSLATION TRANSFORM *********
 
