@@ -54,6 +54,8 @@ public:
 	int lifetime = 0;
 	// If the object has an inverse mass of 0.0	//	then it's not updated by the physics code
 	float inverseMass;
+	float mass;
+	glm::vec3 planeNormal;
 	eShapeTypes physicsShapeType;
 	glm::vec3 AABB_min, AABB_max;
 	float SPHERE_radius;

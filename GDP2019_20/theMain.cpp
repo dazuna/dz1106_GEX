@@ -112,6 +112,8 @@ int main(void)
 	void ProcessAsyncKeys(GLFWwindow * window);
 
 	pDebugRenderer->initialize();
+	::g_initPhysics();
+
 
 	//	OpenGL and GLFW are good to go, so load the model
 	// cModelLoader* pTheModelLoader = new cModelLoader();
@@ -179,8 +181,6 @@ int main(void)
 	std::cout << "start loop!" << std::endl;
 
 	createSkyBoxObject();
-
-	::g_initPhysics();
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -280,6 +280,7 @@ int main(void)
 
 		//	Update the objects through physics
 		averageDeltaTime = avgDeltaTimeThingy.getAverage();
+		::g_PhysicsWorld->Update(float(averageDeltaTime));
 		
 		pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
 

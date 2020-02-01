@@ -35,3 +35,8 @@ bool JSONLoadTextures();
 void SetUpTextureBindingsForObject(
 	cGameObject* pCurrentObject,
 	GLint shaderProgID);
+
+// using the factory of my wrapper to create the correspondin
+// physics component which hinges on the gameObject shapeType
+// that I originally had implemented for physics1
+nPhysics::iPhysicsComponent* createPhysicsComponent(cGameObject* theGO);

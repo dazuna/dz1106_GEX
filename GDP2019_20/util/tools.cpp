@@ -12,13 +12,19 @@ glm::mat4 calculateWorldMatrix(cGameObject* pCurrentObject)
 {
 	glm::mat4 matWorld = glm::mat4(1.0f);
 	// ******* TRANSLATION TRANSFORM *********
-	glm::mat4 matTrans
-		= glm::translate(glm::mat4(1.0f),
-			glm::vec3(pCurrentObject->positionXYZ.x,
-				pCurrentObject->positionXYZ.y,
-				pCurrentObject->positionXYZ.z));
-	//glm::mat4 matTrans;
-	//pCurrentObject->physicsComponent->GetTransform(matTrans);
+	glm::mat4 matTrans;
+	if(pCurrentObject->physicsComponent)
+	{
+		pCurrentObject->physicsComponent->GetTransform(matTrans);
+	}
+	else
+	{
+		matTrans = glm::translate(glm::mat4(1.0f),
+								  glm::vec3(pCurrentObject->positionXYZ.x,
+									pCurrentObject->positionXYZ.y,
+									pCurrentObject->positionXYZ.z));
+	}
+	
 	matWorld = matWorld * matTrans;
 	// ******* TRANSLATION TRANSFORM *********
 

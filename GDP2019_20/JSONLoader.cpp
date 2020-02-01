@@ -173,6 +173,16 @@ bool JSONLoadGameObjects(
 		{
 			tempGameObject->alphaTransparency = jsonArray[index]["alphaTransparency"];
 		}
+		if (jsonArray[index].find("mass") != jsonArray[index].end())
+		{
+			tempGameObject->mass = jsonArray[index]["mass"];
+		}
+		if (jsonArray[index].find("planeNormal") != jsonArray[index].end())
+		{
+			tempGameObject->planeNormal = glm::vec3(jsonArray[index]["planeNormal"][0],
+													jsonArray[index]["planeNormal"][1],
+													jsonArray[index]["planeNormal"][2]);
+		}
 		tempGameObject->friendlyName = friendlyName;
 		tempGameObject->meshName = meshName;
 		tempGameObject->meshURL = meshURL;
@@ -189,6 +199,7 @@ bool JSONLoadGameObjects(
 		tempGameObject->isWireframe = isWireframe;
 		tempGameObject->debugColour = debugColour;
 		tempGameObject->isVisible = isVisible;
+		tempGameObject->physicsComponent = createPhysicsComponent(tempGameObject);
 		g_map_GameObjects->insert({ friendlyName.c_str(),tempGameObject });
 	}
 	//std::cout << j;
@@ -393,4 +404,26 @@ void SetUpTextureBindingsForObject(cGameObject* pCurrentObject,GLint shaderProgI
 
 
 	return;
+}
+
+nPhysics::iPhysicsComponent* createPhysicsComponent(cGameObject* theGO)
+{
+	nPhysics::iPhysicsComponent* theIPC = nullptr;
+	nPhysics::sBallDef* ballDef;
+	nPhysics::sPlaneDef* planeDef;
+	switch (theGO->physicsShapeType)
+	{
+	case SPHERE:
+		ballDef = new nPhysics::sBallDef(theGO->mass, theGO->scale, theGO->positionXYZ, theGO->velocity);
+		theIPC = g_PhysicsFactory->CreateBall(*ballDef);
+		::g_PhysicsWorld->AddComponent(theIPC);
+		break;
+	case PLANE:
+		planeDef = new nPhysics::sPlaneDef(theGO->planeNormal, theGO->positionXYZ);
+		theIPC = g_PhysicsFactory->CreatePlane(*planeDef);
+		::g_PhysicsWorld->AddComponent(theIPC);
+		break;
+	default: break;
+	}
+	return theIPC;
 }

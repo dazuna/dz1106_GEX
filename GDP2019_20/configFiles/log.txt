@@ -1,7 +1,7 @@
 friendlyName: cameraPosition0
 meshName: cubeMesh
 meshURL: assets/models/cube1_xyx_n_uv.ply
-positionXYZ: vec3(0.000000, 10.000000, -10.000000)
+positionXYZ: vec3(6.063997, 84.077942, -359.452911)
 rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
@@ -20,21 +20,10 @@ specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 velocity: vec3(0.000000, 0.000000, 0.000000)
 accel: vec3(0.000000, 0.000000, 0.000000)
 debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: sphere
-meshName: sphereMesh
-meshURL: assets/models/Sphere_Radius_1_XYZ_n_uv.ply
-positionXYZ: vec3(0.000000, 0.000000, 0.000000)
-rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
-objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 friendlyName: sphereRed
 meshName: sphereMesh
 meshURL: assets/models/Sphere_Radius_1_XYZ_n_uv.ply
-positionXYZ: vec3(0.000000, 0.000000, 0.000000)
+positionXYZ: vec3(0.000000, 20.000000, 0.000000)
 rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
@@ -45,7 +34,18 @@ debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 friendlyName: sphereWhite
 meshName: sphereMesh
 meshURL: assets/models/Sphere_Radius_1_XYZ_n_uv.ply
-positionXYZ: vec3(0.500000, 0.000000, 0.000000)
+positionXYZ: vec3(3.000000, 20.000000, 0.000000)
+rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
+objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+friendlyName: thePlane
+meshName: planeMesh
+meshURL: assets/models/plane_XYZ_n_uv.ply
+positionXYZ: vec3(0.000000, 0.000000, 0.000000)
 rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
