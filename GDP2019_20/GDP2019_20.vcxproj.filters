@@ -200,6 +200,9 @@
     <ClCompile Include="PhysicsConfigs\physicsConfigs.cpp">
       <Filter>PhysicsConfigs</Filter>
     </ClCompile>
+    <ClCompile Include="cFlyCamera\cFollowCamera.cpp">
+      <Filter>cFlyCamera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -333,6 +336,9 @@
     </ClInclude>
     <ClInclude Include="PhysicsConfigs\physicsConfigs.h">
       <Filter>PhysicsConfigs</Filter>
+    </ClInclude>
+    <ClInclude Include="cFlyCamera\cFollowCamera.h">
+      <Filter>cFlyCamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

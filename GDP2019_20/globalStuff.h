@@ -9,6 +9,7 @@
 #include "cModelLoader.h"			
 #include "cVAOManager.h"
 #include "cFlyCamera/cFlyCamera.h"
+#include "cFlyCamera/cFollowCamera.h"
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
 #include <glm/gtx/string_cast.hpp>
@@ -21,7 +22,8 @@ std::string GLMvec3toString(glm::vec3 theGLMvec3);
 
 // These are defined in theMain.cpp
 extern cGameObject* pSkyBox;
-extern cFlyCamera* g_pFlyCamera;
+//extern cFlyCamera* g_pFlyCamera;
+extern cFollowCamera* g_pFlyCamera;
 extern glm::vec3 cameraEye;
 extern glm::vec3 cameraTarget;
 extern glm::vec3 visionVector;

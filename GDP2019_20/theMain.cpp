@@ -26,13 +26,15 @@
 #include "cLight.h"// Used to visualize the attenuation of the lights...
 #include "LightManager/cLightHelper.h"
 #include "cFlyCamera/cFlyCamera.h"
+#include "cFlyCamera/cFollowCamera.h"
 #include "skybox/skybox.h"
 #include "GFLW_callbacks.h"// Keyboard, error, mouse, etc. are now here
 //#include "cLuaBrain/cLuaBrain.h"
 #include "PhysicsConfigs/physicsConfigs.h"
 #include "cFBO/cFBO.h"
 
-cFlyCamera* g_pFlyCamera = NULL;
+//cFlyCamera* g_pFlyCamera = NULL;
+cFollowCamera* g_pFlyCamera = NULL;
 cGameObject* pSkyBox = new cGameObject();
 glm::vec3 cameraEye = glm::vec3(0.0f, 50.0f, 100.0f);
 glm::vec3 cameraTarget = glm::vec3(0.0f, 50.0f, 0.0f);
@@ -63,7 +65,7 @@ playerController* pPlayerControl;
 double timer = 0.0;
 double averageDeltaTime;
 bool isDroneOn = false;
-bool cameraFollowPlayer = false;
+bool cameraFollowPlayer = true;
 
 // Load up my "scene" objects (now global)
 std::map<std::string, cMesh*> g_map_Mesh;
@@ -73,6 +75,8 @@ std::map<std::string, cGameObject*>::iterator selectedGameObject = g_map_GameObj
 std::map<std::string, cLight> g_map_pLights;
 std::map<std::string, cLight>::iterator selectedLight = g_map_pLights.begin();
 //bool g_BallCollided = false;
+std::vector<nPhysics::iPhysicsComponent*> g_viewableObjects;
+bool followCamera = true;
 
 selectedType cursorType = selectedType::GAMEOBJECT;
 
@@ -171,11 +175,14 @@ int main(void)
 		cameraTarget = cameraEye + visionVector;
 	}
 
-	::g_pFlyCamera = new cFlyCamera();
+	//::g_pFlyCamera = new cFlyCamera();
+	::g_pFlyCamera = new cFollowCamera();
 	::g_pFlyCamera->eye = cameraEye;
 	::g_pFlyCamera->cameraLookAt(cameraTarget);
 	::g_pFlyCamera->movementSpeed = 100.0f;
-
+	// for following physics objects
+	::g_pFlyCamera->init(glm::vec3(0,50,-200));
+	
 	// Get the initial time
 	double lastTime = glfwGetTime();
 	std::cout << "start loop!" << std::endl;
@@ -281,6 +288,11 @@ int main(void)
 		//	Update the objects through physics
 		averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		::g_PhysicsWorld->Update(float(averageDeltaTime));
+
+		// to have our camera follow a specific sphere.
+		if(cameraFollowPlayer)
+			::g_pFlyCamera->update();
+		//::g_pFlyCamera->cameraLookAt();
 		
 		pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
 

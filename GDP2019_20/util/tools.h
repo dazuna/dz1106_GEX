@@ -45,7 +45,8 @@ T randInRange(T min, T max)
 	return static_cast<T>(value);
 };
 
-extern cFlyCamera* g_pFlyCamera;
+//extern cFlyCamera* g_pFlyCamera;
+extern cFollowCamera* g_pFlyCamera;
 extern std::map<unsigned long long /*ID*/, cAABB*> g_mapAABBs_World;
 extern double averageDeltaTime;
 

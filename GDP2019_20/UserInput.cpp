@@ -29,7 +29,8 @@ bool g_MouseIsInsideWindow = false;
 bool g_MouseLeftButtonIsDown = false;
 
 // Declared in theMain
-extern cFlyCamera* g_pFlyCamera;
+//extern cFlyCamera* g_pFlyCamera;
+extern cFollowCamera* g_pFlyCamera;
 extern playerController* pPlayerControl;
 extern bool cameraFollowPlayer;
 extern cLuaBrain* p_LuaScripts;
@@ -105,13 +106,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 		if (key == GLFW_KEY_F2 && action == GLFW_PRESS)
 		{
-			isDroneOn = !isDroneOn;
+			cameraFollowPlayer = !cameraFollowPlayer;
 		}
 		if (key == GLFW_KEY_F3 && action == GLFW_PRESS)
 		{
-			bool tempBool;
-			tempBool = ::pSkyBox->isVisible;
-			tempBool = !tempBool;
+			::g_pFlyCamera->nextViewableObject();
 		}
 		if (key == GLFW_KEY_Z && action == GLFW_PRESS)
 		{
@@ -735,7 +734,7 @@ void ProcessAsyncKeys(GLFWwindow* window)
 	//}
 	float cameraMoveSpeed = ::g_pFlyCamera->movementSpeed;
 	float playerVSpeed = 2.0f;
-	float playerAngle = 0.5f;
+	float playerAngle = 0.1f;
 
 	// If no keys are down, move the camera
 	if (areAllModifiersUp(window))
@@ -745,33 +744,39 @@ void ProcessAsyncKeys(GLFWwindow* window)
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		{
 			//			g_CameraEye.z += cameraSpeed;
-			::g_pFlyCamera->MoveForward_Z(+cameraMoveSpeed);
+			//::g_pFlyCamera->MoveForward_Z(+cameraMoveSpeed);
+			::g_pFlyCamera->zoom(0.9f);
 		}
 		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)	// "backwards"
 		{
 			//			g_CameraEye.z -= cameraSpeed;
-			::g_pFlyCamera->MoveForward_Z(-cameraMoveSpeed);
+			//::g_pFlyCamera->MoveForward_Z(-cameraMoveSpeed);
+			::g_pFlyCamera->zoom(1.1f);
 		}
 		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)	// "left"
 		{
 			//			g_CameraEye.x -= cameraSpeed;
-			::g_pFlyCamera->MoveLeftRight_X(-cameraMoveSpeed);
+			//::g_pFlyCamera->MoveLeftRight_X(-cameraMoveSpeed);
+			::g_pFlyCamera->moveLeft(playerAngle);
 		}
 		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)	// "right"
 		{
 			//			g_CameraEye.x += cameraSpeed;
-			::g_pFlyCamera->MoveLeftRight_X(+cameraMoveSpeed);
+			//::g_pFlyCamera->MoveLeftRight_X(+cameraMoveSpeed);
+			::g_pFlyCamera->moveRight(playerAngle);
 		}
 		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)	// "up"
 		{
-			::g_pFlyCamera->MoveUpDown_Y(-cameraMoveSpeed);
 			//			::g_pFlyCamera->Roll_CW_CCW( +cameraSpeed );
+			//::g_pFlyCamera->MoveUpDown_Y(-cameraMoveSpeed);
+			::g_pFlyCamera->moveDown(playerAngle);
 		}
 		if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)	// "down"
 		{
-			//			g_CameraEye.y -= cameraSpeed;
-			::g_pFlyCamera->MoveUpDown_Y(+cameraMoveSpeed);
 			//			::g_pFlyCamera->Roll_CW_CCW( -cameraSpeed );
+			//::g_pFlyCamera->MoveUpDown_Y(+cameraMoveSpeed);
+			::g_pFlyCamera->moveUp(playerAngle);
+
 		}
 
 		//// Player Control
@@ -800,23 +805,33 @@ void ProcessAsyncKeys(GLFWwindow* window)
 		//{
 		//	pPlayerControl->MoveLeftRight_X(playerAngle);
 		//}
-		//// Rotate ship
-		//if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-		//{
-		//	pPlayerControl->Pitch_UpDown(-playerAngle);
-		//}
-		//if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-		//{
-		//	pPlayerControl->Pitch_UpDown(playerAngle);
-		//}
-		//if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-		//{
-		//	pPlayerControl->Yaw_LeftRight(playerAngle);
-		//}
-		//if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-		//{
-		//	pPlayerControl->Yaw_LeftRight(-playerAngle);
-		//}
+		
+		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+		{
+			//pPlayerControl->Pitch_UpDown(-playerAngle);
+			::g_pFlyCamera->pushUp();
+		}
+		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+		{
+			//pPlayerControl->Pitch_UpDown(playerAngle);
+			::g_pFlyCamera->pushDown();
+		}
+		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+		{
+			//pPlayerControl->Yaw_LeftRight(playerAngle);
+			::g_pFlyCamera->pushLeft();
+		}
+		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+		{
+			//pPlayerControl->Yaw_LeftRight(-playerAngle);
+			::g_pFlyCamera->pushRight();
+		}
+		if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
+		{
+			//pPlayerControl->Yaw_LeftRight(-playerAngle);
+			::g_pFlyCamera->pushAscend();
+		}
+		
 		//if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
 		//{
 		//	pPlayerControl->Roll_CW_CCW(-playerAngle);
