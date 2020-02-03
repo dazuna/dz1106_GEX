@@ -12,6 +12,15 @@ namespace nPhysics
 
 		virtual void GetTransform(glm::mat4& transformOut) = 0;
 
+		// ApplyForce
+		// Apply an external force to this rigid body.
+		// The force is applied center-mass, affecting the acceleration.
+		virtual void ApplyForce(const glm::vec3& force) = 0;
+
+		// ApplyImpulse
+		// Apply an impulse to the center-mass of this rigid body.
+		virtual void ApplyImpulse(const glm::vec3& impulse) = 0;
+
 	protected:
 		iPhysicsComponent(eComponentType componentType)
 			: mComponentType(componentType) {}

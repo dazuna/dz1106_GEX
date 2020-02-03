@@ -19,5 +19,14 @@ namespace nPhysics
 	{
 		this->rigidBody_->GetTransform(transformOut);
 	}
-	
+
+	void cBallComponent::ApplyForce(const glm::vec3& force)
+	{
+		this->rigidBody_->ApplyForce(force);
+	}
+
+	void cBallComponent::ApplyImpulse(const glm::vec3& impulse)
+	{
+		this->rigidBody_->ApplyImpulse(impulse);
+	}
 }

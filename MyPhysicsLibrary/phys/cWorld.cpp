@@ -12,7 +12,7 @@ namespace phys
 		this->mDt = 1.f / 60.f;
 		this->mIntegrator;
 		// things should fall, probably
-		this->mGravity=glm::vec3(0, -1, 0);
+		this->mGravity=glm::vec3(0, -10, 0);
 		this->mBodies = {};
 	}
 
@@ -38,10 +38,10 @@ namespace phys
 		{
 			IntegrateRigidBody(body, dt);
 			auto type = body->GetShapeType();
-			if (type == eShapeType::sphere)
-				std::cout << "pos: " << glm::to_string(body->mPosition) << "   \tvel: " << glm::to_string(body->mVelocity) << std::endl;
-			else
-				std::cout << std::endl;
+			//if (type == eShapeType::sphere)
+			//	std::cout << "pos: " << glm::to_string(body->mPosition) << "   \tvel: " << glm::to_string(body->mVelocity) << std::endl;
+			//else
+			//	std::cout << std::endl;
 		}
 		// 3) Perform collision handling on each unique pair of bodies.
 		for (size_t idxA = 0; idxA < mBodies.size() - 1; idxA++)

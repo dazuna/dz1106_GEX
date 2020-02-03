@@ -17,6 +17,14 @@ namespace nPhysics
 	public:
 		virtual ~iPlaneComponent() {}
 
+		// ApplyForce
+		// The force is applied center-mass, affecting the acceleration.
+		//virtual void ApplyForce(const glm::vec3& force);
+
+		// ApplyImpulse
+		// Apply an impulse to the center-mass of this rigid body.
+		//virtual void ApplyImpulse(const glm::vec3& impulse);
+
 	protected:
 		iPlaneComponent() : iPhysicsComponent(eComponentType::plane) {}
 	private:
