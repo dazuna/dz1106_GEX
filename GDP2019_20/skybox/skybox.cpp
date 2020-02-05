@@ -15,6 +15,7 @@ void drawSkyBox()
 {
 	// texture bindings
 	// SetUpTextureBindingsForObject(::pSkyBox, shaderProgID);
+	glUseProgram(shaderProgID);
 	::pSkyBox->positionXYZ = ::g_pFlyCamera->eye;
 	//::pSkyBox->positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::mat4 m = calculateWorldMatrix(::pSkyBox);

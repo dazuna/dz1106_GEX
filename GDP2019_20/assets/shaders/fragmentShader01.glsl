@@ -83,6 +83,14 @@ vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal,
 	 
 void main()  
 {
+	if ( bIsSkyBox )
+	{
+		vec3 skyColour = texture( skyBox, fNormal.xyz ).rgb;
+		pixelColour.rgb = skyColour.rgb;
+		pixelColour.a = 1.0f;
+		return;
+	}
+	
 	if ( passNumber == 1 )
 	{
 		// It's the 2nd pass
@@ -107,14 +115,6 @@ void main()
 	{
 		pixelColour.rgb = debugColour.rgb;
 		pixelColour.a = 1.0f;				// NOT transparent
-		return;
-	}
-
-	if ( bIsSkyBox )
-	{
-		vec3 skyColour = texture( skyBox, fNormal.xyz ).rgb;
-		pixelColour.rgb = skyColour.rgb;
-		pixelColour.a = 1.0f;
 		return;
 	}
 
