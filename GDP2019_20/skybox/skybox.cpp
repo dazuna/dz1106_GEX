@@ -18,7 +18,7 @@ void drawSkyBox()
 	glUseProgram(shaderProgID);
 	::pSkyBox->positionXYZ = ::g_pFlyCamera->eye;
 	//::pSkyBox->positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-	glm::mat4 m = calculateWorldMatrix(::pSkyBox);
+	glm::mat4 m = tools::calculateWorldMatrix(::pSkyBox);
 	GLint matModel_UL = glGetUniformLocation(shaderProgID, "matModel");
 
 	glUniformMatrix4fv(matModel_UL, 1, GL_FALSE, glm::value_ptr(m));

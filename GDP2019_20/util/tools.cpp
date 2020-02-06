@@ -8,7 +8,7 @@ static glm::vec3 cyan = glm::vec3(0, 1, 1);
 static glm::vec3 yellow = glm::vec3(1, 1, 0);
 
 
-glm::mat4 calculateWorldMatrix(cGameObject* pCurrentObject)
+glm::mat4 tools::calculateWorldMatrix(cGameObject* pCurrentObject)
 {
 	glm::mat4 matWorld = glm::mat4(1.0f);
 	// ******* TRANSLATION TRANSFORM *********
@@ -35,7 +35,7 @@ glm::mat4 calculateWorldMatrix(cGameObject* pCurrentObject)
 	return matWorld;
 }
 
-void DrawObject(glm::mat4 m,
+void tools::DrawObject(glm::mat4 m,
 	cGameObject* pCurrentObject,
 	GLint shaderProgID,
 	cVAOManager* pVAOManager)
@@ -179,7 +179,7 @@ void DrawObject(glm::mat4 m,
 } // DrawObject;
 
 // returns NULL (0) if we didn't find it.
-bool pFindObjectByFriendlyNameMap(std::string name)
+bool tools::pFindObjectByFriendlyNameMap(std::string name)
 {
 	//std::map<std::string, cGameObject*> g_map_GameObjectsByFriendlyName;
 	std::map<std::string, cGameObject*>::iterator itGO = ::g_map_GameObjects.find(name);
@@ -189,7 +189,7 @@ bool pFindObjectByFriendlyNameMap(std::string name)
 		return false;
 }
 
-void drawLightXYZ(cDebugRenderer* pDebugRenderer)
+void tools::drawLightXYZ(cDebugRenderer* pDebugRenderer)
 {
 	pDebugRenderer->addLine(
 		selectedLight->second.positionXYZ,
@@ -244,7 +244,7 @@ void drawLightXYZ(cDebugRenderer* pDebugRenderer)
 	}
 }
 
-void drawGameObjectXYZ(cDebugRenderer* pDebugRenderer)
+void tools::drawGameObjectXYZ(cDebugRenderer* pDebugRenderer)
 {
 	pDebugRenderer->addLine(
 		selectedGameObject->second->positionXYZ,
@@ -299,7 +299,7 @@ void drawGameObjectXYZ(cDebugRenderer* pDebugRenderer)
 		yellow);
 }
 
-void drawNormalsXYZ(cDebugRenderer* pDebugRenderer)
+void tools::drawNormalsXYZ(cDebugRenderer* pDebugRenderer)
 {
 	//selectedGameObject->second;
 	cMesh transMesh;
@@ -316,14 +316,14 @@ void drawNormalsXYZ(cDebugRenderer* pDebugRenderer)
 	}
 }
 
-std::string GLMvec3toString(glm::vec3 theGLMvec3)
+std::string tools::GLMvec3toString(glm::vec3 theGLMvec3)
 {
 	std::stringstream out;
 	out << theGLMvec3.x << ", " << theGLMvec3.y << ", " << theGLMvec3.z;
 	return out.str();
 }
 
-void setWindowTitle(std::stringstream* ssTitle)
+void tools::setWindowTitle(std::stringstream* ssTitle)
 {
 	switch (cursorType)
 	{
@@ -355,7 +355,7 @@ void setWindowTitle(std::stringstream* ssTitle)
 	//*ssTitle << "   XYZ: " << GLMvec3toString(visionVector);
 }
 
-void drawPyramidPlayer(cDebugRenderer* pDebugRenderer)
+void tools::drawPyramidPlayer(cDebugRenderer* pDebugRenderer)
 {
 	// draw pyramid on top of object
 	// x triangle
@@ -389,7 +389,7 @@ void drawPyramidPlayer(cDebugRenderer* pDebugRenderer)
 		glm::vec3(1.0f, 1.0f, 1.0f));
 }
 
-void makeSkullEyesFlicker()
+void tools::makeSkullEyesFlicker()
 {
 	//std::map<std::string, cLight> g_map_pLights;
 	std::map<std::string, cLight>::iterator itLite;
@@ -416,7 +416,7 @@ void makeSkullEyesFlicker()
 	}
 }
 
-void makeCameraDroneAround(bool isDroneOn)
+void tools::makeCameraDroneAround(bool isDroneOn)
 {
 	float degreesOfRotation = 0.5f;
 	// printf("makeCameraDroneAround");
@@ -437,7 +437,7 @@ void makeCameraDroneAround(bool isDroneOn)
 	}
 }
 
-std::vector<cGameObject*> getWorldMapAsVector()
+std::vector<cGameObject*> tools::getWorldMapAsVector()
 {
 	std::vector<cGameObject*> tempVec;
 	std::vector<cGameObject*> tempVec2;
@@ -466,7 +466,7 @@ std::vector<cGameObject*> getWorldMapAsVector()
 	return tempVec;
 }
 
-std::vector<cGameObject*> getClosestTransparentObjectsAsVector()
+std::vector<cGameObject*> tools::getClosestTransparentObjectsAsVector()
 {
 	std::vector<cGameObject*> tempVec;
 	std::map<float, cGameObject*>::reverse_iterator it;
@@ -492,7 +492,7 @@ std::ostream& operator<<(std::ostream& os, const std::vector<float>& input)
 	}
 	return os;
 }
-void printGameObject(cGameObject* theGO)
+void tools::printGameObject(cGameObject* theGO)
 {
 	std::cout << "friendlyName:\t" << theGO->friendlyName << std::endl;			
 	std::cout << "meshName:\t" << theGO->meshName << std::endl;			
@@ -524,7 +524,7 @@ void printGameObject(cGameObject* theGO)
 	std::cout << "" << "" << std::endl;			
 }
 
-void makeTransparentObjectsMap()
+void tools::makeTransparentObjectsMap()
 {
 	closestTransparentObjects.clear();
 	std::map<std::string, cGameObject*>::iterator itGO;
@@ -539,7 +539,7 @@ void makeTransparentObjectsMap()
 }
 
 // Takes a mesh in "model space" and converts it into "world space"
-void CalculateTransformedMesh(cMesh& originalMesh, glm::mat4 matWorld,cMesh& mesh_transformedInWorld)
+void tools::CalculateTransformedMesh(cMesh& originalMesh, glm::mat4 matWorld,cMesh& mesh_transformedInWorld)
 {
 	mesh_transformedInWorld = originalMesh;
 	for (std::vector<sPlyVertexXYZ_N_UV>::iterator itVert = mesh_transformedInWorld.vecVertices.begin();
@@ -565,7 +565,7 @@ void CalculateTransformedMesh(cMesh& originalMesh, glm::mat4 matWorld,cMesh& mes
 	return;
 }
 
-void drawAABBs()
+void tools::drawAABBs()
 {
 	std::map<unsigned long long, cAABB*>::iterator itAABB;
 	for (itAABB = ::g_mapAABBs_World.begin(); itAABB != ::g_mapAABBs_World.end(); itAABB++)
@@ -574,7 +574,7 @@ void drawAABBs()
 	}
 }
 
-void drawSphere(glm::vec3 position, std::string texture, float sscale, float alphaT, float lifetime)
+void tools::drawSphere(glm::vec3 position, std::string texture, float sscale, float alphaT, float lifetime)
 {
 	cGameObject* pGO = new cGameObject(::g_map_GameObjects["sphere"]);
 	pGO->positionXYZ = position;
@@ -592,7 +592,7 @@ void drawSphere(glm::vec3 position, std::string texture, float sscale, float alp
 	::g_map_GameObjects.insert({ pGO->friendlyName,pGO });
 }
 
-void duplicateSphere(glm::vec3 position, std::string texture, float sscale, float alphaT, float lifetime)
+void tools::duplicateSphere(glm::vec3 position, std::string texture, float sscale, float alphaT, float lifetime)
 {
 	cGameObject* pGO = new cGameObject(::g_map_GameObjects["sphere"]);
 	if (texture == "red")
@@ -616,13 +616,13 @@ void duplicateSphere(glm::vec3 position, std::string texture, float sscale, floa
 	::g_map_GameObjects.insert({ pGO->friendlyName,pGO });
 }
 
-void lifetimeValidation(cGameObject* pCurObject)
+void tools::lifetimeValidation(cGameObject* pCurObject)
 {
 	if (pCurObject->tag == "lifetime")
 	{
 		if (pCurObject->lifetime < 1.0f)
 		{
-			::g_map_GameObjects.erase(pCurObject->friendlyName.c_str());
+			::g_map_GameObjects.erase(pCurObject->friendlyName);
 		}
 		pCurObject->lifetime -= 1.0f;
 	}

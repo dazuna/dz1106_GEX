@@ -218,7 +218,7 @@ void drawPlayerColliders(cGameObject* pPlayer)
 	for (itVC = vecColls.begin(); itVC != vecColls.end(); itVC++)
 	{
 		//::pDebugRenderer->addLine(origin, *itVC, cyan, 0.5f);
-		drawSphere(*itVC,"Red.bmp", 1.0f, 1.0f, 0.5f);
+		tools::drawSphere(*itVC,"Red.bmp", 1.0f, 1.0f, 0.5f);
 	}
 }
 
@@ -271,7 +271,7 @@ void testCollisions_AABB(cGameObject* pPlayer)
 
 				pDebugRenderer->addTriangle(clTriangle.a, clTriangle.b, clTriangle.c, yellow, 2.0f);
 				//drawAABBAndTrisWherePlayerPresent(pPlayer);
-				drawSphere(*itVC, "Red.bmp", 1.0f, 1.0f, 0.5f);
+				tools::drawSphere(*itVC, "Red.bmp", 1.0f, 1.0f, 0.5f);
 
 				// Calculate the response vector off the triangle.
 				//glm::vec3 velocityVector = glm::normalize(pPlayer->velocity);
@@ -351,7 +351,7 @@ void IntegrationStep_AAB(std::map<std::string, cGameObject*> g_map_GameObjects, 
 		{
 
 		}
-		lifetimeValidation(pCurObj);
+		tools::lifetimeValidation(pCurObj);
 	}
 	//pPlayerControl->updatePosition(pPlayerControl->pPlayer->positionXYZ);
 	return;
@@ -377,32 +377,32 @@ void AttackRun()
 void generateTwoRandomPoints(glm::vec3* firstPoint, glm::vec3* secondPoint)
 {
 	*firstPoint = glm::vec3(randInRange(-800, 800), randInRange(-500, 500), randInRange(0, 1200));
-	std::cout << "Point Alpha: " << GLMvec3toString(*firstPoint) << std::endl;
+	std::cout << "Point Alpha: " << tools::GLMvec3toString(*firstPoint) << std::endl;
 	while((firstPoint->x <= 532 && firstPoint->x >= -532) || (firstPoint->y <= 267 && firstPoint->y >= -267) || firstPoint->z <= 805)
 	{
 		std::cout << "Picked a point inside the Star Destroyer. Picking another point..." << std::endl;
 		*firstPoint = glm::vec3(randInRange(-800, 800), randInRange(-500, 500), randInRange(0, 1200));
-		std::cout << "Point Alpha: " << GLMvec3toString(*firstPoint) << std::endl;
+		std::cout << "Point Alpha: " << tools::GLMvec3toString(*firstPoint) << std::endl;
 	}
 
 	*secondPoint = glm::vec3(randInRange(-800, 800), randInRange(-500, 500), randInRange(0, -1200));
-	std::cout << "Point Omega: " << GLMvec3toString(*secondPoint) << std::endl;
+	std::cout << "Point Omega: " << tools::GLMvec3toString(*secondPoint) << std::endl;
 	while ((secondPoint->x <= 532 && secondPoint->x >= -532) || (secondPoint->y <= 267 && secondPoint->y >= -267) || secondPoint->z >= -805)
 	{
 		std::cout << "Picked a point inside the Star Destroyer. Picking another point..." << std::endl;
 		*secondPoint = glm::vec3(randInRange(-800, 800), randInRange(-500, 500), randInRange(0, -1200));
-		std::cout << "Point Omega: " << GLMvec3toString(*secondPoint) << std::endl;
+		std::cout << "Point Omega: " << tools::GLMvec3toString(*secondPoint) << std::endl;
 	}
 
 	std::cout << "\n\nPoints Picked Succesfully:" << std::endl;
 	std::cout << "------------------------------------------------------------" << std::endl;
-	std::cout << "Point Alpha: " << GLMvec3toString(*firstPoint) << std::endl;
-	std::cout << "Point Omega: " << GLMvec3toString(*secondPoint) << std::endl;
+	std::cout << "Point Alpha: " << tools::GLMvec3toString(*firstPoint) << std::endl;
+	std::cout << "Point Omega: " << tools::GLMvec3toString(*secondPoint) << std::endl;
 	std::cout << "------------------------------------------------------------" << std::endl;
 
 	std::cout << "\n\nDrawing points in simulation...";
-	duplicateSphere(*firstPoint, "red", 20.0f, 1.0f, 100000.0f);
-	duplicateSphere(*secondPoint, "yellow", 20.0f, 1.0f, 100000.0f);
+	tools::duplicateSphere(*firstPoint, "red", 20.0f, 1.0f, 100000.0f);
+	tools::duplicateSphere(*secondPoint, "yellow", 20.0f, 1.0f, 100000.0f);
 	std::cout << "[OK]" << std::endl;
 }
 
@@ -506,7 +506,7 @@ void shootBullet(cGameObject* xwing)
 
 void makeBulletHit(cGameObject* bullet)
 {
-	duplicateSphere(bullet->positionXYZ, "red", 7.0f, 0.5f, 10000.0f);
+	tools::duplicateSphere(bullet->positionXYZ, "red", 7.0f, 0.5f, 10000.0f);
 
 	// validate the hit was to the Shield Generator
 	glm::vec3 leftGenerator = glm::vec3(101, 245, 556);

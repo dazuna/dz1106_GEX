@@ -117,26 +117,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			::g_map_GameObjects["cameraPosition0"]->positionXYZ = ::g_pFlyCamera->eye;
 		}
-		if (key == GLFW_KEY_2 && action == GLFW_PRESS)
-		{
-			::g_map_GameObjects.clear();
-			JSONLoadGameObjects(&::g_map_GameObjects);
-			::selectedGameObject = ::g_map_GameObjects.begin();
-
-			//TODO call the attack run function!
-			AttackRun();
-			isDroneOn = true;
-		}
-
-		if (key == GLFW_KEY_9 && action == GLFW_PRESS)
-		{
-			decreaseLife("left");
-		}
-		if (key == GLFW_KEY_0 && action == GLFW_PRESS)
-		{
-			decreaseLife("right");
-		}
-
+		
 		//// The scenes we'll view 
 		//if (key == GLFW_KEY_3 && action == GLFW_PRESS)
 		//{
@@ -466,10 +447,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 		if (key == GLFW_KEY_1 && action == GLFW_PRESS)
 		{
-			if (pFindObjectByFriendlyNameMap("cameraPosition1"))
+			if (tools::pFindObjectByFriendlyNameMap("cameraPosition1"))
 			{
 				cameraEye = ::g_map_GameObjects["cameraPosition1"]->positionXYZ;
-				if (pFindObjectByFriendlyNameMap("cameraTarget1"))
+				if (tools::pFindObjectByFriendlyNameMap("cameraTarget1"))
 				{
 					cameraTarget = ::g_map_GameObjects["cameraTarget1"]->positionXYZ;
 					visionVector = glm::normalize(cameraTarget - cameraEye);
@@ -479,10 +460,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 		if (key == GLFW_KEY_2 && action == GLFW_PRESS)
 		{
-			if (pFindObjectByFriendlyNameMap("cameraPosition2"))
+			if (tools::pFindObjectByFriendlyNameMap("cameraPosition2"))
 			{
 				cameraEye = ::g_map_GameObjects["cameraPosition2"]->positionXYZ;
-				if (pFindObjectByFriendlyNameMap("cameraTarget2"))
+				if (tools::pFindObjectByFriendlyNameMap("cameraTarget2"))
 				{
 					cameraTarget = ::g_map_GameObjects["cameraTarget2"]->positionXYZ;
 					visionVector = glm::normalize(cameraTarget - cameraEye);
@@ -492,10 +473,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 		if (key == GLFW_KEY_3 && action == GLFW_PRESS)
 		{
-			if (pFindObjectByFriendlyNameMap("cameraPosition3"))
+			if (tools::pFindObjectByFriendlyNameMap("cameraPosition3"))
 			{
 				cameraEye = ::g_map_GameObjects["cameraPosition3"]->positionXYZ;
-				if (pFindObjectByFriendlyNameMap("cameraTarget3"))
+				if (tools::pFindObjectByFriendlyNameMap("cameraTarget3"))
 				{
 					cameraTarget = ::g_map_GameObjects["cameraTarget3"]->positionXYZ;
 					visionVector = glm::normalize(cameraTarget - cameraEye);
@@ -542,10 +523,10 @@ void getStatus()
 			<< " y: " << selectedGameObject->second->positionXYZ.y
 			<< " z: " << selectedGameObject->second->positionXYZ.z
 			<< "\n";
-		printGameObject(selectedGameObject->second);
+		tools::printGameObject(selectedGameObject->second);
 		for (itGO2 = ::closestTransparentObjects.begin(); itGO2 != ::closestTransparentObjects.end(); itGO2++)
 		{
-			printGameObject(itGO2->second);
+			tools::printGameObject(itGO2->second);
 		}
 		break;
 	case selectedType::LIGHT:

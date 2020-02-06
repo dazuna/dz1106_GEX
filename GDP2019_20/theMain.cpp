@@ -24,7 +24,6 @@
 //#include "cAABB/PhysicsAABBStuff.h"
 #include "DebugRenderer/cDebugRenderer.h"	
 #include "cLight.h"// Used to visualize the attenuation of the lights...
-#include "LightManager/cLightHelper.h"
 #include "cFlyCamera/cFlyCamera.h"
 #include "skybox/skybox.h"
 #include "GFLW_callbacks.h"// Keyboard, error, mouse, etc. are now here
@@ -152,15 +151,14 @@ int main(void)
 	cLowPassFilter avgDeltaTimeThingy;
 
 	// Let there be lights.. I guess
-	cLightHelper* pLightHelper = new cLightHelper();
 	JSONLoadLights(&::g_map_pLights,shaderProgID);
 	selectedLight = ::g_map_pLights.begin();
 
 	// Adjust camera to first position (if existent in map)
-	if (pFindObjectByFriendlyNameMap("cameraPosition0"))
+	if (tools::pFindObjectByFriendlyNameMap("cameraPosition0"))
 	{
 		cameraEye = ::g_map_GameObjects["cameraPosition0"]->positionXYZ;
-		if (pFindObjectByFriendlyNameMap("cameraTarget0"))
+		if (tools::pFindObjectByFriendlyNameMap("cameraTarget0"))
 		{
 			cameraTarget = ::g_map_GameObjects["cameraTarget0"]->positionXYZ;
 			visionVector = glm::normalize(cameraTarget - cameraEye);
@@ -266,7 +264,7 @@ int main(void)
 			::g_pFlyCamera->eye.z, 1.0f);
 
 		std::stringstream ssTitle;
-		setWindowTitle(&ssTitle);
+		tools::setWindowTitle(&ssTitle);
 		glfwSetWindowTitle(window, ssTitle.str().c_str());
 
 		GLint matView_UL = glGetUniformLocation(shaderProgID, "matView");
@@ -278,8 +276,8 @@ int main(void)
 		drawSkyBox();
 
 		// ************************** order transparent objects **************************
-		makeTransparentObjectsMap();
-		std::vector<cGameObject*> theWorldVector = getWorldMapAsVector();
+		tools::makeTransparentObjectsMap();
+		std::vector<cGameObject*> theWorldVector = tools::getWorldMapAsVector();
 
 		// **************************************************
 		// Loop to draw everything in the scene
@@ -288,14 +286,14 @@ int main(void)
 			glm::mat4 matModel = glm::mat4(1.0f);
 			if (theWorldVector[index]->isVisible)
 			{
-				DrawObject(matModel, theWorldVector[index], shaderProgID, pTheVAOManager);
+				tools::DrawObject(matModel, theWorldVector[index], shaderProgID, pTheVAOManager);
 			}
 		}//for (int index...
 
 		switch (cursorType)
 		{
-		case selectedType::GAMEOBJECT:drawGameObjectXYZ(pDebugRenderer); break;
-		case selectedType::LIGHT:drawLightXYZ(pDebugRenderer);break;
+		case selectedType::GAMEOBJECT:tools::drawGameObjectXYZ(pDebugRenderer); break;
+		case selectedType::LIGHT:tools::drawLightXYZ(pDebugRenderer);break;
 		case selectedType::SOUND:break;
 		}
 
@@ -327,7 +325,7 @@ int main(void)
 
 		// 4. Draw a single object (a triangle or quad)
 		cGameObject* pQuadOrIsIt = NULL;
-		if (pFindObjectByFriendlyNameMap("theQuad"))
+		if (tools::pFindObjectByFriendlyNameMap("theQuad"))
 		{
 			pQuadOrIsIt = ::g_map_GameObjects["theQuad"];
 		}
@@ -336,6 +334,7 @@ int main(void)
 		pQuadOrIsIt->isVisible = true;
 		pQuadOrIsIt->setOrientation(glm::vec3(0.0f, 180.0f, 0.0f));
 		pQuadOrIsIt->positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
+		pQuadOrIsIt->isWireframe = false;
 
 		// Move the camera
 		// Maybe set it to orthographic, etc.
@@ -357,10 +356,10 @@ int main(void)
 		glUniform1f(screenHeight_UnitLoc, height);
 
 		glm::mat4 matQuad = glm::mat4(1.0f);
-		DrawObject(matQuad, pQuadOrIsIt,
+		tools::DrawObject(matQuad, pQuadOrIsIt,
 			shaderProgID, pTheVAOManager);
 
-		pQuadOrIsIt->scale = oldScale;
+		//pQuadOrIsIt->scale = oldScale;
 		pQuadOrIsIt->isVisible = false;
 		// END OF 2nd pass
 		// ***********

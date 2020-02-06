@@ -14,10 +14,10 @@
 #include <glm/gtx/string_cast.hpp>
 #include <vector>
 
-// returns NULL (0) if we didn't find it.
-bool pFindObjectByFriendlyNameMap( std::string name );
-glm::mat4 calculateWorldMatrix(cGameObject* pCurrentObject);
-std::string GLMvec3toString(glm::vec3 theGLMvec3);
+//// returns NULL (0) if we didn't find it.
+//bool pFindObjectByFriendlyNameMap( std::string name );
+//glm::mat4 calculateWorldMatrix(cGameObject* pCurrentObject);
+//std::string GLMvec3toString(glm::vec3 theGLMvec3);
 
 // These are defined in theMain.cpp
 extern cGameObject* pSkyBox;

@@ -54,17 +54,11 @@
     <Filter Include="playerController">
       <UniqueIdentifier>{508ef16c-3212-496e-8596-e5d16befb8ff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Commands">
-      <UniqueIdentifier>{61bebe0b-da01-4b7d-b48f-52903fa3d656}</UniqueIdentifier>
-    </Filter>
     <Filter Include="bRotatable">
       <UniqueIdentifier>{7d4292ca-5792-46a2-a2f5-c7428a494b9e}</UniqueIdentifier>
     </Filter>
     <Filter Include="quaternion_utils">
       <UniqueIdentifier>{6526f2c0-e57a-4e6d-ae2a-4e15f75e3f5a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="cLuaBrain">
-      <UniqueIdentifier>{0a456b4d-3ac2-48a1-b980-5eb370b054f2}</UniqueIdentifier>
     </Filter>
     <Filter Include="cFBO">
       <UniqueIdentifier>{14fd8e8f-4de2-4fbe-a6ab-174acbd33288}</UniqueIdentifier>
@@ -164,47 +158,11 @@
     <ClCompile Include="playerController\playerController.cpp">
       <Filter>playerController</Filter>
     </ClCompile>
-    <ClCompile Include="cCommands\cCommandGroupSerial.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="cCommands\cCommandGroupParallel.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
     <ClCompile Include="bRotatable\bRotatable.cpp">
       <Filter>bRotatable</Filter>
     </ClCompile>
     <ClCompile Include="quaternion_utils\quaternion_utils.cpp">
       <Filter>quaternion_utils</Filter>
-    </ClCompile>
-    <ClCompile Include="cCommands\cRotateTo_Time.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="cCommands\cOrientTo_Time.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="cCommands\cMoveTo_AB_Time.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="cCommands\cFollowObject.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="cCommands\cBezierCurve.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="cCommands\cTrigger.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="cLuaBrain\cLuaBrain.cpp">
-      <Filter>cLuaBrain</Filter>
-    </ClCompile>
-    <ClCompile Include="cLuaBrain\cLuaToCommand.cpp">
-      <Filter>cLuaBrain</Filter>
-    </ClCompile>
-    <ClCompile Include="cCommands\cRotateTo_Light.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="cCommands\cCamLookAt.cpp">
-      <Filter>Commands</Filter>
     </ClCompile>
     <ClCompile Include="cFBO\cFBO.cpp">
       <Filter>cFBO</Filter>
@@ -301,50 +259,11 @@
     <ClInclude Include="playerController\playerController.h">
       <Filter>playerController</Filter>
     </ClInclude>
-    <ClInclude Include="cCommands\cCommandGroupParallel.h">
-      <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="cCommands\cCommandGroupSerial.h">
-      <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="cCommands\cMoveTo_AB_Time.h">
-      <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="cCommands\iCommand.h">
-      <Filter>Commands</Filter>
-    </ClInclude>
     <ClInclude Include="bRotatable\bRotatable.hpp">
       <Filter>bRotatable</Filter>
     </ClInclude>
     <ClInclude Include="quaternion_utils\quaternion_utils.hpp">
       <Filter>quaternion_utils</Filter>
-    </ClInclude>
-    <ClInclude Include="cCommands\cRotateTo_Time.hpp">
-      <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="cCommands\cOrientTo_Time.hpp">
-      <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="cCommands\cFollowObject.hpp">
-      <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="cCommands\cBezierCurve.hpp">
-      <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="cCommands\cTrigger.hpp">
-      <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="cLuaBrain\cLuaBrain.h">
-      <Filter>cLuaBrain</Filter>
-    </ClInclude>
-    <ClInclude Include="cLuaBrain\cLuaToCommand.hpp">
-      <Filter>cLuaBrain</Filter>
-    </ClInclude>
-    <ClInclude Include="cCommands\cRotateTo_Light.hpp">
-      <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="cCommands\cCamLookAt.h">
-      <Filter>Commands</Filter>
     </ClInclude>
     <ClInclude Include="cFBO\cFBO.h">
       <Filter>cFBO</Filter>

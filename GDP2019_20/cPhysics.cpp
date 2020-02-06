@@ -1,4 +1,6 @@
 #include "cPhysics.h"
+#include "util/tools.h"
+
 
 cPhysics::cPhysics()
 {
@@ -233,7 +235,7 @@ bool cPhysics::DoShphereMeshCollisionTest(cGameObject* pSphere, cGameObject* pB,
 	//cGameObject* pSphere = ::g_map_GameObjects["sphere"];
 	glm::vec3 closestPoint = glm::vec3(0.0f, 0.0f, 0.0f);
 	cPhysics::sPhysicsTriangle closestTriangle;
-	glm::mat4 matWorld = calculateWorldMatrix(pB);
+	glm::mat4 matWorld = tools::calculateWorldMatrix(pB);
 	cMesh transMesh;
 	CalculateTransformedMesh(*::g_map_Mesh[pB->meshName.c_str()], matWorld, transMesh);
 	GetClosestTriangleToPoint(pSphere->positionXYZ, transMesh, closestPoint, closestTriangle);
@@ -322,7 +324,7 @@ bool cPhysics::DoShphereMeshCollisionTest(cGameObject* pSphere, cGameObject* pB)
 	//cGameObject* pSphere = ::g_map_GameObjects["sphere"];
 	glm::vec3 closestPoint = glm::vec3(0.0f, 0.0f, 0.0f);
 	cPhysics::sPhysicsTriangle closestTriangle;
-	glm::mat4 matWorld = calculateWorldMatrix(pB);
+	glm::mat4 matWorld = tools::calculateWorldMatrix(pB);
 	cMesh transMesh;
 	CalculateTransformedMesh(*::g_map_Mesh[pB->meshName.c_str()], matWorld, transMesh);
 	GetClosestTriangleToPoint(pSphere->positionXYZ, transMesh, closestPoint, closestTriangle);
