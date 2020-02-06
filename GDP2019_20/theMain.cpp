@@ -42,8 +42,6 @@ glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 // This is a "normalized" direction (i.e. the length is 1.0f)
 glm::vec3 sexyLightSpotDirection = glm::vec3(0.0f, -1.0f, 0.0f);
 
-//bool bLightDebugSheresOn = false;
-bool bLightDebugSheresOn = true;
 bool everythingWireFrame = false;
 bool debugger = false;
 std::string console;
@@ -138,9 +136,9 @@ int main(void)
 	::pTextureManager->SetBasePath("assets/textures");
 
 	//JSON Loader for objects
-	JSONLoadMeshes(&g_map_Mesh, pTheModelLoader);
-	JSONLoadGameObjects(&::g_map_GameObjects);
-	loadMeshToGPU(pTheVAOManager, &::g_map_Mesh, &::g_map_GameObjects, shaderProgID);
+	JSONLoader::JSONLoadMeshes(&g_map_Mesh, pTheModelLoader);
+	JSONLoader::JSONLoadGameObjects(&::g_map_GameObjects);
+	JSONLoader::loadMeshToGPU(pTheVAOManager, &::g_map_Mesh, &::g_map_GameObjects, shaderProgID);
 	selectedGameObject = ::g_map_GameObjects.begin();
 
 	//	//	mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
@@ -151,7 +149,7 @@ int main(void)
 	cLowPassFilter avgDeltaTimeThingy;
 
 	// Let there be lights.. I guess
-	JSONLoadLights(&::g_map_pLights,shaderProgID);
+	JSONLoader::JSONLoadLights(&::g_map_pLights,shaderProgID);
 	selectedLight = ::g_map_pLights.begin();
 
 	// Adjust camera to first position (if existent in map)
@@ -191,8 +189,7 @@ int main(void)
 	}
 
 	pDebugRenderer->initialize();
-
-
+	
 	while (!glfwWindowShouldClose(window))
 	{
 		// Draw everything to the external frame buffer

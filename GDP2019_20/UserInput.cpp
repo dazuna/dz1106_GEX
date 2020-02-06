@@ -420,8 +420,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	{
 		if (key == GLFW_KEY_S && action == GLFW_PRESS)
 		{
-			JSONSaveLights(&::g_map_pLights);
-			JSONSaveGameObjects(&::g_map_GameObjects);
+			JSONLoader::JSONSaveLights(&::g_map_pLights);
+			JSONLoader::JSONSaveGameObjects(&::g_map_GameObjects);
 		}
 		if (key == GLFW_KEY_W && action == GLFW_PRESS)
 		{
@@ -438,7 +438,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		if (key == GLFW_KEY_R && action == GLFW_PRESS)
 		{
 			::g_map_GameObjects.clear();
-			JSONLoadGameObjects(&::g_map_GameObjects);
+			JSONLoader::JSONLoadGameObjects(&::g_map_GameObjects);
 			::selectedGameObject = ::g_map_GameObjects.begin();
 			
 			//::cmdDictionary.clear();

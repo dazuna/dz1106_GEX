@@ -14,24 +14,30 @@
 #include <vector>
 #include <map>
 
-bool JSONLoadMeshes(
-	std::map<std::string, cMesh*>* g_map_Mesh,
-	cModelLoader* pTheModelLoader);
-bool JSONLoadLights(
-	std::map<std::string, cLight>* g_map_pLights,
-	GLuint shadProgID);
-bool JSONLoadGameObjects(
-	std::map<std::string, cGameObject*>* g_map_GameObjects);
-bool loadMeshToGPU(
-	cVAOManager* pTheVAOManager,
-	std::map<std::string, cMesh*>* g_map_Mesh,
-	std::map<std::string, cGameObject*>* g_map_GameObjects,
-	GLuint shaderProgID);
-bool JSONSaveLights(
-	std::map<std::string, cLight>* g_map_pLights);
-bool JSONSaveGameObjects(
-	std::map<std::string, cGameObject*>* g_map_GameObjects);
-bool JSONLoadTextures();
-void SetUpTextureBindingsForObject(
-	cGameObject* pCurrentObject,
-	GLint shaderProgID);
+class JSONLoader
+{
+public:
+	static std::string light_json;
+	static std::string gameobjects_json;
+	static std::string bkp_light_json;
+	static std::string bkp_gameobjects_json;
+	
+	static bool JSONLoadMeshes(
+		std::map<std::string, cMesh*>* g_map_Mesh,
+		cModelLoader* pTheModelLoader);
+	static bool JSONLoadLights(
+		std::map<std::string, cLight>* g_map_pLights,
+		GLuint shadProgID);
+	static bool JSONLoadGameObjects(
+		std::map<std::string, cGameObject*>* g_map_GameObjects);
+	static bool loadMeshToGPU(
+		cVAOManager* pTheVAOManager,
+		std::map<std::string, cMesh*>* g_map_Mesh,
+		std::map<std::string, cGameObject*>* g_map_GameObjects,
+		GLuint shaderProgID);
+	static bool JSONSaveLights(
+		std::map<std::string, cLight>* g_map_pLights);
+	static bool JSONSaveGameObjects(
+		std::map<std::string, cGameObject*>* g_map_GameObjects);
+	static bool JSONLoadTextures();
+};

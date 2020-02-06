@@ -627,3 +627,64 @@ void tools::lifetimeValidation(cGameObject* pCurObject)
 		pCurObject->lifetime -= 1.0f;
 	}
 }
+
+void tools::SetUpTextureBindingsForObject(cGameObject* pCurrentObject, GLint shaderProgID)
+{
+
+	//// Tie the texture to the texture unit
+	//GLuint texSamp0_UL = ::pTextureManager->getTextureIDFromName("Pizza.bmp");
+	//glActiveTexture(GL_TEXTURE0);				// Texture Unit 0
+	//glBindTexture(GL_TEXTURE_2D, texSamp0_UL);	// Texture now assoc with texture unit 0
+
+	// Tie the texture to the texture unit
+	GLuint texSamp0_UL = ::pTextureManager->getTextureIDFromName(pCurrentObject->textures[0]);
+	glActiveTexture(GL_TEXTURE0);				// Texture Unit 0
+	glBindTexture(GL_TEXTURE_2D, texSamp0_UL);	// Texture now assoc with texture unit 0
+
+	GLuint texSamp1_UL = ::pTextureManager->getTextureIDFromName(pCurrentObject->textures[1]);
+	glActiveTexture(GL_TEXTURE1);				// Texture Unit 1
+	glBindTexture(GL_TEXTURE_2D, texSamp1_UL);	// Texture now assoc with texture unit 0
+
+	GLuint texSamp2_UL = ::pTextureManager->getTextureIDFromName(pCurrentObject->textures[2]);
+	glActiveTexture(GL_TEXTURE2);				// Texture Unit 2
+	glBindTexture(GL_TEXTURE_2D, texSamp2_UL);	// Texture now assoc with texture unit 0
+
+	GLuint texSamp3_UL = ::pTextureManager->getTextureIDFromName(pCurrentObject->textures[3]);
+	glActiveTexture(GL_TEXTURE3);				// Texture Unit 3
+	glBindTexture(GL_TEXTURE_2D, texSamp3_UL);	// Texture now assoc with texture unit 0
+
+	// Tie the texture units to the samplers in the shader
+	GLint textSamp00_UL = glGetUniformLocation(shaderProgID, "textSamp00");
+	glUniform1i(textSamp00_UL, 0);	// Texture unit 0
+
+	GLint textSamp01_UL = glGetUniformLocation(shaderProgID, "textSamp01");
+	glUniform1i(textSamp01_UL, 1);	// Texture unit 1
+
+	GLint textSamp02_UL = glGetUniformLocation(shaderProgID, "textSamp02");
+	glUniform1i(textSamp02_UL, 2);	// Texture unit 2
+
+	GLint textSamp03_UL = glGetUniformLocation(shaderProgID, "textSamp03");
+	glUniform1i(textSamp03_UL, 3);	// Texture unit 3
+
+
+	GLint tex0_ratio_UL = glGetUniformLocation(shaderProgID, "tex_0_3_ratio");
+	glUniform4f(tex0_ratio_UL,
+		pCurrentObject->textureRatio[0],		// 1.0
+		pCurrentObject->textureRatio[1],
+		pCurrentObject->textureRatio[2],
+		pCurrentObject->textureRatio[3]);
+
+	{
+		//textureWhatTheWhat
+		GLuint texSampWHAT_ID = ::pTextureManager->getTextureIDFromName("WhatTheWhat.bmp");
+		glActiveTexture(GL_TEXTURE13);				// Texture Unit 13
+		glBindTexture(GL_TEXTURE_2D, texSampWHAT_ID);	// Texture now assoc with texture unit 0
+
+		GLint textureWhatTheWhat_UL = glGetUniformLocation(shaderProgID, "textureWhatTheWhat");
+		glUniform1i(textureWhatTheWhat_UL, 13);	// Texture unit 13
+	}
+
+
+
+	return;
+}

@@ -1,15 +1,16 @@
 #include "JSONLoader.h"
 
 using json = nlohmann::json;
-std::string LIGHT_JSON  = "./configFiles/lights.json";
-std::string GAMEOBJECTS_JSON = "./configFiles/gameObjects.json";
-std::string BKP_LIGHT_JSON = "./configFiles/bkplights.json";
-std::string BKP_GAMEOBJECTS_JSON = "./configFiles/bkpgameObjects.json";
 
-bool JSONLoadMeshes(std::map<std::string, cMesh*>* g_map_Mesh, cModelLoader* pTheModelLoader)
+std::string JSONLoader::light_json = "./configFiles/lights.json";
+std::string JSONLoader::gameobjects_json = "./configFiles/gameObjects.json";
+std::string JSONLoader::bkp_light_json = "./configFiles/bkplights.json";
+std::string JSONLoader::bkp_gameobjects_json = "./configFiles/bkpgameObjects.json";
+
+bool JSONLoader::JSONLoadMeshes(std::map<std::string, cMesh*>* g_map_Mesh, cModelLoader* pTheModelLoader)
 {
 	std::cout << "loading meshes...";
-	std::ifstream inFile(GAMEOBJECTS_JSON.c_str());
+	std::ifstream inFile(gameobjects_json.c_str());
 	json jsonArray;
 	int index = 0;
 	inFile >> jsonArray;
@@ -27,11 +28,11 @@ bool JSONLoadMeshes(std::map<std::string, cMesh*>* g_map_Mesh, cModelLoader* pTh
 	return true;
 }
 
-bool JSONLoadLights(std::map<std::string, cLight>* g_map_pLights, GLuint shadProgID)
+bool JSONLoader::JSONLoadLights(std::map<std::string, cLight>* g_map_pLights, GLuint shadProgID)
 {
 	std::cout << "loading lights...";
-	std::ifstream inFile(LIGHT_JSON.c_str());
-	std::ofstream outFile(BKP_LIGHT_JSON.c_str());
+	std::ifstream inFile(light_json.c_str());
+	std::ofstream outFile(bkp_light_json.c_str());
 	json jsonArray;
 	int index = 0;
 	inFile >> jsonArray;
@@ -84,13 +85,13 @@ bool JSONLoadLights(std::map<std::string, cLight>* g_map_pLights, GLuint shadPro
 	return true;
 }
 
-bool JSONLoadGameObjects(
+bool JSONLoader::JSONLoadGameObjects(
 	std::map<std::string, cGameObject*>* g_map_GameObjects)
 {
 	std::cout << "loading objects...";
-	std::ifstream inFile(GAMEOBJECTS_JSON.c_str());
+	std::ifstream inFile(gameobjects_json.c_str());
 	std::ofstream outFile("./configFiles/log.txt");
-	std::ofstream outFile2(BKP_GAMEOBJECTS_JSON.c_str());
+	std::ofstream outFile2(bkp_gameobjects_json.c_str());
 	json jsonArray;
 	int index = 0;
 	inFile >> jsonArray;
@@ -198,7 +199,7 @@ bool JSONLoadGameObjects(
 	return true;
 }
 
-bool loadMeshToGPU(cVAOManager* pTheVAOManager,
+bool JSONLoader::loadMeshToGPU(cVAOManager* pTheVAOManager,
 	std::map<std::string, cMesh*>* g_map_Mesh,
 	std::map<std::string, cGameObject*>* g_map_GameObjects,
 	GLuint shaderProgID	)
@@ -208,13 +209,16 @@ bool loadMeshToGPU(cVAOManager* pTheVAOManager,
 		itGO++)
 	{
 		sModelDrawInfo drawInfo;
-		pTheVAOManager->LoadModelIntoVAO(itGO->second->meshName,*(g_map_Mesh->at(itGO->second->meshName.c_str())), drawInfo, shaderProgID);
+		pTheVAOManager->LoadModelIntoVAO(
+			itGO->second->meshName,
+			*(g_map_Mesh->at(itGO->second->meshName.c_str())),
+			drawInfo, shaderProgID);
 
 	}//for (int index...
 	return true;
 }
 
-bool JSONSaveLights(std::map<std::string, cLight>* g_map_pLights)
+bool JSONLoader::JSONSaveLights(std::map<std::string, cLight>* g_map_pLights)
 {
 	std::cout << "saving lights...";
 	std::ofstream outFile("./configFiles/lights.json");
@@ -222,7 +226,7 @@ bool JSONSaveLights(std::map<std::string, cLight>* g_map_pLights)
 	int x = 0;
 	json jsonArray;
 
-	for (index; index != g_map_pLights->end(); index++,x++)
+	for (index; index != g_map_pLights->end(); index++, x++)
 	{
 		json jsonObject;
 		jsonObject["name"] = index->second.getName();
@@ -253,7 +257,7 @@ bool JSONSaveLights(std::map<std::string, cLight>* g_map_pLights)
 	return true;
 }
 
-bool JSONSaveGameObjects(std::map<std::string, cGameObject*>* g_map_GameObjects)
+bool JSONLoader::JSONSaveGameObjects(std::map<std::string, cGameObject*>* g_map_GameObjects)
 {
 	std::cout << "saving gameObjects...";
 	std::ofstream outFile("./configFiles/gameObjects.json");
@@ -317,7 +321,7 @@ bool JSONSaveGameObjects(std::map<std::string, cGameObject*>* g_map_GameObjects)
 	return true;
 }
 
-bool JSONLoadTextures()
+bool JSONLoader::JSONLoadTextures()
 {
 	for (std::map<std::string, cGameObject*>::iterator itGO = g_map_GameObjects.begin();
 		itGO != ::g_map_GameObjects.end();
@@ -334,63 +338,5 @@ bool JSONLoadTextures()
 	return true;
 }
 
-void SetUpTextureBindingsForObject(cGameObject* pCurrentObject,GLint shaderProgID)
-{
-
-	//// Tie the texture to the texture unit
-	//GLuint texSamp0_UL = ::pTextureManager->getTextureIDFromName("Pizza.bmp");
-	//glActiveTexture(GL_TEXTURE0);				// Texture Unit 0
-	//glBindTexture(GL_TEXTURE_2D, texSamp0_UL);	// Texture now assoc with texture unit 0
-
-	// Tie the texture to the texture unit
-	GLuint texSamp0_UL = ::pTextureManager->getTextureIDFromName(pCurrentObject->textures[0]);
-	glActiveTexture(GL_TEXTURE0);				// Texture Unit 0
-	glBindTexture(GL_TEXTURE_2D, texSamp0_UL);	// Texture now assoc with texture unit 0
-
-	GLuint texSamp1_UL = ::pTextureManager->getTextureIDFromName(pCurrentObject->textures[1]);
-	glActiveTexture(GL_TEXTURE1);				// Texture Unit 1
-	glBindTexture(GL_TEXTURE_2D, texSamp1_UL);	// Texture now assoc with texture unit 0
-
-	GLuint texSamp2_UL = ::pTextureManager->getTextureIDFromName(pCurrentObject->textures[2]);
-	glActiveTexture(GL_TEXTURE2);				// Texture Unit 2
-	glBindTexture(GL_TEXTURE_2D, texSamp2_UL);	// Texture now assoc with texture unit 0
-
-	GLuint texSamp3_UL = ::pTextureManager->getTextureIDFromName(pCurrentObject->textures[3]);
-	glActiveTexture(GL_TEXTURE3);				// Texture Unit 3
-	glBindTexture(GL_TEXTURE_2D, texSamp3_UL);	// Texture now assoc with texture unit 0
-
-	// Tie the texture units to the samplers in the shader
-	GLint textSamp00_UL = glGetUniformLocation(shaderProgID, "textSamp00");
-	glUniform1i(textSamp00_UL, 0);	// Texture unit 0
-
-	GLint textSamp01_UL = glGetUniformLocation(shaderProgID, "textSamp01");
-	glUniform1i(textSamp01_UL, 1);	// Texture unit 1
-
-	GLint textSamp02_UL = glGetUniformLocation(shaderProgID, "textSamp02");
-	glUniform1i(textSamp02_UL, 2);	// Texture unit 2
-
-	GLint textSamp03_UL = glGetUniformLocation(shaderProgID, "textSamp03");
-	glUniform1i(textSamp03_UL, 3);	// Texture unit 3
 
 
-	GLint tex0_ratio_UL = glGetUniformLocation(shaderProgID, "tex_0_3_ratio");
-	glUniform4f(tex0_ratio_UL,
-		pCurrentObject->textureRatio[0],		// 1.0
-		pCurrentObject->textureRatio[1],
-		pCurrentObject->textureRatio[2],
-		pCurrentObject->textureRatio[3]);
-
-	{
-		//textureWhatTheWhat
-		GLuint texSampWHAT_ID = ::pTextureManager->getTextureIDFromName("WhatTheWhat.bmp");
-		glActiveTexture(GL_TEXTURE13);				// Texture Unit 13
-		glBindTexture(GL_TEXTURE_2D, texSampWHAT_ID);	// Texture now assoc with texture unit 0
-
-		GLint textureWhatTheWhat_UL = glGetUniformLocation(shaderProgID, "textureWhatTheWhat");
-		glUniform1i(textureWhatTheWhat_UL, 13);	// Texture unit 13
-	}
-
-
-
-	return;
-}

@@ -55,4 +55,5 @@ public:
 	static void drawSphere(glm::vec3 position, std::string texture, float sscale, float alphaT, float lifetime);
 	static void duplicateSphere(glm::vec3 position, std::string texture, float sscale, float alphaT, float lifetime);
 	static void lifetimeValidation(cGameObject* pCurObject);
+	static void SetUpTextureBindingsForObject(cGameObject* pCurrentObject,GLint shaderProgID);
 };

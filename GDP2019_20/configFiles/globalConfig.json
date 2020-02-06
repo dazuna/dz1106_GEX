@@ -1,0 +1,10 @@
+{
+    "numberOfScenes":1,
+    "scenes":
+    [
+        {
+            "name":"scene_1",
+            "jsonPath":"configScenes/scene1.json"
+        }
+    ]
+}

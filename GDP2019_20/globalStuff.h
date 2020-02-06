@@ -28,7 +28,6 @@ extern glm::vec3 visionVector;
 extern glm::vec3 upVector;
 
 extern glm::vec3 sexyLightSpotDirection;
-extern bool bLightDebugSheresOn;
 extern bool debugger;
 extern std::string console;
 
