@@ -63,6 +63,9 @@
     <Filter Include="cFBO">
       <UniqueIdentifier>{14fd8e8f-4de2-4fbe-a6ab-174acbd33288}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cSceneManager">
+      <UniqueIdentifier>{766bf6fd-1e82-49ab-a23c-d8520b30b718}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -167,6 +170,12 @@
     <ClCompile Include="cFBO\cFBO.cpp">
       <Filter>cFBO</Filter>
     </ClCompile>
+    <ClCompile Include="SceneManager\cScene.cpp">
+      <Filter>cSceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager\cSceneManager.cpp">
+      <Filter>cSceneManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cModelLoader.h">
@@ -270,6 +279,12 @@
     </ClInclude>
     <ClInclude Include="DebugRenderer\cDebugRenderer_built_in_shaders.h">
       <Filter>DebugRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager\cScene.h">
+      <Filter>cSceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager\cSceneManager.h">
+      <Filter>cSceneManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

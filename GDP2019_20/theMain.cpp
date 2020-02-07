@@ -108,6 +108,8 @@ int main(void)
 	void ProcessAsyncMouse(GLFWwindow * window);
 	void ProcessAsyncKeys(GLFWwindow * window);
 
+	JSONLoader::JSONLoadSceneConf();
+	
 
 	//	OpenGL and GLFW are good to go, so load the model
 	// cModelLoader* pTheModelLoader = new cModelLoader();
@@ -138,6 +140,7 @@ int main(void)
 	//JSON Loader for objects
 	JSONLoader::JSONLoadMeshes(&g_map_Mesh, pTheModelLoader);
 	JSONLoader::JSONLoadGameObjects(&::g_map_GameObjects);
+	JSONLoader::JSONLoadTextures(&::g_map_GameObjects, ::pTextureManager);
 	JSONLoader::loadMeshToGPU(pTheVAOManager, &::g_map_Mesh, &::g_map_GameObjects, shaderProgID);
 	selectedGameObject = ::g_map_GameObjects.begin();
 

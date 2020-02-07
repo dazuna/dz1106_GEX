@@ -2,6 +2,7 @@
 
 using json = nlohmann::json;
 
+std::string JSONLoader::scene_config = "./configFiles/globalConfig.json";
 std::string JSONLoader::light_json = "./configFiles/lights.json";
 std::string JSONLoader::gameobjects_json = "./configFiles/gameObjects.json";
 std::string JSONLoader::bkp_light_json = "./configFiles/bkplights.json";
@@ -195,7 +196,6 @@ bool JSONLoader::JSONLoadGameObjects(
 	//std::cout << j;
 	std::cout << "[OK]\n" << index << " objects loaded" << std::endl;
 	outFile2 << jsonArray;
-	JSONLoadTextures();
 	return true;
 }
 
@@ -321,22 +321,104 @@ bool JSONLoader::JSONSaveGameObjects(std::map<std::string, cGameObject*>* g_map_
 	return true;
 }
 
-bool JSONLoader::JSONLoadTextures()
+bool JSONLoader::JSONLoadTextures(std::map<std::string, cGameObject*>* pGameObjects, cBasicTextureManager* pTextureManager)
 {
-	for (std::map<std::string, cGameObject*>::iterator itGO = g_map_GameObjects.begin();
-		itGO != ::g_map_GameObjects.end();
+	for (auto itGO = pGameObjects->begin();
+		itGO != pGameObjects->end();
 		itGO++)
 	{
 		for (int i = 0; i < itGO->second->NUMBEROFTEXTURES; i++)
 		{
 			if (itGO->second->textures[i] != "");
 			{
-				::pTextureManager->Create2DTextureFromBMPFile(itGO->second->textures[i].c_str(), true);
+				pTextureManager->Create2DTextureFromBMPFile(itGO->second->textures[i].c_str(), true);
 			}
 		}
 	}
 	return true;
 }
 
+bool JSONLoader::JSONLoadSceneConf()
+{
+	std::cout << "loading scenes!...";
+	std::ifstream inFile(scene_config);
+	json jsonArray;
+	int index = 0;
+	inFile >> jsonArray;
+
+	cSceneManager* theSceneManager = cSceneManager::getTheSceneManager();
+	int numScenes = jsonArray["numberOfScenes"];
+
+	for (index = 0; index < jsonArray["scenes"].size(); index++)
+	{
+		std::string name = jsonArray["scenes"][index]["name"];
+		std::string jsonPath = jsonArray["scenes"][index]["jsonPath"];
+		std::string effect;
+		if (jsonArray["scenes"][index].find("effect") != jsonArray["scenes"][index].end())
+		{
+			effect = jsonArray["scenes"][index]["effect"];
+		}
+		int cameraNumber = 0;
+		if (jsonArray["scenes"][index].find("cameraNumber") != jsonArray["scenes"][index].end())
+		{
+			cameraNumber = jsonArray["scenes"][index]["cameraNumber"];
+		}
+		int width = 1280, height = 720;
+		if (jsonArray["scenes"][index].find("width") != jsonArray["scenes"][index].end())
+		{
+			width = jsonArray["scenes"][index]["width"];
+		}
+		if (jsonArray["scenes"][index].find("height") != jsonArray["scenes"][index].end())
+		{
+			height = jsonArray["scenes"][index]["height"];
+		}
+		
+		//std::cout << "name: " << name << std::endl;
+		//std::cout << "jsonPath: " << jsonPath << std::endl;
+		//std::cout << "effect: " << effect << std::endl;
+		//std::cout << "cameraNumber: " << cameraNumber << std::endl;
+		//std::cout << "width: " << width << std::endl;
+		//std::cout << "height: " << height << std::endl;
+		
+		auto* theScene = new cScene(name,jsonPath,effect,cameraNumber,width,height);
+		theSceneManager->addScene(theScene);
+	}
+	std::cout << "[OK]\n" << index << " Scenes loaded successfully!" << std::endl;
+	return true;
+}
+
+bool JSONLoader::JSONLoadEntitiesToScene(
+		std::map<std::string, cGameObject*>* pGameObjects, cScene* theScene)
+{
+	std::cout << "loading objects to: " << theScene->name << std::endl;
+	std::ifstream inFile(theScene->jsonPath);
+	json jsonArray;
+	int index = 0;
+	inFile >> jsonArray;
+
+	cSceneManager* theSceneManager = cSceneManager::getTheSceneManager();
+
+	for (index = 0; index < jsonArray["gameObjects"].size(); index++)
+	{
+		std::string friendlyName = jsonArray["gameObjects"][index]["friendlyName"];
+		if(tools::pFindObjectByFriendlyNameMap(friendlyName))
+		{
+			theScene->addGameObject((*pGameObjects)[friendlyName]);
+		}
+	}	
+	std::cout << "[OK]\n" << index << " objects loaded successfully to " << theScene->name << std::endl;
+	
+	for (index = 0; index < jsonArray["lights"].size(); index++)
+	{
+		std::string friendlyName = jsonArray["lights"][index]["friendlyName"];
+		if(tools::pFindObjectByFriendlyNameMap(friendlyName))
+		{
+			theScene->addGameObject((*pGameObjects)[friendlyName]);
+		}
+	}	
+	std::cout << "[OK]\n" << index << " lights loaded successfully to " << theScene->name << std::endl;
+	
+	return true;
+}
 
 

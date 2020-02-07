@@ -13,7 +13,8 @@
 #include "../cShaderManager.h"
 #include "../TextureManager/cBasicTextureManager.h"
 // JSON Stuff
-#include "../JSONLoader.h"
+//#include "../JSONLoader.h"
+#include "../globalStuff.h"
 #include "../cAABB/cAABB.h"
 #include "../DebugRenderer/cDebugRenderer.h"
 // Used to visualize the attenuation of the lights...
@@ -56,4 +57,7 @@ public:
 	static void duplicateSphere(glm::vec3 position, std::string texture, float sscale, float alphaT, float lifetime);
 	static void lifetimeValidation(cGameObject* pCurObject);
 	static void SetUpTextureBindingsForObject(cGameObject* pCurrentObject,GLint shaderProgID);
+	template <typename T, typename K>
+	static bool mapContains(std::map<K, T> mapa, K llave)
+	{ return mapa.find(llave) != mapa.end(); }
 };

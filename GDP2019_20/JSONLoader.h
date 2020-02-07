@@ -1,10 +1,11 @@
 #pragma once
+
 #include "cModelLoader.h"	
 #include "cGameObject.h"
 #include "cLight.h"
 #include "cVAOManager.h"
-#include "globalStuff.h"
 #include "util/tools.h"
+#include "SceneManager/cSceneManager.h"
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
 #include <glm/gtx/string_cast.hpp>
@@ -17,6 +18,7 @@
 class JSONLoader
 {
 public:
+	static std::string scene_config;
 	static std::string light_json;
 	static std::string gameobjects_json;
 	static std::string bkp_light_json;
@@ -39,5 +41,12 @@ public:
 		std::map<std::string, cLight>* g_map_pLights);
 	static bool JSONSaveGameObjects(
 		std::map<std::string, cGameObject*>* g_map_GameObjects);
-	static bool JSONLoadTextures();
+	static bool JSONLoadTextures(
+		std::map<std::string, cGameObject*>* pGameObjects,
+		cBasicTextureManager* pTextureManager);
+	static bool JSONLoadSceneConf();
+	static bool JSONLoadEntitiesToScene(
+		std::map<std::string, cGameObject*>* pGameObjects,
+		cScene* theScene);
 };
+

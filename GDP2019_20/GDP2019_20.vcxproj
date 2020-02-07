@@ -169,6 +169,8 @@
     <ClCompile Include="PhysicsStuff.cpp" />
     <ClCompile Include="playerController\playerController.cpp" />
     <ClCompile Include="quaternion_utils\quaternion_utils.cpp" />
+    <ClCompile Include="SceneManager\cScene.cpp" />
+    <ClCompile Include="SceneManager\cSceneManager.cpp" />
     <ClCompile Include="skybox\skybox.cpp" />
     <ClCompile Include="TextureManager\C24BitBMPpixel.cpp" />
     <ClCompile Include="TextureManager\cBasicTextureManager.cpp" />
@@ -207,6 +209,8 @@
     <ClInclude Include="PhysicsStuff.h" />
     <ClInclude Include="playerController\playerController.h" />
     <ClInclude Include="quaternion_utils\quaternion_utils.hpp" />
+    <ClInclude Include="SceneManager\cScene.h" />
+    <ClInclude Include="SceneManager\cSceneManager.h" />
     <ClInclude Include="skybox\skybox.h" />
     <ClInclude Include="TextureManager\C24BitBMPpixel.h" />
     <ClInclude Include="TextureManager\cBasicTextureManager.h" />
