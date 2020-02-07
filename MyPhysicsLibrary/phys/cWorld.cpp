@@ -12,7 +12,7 @@ namespace phys
 		this->mDt = 1.f / 60.f;
 		this->mIntegrator;
 		// things should fall, probably
-		this->mGravity=glm::vec3(0, -10, 0);
+		this->mGravity=glm::vec3(0, -15, 0);
 		this->mBodies = {};
 	}
 

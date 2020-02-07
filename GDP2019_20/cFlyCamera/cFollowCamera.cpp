@@ -103,14 +103,14 @@ void cFollowCamera::update()
 void cFollowCamera::pushLeft()
 {
 	auto theGO = *currentObject;
-	auto left = (getRight()) * 10.f;
+	auto left = (getRight()) * 15.f;
 	theGO->physicsComponent->ApplyForce(left);
 }
 
 void cFollowCamera::pushRight()
 {
 	auto theGO = *currentObject;
-	auto right = (-getRight()) * 10.f;
+	auto right = (-getRight()) * 15.f;
 	theGO->physicsComponent->ApplyForce(right);
 }
 
@@ -133,7 +133,7 @@ void cFollowCamera::pushDown()
 void cFollowCamera::pushAscend()
 {
 	auto theGO = *currentObject;
-	theGO->physicsComponent->ApplyForce(glm::vec3(0,10,0));
+	theGO->physicsComponent->ApplyForce(glm::vec3(0,30,0));
 }
 
 void cFollowCamera::nextViewableObject()
