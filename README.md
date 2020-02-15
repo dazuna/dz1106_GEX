@@ -1,8 +1,8 @@
 # Program: GDP1
 
-## Physics 1
+## Physics 2
 
-## Professor: Michael Feeney
+## Professor: James Lucas
 
 ### By David Zuniga Navarro
 

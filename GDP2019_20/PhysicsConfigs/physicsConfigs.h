@@ -1,6 +1,6 @@
 /* Macro to interchange the libraries */
-#define MY_PHYSICS 
-// #define BULLET_PHYSICS
+//#define MY_PHYSICS 
+#define BULLET_PHYSICS
 
 #include <physics/interfaces/interfaces.h>
 
@@ -8,6 +8,12 @@
 #include <cPhysicsFactory.h> // inside my wrapper project
 #pragma  comment (lib, "MyPhysicsLibrary.lib")
 #pragma comment (lib, "MyPhysicsWrapper.lib")
+typedef nPhysics::cPhysicsFactory cPhysicsFactory;
+#endif
+
+#ifdef BULLET_PHYSICS
+#include <cPhysicsFactory.h> // inside my wrapper project
+#pragma comment (lib, "BulletPhysicsWrapper.lib")
 typedef nPhysics::cPhysicsFactory cPhysicsFactory;
 #endif
 

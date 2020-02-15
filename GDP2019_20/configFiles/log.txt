@@ -108,7 +108,7 @@ specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 velocity: vec3(0.000000, 0.000000, 0.000000)
 accel: vec3(0.000000, 0.000000, 0.000000)
 debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: sphere8
+friendlyName: sphereAlfa
 meshName: sphereMesh
 meshURL: assets/models/Sphere_Radius_1_XYZ_n_uv.ply
 positionXYZ: vec3(20.000000, 65.000000, 0.000000)
@@ -130,7 +130,7 @@ specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 velocity: vec3(0.000000, 0.000000, 0.000000)
 accel: vec3(0.000000, 0.000000, 0.000000)
 debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: sphere9
+friendlyName: sphere10
 meshName: sphereMesh
 meshURL: assets/models/Sphere_Radius_1_XYZ_n_uv.ply
 positionXYZ: vec3(20.000000, 120.000000, -20.000000)

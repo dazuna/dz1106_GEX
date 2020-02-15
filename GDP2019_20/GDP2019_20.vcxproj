@@ -71,19 +71,19 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)GameMath;$(ProjectDir)include;$(SolutionDir)PhysicsInterfaces;$(SolutionDir)MyPhysicsWrapper;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)GameMath;$(ProjectDir)include;$(SolutionDir)PhysicsInterfaces;$(SolutionDir)BulletPhysicsWrapper;$(SolutionDir)MyPhysicsWrapper;$(IncludePath)</IncludePath>
     <LibraryPath>$(OutDir);$(ProjectDir)lib/Debug64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)GameMath;$(ProjectDir)include;$(SolutionDir)PhysicsInterfaces;$(SolutionDir)MyPhysicsWrapper;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)GameMath;$(ProjectDir)include;$(SolutionDir)PhysicsInterfaces;$(SolutionDir)BulletPhysicsWrapper;$(SolutionDir)MyPhysicsWrapper;$(IncludePath)</IncludePath>
     <LibraryPath>$(OutDir);$(ProjectDir)lib\Release64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)GameMath;$(ProjectDir)include;$(SolutionDir)PhysicsInterfaces;$(SolutionDir)MyPhysicsWrapper;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)GameMath;$(ProjectDir)include;$(SolutionDir)PhysicsInterfaces;$(SolutionDir)BulletPhysicsWrapper;$(SolutionDir)MyPhysicsWrapper;$(IncludePath)</IncludePath>
     <LibraryPath>$(OutDir);$(ProjectDir)lib/Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)GameMath;$(ProjectDir)include;$(SolutionDir)PhysicsInterfaces;$(SolutionDir)MyPhysicsWrapper;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)GameMath;$(ProjectDir)include;$(SolutionDir)PhysicsInterfaces;$(SolutionDir)BulletPhysicsWrapper;$(SolutionDir)MyPhysicsWrapper;$(IncludePath)</IncludePath>
     <LibraryPath>$(OutDir);$(ProjectDir)lib/Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
