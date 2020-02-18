@@ -15,7 +15,6 @@ private:
 	/* Shader Stuff */
 	std::string shaderVar;
 	int lightID;
-	std::string name;
 
 	GLuint shaderProgID;
 	GLint ULposition;
@@ -29,6 +28,7 @@ private:
 
 public:
 	/* Modifiable stuff */
+	std::string name;
 	glm::vec3 positionXYZ = glm::vec3(0.0f, 20.0f, 0.0f);
 	float ConstAtten = 0.0000001f;
 	float LinearAtten = 0.03f;

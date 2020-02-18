@@ -28,7 +28,7 @@ public:
 		std::map<std::string, cMesh*>* g_map_Mesh,
 		cModelLoader* pTheModelLoader);
 	static bool JSONLoadLights(
-		std::map<std::string, cLight>* g_map_pLights,
+		std::map<std::string, cLight*>* g_map_pLights,
 		GLuint shadProgID);
 	static bool JSONLoadGameObjects(
 		std::map<std::string, cGameObject*>* g_map_GameObjects);
@@ -38,7 +38,7 @@ public:
 		std::map<std::string, cGameObject*>* g_map_GameObjects,
 		GLuint shaderProgID);
 	static bool JSONSaveLights(
-		std::map<std::string, cLight>* g_map_pLights);
+		std::map<std::string, cLight*>* g_map_pLights);
 	static bool JSONSaveGameObjects(
 		std::map<std::string, cGameObject*>* g_map_GameObjects);
 	static bool JSONLoadTextures(
@@ -46,7 +46,8 @@ public:
 		cBasicTextureManager* pTextureManager);
 	static bool JSONLoadSceneConf();
 	static bool JSONLoadEntitiesToScene(
-		std::map<std::string, cGameObject*>* pGameObjects,
-		cScene* theScene);
+		std::map<std::string, cGameObject*>* pGameObjects, 
+		std::map<std::string, cLight*>* pLights, cScene* theScene);
+	static bool loadSkinnedMesh(nlohmann::json jsonArray, int index);
 };
 

@@ -36,8 +36,8 @@ extern std::map<std::string, cMesh*> g_map_Mesh;
 extern std::map<std::string, cGameObject*> g_map_GameObjects;
 extern std::map<float, cGameObject*> closestTransparentObjects;
 extern std::map<std::string, cGameObject*>::iterator selectedGameObject;
-extern std::map<std::string, cLight> g_map_pLights;
-extern std::map<std::string, cLight>::iterator selectedLight;
+extern std::map<std::string, cLight*> g_map_pLights;
+extern std::map<std::string, cLight*>::iterator selectedLight;
 
 extern enum class selectedType { GAMEOBJECT, LIGHT, SOUND };
 extern selectedType cursorType;

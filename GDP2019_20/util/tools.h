@@ -39,6 +39,7 @@ public:
 	static glm::mat4 calculateWorldMatrix(cGameObject* pCurrentObject);
 	static void DrawObject(glm::mat4 m, cGameObject* pCurrentObject, GLint shaderProgID, cVAOManager* pVAOManager);
 	static bool pFindObjectByFriendlyNameMap(std::string name);
+	static bool pFindLightByNameMap(std::string name);
 	static void drawLightXYZ(cDebugRenderer* pDebugRenderer);
 	static void drawGameObjectXYZ(cDebugRenderer* pDebugRenderer);
 	static void drawNormalsXYZ(cDebugRenderer* pDebugRenderer);
@@ -51,12 +52,14 @@ public:
 	static std::vector<cGameObject*> getClosestTransparentObjectsAsVector();
 	static void printGameObject(cGameObject* theGO);
 	static void makeTransparentObjectsMap();
+	//static void makeTransparentObjectsMap(std::map<std::string, cGameObject*> mapGameObject);
 	static void CalculateTransformedMesh(cMesh& originalMesh, glm::mat4 matWorld, cMesh& mesh_transformedInWorld);
 	static void drawAABBs();
 	static void drawSphere(glm::vec3 position, std::string texture, float sscale, float alphaT, float lifetime);
 	static void duplicateSphere(glm::vec3 position, std::string texture, float sscale, float alphaT, float lifetime);
 	static void lifetimeValidation(cGameObject* pCurObject);
 	static void SetUpTextureBindingsForObject(cGameObject* pCurrentObject,GLint shaderProgID);
+	// find something in any map
 	template <typename T, typename K>
 	static bool mapContains(std::map<K, T> mapa, K llave)
 	{ return mapa.find(llave) != mapa.end(); }

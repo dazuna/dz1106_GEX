@@ -6,6 +6,7 @@ static glm::vec3 green = glm::vec3(0, 1, 0);
 static glm::vec3 blue = glm::vec3(0, 0, 1);
 static glm::vec3 cyan = glm::vec3(0, 1, 1);
 static glm::vec3 yellow = glm::vec3(1, 1, 0);
+auto HACK_FrameTime = 0.f;
 
 
 glm::mat4 tools::calculateWorldMatrix(cGameObject* pCurrentObject)
@@ -164,6 +165,59 @@ void tools::DrawObject(glm::mat4 m,
 	// make a draw skybox subfunction... :D
 	// disable everything and load the skybox first
 
+	GLint isSkinnedMesh_UniLoc = glad_glGetUniformLocation( shaderProgID, "isSkinnedMesh");
+
+
+	if (pCurrentObject->pAS != NULL)
+	{
+		glUniform1f(isSkinnedMesh_UniLoc, (float)GL_TRUE);
+
+		// Set to all identity
+		const int NUMBEROFBONES = 100;
+
+		// Taken from "Skinned Mesh 2 - todo.docx"
+		std::vector< glm::mat4x4 > vecFinalTransformation;	
+		std::vector< glm::mat4x4 > vecOffsets;
+		std::vector< glm::mat4x4 > vecObjectBoneTransformation;
+
+		// This loads the bone transforms from the animation model
+		//pCurrentObject->pSM->BoneTransform( HACK_FrameTime,	// 0.0f // Frame time
+		//								    pCurrentObject->pSM->mapAnimationFriendlyNameTo_pScene.begin()->first,
+		//									vecFinalTransformation, 
+		//									vecObjectBoneTransformation, 
+		//								    vecOffsets );
+		pCurrentObject->pAS->update(float(averageDeltaTime),
+			vecFinalTransformation,vecOffsets,vecObjectBoneTransformation);
+
+		// Wait until all threads are done updating.
+		HACK_FrameTime += 0.01f;
+
+		{// Forward kinematic stuff
+			// "Bone" location is at the origin
+			//glm::vec4 boneLocation = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+			// bone #22 is "B_R_Hand" in this model
+			//glm::mat4 matSpecificBone = vecFinalTransformation[22];
+			// Transformed into "model" space where that bone is.
+			//::g_HACK_vec3_BoneLocationFK = matSpecificBone * boneLocation;
+			// If it's in world space
+			//::g_HACK_vec3_BoneLocationFK = matModel * ::g_HACK_vec3_BoneLocationFK;
+		}// Forward kinematic 
+
+		// Copy all 100 bones to the shader
+		GLint matBonesArray_UniLoc = glGetUniformLocation(shaderProgID, "matBonesArray");
+		// The "100" is to pass 100 values, starting at the pointer location of matBones[0];
+		//glUniformMatrix4fv(matBonesArray_UniLoc, 100, GL_FALSE, glm::value_ptr(matBones[0]));
+		GLint numBonesUsed = (GLint)vecFinalTransformation.size();
+		glUniformMatrix4fv(matBonesArray_UniLoc, numBonesUsed, 
+						   GL_FALSE, 
+						   glm::value_ptr(vecFinalTransformation[0]));
+	}
+	else
+	{
+		glUniform1f(isSkinnedMesh_UniLoc, (float)GL_FALSE);
+	}
+	// ************************************************
+
 	sModelDrawInfo drawInfo;
 	if (pVAOManager->FindDrawInfoByModelName(pCurrentObject->meshName, drawInfo))
 	{
@@ -182,64 +236,71 @@ void tools::DrawObject(glm::mat4 m,
 bool tools::pFindObjectByFriendlyNameMap(std::string name)
 {
 	//std::map<std::string, cGameObject*> g_map_GameObjectsByFriendlyName;
-	std::map<std::string, cGameObject*>::iterator itGO = ::g_map_GameObjects.find(name);
+	const auto itGO = ::g_map_GameObjects.find(name);
 	if (itGO != ::g_map_GameObjects.end())
 		return true;
-	else
-		return false;
+	return false;
+}
+
+bool tools::pFindLightByNameMap(std::string name)
+{
+	const auto itGO = ::g_map_pLights.find(name);
+	if (itGO != ::g_map_pLights.end())
+		return true;
+	return false;
 }
 
 void tools::drawLightXYZ(cDebugRenderer* pDebugRenderer)
 {
 	pDebugRenderer->addLine(
-		selectedLight->second.positionXYZ,
-		(selectedLight->second.positionXYZ + glm::vec3(2.0f, 0.0f, 0.0f)),
+		selectedLight->second->positionXYZ,
+		(selectedLight->second->positionXYZ + glm::vec3(2.0f, 0.0f, 0.0f)),
 		white);
 	pDebugRenderer->addLine(
-		selectedLight->second.positionXYZ,
-		(selectedLight->second.positionXYZ + glm::vec3(0.0f, 2.0f, 0.0f)),
+		selectedLight->second->positionXYZ,
+		(selectedLight->second->positionXYZ + glm::vec3(0.0f, 2.0f, 0.0f)),
 		white);
 	pDebugRenderer->addLine(
-		selectedLight->second.positionXYZ,
-		(selectedLight->second.positionXYZ + glm::vec3(0.0f, 0.0f, 2.0f)),
+		selectedLight->second->positionXYZ,
+		(selectedLight->second->positionXYZ + glm::vec3(0.0f, 0.0f, 2.0f)),
 		white);
 	// draw pyramid on top of object
 	// x triangle
 	pDebugRenderer->addTriangle(
-		selectedLight->second.positionXYZ + glm::vec3(0.0f, 3.0f, 0.0f),
-		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
-		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
+		selectedLight->second->positionXYZ + glm::vec3(0.0f, 3.0f, 0.0f),
+		selectedLight->second->positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
+		selectedLight->second->positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
 		white);
 	// z triangle
 	pDebugRenderer->addTriangle(
-		selectedLight->second.positionXYZ + glm::vec3(0.0f, 3.0f, 0.0f),
-		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
-		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
+		selectedLight->second->positionXYZ + glm::vec3(0.0f, 3.0f, 0.0f),
+		selectedLight->second->positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
+		selectedLight->second->positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
 		white);
 	// square
 	pDebugRenderer->addLine(
-		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
-		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
+		selectedLight->second->positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
+		selectedLight->second->positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
 		white);
 	pDebugRenderer->addLine(
-		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
-		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
+		selectedLight->second->positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
+		selectedLight->second->positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
 		white);
 	pDebugRenderer->addLine(
-		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
-		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
+		selectedLight->second->positionXYZ + glm::vec3(1.5f, 6.0f, 1.5f),
+		selectedLight->second->positionXYZ + glm::vec3(-1.5f, 6.0f, 1.5f),
 		white);
 	pDebugRenderer->addLine(
-		selectedLight->second.positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
-		selectedLight->second.positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
+		selectedLight->second->positionXYZ + glm::vec3(1.5f, 6.0f, -1.5f),
+		selectedLight->second->positionXYZ + glm::vec3(-1.5f, 6.0f, -1.5f),
 		white);
-	if (selectedLight->second.type == 1.0f)
+	if (selectedLight->second->type == 1.0f)
 	{
-		glm::vec3 spotNormal = selectedLight->second.getCurrentAT();
+		glm::vec3 spotNormal = selectedLight->second->getCurrentAT();
 		spotNormal = glm::normalize(spotNormal);
 		pDebugRenderer->addLine(
-			selectedLight->second.positionXYZ,
-			selectedLight->second.positionXYZ + (spotNormal*2.0f),
+			selectedLight->second->positionXYZ,
+			selectedLight->second->positionXYZ + (spotNormal*2.0f),
 			yellow);
 	}
 }
@@ -334,11 +395,11 @@ void tools::setWindowTitle(std::stringstream* ssTitle)
 		break;
 	case selectedType::LIGHT:
 		*ssTitle << " light: " << selectedLight->first.c_str()
-			<< " posXYZ: " << GLMvec3toString(selectedLight->second.positionXYZ)
-			<< " linearA: " << selectedLight->second.LinearAtten
-			<< " quadA: " << selectedLight->second.QuadraticAtten
-			<< " inner: " << selectedLight->second.innerAngle
-			<< " outer: " << selectedLight->second.outerAngle;
+			<< " posXYZ: " << GLMvec3toString(selectedLight->second->positionXYZ)
+			<< " linearA: " << selectedLight->second->LinearAtten
+			<< " quadA: " << selectedLight->second->QuadraticAtten
+			<< " inner: " << selectedLight->second->innerAngle
+			<< " outer: " << selectedLight->second->outerAngle;
 		break;
 	case selectedType::SOUND:break;
 	}
@@ -392,7 +453,7 @@ void tools::drawPyramidPlayer(cDebugRenderer* pDebugRenderer)
 void tools::makeSkullEyesFlicker()
 {
 	//std::map<std::string, cLight> g_map_pLights;
-	std::map<std::string, cLight>::iterator itLite;
+	std::map<std::string, cLight*>::iterator itLite;
 
 	if (timer >= 0.1)
 	{
@@ -400,17 +461,17 @@ void tools::makeSkullEyesFlicker()
 		itLite = ::g_map_pLights.find("candleLight1");
 		if (itLite != g_map_pLights.end())
 		{
-			itLite->second.QuadraticAtten = randInRange(0.0001f, 0.001f);
+			itLite->second->QuadraticAtten = randInRange(0.0001f, 0.001f);
 		}
 		itLite = ::g_map_pLights.find("candleLight2");
 		if (itLite != g_map_pLights.end())
 		{
-			itLite->second.QuadraticAtten = randInRange(0.0001f, 0.001f);
+			itLite->second->QuadraticAtten = randInRange(0.0001f, 0.001f);
 		}
 		itLite = ::g_map_pLights.find("candleLight3");
 		if (itLite != g_map_pLights.end())
 		{
-			itLite->second.QuadraticAtten = randInRange(0.0001f, 0.001f);
+			itLite->second->QuadraticAtten = randInRange(0.0001f, 0.001f);
 		}
 		makeCameraDroneAround(isDroneOn);
 	}

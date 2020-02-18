@@ -16,6 +16,8 @@ public:
 	bool LoadPlyModel(std::string filename, cMesh &theMesh);
 	// bool LoadPlyModelNoTextures(std::string filename, cMesh& theMesh);
 
+	bool LoadModel_Assimp(std::string filename, cMesh& theMesh, std::string& errors);
+
 };
 
 #endif //_cModelLoader_HG_2019_09_09_

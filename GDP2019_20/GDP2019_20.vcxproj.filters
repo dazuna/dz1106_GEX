@@ -66,18 +66,18 @@
     <Filter Include="cSceneManager">
       <UniqueIdentifier>{766bf6fd-1e82-49ab-a23c-d8520b30b718}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cAssimp">
+      <UniqueIdentifier>{0d425bb1-7f8e-4e82-bb35-dd6ebc7b9929}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ModelLoader">
+      <UniqueIdentifier>{bb007e11-7647-4a53-b622-8a0cfe224a7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="glad.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cModelLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cVAOManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cShader.cpp">
@@ -176,15 +176,24 @@
     <ClCompile Include="SceneManager\cSceneManager.cpp">
       <Filter>cSceneManager</Filter>
     </ClCompile>
+    <ClCompile Include="cSimpleAssimpSkinnedMeshLoader_OneMesh.cpp">
+      <Filter>cAssimp</Filter>
+    </ClCompile>
+    <ClCompile Include="cModelLoader_assimp.cpp">
+      <Filter>cAssimp</Filter>
+    </ClCompile>
+    <ClCompile Include="cModelLoader.cpp">
+      <Filter>ModelLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="cVAOManager.cpp">
+      <Filter>ModelLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="cAnimationState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cModelLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cMesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cVAOManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GLCommon.h">
@@ -285,6 +294,24 @@
     </ClInclude>
     <ClInclude Include="SceneManager\cSceneManager.h">
       <Filter>cSceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="cSimpleAssimpSkinnedMeshLoader_OneMesh.h">
+      <Filter>cAssimp</Filter>
+    </ClInclude>
+    <ClInclude Include="sModelDrawInfo.h">
+      <Filter>cAssimp</Filter>
+    </ClInclude>
+    <ClInclude Include="sVertex_xyz_rgba_n_uv2_bt_4Bones.h">
+      <Filter>cAssimp</Filter>
+    </ClInclude>
+    <ClInclude Include="cAnimationState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cModelLoader.h">
+      <Filter>ModelLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="cVAOManager.h">
+      <Filter>ModelLoader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

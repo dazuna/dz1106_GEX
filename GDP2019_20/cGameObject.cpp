@@ -25,6 +25,9 @@ cGameObject::cGameObject()
 
 	this->m_pDebugRenderer = NULL;
 	this->alphaTransparency = 1.0f;
+// The Skinned Mesh (assimp) object
+	//this->pSM = NULL;
+	this->pAS = NULL;
 
 	return;
 }
@@ -55,6 +58,9 @@ cGameObject::cGameObject(cGameObject* newGO)
 	this->alphaTransparency = newGO->alphaTransparency;
 	this->textures = newGO->textures;
 	this->textureRatio = newGO->textureRatio;
+	// The Skinned Mesh (assimp) object
+	//this->pSM = NULL;
+	this->pAS = NULL;
 }
 
 unsigned int cGameObject::getUniqueID(void)

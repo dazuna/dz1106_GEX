@@ -67,7 +67,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	const float CAMERASPEED = 1.0f;
 	const float DEGREESOFROTATION = 3.0f;
 	cGameObject* theSelectedGO = selectedGameObject->second;
-	cLight* theSelectedL = &(selectedLight->second);
+	cLight* theSelectedL = (selectedLight->second);
 
 	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 	{
@@ -530,11 +530,11 @@ void getStatus()
 		}
 		break;
 	case selectedType::LIGHT:
-		tempSS << "cursor: " << selectedLight->second.getName()
-			<< " x: " << selectedLight->second.positionXYZ.x
-			<< " y: " << selectedLight->second.positionXYZ.y
-			<< " z: " << selectedLight->second.positionXYZ.z
-			<< " type: " << selectedLight->second.type
+		tempSS << "cursor: " << selectedLight->second->getName()
+			<< " x: " << selectedLight->second->positionXYZ.x
+			<< " y: " << selectedLight->second->positionXYZ.y
+			<< " z: " << selectedLight->second->positionXYZ.z
+			<< " type: " << selectedLight->second->type
 			<< "\n";
 		break;
 	case selectedType::SOUND:break;

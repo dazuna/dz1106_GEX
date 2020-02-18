@@ -20,8 +20,23 @@ bool JSONLoader::JSONLoadMeshes(std::map<std::string, cMesh*>* g_map_Mesh, cMode
 	{
 		std::string name = jsonArray[index]["meshName"];
 		std::string location = jsonArray[index]["meshURL"];
+
+		// LOAD RIGGED THING
+		if (jsonArray[index].find("isSkinnedMesh") != jsonArray[index].end())
+		{
+			if(jsonArray[index]["isSkinnedMesh"])
+			{
+				bool didLoad;
+				didLoad = loadSkinnedMesh(jsonArray,index);
+				continue;
+			}
+		}
+
+		// ASSIMP NORMAL STATIC LOAD
+		//pTheModelLoader->LoadPlyModel(location.c_str(), *tempMesh);
+		std::string errs;
 		cMesh* tempMesh = new cMesh();
-		pTheModelLoader->LoadPlyModel(location.c_str(), *tempMesh);
+		pTheModelLoader->LoadModel_Assimp(location.c_str(), *tempMesh, errs);
 		g_map_Mesh->insert({ name.c_str(),tempMesh });
 	}
 	//std::cout << j;
@@ -29,7 +44,7 @@ bool JSONLoader::JSONLoadMeshes(std::map<std::string, cMesh*>* g_map_Mesh, cMode
 	return true;
 }
 
-bool JSONLoader::JSONLoadLights(std::map<std::string, cLight>* g_map_pLights, GLuint shadProgID)
+bool JSONLoader::JSONLoadLights(std::map<std::string, cLight*>* g_map_pLights, GLuint shadProgID)
 {
 	std::cout << "loading lights...";
 	std::ifstream inFile(light_json.c_str());
@@ -64,19 +79,19 @@ bool JSONLoader::JSONLoadLights(std::map<std::string, cLight>* g_map_pLights, GL
 		float outerAngle = jsonArray[index]["outerAngle"];
 		float lightW = jsonArray[index]["lightW"];
 		float lightSwitch = jsonArray[index]["lightSwitch"];
-		cLight tempLight("theLights", name, shadProgID, index);
+		cLight* tempLight = new cLight("theLights", name, shadProgID, index);
 		// load values to tempLight
-		tempLight.positionXYZ = positionXYZ;
-		tempLight.LinearAtten = LinearAtten;
-		tempLight.QuadraticAtten = QuadraticAtten;
-		tempLight.diffuse = diffuse;
-		tempLight.specular = specular;
-		tempLight.setAT(direction);
-		tempLight.type = type;
-		tempLight.innerAngle = innerAngle;
-		tempLight.outerAngle = outerAngle;
-		tempLight.lightW = lightW;
-		tempLight.lightSwitch = lightSwitch;
+		tempLight->positionXYZ = positionXYZ;
+		tempLight->LinearAtten = LinearAtten;
+		tempLight->QuadraticAtten = QuadraticAtten;
+		tempLight->diffuse = diffuse;
+		tempLight->specular = specular;
+		tempLight->setAT(direction);
+		tempLight->type = type;
+		tempLight->innerAngle = innerAngle;
+		tempLight->outerAngle = outerAngle;
+		tempLight->lightW = lightW;
+		tempLight->lightSwitch = lightSwitch;
 		//load to global map ::g_map_pLights["light0"] = &light0;
 		g_map_pLights->insert({ name.c_str(),tempLight });
 	}
@@ -204,51 +219,50 @@ bool JSONLoader::loadMeshToGPU(cVAOManager* pTheVAOManager,
 	std::map<std::string, cGameObject*>* g_map_GameObjects,
 	GLuint shaderProgID	)
 {
-	for (std::map<std::string, cGameObject*>::iterator itGO = g_map_GameObjects->begin();
-		itGO != g_map_GameObjects->end();
-		itGO++)
+	for (auto itGO = g_map_GameObjects->begin(); itGO != g_map_GameObjects->end(); itGO++)
 	{
 		sModelDrawInfo drawInfo;
+		if(itGO->second->pAS) continue;
 		pTheVAOManager->LoadModelIntoVAO(
 			itGO->second->meshName,
-			*(g_map_Mesh->at(itGO->second->meshName.c_str())),
+			*(g_map_Mesh->at(itGO->second->meshName)),
 			drawInfo, shaderProgID);
 
 	}//for (int index...
 	return true;
 }
 
-bool JSONLoader::JSONSaveLights(std::map<std::string, cLight>* g_map_pLights)
+bool JSONLoader::JSONSaveLights(std::map<std::string, cLight*>* g_map_pLights)
 {
 	std::cout << "saving lights...";
 	std::ofstream outFile("./configFiles/lights.json");
-	std::map<std::string, cLight>::iterator index = g_map_pLights->begin();
+	auto index = g_map_pLights->begin();
 	int x = 0;
 	json jsonArray;
 
 	for (index; index != g_map_pLights->end(); index++, x++)
 	{
 		json jsonObject;
-		jsonObject["name"] = index->second.getName();
-		jsonObject["positionXYZ"][0] = index->second.positionXYZ.x;
-		jsonObject["positionXYZ"][1] = index->second.positionXYZ.y;
-		jsonObject["positionXYZ"][2] = index->second.positionXYZ.z;
-		jsonObject["LinearAtten"] = index->second.LinearAtten;
-		jsonObject["QuadraticAtten"] = index->second.QuadraticAtten;
-		jsonObject["diffuse"][0] = index->second.diffuse.x;
-		jsonObject["diffuse"][1] = index->second.diffuse.y;
-		jsonObject["diffuse"][2] = index->second.diffuse.z;
-		jsonObject["specular"][0] = index->second.specular.x;
-		jsonObject["specular"][1] = index->second.specular.y;
-		jsonObject["specular"][2] = index->second.specular.z;
-		jsonObject["direction"][0] = index->second.getCurrentAT().x;
-		jsonObject["direction"][1] = index->second.getCurrentAT().y;
-		jsonObject["direction"][2] = index->second.getCurrentAT().z;
-		jsonObject["type"] = index->second.type;
-		jsonObject["innerAngle"] = index->second.innerAngle;
-		jsonObject["outerAngle"] = index->second.outerAngle;
-		jsonObject["lightW"] = index->second.lightW;
-		jsonObject["lightSwitch"] = index->second.lightSwitch;
+		jsonObject["name"] = index->second->getName();
+		jsonObject["positionXYZ"][0] = index->second->positionXYZ.x;
+		jsonObject["positionXYZ"][1] = index->second->positionXYZ.y;
+		jsonObject["positionXYZ"][2] = index->second->positionXYZ.z;
+		jsonObject["LinearAtten"] = index->second->LinearAtten;
+		jsonObject["QuadraticAtten"] = index->second->QuadraticAtten;
+		jsonObject["diffuse"][0] = index->second->diffuse.x;
+		jsonObject["diffuse"][1] = index->second->diffuse.y;
+		jsonObject["diffuse"][2] = index->second->diffuse.z;
+		jsonObject["specular"][0] = index->second->specular.x;
+		jsonObject["specular"][1] = index->second->specular.y;
+		jsonObject["specular"][2] = index->second->specular.z;
+		jsonObject["direction"][0] = index->second->getCurrentAT().x;
+		jsonObject["direction"][1] = index->second->getCurrentAT().y;
+		jsonObject["direction"][2] = index->second->getCurrentAT().z;
+		jsonObject["type"] = index->second->type;
+		jsonObject["innerAngle"] = index->second->innerAngle;
+		jsonObject["outerAngle"] = index->second->outerAngle;
+		jsonObject["lightW"] = index->second->lightW;
+		jsonObject["lightSwitch"] = index->second->lightSwitch;
 		jsonArray[x] = jsonObject;
 	}
 	//std::cout << jsonArray;
@@ -347,7 +361,8 @@ bool JSONLoader::JSONLoadSceneConf()
 	inFile >> jsonArray;
 
 	cSceneManager* theSceneManager = cSceneManager::getTheSceneManager();
-	int numScenes = jsonArray["numberOfScenes"];
+	theSceneManager->numScenes = jsonArray["numberOfScenes"];
+	theSceneManager->numCameras = jsonArray["numberOfCameras"];
 
 	for (index = 0; index < jsonArray["scenes"].size(); index++)
 	{
@@ -358,10 +373,13 @@ bool JSONLoader::JSONLoadSceneConf()
 		{
 			effect = jsonArray["scenes"][index]["effect"];
 		}
-		int cameraNumber = 0;
+		std::vector<int> cameraNumber;
 		if (jsonArray["scenes"][index].find("cameraNumber") != jsonArray["scenes"][index].end())
 		{
-			cameraNumber = jsonArray["scenes"][index]["cameraNumber"];
+			for (int cIndex = 0; cIndex < jsonArray["scenes"][index]["cameraNumber"].size(); cIndex++)
+			{
+				cameraNumber.push_back(jsonArray["scenes"][index]["cameraNumber"][cIndex]);
+			}
 		}
 		int width = 1280, height = 720;
 		if (jsonArray["scenes"][index].find("width") != jsonArray["scenes"][index].end())
@@ -388,7 +406,9 @@ bool JSONLoader::JSONLoadSceneConf()
 }
 
 bool JSONLoader::JSONLoadEntitiesToScene(
-		std::map<std::string, cGameObject*>* pGameObjects, cScene* theScene)
+		std::map<std::string, cGameObject*>* pGameObjects,
+		std::map<std::string, cLight*>* pLights,
+		cScene* theScene)
 {
 	std::cout << "loading objects to: " << theScene->name << std::endl;
 	std::ifstream inFile(theScene->jsonPath);
@@ -410,10 +430,10 @@ bool JSONLoader::JSONLoadEntitiesToScene(
 	
 	for (index = 0; index < jsonArray["lights"].size(); index++)
 	{
-		std::string friendlyName = jsonArray["lights"][index]["friendlyName"];
-		if(tools::pFindObjectByFriendlyNameMap(friendlyName))
+		std::string name = jsonArray["lights"][index]["name"];
+		if(tools::pFindLightByNameMap(name))
 		{
-			theScene->addGameObject((*pGameObjects)[friendlyName]);
+			theScene->addLight((*pLights)[name]);
 		}
 	}	
 	std::cout << "[OK]\n" << index << " lights loaded successfully to " << theScene->name << std::endl;
@@ -421,4 +441,34 @@ bool JSONLoader::JSONLoadEntitiesToScene(
 	return true;
 }
 
+bool JSONLoader::loadSkinnedMesh(nlohmann::json jsonArray, int index)
+{
+	auto selector = jsonArray[index];
+	auto theGameObject = ::g_map_GameObjects.at(selector["friendlyName"]);
+	auto pSkinnedMesh = new cSimpleAssimpSkinnedMesh();
+	theGameObject->pAS = new cAnimationState(pSkinnedMesh);
+	
+	// START OF: Loading bind pose mesh into the VAO manager (so we can draw it)
+	theGameObject->pAS->pSM->LoadMeshFromFile(theGameObject->meshName, theGameObject->meshURL);
+	// Get the draw info, to load into the VAO
+	sModelDrawInfo* pDI = theGameObject->pAS->pSM->CreateModelDrawInfoObjectFromCurrentModel();
+
+	if (pDI)
+	{
+		//std::cout << pDI->numberOfVertices << " vertices" << std::endl;
+		//std::cout << pDI->numberOfTriangles << " triangles" << std::endl;
+		pTheVAOManager->LoadModelDrawInfoIntoVAO(*pDI, shaderProgID);
+	}
+	
+	for(auto c = 0; c < selector["zAnimations"].size();c++)
+	{
+		auto anim = selector["zAnimations"][c];
+		theGameObject->pAS->pSM->LoadMeshAnimation(anim["animName"],anim["location"]);
+		
+		theGameObject->pAS->loadAnimationDetails(anim["animName"]);
+		// make first animation, the default one
+		if(c==0) theGameObject->pAS->makeDefaultAnimation(anim["animName"]);
+	}
+	return true;
+}
 

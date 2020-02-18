@@ -81,7 +81,7 @@ bool cVAOManager::LoadModelIntoVAO(
 
 	drawInfo.numberOfVertices = (unsigned int)theMesh.vecVertices.size();
 	// Allocate an array big enought
-	drawInfo.pVertices = new sVertex[drawInfo.numberOfVertices];
+	drawInfo.pVertices = new sVertex_xyz_rgba_n_uv2_bt_4Bones[drawInfo.numberOfVertices];
 
 	// Copy the data from the vecVertices...
 	for (unsigned int index = 0; index != drawInfo.numberOfVertices; index++)
@@ -160,7 +160,7 @@ bool cVAOManager::LoadModelIntoVAO(
 	glBindBuffer(GL_ARRAY_BUFFER, drawInfo.VertexBufferID);
 	// sVert vertices[3]
 	glBufferData( GL_ARRAY_BUFFER, 
-				  sizeof(sVertex) * drawInfo.numberOfVertices,	// ::g_NumberOfVertsToDraw,	// sizeof(vertices), 
+				  sizeof(sVertex_xyz_rgba_n_uv2_bt_4Bones) * drawInfo.numberOfVertices,	// ::g_NumberOfVertsToDraw,	// sizeof(vertices), 
 				  (GLvoid*) drawInfo.pVertices,							// pVertices,			//vertices, 
 				  GL_STATIC_DRAW );
 
@@ -178,7 +178,7 @@ bool cVAOManager::LoadModelIntoVAO(
 
 	// Set the vertex attributes.
 
-	//struct sVertex
+	//struct sVertex_xyz_rgba_n_uv2_bt_4Bones
 	//{
 	//	float x, y, z, w;			// w coordinate	
 	//	float r, g, b, a;		// a = alpha (transparency)
@@ -194,29 +194,29 @@ bool cVAOManager::LoadModelIntoVAO(
 	glEnableVertexAttribArray(vpos_location);	// vPos
 	glVertexAttribPointer( vpos_location, 4,		// now a vec4
 						   GL_FLOAT, GL_FALSE,
-						   sizeof(sVertex),						// sizeof(float) * 6,
-						   ( void* )(offsetof(sVertex, x)) );
+						   sizeof(sVertex_xyz_rgba_n_uv2_bt_4Bones),						// sizeof(float) * 6,
+						   ( void* )(offsetof(sVertex_xyz_rgba_n_uv2_bt_4Bones, x)) );
 
 	glEnableVertexAttribArray(vcol_location);	// vCol
 	glVertexAttribPointer( vcol_location, 4,		// vCol
 						   GL_FLOAT, GL_FALSE,
-						   sizeof(sVertex),						
-						   ( void* )(offsetof(sVertex, r)) );
+						   sizeof(sVertex_xyz_rgba_n_uv2_bt_4Bones),						
+						   ( void* )(offsetof(sVertex_xyz_rgba_n_uv2_bt_4Bones, r)) );
 
 
 	//	float nx, ny, nz, nw;
 	glEnableVertexAttribArray(vnorm_location);	// vNormal
 	glVertexAttribPointer(vnorm_location, 4,		// vNormal
 						   GL_FLOAT, GL_FALSE,
-						   sizeof(sVertex),						
-						   ( void* )(offsetof(sVertex, nx)) );
+						   sizeof(sVertex_xyz_rgba_n_uv2_bt_4Bones),						
+						   ( void* )(offsetof(sVertex_xyz_rgba_n_uv2_bt_4Bones, nx)) );
 
 	//	float u0, v0, u1, v1;
 	glEnableVertexAttribArray(vUV_location);		// vUVx2
 	glVertexAttribPointer(vUV_location, 4,		// vUVx2
 						   GL_FLOAT, GL_FALSE,
-						   sizeof(sVertex),						
-						   ( void* )(offsetof(sVertex, u0)) );
+						   sizeof(sVertex_xyz_rgba_n_uv2_bt_4Bones),						
+						   ( void* )(offsetof(sVertex_xyz_rgba_n_uv2_bt_4Bones, u0)) );
 
 
 
@@ -260,3 +260,147 @@ bool cVAOManager::FindDrawInfoByModelName(
 	return true;
 }
 
+bool cVAOManager::LoadModelDrawInfoIntoVAO(sModelDrawInfo& drawInfo,
+										   unsigned int shaderProgramID)
+{
+	// Ask OpenGL for a new buffer ID...
+	glGenVertexArrays(1, &(drawInfo.VAO_ID));
+	// "Bind" this buffer:
+	// - aka "make this the 'current' VAO buffer
+	glBindVertexArray(drawInfo.VAO_ID);
+
+	// Now ANY state that is related to vertex or index buffer
+	//	and vertex attribute layout, is stored in the 'state' 
+	//	of the VAO... 
+
+
+	// NOTE: OpenGL error checks have been omitted for brevity
+//	glGenBuffers(1, &vertex_buffer);
+	glGenBuffers(1, &(drawInfo.VertexBufferID));
+
+	//	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, drawInfo.VertexBufferID);
+	// sVert vertices[3]
+	glBufferData(GL_ARRAY_BUFFER,
+				 sizeof(sVertex_xyz_rgba_n_uv2_bt_4Bones) * drawInfo.numberOfVertices,	// ::g_NumberOfVertsToDraw,	// sizeof(vertices), 
+				 (GLvoid*)drawInfo.pVertices,							// pVertices,			//vertices, 
+				 GL_DYNAMIC_DRAW);
+	// GL_STATIC_DRAW );
+
+
+// Copy the index buffer into the video card, too
+// Create an index buffer.
+	glGenBuffers(1, &(drawInfo.IndexBufferID));
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, drawInfo.IndexBufferID);
+
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER,			// Type: Index element array
+				 sizeof(unsigned int) * drawInfo.numberOfIndices,
+				 (GLvoid*)drawInfo.pIndices,
+				 GL_STATIC_DRAW);
+
+	// Set the vertex attributes.
+
+	//struct sVertex
+	//{
+	//	float x, y, z, w;			// w coordinate	
+	//	float r, g, b, a;		// a = alpha (transparency)
+	//	float nx, ny, nz, nw;
+	//	float u0, v0, u1, v1;
+	//};
+	GLint vpos_location = glGetAttribLocation(shaderProgramID, "vPosition");	// program
+	GLint vcol_location = glGetAttribLocation(shaderProgramID, "vColour");	// program;
+	GLint vnorm_location = glGetAttribLocation(shaderProgramID, "vNormal");	// program;
+	GLint vUV_location = glGetAttribLocation(shaderProgramID, "vUVx2");	// program;
+	// Added
+	GLint vTangent_location = glGetAttribLocation(shaderProgramID, "vTangent");
+	GLint vBiNormal_location = glGetAttribLocation(shaderProgramID, "vBiNormal");
+	GLint vBoneID_location = glGetAttribLocation(shaderProgramID, "vBoneID");
+	GLint vBoneWeight_location = glGetAttribLocation(shaderProgramID, "vBoneWeight");
+
+
+	// Set the vertex attributes for this shader
+	glEnableVertexAttribArray(vpos_location);	// vPos
+	glVertexAttribPointer(vpos_location, 4,		// now a vec4
+						  GL_FLOAT, GL_FALSE,
+						  sizeof(sVertex_xyz_rgba_n_uv2_bt_4Bones),						// sizeof(float) * 6,
+						  (void*)(offsetof(sVertex_xyz_rgba_n_uv2_bt_4Bones, x)));
+
+	glEnableVertexAttribArray(vcol_location);	// vCol
+	glVertexAttribPointer(vcol_location, 4,		// vCol
+						  GL_FLOAT, GL_FALSE,
+						  sizeof(sVertex_xyz_rgba_n_uv2_bt_4Bones),
+						  (void*)(offsetof(sVertex_xyz_rgba_n_uv2_bt_4Bones, r)));
+
+
+	//	float nx, ny, nz, nw;
+	glEnableVertexAttribArray(vnorm_location);	// vNormal
+	glVertexAttribPointer(vnorm_location, 4,		// vNormal
+						  GL_FLOAT, GL_FALSE,
+						  sizeof(sVertex_xyz_rgba_n_uv2_bt_4Bones),
+						  (void*)(offsetof(sVertex_xyz_rgba_n_uv2_bt_4Bones, nx)));
+
+	//	float u0, v0, u1, v1;
+	glEnableVertexAttribArray(vUV_location);		// vUVx2
+	glVertexAttribPointer(vUV_location, 4,		// vUVx2
+						  GL_FLOAT, GL_FALSE,
+						  sizeof(sVertex_xyz_rgba_n_uv2_bt_4Bones),
+						  (void*)(offsetof(sVertex_xyz_rgba_n_uv2_bt_4Bones, u0)));
+
+	// New stuff added in animation (for bump mapping and skinned mesh)
+	glEnableVertexAttribArray(vTangent_location);
+	glVertexAttribPointer(vTangent_location, 4,
+						  GL_FLOAT, GL_FALSE,
+						  sizeof(sVertex_xyz_rgba_n_uv2_bt_4Bones),
+						  (void*)(offsetof(sVertex_xyz_rgba_n_uv2_bt_4Bones, tx)));
+
+	glEnableVertexAttribArray(vBiNormal_location);
+	glVertexAttribPointer(vBiNormal_location, 4,
+						  GL_FLOAT, GL_FALSE,
+						  sizeof(sVertex_xyz_rgba_n_uv2_bt_4Bones),
+						  (void*)(offsetof(sVertex_xyz_rgba_n_uv2_bt_4Bones, bx)));
+
+	glEnableVertexAttribArray(vBoneID_location);
+	glVertexAttribPointer(vBoneID_location, 4,
+						  GL_FLOAT, GL_FALSE,
+						  sizeof(sVertex_xyz_rgba_n_uv2_bt_4Bones),
+						  (void*)(offsetof(sVertex_xyz_rgba_n_uv2_bt_4Bones, boneID[0])));
+
+	glEnableVertexAttribArray(vBoneWeight_location);
+	glVertexAttribPointer(vBoneWeight_location, 4,
+						  GL_FLOAT, GL_FALSE,
+						  sizeof(sVertex_xyz_rgba_n_uv2_bt_4Bones),
+						  (void*)(offsetof(sVertex_xyz_rgba_n_uv2_bt_4Bones, boneWeights[0])));
+
+	// Now that all the parts are set up, set the VAO to zero
+	// At this point, whatever state the:
+	// - vertex buffer (VBO)
+	// - index buffer
+	// - vertex layout 
+	// ...is "remembered"
+	glBindVertexArray(0);
+	// Now, that VAO is "not active" (bound), so OpenGL is 
+	//  not "pay attention" to any changes to any of those 3 things
+
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	glDisableVertexAttribArray(vpos_location);
+	glDisableVertexAttribArray(vcol_location);
+	glDisableVertexAttribArray(vnorm_location);
+	glDisableVertexAttribArray(vUV_location);
+	// And the other ones
+	glDisableVertexAttribArray(vTangent_location);
+	glDisableVertexAttribArray(vBiNormal_location);
+	glDisableVertexAttribArray(vBoneID_location);
+	glDisableVertexAttribArray(vBoneWeight_location);
+
+
+	// Store the draw information into the map
+	this->m_map_ModelName_to_VAOID[drawInfo.meshName] = drawInfo;
+
+
+	return true;
+
+}

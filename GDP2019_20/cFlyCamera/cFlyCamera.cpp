@@ -9,7 +9,7 @@
 
 cFlyCamera::cFlyCamera()
 {
-	this->eye = glm::vec3(0.0f);
+	this->eye = glm::vec3(0,10,-10);
 
 	// This will be constant
 	this->m_frontOfCamera = glm::vec3(0.0f, 0.0f, 1.0f);

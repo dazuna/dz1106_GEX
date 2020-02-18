@@ -139,22 +139,32 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glfw3.lib;lua5.3.5-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;lua5.3.5-static.lib;assimp-vc141-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy /Y "$(ProjectDir)lib\Release64\*.dll" "$(TargetDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="bRotatable\bRotatable.cpp" />
     <ClCompile Include="cAABB\PhysicsAABBStuff.cpp" />
+    <ClCompile Include="cAnimationState.cpp" />
     <ClCompile Include="cFBO\cFBO.cpp" />
     <ClCompile Include="cFlyCamera\cFlyCamera.cpp" />
     <ClCompile Include="cGameObject.cpp" />
     <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cLowPassFilter.cpp" />
     <ClCompile Include="cModelLoader.cpp" />
+    <ClCompile Include="cModelLoader_assimp.cpp" />
     <ClCompile Include="cPhysics.cpp" />
     <ClCompile Include="cPhysics_Ericson.cpp" />
     <ClCompile Include="cShader.cpp" />
     <ClCompile Include="cShaderManager.cpp" />
+    <ClCompile Include="cSimpleAssimpSkinnedMeshLoader_OneMesh.cpp" />
     <ClCompile Include="cVAOManager.cpp" />
     <ClCompile Include="DebugRenderer\cDebugRenderer.cpp" />
     <ClCompile Include="DebugRenderer\cDebugRenderer_BuiltInShapes.cpp" />
@@ -184,6 +194,7 @@
     <ClInclude Include="bRotatable\bRotatable.hpp" />
     <ClInclude Include="cAABB\cAABB.h" />
     <ClInclude Include="cAABB\PhysicsAABBStuff.h" />
+    <ClInclude Include="cAnimationState.h" />
     <ClInclude Include="cFBO\cFBO.h" />
     <ClInclude Include="cFlyCamera\cFlyCamera.h" />
     <ClInclude Include="cGameObject.h" />
@@ -193,6 +204,7 @@
     <ClInclude Include="cModelLoader.h" />
     <ClInclude Include="cPhysics.h" />
     <ClInclude Include="cShaderManager.h" />
+    <ClInclude Include="cSimpleAssimpSkinnedMeshLoader_OneMesh.h" />
     <ClInclude Include="cVAOManager.h" />
     <ClInclude Include="DebugRenderer\cDebugRenderer.h" />
     <ClInclude Include="DebugRenderer\cDebugRenderer_built_in_shaders.h" />
@@ -212,6 +224,8 @@
     <ClInclude Include="SceneManager\cScene.h" />
     <ClInclude Include="SceneManager\cSceneManager.h" />
     <ClInclude Include="skybox\skybox.h" />
+    <ClInclude Include="sModelDrawInfo.h" />
+    <ClInclude Include="sVertex_xyz_rgba_n_uv2_bt_4Bones.h" />
     <ClInclude Include="TextureManager\C24BitBMPpixel.h" />
     <ClInclude Include="TextureManager\cBasicTextureManager.h" />
     <ClInclude Include="TextureManager\cGLColourHelper.h" />

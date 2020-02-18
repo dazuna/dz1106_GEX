@@ -48,7 +48,7 @@
     "diffuseColour": [1.0, 1.0, 1.0, 1.0],
     "friendlyName": "sphere",
     "inverseMass": 0.0,
-    "isVisible": false,
+    "isVisible": true,
     "isWireframe": false,
     "meshName": "sphereMesh",
     "meshURL": "assets/models/Sphere_Radius_1_XYZ_n_uv.ply",
@@ -103,6 +103,38 @@
     "texture": ["White.bmp", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0],
     "velocity": [0.0, 0.0, 0.0]
+  },
+  {
+    "accel": [0.0, 0.0, 0.0],
+    "alphaTransparency": 1.0,
+    "debugColour": [1.0, 1.0, 1.0, 1.0],
+    "diffuseColour": [1.0, 1.0, 1.0, 1.0],
+    "friendlyName": "character",
+    "inverseMass": 0.0,
+    "isVisible": true,
+    "isWireframe": false,
+    "isSkinnedMesh": true,
+    "meshName": "characterMesh",
+    "meshURL": "assets/modelsFBX/RPG-Character(FBX2013).fbx",
+    "objectColourRGBA": [0.0, 0.0, 0.0, 1.0],
+    "physicsShapeType": 4,
+    "positionXYZ": [0.5,0,0],
+    "rotationXYZ": [0.0, -0.0, 0.0],
+    "scale": 1.0,
+    "specularColour": [1.0, 1.0, 1.0, 1.0],
+    "texture": ["White.bmp", "", "", ""],
+    "textureRatio": [1.0, 0.0, 0.0, 0.0],
+    "velocity": [0.0, 0.0, 0.0],
+    "zAnimations": 
+    [
+      {"animName":"Idle","location":"assets/modelsFBX/RPG-Character_Unarmed-Idle(FBX2013).FBX"},
+      {"animName":"Run","location":"assets/modelsFBX/RPG-Character_Unarmed-Run(FBX2013).FBX"},
+      {"animName":"Walk-Slow","location":"assets/modelsFBX/RPG-Character_Unarmed-Walk-Slow(FBX2013).FBX"},
+      {"animName":"Walk","location":"assets/modelsFBX/RPG-Character_Unarmed-Walk(FBX2013).FBX"},
+      {"animName":"Jump","location":"assets/modelsFBX/RPG-Character_Unarmed-Jump(FBX2013).FBX"},
+      {"animName":"Attack-R3","location":"assets/modelsFBX/RPG-Character_Unarmed-Attack-R3(FBX2013).FBX"},
+      {"animName":"Roll-Left","location":"assets/modelsFBX/RPG-Character_Unarmed-Roll-Left(FBX2013).FBX"}
+    ]
   },
   {
     "accel": [0.0, 0.0, 0.0],

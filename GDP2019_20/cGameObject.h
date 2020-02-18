@@ -11,6 +11,8 @@
 // NOTE: We are including the INTERFACE, not the actual renderer
 #include "DebugRenderer/iDebugRenderer.h"
 #include "bRotatable/bRotatable.hpp"
+#include "cSimpleAssimpSkinnedMeshLoader_OneMesh.h"
+#include "cAnimationState.h"
 
 enum eShapeTypes
 {
@@ -62,6 +64,9 @@ public:
 	bool isVisible;
 	bool disableDepthBufferTest;
 	bool disableDepthBufferWrite;
+
+	//cSimpleAssimpSkinnedMesh* pSM;
+	cAnimationState* pAS;
 
 public:
 	// glm::quat getQOrientation(void);

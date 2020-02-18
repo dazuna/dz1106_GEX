@@ -4,20 +4,12 @@
     "scenes":
     [
         {
-            "name": "scene_1",
+            "name": "scene1",
             "jsonPath": "configScenes/scene1.json",
             "effect": "none",
-            "cameraNumber": 0,
+            "cameraNumber": [0],
             "width": 1280,
             "height": 720
-        },
-        {
-            "name": "scene_2",
-            "jsonPath": "configScenes/scene1.json",
-            "effect": "none",
-            "cameraNumber": 0,
-            "width": 1920,
-            "height": 1080
         }
     ]
 }
