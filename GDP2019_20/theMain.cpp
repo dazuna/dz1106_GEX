@@ -28,6 +28,7 @@
 #include "skybox/skybox.h"
 #include "GFLW_callbacks.h"// Keyboard, error, mouse, etc. are now here
 #include "cFBO/cFBO.h"
+#include "cAnimatedPlayer/cAnimatedPlayer.h"
 
 cFBO* pTheFBO = NULL;
 
@@ -70,6 +71,7 @@ std::map<std::string, cGameObject*>::iterator selectedGameObject = g_map_GameObj
 std::map<std::string, cLight*> g_map_pLights;
 std::map<std::string, cLight*>::iterator selectedLight = g_map_pLights.begin();
 cSceneManager* theSceneManager = cSceneManager::getTheSceneManager();
+cAnimatedPlayer* theAnimatedPlayer = cAnimatedPlayer::getAnimatedPlayer();
 //bool g_BallCollided = false;
 
 selectedType cursorType = selectedType::GAMEOBJECT;
@@ -154,6 +156,12 @@ int main(void)
 	selectedLight = ::g_map_pLights.begin();
 
 	::theSceneManager->init();
+
+	if(g_map_GameObjects.find("character") != g_map_GameObjects.end())
+	{
+		::theAnimatedPlayer->addPlayableObject(g_map_GameObjects.at("character"));
+		::theAnimatedPlayer->selectedPlayable = ::theAnimatedPlayer->playAnimChars.begin();
+	}
 
 	// Adjust camera to first position (if existent in map)
 	if (tools::pFindObjectByFriendlyNameMap("cameraPosition0"))

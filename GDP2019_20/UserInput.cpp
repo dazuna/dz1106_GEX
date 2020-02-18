@@ -17,6 +17,8 @@
 #include "playerController/playerController.h"
 #include "cLuaBrain/cLuaBrain.h"
 
+#include "cAnimatedPlayer/cAnimatedPlayer.h"
+
 bool isOnlyShiftKeyDown(int mods);
 bool isOnlyCtrlKeyDown(int mods);
 bool isOnlyAltKeyDown(int mods);
@@ -24,6 +26,9 @@ bool isShiftDown(GLFWwindow* window);
 bool isCtrlDown(GLFWwindow* window);
 bool isAltDown(GLFWwindow* window);
 bool areAllModifiersUp(GLFWwindow* window);
+
+void cameraControls(GLFWwindow* window);
+void playerControls(GLFWwindow* window);
 
 bool g_MouseIsInsideWindow = false;
 bool g_MouseLeftButtonIsDown = false;
@@ -40,6 +45,7 @@ bool isShiftKeyDownByAlone(int mods);
 bool isCtrlKeyDownByAlone(int mods);
 void getStatus();
 void makeAllWireFrame(bool wireAll);
+
 
 void cursor_enter_callback(GLFWwindow* window, int entered)
 {
@@ -68,6 +74,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	const float DEGREESOFROTATION = 3.0f;
 	cGameObject* theSelectedGO = selectedGameObject->second;
 	cLight* theSelectedL = (selectedLight->second);
+	auto theAnimatedPlayer = cAnimatedPlayer::getAnimatedPlayer();
 
 	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 	{
@@ -112,6 +119,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			bool tempBool;
 			tempBool = ::pSkyBox->isVisible;
 			tempBool = !tempBool;
+		}
+		if(key == GLFW_KEY_F4 && action == GLFW_PRESS)
+		{
+			theAnimatedPlayer->isPlayModeOn = !(theAnimatedPlayer->isPlayModeOn);
+			std::cout << "play mode: " << theAnimatedPlayer->isPlayModeOn << std::endl;
 		}
 		if (key == GLFW_KEY_Z && action == GLFW_PRESS)
 		{
@@ -701,23 +713,39 @@ void ProcessAsyncMouse(GLFWwindow* window)
 
 void ProcessAsyncKeys(GLFWwindow* window)
 {
-	const float CAMERA_MOVE_SPEED_SLOW = 0.1f;
-	const float CAMERA_MOVE_SPEED_FAST = 1.0f;
-	const float CAMERA_TURN_SPEED = 0.1f;
-
 	// WASD + q = "up", e = down		y axis = up and down
 	//									x axis = left and right
 	//									z axis = forward and backward
-
 	//float cameraSpeed = CAMERA_MOVE_SPEED_SLOW;
 	//if ( glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS  )
 	//{
 	//	cameraSpeed = CAMERA_MOVE_SPEED_FAST;
 	//}
+
+	auto theAnimatedPlayer = cAnimatedPlayer::getAnimatedPlayer();
+	bool debugControls = !(theAnimatedPlayer->isPlayModeOn);
+
+	if (debugControls)
+	{
+		cameraControls(window);
+	}
+	else
+	{
+		playerControls(window);		
+	}
+	
+}// ProcessAsyncKeys(..
+
+void cameraControls(GLFWwindow* window)
+{
+	const float CAMERA_MOVE_SPEED_SLOW = 0.1f;
+	const float CAMERA_MOVE_SPEED_FAST = 1.0f;
+	const float CAMERA_TURN_SPEED = 0.1f;
+	
 	float cameraMoveSpeed = ::g_pFlyCamera->movementSpeed;
 	float playerVSpeed = 2.0f;
 	float playerAngle = 0.5f;
-
+	
 	// If no keys are down, move the camera
 	if (areAllModifiersUp(window))
 	{
@@ -755,63 +783,8 @@ void ProcessAsyncKeys(GLFWwindow* window)
 			//			::g_pFlyCamera->Roll_CW_CCW( -cameraSpeed );
 		}
 
-		//// Player Control
-
-		//if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS)
-		//{
-		//	pPlayerControl->MoveForward_Z(playerVSpeed);
-		//}
-		//if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
-		//{
-		//	pPlayerControl->MoveForward_Z(-playerVSpeed);
-		//}
-		//if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-		//{
-		//	pPlayerControl->MoveUpDown_Y(-playerAngle);
-		//}
-		//if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
-		//{
-		//	pPlayerControl->MoveUpDown_Y(playerAngle);
-		//}
-		//if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
-		//{
-		//	pPlayerControl->MoveLeftRight_X(-playerAngle);
-		//}
-		//if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
-		//{
-		//	pPlayerControl->MoveLeftRight_X(playerAngle);
-		//}
-		//// Rotate ship
-		//if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-		//{
-		//	pPlayerControl->Pitch_UpDown(-playerAngle);
-		//}
-		//if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-		//{
-		//	pPlayerControl->Pitch_UpDown(playerAngle);
-		//}
-		//if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-		//{
-		//	pPlayerControl->Yaw_LeftRight(playerAngle);
-		//}
-		//if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-		//{
-		//	pPlayerControl->Yaw_LeftRight(-playerAngle);
-		//}
-		//if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
-		//{
-		//	pPlayerControl->Roll_CW_CCW(-playerAngle);
-		//}
-		//if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
-		//{
-		//	pPlayerControl->Roll_CW_CCW(playerAngle);
-		//}
-		//// Player Control
-
 	}//if(AreAllModifiersUp(window)
-
-	// If shift is down, do the rotation camera stuff...
-	// If no keys are down, move the camera
+	
 	if (isShiftDown(window))
 	{
 		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)	// "up"
@@ -825,6 +798,56 @@ void ProcessAsyncKeys(GLFWwindow* window)
 			//			::g_pFlyCamera->MoveUpDown_Y( -cameraSpeed );
 		}
 	}//IsShiftDown(window)
+}
+
+void playerControls(GLFWwindow* window)
+{
+	auto theAnimatedPlayer = cAnimatedPlayer::getAnimatedPlayer();
 	
-	return;
-}// ProcessAsyncKeys(..
+	if (areAllModifiersUp(window))
+	{
+		// Note: The "== GLFW_PRESS" isn't really needed as it's actually "1" 
+		// (so the if() treats the "1" as true...)
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		{
+			theAnimatedPlayer->moveAhead();
+		}
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)	// "backwards"
+		{
+			
+		}
+		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)	// "left"
+		{
+			
+		}
+		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)	// "right"
+		{
+			
+		}
+		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)	// "up"
+		{
+			
+		}
+		if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)	// "down"
+		{
+			
+		}
+		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		{
+			theAnimatedPlayer->jump();
+		}
+
+	}//if(AreAllModifiersUp(window)
+	
+	if (isShiftDown(window))
+	{
+		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)	// "up"
+		{
+			
+		}
+		if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)	// "down"
+		{
+			
+		}
+	}//IsShiftDown(window)
+}

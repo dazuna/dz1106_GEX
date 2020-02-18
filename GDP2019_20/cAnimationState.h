@@ -12,11 +12,13 @@ class cAnimationState
 	{
 		sStateDetails():
 			currentTime(0.f),
-			totalTime(0.f){};
+			totalTime(0.f),
+			isReplaceable(false){};
 	
 		std::string name;
 		float currentTime;
 		float totalTime;
+		bool isReplaceable;
 		//float frameStepTime;
 		// returns true if time had to be reset
 		// (for checking to see if animation has finished)
@@ -30,10 +32,11 @@ class cAnimationState
 	sStateDetails* defaultAnimation;
 	float frameTimer;
 	
-	void loadAnimationDetails(std::string name);
+	void loadAnimationDetails(std::string name,bool isReplace=true);
 	void makeDefaultAnimation(std::string name);
 	void update(float dt,
 		std::vector<glm::mat4> &FinalTransformation, 
 		std::vector<glm::mat4> &Globals, 
 		std::vector<glm::mat4> &Offsets);
+	void setActiveAnimation(std::string name);
 };

@@ -72,6 +72,9 @@
     <Filter Include="ModelLoader">
       <UniqueIdentifier>{bb007e11-7647-4a53-b622-8a0cfe224a7c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cAnimatedPlayer">
+      <UniqueIdentifier>{a2e6db9c-29e5-475f-aba5-3ee0c37a866e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -190,6 +193,9 @@
     </ClCompile>
     <ClCompile Include="cAnimationState.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cAnimatedPlayer\cAnimatedPlayer.cpp">
+      <Filter>cAnimatedPlayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -312,6 +318,9 @@
     </ClInclude>
     <ClInclude Include="cVAOManager.h">
       <Filter>ModelLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="cAnimatedPlayer\cAnimatedPlayer.h">
+      <Filter>cAnimatedPlayer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
