@@ -465,7 +465,7 @@ bool JSONLoader::loadSkinnedMesh(nlohmann::json jsonArray, int index)
 		auto anim = selector["zAnimations"][c];
 		theGameObject->pAS->pSM->LoadMeshAnimation(anim["animName"],anim["location"]);
 		
-		theGameObject->pAS->loadAnimationDetails(anim["animName"]);
+		theGameObject->pAS->loadAnimationDetails(anim["animName"],anim["isReplaceable"]);
 		// make first animation, the default one
 		if(c==0) theGameObject->pAS->makeDefaultAnimation(anim["animName"]);
 	}

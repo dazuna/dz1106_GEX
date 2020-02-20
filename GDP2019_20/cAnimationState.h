@@ -31,6 +31,7 @@ class cAnimationState
 	sStateDetails* activeAnimation;
 	sStateDetails* defaultAnimation;
 	float frameTimer;
+	bool isReverse;
 	
 	void loadAnimationDetails(std::string name,bool isReplace=true);
 	void makeDefaultAnimation(std::string name);
@@ -38,5 +39,6 @@ class cAnimationState
 		std::vector<glm::mat4> &FinalTransformation, 
 		std::vector<glm::mat4> &Globals, 
 		std::vector<glm::mat4> &Offsets);
-	void setActiveAnimation(std::string name);
+	void setActiveAnimation(std::string name, bool shouldReverse = false);
+	void stopActiveAnimation();
 };

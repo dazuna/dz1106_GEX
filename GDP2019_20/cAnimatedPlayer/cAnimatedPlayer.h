@@ -4,7 +4,7 @@
 class cAnimatedPlayer
 {
 	static cAnimatedPlayer* theOneAndOnlyAnimatedPlayer_;
-	cAnimatedPlayer():speed_(10.f), isPlayModeOn(false){}
+	cAnimatedPlayer():speed_(20.f), isPlayModeOn(false){}
 	
 	float speed_;
 public:
@@ -17,5 +17,16 @@ public:
     void addPlayableObject(cGameObject* theGO);
 	void setSpeed(float sp);
 	void moveAhead();
+	void moveBack();
+	void runAhead();
+	void runBack();
+	void leftStrafe();
+	void rightStrafe();
+	void rollLeft();
+	void rollRight();
+	void resetVelocity();
 	void jump();
+	void specialMove();
+	void idle();
+	void nextPlayer();
 };

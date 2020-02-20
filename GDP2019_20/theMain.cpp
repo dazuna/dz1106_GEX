@@ -21,7 +21,7 @@
 #include "cLowPassFilter.h"
 //#include "PhysicsStuff.h"// The Physics function
 //#include "cAABB/cAABB.h"
-//#include "cAABB/PhysicsAABBStuff.h"
+#include "cAABB/PhysicsAABBStuff.h"
 #include "DebugRenderer/cDebugRenderer.h"	
 #include "cLight.h"// Used to visualize the attenuation of the lights...
 #include "cFlyCamera/cFlyCamera.h"
@@ -50,7 +50,7 @@ GLuint shaderProgID;
 cVAOManager* pTheVAOManager = new cVAOManager();
 cModelLoader* pTheModelLoader = new cModelLoader();
 cDebugRenderer* pDebugRenderer = new cDebugRenderer();
-//cPhysics* pPhysic = new cPhysics();
+cPhysics* pPhysic = new cPhysics();
 cBasicTextureManager* pTextureManager = NULL;
 extern std::map<unsigned long long /*ID*/, cAABB*> g_mapAABBs_World;
 playerController* pPlayerControl;
@@ -160,6 +160,12 @@ int main(void)
 	if(g_map_GameObjects.find("character") != g_map_GameObjects.end())
 	{
 		::theAnimatedPlayer->addPlayableObject(g_map_GameObjects.at("character"));
+		::theAnimatedPlayer->selectedPlayable = ::theAnimatedPlayer->playAnimChars.begin();
+	}
+
+	if(g_map_GameObjects.find("character2") != g_map_GameObjects.end())
+	{
+		::theAnimatedPlayer->addPlayableObject(g_map_GameObjects.at("character2"));
 		::theAnimatedPlayer->selectedPlayable = ::theAnimatedPlayer->playAnimChars.begin();
 	}
 
@@ -287,8 +293,6 @@ int main(void)
 		
 		drawSkyBox();
 
-		
-		
 		// ************************** order transparent objects **************************
 		tools::makeTransparentObjectsMap();
 		std::vector<cGameObject*> theWorldVector = tools::getWorldMapAsVector();
@@ -315,6 +319,8 @@ int main(void)
 
 		//	Update the objects through physics
 		averageDeltaTime = avgDeltaTimeThingy.getAverage();
+		IntegrationStep_AAB(::g_map_GameObjects,float(averageDeltaTime));
+		pPhysic->TestForCollisions(::g_map_GameObjects);
 		
 		pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
 

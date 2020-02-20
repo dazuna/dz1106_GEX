@@ -25,6 +25,7 @@ public:
 	// setAT ... for light manipulation
 	void setAT(glm::vec3 direction);
 	glm::vec3 getOG_AT();
+	glm::vec3 getRight();
 private:
     glm::quat qOrientation;
     static glm::vec3 ogAT;

@@ -5,6 +5,7 @@ cAnimationState::cAnimationState(cSimpleAssimpSkinnedMesh* p_SM)
 {
 	this->pSM = p_SM;
 	frameTimer = 0.f;
+	isReverse = false;
 	activeAnimation = nullptr;
 	defaultAnimation = nullptr;
 }
@@ -40,6 +41,7 @@ void cAnimationState::makeDefaultAnimation(std::string name)
 
 void cAnimationState::update(float dt,std::vector<glm::mat4> &FinalTransformation,std::vector<glm::mat4> &Globals,std::vector<glm::mat4> &Offsets)
 {
+	
 	if(!activeAnimation)
 	{
 		pSM->BoneTransform( frameTimer,	// 0.0f // Frame time
@@ -50,16 +52,19 @@ void cAnimationState::update(float dt,std::vector<glm::mat4> &FinalTransformatio
 	}
 	else
 	{
-		pSM->BoneTransform( frameTimer,	// 0.0f // Frame time
+		auto actualTimer = frameTimer;
+		if(isReverse) actualTimer = (activeAnimation->totalTime - frameTimer);
+		pSM->BoneTransform( actualTimer,	// 0.0f // Frame time
 					    activeAnimation->name,
 						FinalTransformation, 
 						Globals, 
 					    Offsets );
-		std::cout << "frameTimer: " << frameTimer << " total_time: " << activeAnimation->totalTime << std::endl;
+		//std::cout << "frameTimer: " << frameTimer << " total_time: " << activeAnimation->totalTime << std::endl;
 		if(frameTimer >= activeAnimation->totalTime)
 		{
 			activeAnimation = nullptr;
 			frameTimer = 0.f;
+			isReverse = false;
 		}
 	}
 
@@ -69,13 +74,15 @@ void cAnimationState::update(float dt,std::vector<glm::mat4> &FinalTransformatio
 	this->frameTimer += dt;
 }
 
-void cAnimationState::setActiveAnimation(std::string name)
+void cAnimationState::setActiveAnimation(std::string name, bool shouldReverse)
 {	
 	if (!activeAnimation)
 	{
 		if(mapAnimationStates.find(name)!=mapAnimationStates.end())
 		{
+			this->frameTimer = 0.f;
 			activeAnimation = mapAnimationStates.at(name);
+			if (shouldReverse) isReverse = true;
 		}
 	}
 	else
@@ -84,8 +91,23 @@ void cAnimationState::setActiveAnimation(std::string name)
 		{
 			if(mapAnimationStates.find(name)!=mapAnimationStates.end())
 			{
-				activeAnimation = mapAnimationStates.at(name);
+				if(activeAnimation->name != name)
+				{
+					this->frameTimer = 0.f;
+					activeAnimation = mapAnimationStates.at(name);
+					if (shouldReverse) isReverse = true;
+				}
 			}
 		}
+	}
+}
+
+void cAnimationState::stopActiveAnimation()
+{
+	if(activeAnimation)
+	{
+		this->activeAnimation = nullptr;
+		this->frameTimer = 0.f;
+		this->isReverse = false;
 	}
 }

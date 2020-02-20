@@ -194,23 +194,22 @@ bool cPhysics::DoSphereSphereCollisionTest(cGameObject* pA, cGameObject* pB,
 	// get vector from sphere centers
 	glm::vec3 ABvec = pB->positionXYZ - pA->positionXYZ;
 	glm::vec3 BAvec = pA->positionXYZ - pB->positionXYZ;
-	if (glm::length(ABvec) <= 1.0f)
+	if (glm::length(ABvec) <= 10.0f)
 	{
-		float correctionDist = 1.0f - glm::length(BAvec);
+		float correctionDist = 10.0f - glm::length(BAvec);
 		glm::vec3 correctionVector = glm::normalize(BAvec) * correctionDist;
 		pA->positionXYZ = pA->positionXYZ + correctionVector;
 
-		glm::vec3 velocityVector = glm::normalize(pA->velocity);
-		glm::vec3 reflectionVec = glm::reflect(velocityVector, glm::normalize(BAvec));
-		reflectionVec = glm::normalize(reflectionVec);
-		float speed = glm::length(pA->velocity);
-		pA->velocity = reflectionVec * speed * dampSpeed;
-
-		glm::vec3 velocityVectorB = glm::normalize(pB->velocity);
-		glm::vec3 reflectionVecB = glm::reflect(velocityVectorB, glm::normalize(ABvec));
-		reflectionVecB = glm::normalize(reflectionVecB);
-		float speedB = glm::length(pB->velocity);
-		pB->velocity = reflectionVecB * speedB * dampSpeed;
+		//glm::vec3 velocityVector = glm::normalize(pA->velocity);
+		//glm::vec3 reflectionVec = glm::reflect(velocityVector, glm::normalize(BAvec));
+		//reflectionVec = glm::normalize(reflectionVec);
+		//float speed = glm::length(pA->velocity);
+		//pA->velocity = reflectionVec * speed * dampSpeed;
+		//glm::vec3 velocityVectorB = glm::normalize(pB->velocity);
+		//glm::vec3 reflectionVecB = glm::reflect(velocityVectorB, glm::normalize(ABvec));
+		//reflectionVecB = glm::normalize(reflectionVecB);
+		//float speedB = glm::length(pB->velocity);
+		//pB->velocity = reflectionVecB * speedB * dampSpeed;
 
 		pA->objectColourRGBA = glm::vec4(get_random(0.0,1.0), get_random(0.0, 1.0), get_random(0.0, 1.0),1.0f);
 		pB->objectColourRGBA = glm::vec4(get_random(0.0, 1.0), get_random(0.0, 1.0), get_random(0.0, 1.0), 1.0f);
@@ -261,56 +260,49 @@ bool cPhysics::DoShphereMeshCollisionTest(cGameObject* pSphere, cGameObject* pB,
 
 	// Are we hitting the triangle? 
 	float distance = glm::length(pSphere->positionXYZ - closestPoint);
-
-	if (distance <= (pSphere->scale / 2))
+	//std::cout << pSphere->friendlyName << " dist: " << distance << std::endl;
+	if (distance < 3.f)
 	{
-
-		// ************************************************************************
-		// If you want, move the sphere back to where it just penetrated...
-		// So that it will collide exactly where it's supposed to. 
-		// But, that's not a big problem.
-
 		// 1. Calculate vector from centre of sphere to closest point
 		glm::vec3 vecSphereToClosestPoint = closestPoint - pSphere->positionXYZ;
-
 		// 2. Get the length of this vector
 		float centreToContractDistance = glm::length(vecSphereToClosestPoint);
-
 		// 3. Create a vector from closest point to radius
-		float lengthPositionAdjustment = (pSphere->scale / 2) - centreToContractDistance;
+		float lengthPositionAdjustment = (4.f) - centreToContractDistance;
 		// 4. Sphere is moving in the direction of the velocity, so 
 		//    we want to move the sphere BACK along this velocity vector
+		if(glm::length(pSphere->velocity) < 1.f) { return true; }
 		glm::vec3 vecDirection = glm::normalize(pSphere->velocity);
 		glm::vec3 vecPositionAdjust = (-vecDirection) * lengthPositionAdjustment;
 		// 5. Reposition sphere 
 		pSphere->positionXYZ += (vecPositionAdjust);
 
-		// Is in contact with the triangle... 
-		// Calculate the response vector off the triangle. 
-		glm::vec3 velocityVector = glm::normalize(pSphere->velocity);
+		//// Is in contact with the triangle... 
+		//// Calculate the response vector off the triangle. 
+		//glm::vec3 velocityVector = glm::normalize(pSphere->velocity);
 
-		// closestTriangle.normal
-		glm::vec3 reflectionVec = glm::reflect(velocityVector, glm::normalize(closestTriangle.normal));
-		reflectionVec = glm::normalize(reflectionVec);
+		//// closestTriangle.normal
+		//glm::vec3 reflectionVec = glm::reflect(velocityVector, glm::normalize(closestTriangle.normal));
+		//reflectionVec = glm::normalize(reflectionVec);
 
-		//// Stop the sphere and draw the two vectors...
-		////pSphere->inverseMass = 0.0f;	// Stopped
-		//glm::vec3 velVecX20 = velocityVector * 10.0f;
-		//pDebugRenderer->addLine(closestPoint, velVecX20,
-		//	glm::vec3(1.0f, 0.0f, 0.0f), 30.0f /*seconds*/);
-		//glm::vec3 reflectionVecX20 = reflectionVec * 10.0f;
-		//pDebugRenderer->addLine(closestPoint, reflectionVecX20,
-		//	glm::vec3(0.0f, 1.0f, 1.0f), 30.0f /*seconds*/);
+		////// Stop the sphere and draw the two vectors...
+		//////pSphere->inverseMass = 0.0f;	// Stopped
+		////glm::vec3 velVecX20 = velocityVector * 10.0f;
+		////pDebugRenderer->addLine(closestPoint, velVecX20,
+		////	glm::vec3(1.0f, 0.0f, 0.0f), 30.0f /*seconds*/);
+		////glm::vec3 reflectionVecX20 = reflectionVec * 10.0f;
+		////pDebugRenderer->addLine(closestPoint, reflectionVecX20,
+		////	glm::vec3(0.0f, 1.0f, 1.0f), 30.0f /*seconds*/);
 
-		// Change the direction of the ball (the bounce off the triangle)
-		// Get lenght of the velocity vector
-		float speed = glm::length(pSphere->velocity);
-		pSphere->velocity = reflectionVec * speed * dampSpeed;
-		//std::cout << "velocityVector: " << GLMvec3toString(velocityVector) << std::endl;
-		//std::cout << "reflectionVec: " << GLMvec3toString(reflectionVec) << std::endl;
-		//std::cout << "positionXYZ: " << GLMvec3toString(pSphere->positionXYZ) << std::endl;
-		//std::cout << "triNormal: " << GLMvec3toString(closestTriangle.normal) << std::endl;
-		//std::cout << "endl" << std::endl;
+		//// Change the direction of the ball (the bounce off the triangle)
+		//// Get lenght of the velocity vector
+		//float speed = glm::length(pSphere->velocity);
+		//pSphere->velocity = reflectionVec * speed * dampSpeed;
+		////std::cout << "velocityVector: " << GLMvec3toString(velocityVector) << std::endl;
+		////std::cout << "reflectionVec: " << GLMvec3toString(reflectionVec) << std::endl;
+		////std::cout << "positionXYZ: " << GLMvec3toString(pSphere->positionXYZ) << std::endl;
+		////std::cout << "triNormal: " << GLMvec3toString(closestTriangle.normal) << std::endl;
+		////std::cout << "endl" << std::endl;
 		return true;
 	}
 	return false;

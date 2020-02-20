@@ -347,10 +347,7 @@ void IntegrationStep_AAB(std::map<std::string, cGameObject*> g_map_GameObjects, 
 		{
 			pCurObj->positionXYZ += pCurObj->velocity * deltaTime;
 		}
-		if (pCurObj->friendlyName == "xwing")
-		{
-
-		}
+		if (pCurObj->friendlyName == "xwing"){}
 		tools::lifetimeValidation(pCurObj);
 	}
 	//pPlayerControl->updatePosition(pPlayerControl->pPlayer->positionXYZ);

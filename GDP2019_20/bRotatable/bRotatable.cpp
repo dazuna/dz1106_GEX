@@ -55,3 +55,10 @@ glm::vec3 bRotatable::getOG_AT()
 	return this->ogAT;
 }
 
+glm::vec3 bRotatable::getRight()
+{
+	glm::vec3 right(0.f);
+	right = glm::cross(getCurrentAT(),getCurrentUP());
+	return glm::normalize(right);
+}
+

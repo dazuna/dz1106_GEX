@@ -62,6 +62,63 @@ void cursor_enter_callback(GLFWwindow* window, int entered)
 	return;
 }
 
+void stopPlayer(GLFWwindow* window, int key, int action, int mods)
+{
+	auto theAnimatedPlayer = cAnimatedPlayer::getAnimatedPlayer();
+	
+	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
+	{
+		if (key == GLFW_KEY_W && action == GLFW_RELEASE)
+		{
+			theAnimatedPlayer->resetVelocity();
+			theAnimatedPlayer->idle();
+		}
+		if (key == GLFW_KEY_S && action == GLFW_RELEASE)
+		{
+			theAnimatedPlayer->resetVelocity();
+			theAnimatedPlayer->idle();
+		}
+		if (key == GLFW_KEY_A && action == GLFW_RELEASE)
+		{
+			theAnimatedPlayer->resetVelocity();
+			theAnimatedPlayer->idle();
+		}
+		if (key == GLFW_KEY_D && action == GLFW_RELEASE)
+		{
+			theAnimatedPlayer->resetVelocity();
+			theAnimatedPlayer->idle();
+		}
+		if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS)
+		{
+			theAnimatedPlayer->nextPlayer();
+		}
+	}
+	if (isShiftKeyDownByAlone(mods))
+	{
+		if (key == GLFW_KEY_W && action == GLFW_RELEASE)
+		{
+			theAnimatedPlayer->resetVelocity();
+			theAnimatedPlayer->idle();
+		}
+		if (key == GLFW_KEY_S && action == GLFW_RELEASE)
+		{
+			theAnimatedPlayer->resetVelocity();
+			theAnimatedPlayer->idle();
+		}
+		if (key == GLFW_KEY_A && action == GLFW_RELEASE)
+		{
+			theAnimatedPlayer->resetVelocity();
+			theAnimatedPlayer->idle();
+		}
+		if (key == GLFW_KEY_D && action == GLFW_RELEASE)
+		{
+			theAnimatedPlayer->resetVelocity();
+			theAnimatedPlayer->idle();
+		}
+	}
+	
+}
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	glm::mat4 matRotX,matRotY;
@@ -74,433 +131,361 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	const float DEGREESOFROTATION = 3.0f;
 	cGameObject* theSelectedGO = selectedGameObject->second;
 	cLight* theSelectedL = (selectedLight->second);
+	
 	auto theAnimatedPlayer = cAnimatedPlayer::getAnimatedPlayer();
+	bool debugControls = false;
+	debugControls = !(theAnimatedPlayer->isPlayModeOn);
 
-	if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
+	if (debugControls)
 	{
-		if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
+	
+		if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 		{
-			switch (cursorType)
+			if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
 			{
-			case selectedType::GAMEOBJECT:
-				selectedGameObject++;
-				if (selectedGameObject == ::g_map_GameObjects.end()) 
-					selectedGameObject = ::g_map_GameObjects.begin();
-				break;
-			case selectedType::LIGHT:
-				selectedLight++;
-				if (selectedLight == ::g_map_pLights.end()) 
-					selectedLight = ::g_map_pLights.begin();
-				break;
-			case selectedType::SOUND:break;
+				switch (cursorType)
+				{
+				case selectedType::GAMEOBJECT:
+					selectedGameObject++;
+					if (selectedGameObject == ::g_map_GameObjects.end()) 
+						selectedGameObject = ::g_map_GameObjects.begin();
+					break;
+				case selectedType::LIGHT:
+					selectedLight++;
+					if (selectedLight == ::g_map_pLights.end()) 
+						selectedLight = ::g_map_pLights.begin();
+					break;
+				case selectedType::SOUND:break;
+				}
+					
 			}
-				
-		}
-		if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
-		{
-			getStatus();
-			std::cout << console << std::endl;
-		}
-		if (key == GLFW_KEY_F1 && action == GLFW_PRESS)
-		{
-			switch (cursorType)
+			if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
 			{
-			case selectedType::GAMEOBJECT:cursorType = selectedType::LIGHT; break;
-			case selectedType::LIGHT:cursorType = selectedType::GAMEOBJECT; break;
-			case selectedType::SOUND:break;
+				getStatus();
+				std::cout << console << std::endl;
 			}
-		}
-		if (key == GLFW_KEY_F2 && action == GLFW_PRESS)
-		{
-			isDroneOn = !isDroneOn;
-		}
-		if (key == GLFW_KEY_F3 && action == GLFW_PRESS)
-		{
-			bool tempBool;
-			tempBool = ::pSkyBox->isVisible;
-			tempBool = !tempBool;
-		}
-		if(key == GLFW_KEY_F4 && action == GLFW_PRESS)
-		{
-			theAnimatedPlayer->isPlayModeOn = !(theAnimatedPlayer->isPlayModeOn);
-			std::cout << "play mode: " << theAnimatedPlayer->isPlayModeOn << std::endl;
-		}
-		if (key == GLFW_KEY_Z && action == GLFW_PRESS)
-		{
-			::g_map_GameObjects["cameraPosition0"]->positionXYZ = ::g_pFlyCamera->eye;
-		}
-		
-		//// The scenes we'll view 
-		//if (key == GLFW_KEY_3 && action == GLFW_PRESS)
-		//{
-		//	::g_map_GameObjects.clear();
-		//	JSONLoadGameObjects(&::g_map_GameObjects);
-		//	::selectedGameObject = ::g_map_GameObjects.begin();
-		//
-		//	::cmdDictionary.clear();
-		//	::masterCommandGroup = NULL;
-		//	::p_LuaScripts->LoadScript("./finalLuas/question3.lua");
-		//}
-		//if (key == GLFW_KEY_4 && action == GLFW_PRESS)
-		//{
-		//	::g_map_GameObjects.clear();
-		//	JSONLoadGameObjects(&::g_map_GameObjects);
-		//	::selectedGameObject = ::g_map_GameObjects.begin();
-		//
-		//	::cmdDictionary.clear();
-		//	::masterCommandGroup = NULL;
-		//	::p_LuaScripts->LoadScript("./finalLuas/question4.lua");
-		//}
-		//if (key == GLFW_KEY_5 && action == GLFW_PRESS)
-		//{
-		//	::g_map_GameObjects.clear();
-		//	JSONLoadGameObjects(&::g_map_GameObjects);
-		//	::selectedGameObject = ::g_map_GameObjects.begin();
-		//
-		//	::cmdDictionary.clear();
-		//	::masterCommandGroup = NULL;
-		//	::p_LuaScripts->LoadScript("./finalLuas/question5.lua");
-		//}
-		//if (key == GLFW_KEY_6 && action == GLFW_PRESS)
-		//{
-		//	::g_map_GameObjects.clear();
-		//	JSONLoadGameObjects(&::g_map_GameObjects);
-		//	::selectedGameObject = ::g_map_GameObjects.begin();
-		//
-		//	::cmdDictionary.clear();
-		//	::masterCommandGroup = NULL;
-		//	::p_LuaScripts->LoadScript("./finalLuas/question6.lua");
-		//}
-		//if (key == GLFW_KEY_7 && action == GLFW_PRESS)
-		//{
-		//	::g_map_GameObjects.clear();
-		//	JSONLoadGameObjects(&::g_map_GameObjects);
-		//	::selectedGameObject = ::g_map_GameObjects.begin();
-		//
-		//	::cmdDictionary.clear();
-		//	::masterCommandGroup = NULL;
-		//	::p_LuaScripts->LoadScript("./finalLuas/question7.lua");
-		//}
-	}
-
-	if (isShiftKeyDownByAlone(mods))
-	{
-		// move the light
-		if (key == GLFW_KEY_A)
-		{
-			switch (cursorType)
+			if (key == GLFW_KEY_F1 && action == GLFW_PRESS)
 			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.x += CAMERASPEED; break;
-			case selectedType::LIGHT:		theSelectedL->positionXYZ.x += (CAMERASPEED*0.5f);	break;
-			case selectedType::SOUND:		break;
+				switch (cursorType)
+				{
+				case selectedType::GAMEOBJECT:cursorType = selectedType::LIGHT; break;
+				case selectedType::LIGHT:cursorType = selectedType::GAMEOBJECT; break;
+				case selectedType::SOUND:break;
+				}
 			}
-		}
-		if (key == GLFW_KEY_D)
-		{
-			switch (cursorType)
+			if (key == GLFW_KEY_F2 && action == GLFW_PRESS)
 			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.x -= CAMERASPEED; break;
-			case selectedType::LIGHT:		theSelectedL->positionXYZ.x -= (CAMERASPEED*0.5f);	break;
-			case selectedType::SOUND:		break;
+				isDroneOn = !isDroneOn;
 			}
-		}
-
-		// Move the camera (Q & E for up and down, along the y axis)
-		if (key == GLFW_KEY_Q)
-		{
-			switch (cursorType)
+			if (key == GLFW_KEY_F3 && action == GLFW_PRESS)
 			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.y -= CAMERASPEED; break;
-			case selectedType::LIGHT:		theSelectedL->positionXYZ.y -= (CAMERASPEED*0.5f);	break;
-			case selectedType::SOUND:		break;
+				bool tempBool;
+				tempBool = ::pSkyBox->isVisible;
+				tempBool = !tempBool;
 			}
-		}
-		if (key == GLFW_KEY_E)
-		{
-			switch (cursorType)
+			if (key == GLFW_KEY_Z && action == GLFW_PRESS)
 			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.y += CAMERASPEED; break;
-			case selectedType::LIGHT:		theSelectedL->positionXYZ.y += (CAMERASPEED*0.5f);	break;
-			case selectedType::SOUND:		break;
+				::g_map_GameObjects["cameraPosition0"]->positionXYZ = ::g_pFlyCamera->eye;
 			}
-		}
-
-		// Move the camera (W & S for towards and away, along the z axis)
-		if (key == GLFW_KEY_W)
-		{
-			switch (cursorType)
-			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.z += CAMERASPEED; break;
-			case selectedType::LIGHT:		theSelectedL->positionXYZ.z += (CAMERASPEED*0.5f);	break;
-			case selectedType::SOUND:		break;
-			}
-		}
-		if (key == GLFW_KEY_S)
-		{
-			switch (cursorType)
-			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.z -= CAMERASPEED; break;
-			case selectedType::LIGHT:		theSelectedL->positionXYZ.z -= (CAMERASPEED*0.5f);	break;
-			case selectedType::SOUND:		break;
-			}
-		}
-
-		// ***************************** Scale Objects *****************************
-		if (key == GLFW_KEY_1 && action == GLFW_PRESS)
-		{
-			switch (cursorType)
-			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->scale -= 0.5f; break;
-			case selectedType::LIGHT:		break;
-			case selectedType::SOUND:		break;
-			}
-		}
-		if (key == GLFW_KEY_2 && action == GLFW_PRESS)
-		{
-			switch (cursorType)
-			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->scale += 0.5f; break;
-			case selectedType::LIGHT:		break;
-			case selectedType::SOUND:		break;
-			}
-		}
-		// ***************************** Scale Objects *****************************
-
-		//if (key == GLFW_KEY_1)
-		//{
-		//	theSelectedL->ConstAtten *= 0.99f;			// 99% of what it was
-		//}
-		//if (key == GLFW_KEY_2)
-		//{
-		//	theSelectedL->ConstAtten *= 1.01f;			// 1% more of what it was
-		//}		
-		if (key == GLFW_KEY_3)
-		{
-			theSelectedL->LinearAtten *= 0.90f;			// 99% of what it was
-		}
-		if (key == GLFW_KEY_4)
-		{
-			theSelectedL->LinearAtten *= 1.10f;			// 1% more of what it was
-		}
-		if (key == GLFW_KEY_5)
-		{
-			theSelectedL->QuadraticAtten *= 0.90f;			// 99% of what it was
-		}
-		if (key == GLFW_KEY_6)
-		{
-			theSelectedL->QuadraticAtten *= 1.10f;			// 1% more of what it was
-		}
-		//lightSwitch
-		if (key == GLFW_KEY_0 && action == GLFW_PRESS)	
-		{
-			if (theSelectedL->lightSwitch == 1.0f)
-			{
-				theSelectedL->lightSwitch = 0.0f;
-			}
-			else 
-			{
-				theSelectedL->lightSwitch = 1.0f;
-			}			
-		}
-		if (key == GLFW_KEY_V)
-		{
-			theSelectedL->innerAngle -= 0.1f;
-		}
-		if (key == GLFW_KEY_B)
-		{
-			theSelectedL->innerAngle += 0.1f;
-		}
-		if (key == GLFW_KEY_N)
-		{
-			theSelectedL->outerAngle -= 0.1f;
-		}
-		if (key == GLFW_KEY_M)
-		{
-			theSelectedL->outerAngle += 0.1f;
-		}
-		if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
-		{
-			switch (cursorType)
-			{
-			case selectedType::GAMEOBJECT:
-				if (selectedGameObject == ::g_map_GameObjects.begin())
-					selectedGameObject = ::g_map_GameObjects.end();
-				selectedGameObject--;
-				break;
-			case selectedType::LIGHT:
-				if (selectedLight == ::g_map_pLights.begin())
-					selectedLight = ::g_map_pLights.end();
-				selectedLight--;
-				break;
-			case selectedType::SOUND:break;
-			}
-		}
-		// <Object Rotation> ******************************************************
-		if (key == GLFW_KEY_J && action == GLFW_PRESS)
-		{
-			switch (cursorType)
-			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecZ1* -5.0f)); break;
-			case selectedType::LIGHT:		theSelectedL->updateOrientation((vecZ1 * -5.0f));  break;
-			case selectedType::SOUND:		break;
-			}
-		}
-		if (key == GLFW_KEY_L && action == GLFW_PRESS)
-		{
-			switch (cursorType)
-			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecZ1* 5.0f)); break;
-			case selectedType::LIGHT:		theSelectedL->updateOrientation((vecZ1 * 5.0f)); break;
-			case selectedType::SOUND:		break;
-			}
-		}
-
-		if (key == GLFW_KEY_U && action == GLFW_PRESS)
-		{
-			switch (cursorType)
-			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecY1* -5.0f)); break;
-			case selectedType::LIGHT:		theSelectedL->updateOrientation((vecY1 * -5.0f)); break;
-			case selectedType::SOUND:		break;
-			}
-		}
-		if (key == GLFW_KEY_O && action == GLFW_PRESS)
-		{
-			switch (cursorType)
-			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecY1* 5.0f)); break;
-			case selectedType::LIGHT:		theSelectedL->updateOrientation((vecY1 * 5.0f)); break;
-			case selectedType::SOUND:		break;
-			}
-		}
-
-		if (key == GLFW_KEY_I && action == GLFW_PRESS)
-		{
-			switch (cursorType)
-			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecX1* 5.0f)); break;
-			case selectedType::LIGHT:		theSelectedL->updateOrientation((vecX1 * 5.0f)); break;
-			case selectedType::SOUND:		break;
-			}
-		}
-		if (key == GLFW_KEY_K && action == GLFW_PRESS)
-		{
-			switch (cursorType)
-			{
-			case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecX1* -5.0f)); break;
-			case selectedType::LIGHT:		theSelectedL->updateOrientation((vecX1 * -5.0f)); break;
-			case selectedType::SOUND:		break;
-			}
-		}
-		// </Object Rotation> ******************************************************
-
-		// <Color Moving> **********************************************************
-		// move the light
-		if (key == GLFW_KEY_UP)
-		{
-			theSelectedGO->objectColourRGBA.r -= 0.2f;
-		}
-		if (key == GLFW_KEY_UP)
-		{
-			theSelectedGO->objectColourRGBA.r += 0.2f;
-		}
-
-		// Move the camera (Q & E for up and down, along the y axis)
-		if (key == GLFW_KEY_LEFT)
-		{
-			theSelectedGO->objectColourRGBA.g += 0.2f;
-		}
-		if (key == GLFW_KEY_RIGHT)
-		{
-			theSelectedGO->objectColourRGBA.g -= 0.2f;
-		}
-
-		// Move the camera (W & S for towards and away, along the z axis)
-		if (key == GLFW_KEY_PERIOD)
-		{
-			theSelectedGO->objectColourRGBA.b += 0.2f;
-		}
-		if (key == GLFW_KEY_COMMA)
-		{
-			theSelectedGO->objectColourRGBA.b -= 0.2f;
-		}
-		// </Color Moving>****************************************************************************
-
-	}//if (isShiftKeyDownByAlone(mods))
-
-	if (isCtrlKeyDownByAlone(mods))
-	{
-		if (key == GLFW_KEY_S && action == GLFW_PRESS)
-		{
-			JSONLoader::JSONSaveLights(&::g_map_pLights);
-			JSONLoader::JSONSaveGameObjects(&::g_map_GameObjects);
-		}
-		if (key == GLFW_KEY_W && action == GLFW_PRESS)
-		{
-			makeAllWireFrame(true);
-		}
-		if (key == GLFW_KEY_Q && action == GLFW_PRESS)
-		{
-			makeAllWireFrame(false);
-		}
-		if (key == GLFW_KEY_E && action == GLFW_PRESS)
-		{
-			::debugger = !::debugger;
-		}
-		if (key == GLFW_KEY_R && action == GLFW_PRESS)
-		{
-			::g_map_GameObjects.clear();
-			JSONLoader::JSONLoadGameObjects(&::g_map_GameObjects);
-			::selectedGameObject = ::g_map_GameObjects.begin();
 			
-			//::cmdDictionary.clear();
-			//::masterCommandGroup = NULL;
-			//::p_LuaScripts->LoadScript("./cLuaBrain/script.lua");
 		}
-		if (key == GLFW_KEY_1 && action == GLFW_PRESS)
+
+		if (isShiftKeyDownByAlone(mods))
 		{
-			if (tools::pFindObjectByFriendlyNameMap("cameraPosition1"))
+			// move the light
+			if (key == GLFW_KEY_A)
 			{
-				cameraEye = ::g_map_GameObjects["cameraPosition1"]->positionXYZ;
-				if (tools::pFindObjectByFriendlyNameMap("cameraTarget1"))
+				switch (cursorType)
 				{
-					cameraTarget = ::g_map_GameObjects["cameraTarget1"]->positionXYZ;
-					visionVector = glm::normalize(cameraTarget - cameraEye);
+				case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.x += CAMERASPEED; break;
+				case selectedType::LIGHT:		theSelectedL->positionXYZ.x += (CAMERASPEED*0.5f);	break;
+				case selectedType::SOUND:		break;
 				}
-				cameraTarget = cameraEye + visionVector;
 			}
-		}
-		if (key == GLFW_KEY_2 && action == GLFW_PRESS)
-		{
-			if (tools::pFindObjectByFriendlyNameMap("cameraPosition2"))
+			if (key == GLFW_KEY_D)
 			{
-				cameraEye = ::g_map_GameObjects["cameraPosition2"]->positionXYZ;
-				if (tools::pFindObjectByFriendlyNameMap("cameraTarget2"))
+				switch (cursorType)
 				{
-					cameraTarget = ::g_map_GameObjects["cameraTarget2"]->positionXYZ;
-					visionVector = glm::normalize(cameraTarget - cameraEye);
+				case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.x -= CAMERASPEED; break;
+				case selectedType::LIGHT:		theSelectedL->positionXYZ.x -= (CAMERASPEED*0.5f);	break;
+				case selectedType::SOUND:		break;
 				}
-				cameraTarget = cameraEye + visionVector;
 			}
-		}
-		if (key == GLFW_KEY_3 && action == GLFW_PRESS)
-		{
-			if (tools::pFindObjectByFriendlyNameMap("cameraPosition3"))
+
+			// Move the camera (Q & E for up and down, along the y axis)
+			if (key == GLFW_KEY_Q)
 			{
-				cameraEye = ::g_map_GameObjects["cameraPosition3"]->positionXYZ;
-				if (tools::pFindObjectByFriendlyNameMap("cameraTarget3"))
+				switch (cursorType)
 				{
-					cameraTarget = ::g_map_GameObjects["cameraTarget3"]->positionXYZ;
-					visionVector = glm::normalize(cameraTarget - cameraEye);
+				case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.y -= CAMERASPEED; break;
+				case selectedType::LIGHT:		theSelectedL->positionXYZ.y -= (CAMERASPEED*0.5f);	break;
+				case selectedType::SOUND:		break;
 				}
-				cameraTarget = cameraEye + visionVector;
+			}
+			if (key == GLFW_KEY_E)
+			{
+				switch (cursorType)
+				{
+				case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.y += CAMERASPEED; break;
+				case selectedType::LIGHT:		theSelectedL->positionXYZ.y += (CAMERASPEED*0.5f);	break;
+				case selectedType::SOUND:		break;
+				}
+			}
+
+			// Move the camera (W & S for towards and away, along the z axis)
+			if (key == GLFW_KEY_W)
+			{
+				switch (cursorType)
+				{
+				case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.z += CAMERASPEED; break;
+				case selectedType::LIGHT:		theSelectedL->positionXYZ.z += (CAMERASPEED*0.5f);	break;
+				case selectedType::SOUND:		break;
+				}
+			}
+			if (key == GLFW_KEY_S)
+			{
+				switch (cursorType)
+				{
+				case selectedType::GAMEOBJECT:	theSelectedGO->positionXYZ.z -= CAMERASPEED; break;
+				case selectedType::LIGHT:		theSelectedL->positionXYZ.z -= (CAMERASPEED*0.5f);	break;
+				case selectedType::SOUND:		break;
+				}
+			}
+
+			// ***************************** Scale Objects *****************************
+			if (key == GLFW_KEY_1 && action == GLFW_PRESS)
+			{
+				switch (cursorType)
+				{
+				case selectedType::GAMEOBJECT:	theSelectedGO->scale -= 0.5f; break;
+				case selectedType::LIGHT:		break;
+				case selectedType::SOUND:		break;
+				}
+			}
+			if (key == GLFW_KEY_2 && action == GLFW_PRESS)
+			{
+				switch (cursorType)
+				{
+				case selectedType::GAMEOBJECT:	theSelectedGO->scale += 0.5f; break;
+				case selectedType::LIGHT:		break;
+				case selectedType::SOUND:		break;
+				}
+			}
+			// ***************************** Scale Objects *****************************
+
+			//if (key == GLFW_KEY_1)
+			//{
+			//	theSelectedL->ConstAtten *= 0.99f;			// 99% of what it was
+			//}
+			//if (key == GLFW_KEY_2)
+			//{
+			//	theSelectedL->ConstAtten *= 1.01f;			// 1% more of what it was
+			//}		
+			if (key == GLFW_KEY_3)
+			{
+				theSelectedL->LinearAtten *= 0.90f;			// 99% of what it was
+			}
+			if (key == GLFW_KEY_4)
+			{
+				theSelectedL->LinearAtten *= 1.10f;			// 1% more of what it was
+			}
+			if (key == GLFW_KEY_5)
+			{
+				theSelectedL->QuadraticAtten *= 0.90f;			// 99% of what it was
+			}
+			if (key == GLFW_KEY_6)
+			{
+				theSelectedL->QuadraticAtten *= 1.10f;			// 1% more of what it was
+			}
+			//lightSwitch
+			if (key == GLFW_KEY_0 && action == GLFW_PRESS)	
+			{
+				if (theSelectedL->lightSwitch == 1.0f)
+				{
+					theSelectedL->lightSwitch = 0.0f;
+				}
+				else 
+				{
+					theSelectedL->lightSwitch = 1.0f;
+				}			
+			}
+			if (key == GLFW_KEY_V)
+			{
+				theSelectedL->innerAngle -= 0.1f;
+			}
+			if (key == GLFW_KEY_B)
+			{
+				theSelectedL->innerAngle += 0.1f;
+			}
+			if (key == GLFW_KEY_N)
+			{
+				theSelectedL->outerAngle -= 0.1f;
+			}
+			if (key == GLFW_KEY_M)
+			{
+				theSelectedL->outerAngle += 0.1f;
+			}
+			if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
+			{
+				switch (cursorType)
+				{
+				case selectedType::GAMEOBJECT:
+					if (selectedGameObject == ::g_map_GameObjects.begin())
+						selectedGameObject = ::g_map_GameObjects.end();
+					selectedGameObject--;
+					break;
+				case selectedType::LIGHT:
+					if (selectedLight == ::g_map_pLights.begin())
+						selectedLight = ::g_map_pLights.end();
+					selectedLight--;
+					break;
+				case selectedType::SOUND:break;
+				}
+			}
+			// <Object Rotation> ******************************************************
+			if (key == GLFW_KEY_J && action == GLFW_PRESS)
+			{
+				switch (cursorType)
+				{
+				case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecZ1* -5.0f)); break;
+				case selectedType::LIGHT:		theSelectedL->updateOrientation((vecZ1 * -5.0f));  break;
+				case selectedType::SOUND:		break;
+				}
+			}
+			if (key == GLFW_KEY_L && action == GLFW_PRESS)
+			{
+				switch (cursorType)
+				{
+				case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecZ1* 5.0f)); break;
+				case selectedType::LIGHT:		theSelectedL->updateOrientation((vecZ1 * 5.0f)); break;
+				case selectedType::SOUND:		break;
+				}
+			}
+
+			if (key == GLFW_KEY_U && action == GLFW_PRESS)
+			{
+				switch (cursorType)
+				{
+				case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecY1* -5.0f)); break;
+				case selectedType::LIGHT:		theSelectedL->updateOrientation((vecY1 * -5.0f)); break;
+				case selectedType::SOUND:		break;
+				}
+			}
+			if (key == GLFW_KEY_O && action == GLFW_PRESS)
+			{
+				switch (cursorType)
+				{
+				case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecY1* 5.0f)); break;
+				case selectedType::LIGHT:		theSelectedL->updateOrientation((vecY1 * 5.0f)); break;
+				case selectedType::SOUND:		break;
+				}
+			}
+
+			if (key == GLFW_KEY_I && action == GLFW_PRESS)
+			{
+				switch (cursorType)
+				{
+				case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecX1* 5.0f)); break;
+				case selectedType::LIGHT:		theSelectedL->updateOrientation((vecX1 * 5.0f)); break;
+				case selectedType::SOUND:		break;
+				}
+			}
+			if (key == GLFW_KEY_K && action == GLFW_PRESS)
+			{
+				switch (cursorType)
+				{
+				case selectedType::GAMEOBJECT:	theSelectedGO->updateOrientation((vecX1* -5.0f)); break;
+				case selectedType::LIGHT:		theSelectedL->updateOrientation((vecX1 * -5.0f)); break;
+				case selectedType::SOUND:		break;
+				}
+			}
+			// </Object Rotation> ******************************************************
+			
+		}//if (isShiftKeyDownByAlone(mods))
+
+		if (isCtrlKeyDownByAlone(mods))
+		{
+			if (key == GLFW_KEY_S && action == GLFW_PRESS)
+			{
+				JSONLoader::JSONSaveLights(&::g_map_pLights);
+				JSONLoader::JSONSaveGameObjects(&::g_map_GameObjects);
+			}
+			if (key == GLFW_KEY_W && action == GLFW_PRESS)
+			{
+				makeAllWireFrame(true);
+			}
+			if (key == GLFW_KEY_Q && action == GLFW_PRESS)
+			{
+				makeAllWireFrame(false);
+			}
+			if (key == GLFW_KEY_E && action == GLFW_PRESS)
+			{
+				::debugger = !::debugger;
+			}
+			if (key == GLFW_KEY_R && action == GLFW_PRESS)
+			{
+				::g_map_GameObjects.clear();
+				JSONLoader::JSONLoadGameObjects(&::g_map_GameObjects);
+				::selectedGameObject = ::g_map_GameObjects.begin();
+				
+				//::cmdDictionary.clear();
+				//::masterCommandGroup = NULL;
+				//::p_LuaScripts->LoadScript("./cLuaBrain/script.lua");
+			}
+			if (key == GLFW_KEY_1 && action == GLFW_PRESS)
+			{
+				if (tools::pFindObjectByFriendlyNameMap("cameraPosition1"))
+				{
+					cameraEye = ::g_map_GameObjects["cameraPosition1"]->positionXYZ;
+					if (tools::pFindObjectByFriendlyNameMap("cameraTarget1"))
+					{
+						cameraTarget = ::g_map_GameObjects["cameraTarget1"]->positionXYZ;
+						visionVector = glm::normalize(cameraTarget - cameraEye);
+					}
+					cameraTarget = cameraEye + visionVector;
+				}
+			}
+			if (key == GLFW_KEY_2 && action == GLFW_PRESS)
+			{
+				if (tools::pFindObjectByFriendlyNameMap("cameraPosition2"))
+				{
+					cameraEye = ::g_map_GameObjects["cameraPosition2"]->positionXYZ;
+					if (tools::pFindObjectByFriendlyNameMap("cameraTarget2"))
+					{
+						cameraTarget = ::g_map_GameObjects["cameraTarget2"]->positionXYZ;
+						visionVector = glm::normalize(cameraTarget - cameraEye);
+					}
+					cameraTarget = cameraEye + visionVector;
+				}
+			}
+			if (key == GLFW_KEY_3 && action == GLFW_PRESS)
+			{
+				if (tools::pFindObjectByFriendlyNameMap("cameraPosition3"))
+				{
+					cameraEye = ::g_map_GameObjects["cameraPosition3"]->positionXYZ;
+					if (tools::pFindObjectByFriendlyNameMap("cameraTarget3"))
+					{
+						cameraTarget = ::g_map_GameObjects["cameraTarget3"]->positionXYZ;
+						visionVector = glm::normalize(cameraTarget - cameraEye);
+					}
+					cameraTarget = cameraEye + visionVector;
+				}
 			}
 		}
 	}
-
+	else
+	{
+		stopPlayer(window, key, action, mods);
+	}
+	
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 
+	if(key == GLFW_KEY_F4 && action == GLFW_PRESS)
+	{
+		theAnimatedPlayer->isPlayModeOn = !(theAnimatedPlayer->isPlayModeOn);
+		std::cout << "play mode: " << theAnimatedPlayer->isPlayModeOn << std::endl;
+	}
 }
 
 bool isShiftKeyDownByAlone(int mods)
@@ -814,40 +799,69 @@ void playerControls(GLFWwindow* window)
 		}
 		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)	// "backwards"
 		{
-			
+			theAnimatedPlayer->moveBack();
 		}
 		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)	// "left"
 		{
-			
+			theAnimatedPlayer->leftStrafe();
 		}
 		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)	// "right"
 		{
-			
+			theAnimatedPlayer->rightStrafe();
 		}
 		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)	// "up"
 		{
-			
+			auto theGO = *(theAnimatedPlayer->selectedPlayable);
+			theGO->updateOrientation(glm::vec3(0,0.5f,0));
 		}
 		if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)	// "down"
 		{
-			
+			auto theGO = *(theAnimatedPlayer->selectedPlayable);
+			theGO->updateOrientation(glm::vec3(0,-0.5f,0));
 		}
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
 			theAnimatedPlayer->jump();
 		}
+		if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
+		{
+			theAnimatedPlayer->specialMove();
+		}
+		
 
 	}//if(AreAllModifiersUp(window)
 	
 	if (isShiftDown(window))
 	{
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		{
+			theAnimatedPlayer->runAhead();
+		}
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)	// "backwards"
+		{
+			theAnimatedPlayer->runBack();
+		}
+		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)	// "left"
+		{
+			theAnimatedPlayer->rollLeft();
+		}
+		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)	// "right"
+		{
+			theAnimatedPlayer->rollRight();
+		}
 		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)	// "up"
 		{
-			
+			auto theGO = *(theAnimatedPlayer->selectedPlayable);
+			theGO->updateOrientation(glm::vec3(0,1.5f,0));
 		}
 		if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)	// "down"
 		{
-			
+			auto theGO = *(theAnimatedPlayer->selectedPlayable);
+			theGO->updateOrientation(glm::vec3(0,-1.5f,0));
+		}
+		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		{
+			theAnimatedPlayer->jump();
 		}
 	}//IsShiftDown(window)
 }
