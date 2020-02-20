@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "cScene.h"
+#include "cStencilScene.h"
 #include "../cLight.h"
 
 class cSceneManager
@@ -11,6 +12,12 @@ class cSceneManager
 public:	
     ~cSceneManager();
 	static cSceneManager* getTheSceneManager();
+
+	// stencil specific stuff
+	cStencilScene* theStencilScene;
+	void createStencilScene();
+	void loadPreStencilBuffer();
+	void updateStencil();
 	
 	// properties
 	std::map<std::string, cGameObject*>* pGameObjects;

@@ -155,7 +155,7 @@ int main(void)
 	JSONLoader::JSONLoadLights(&::g_map_pLights,shaderProgID);
 	selectedLight = ::g_map_pLights.begin();
 
-	::theSceneManager->init();
+	//::theSceneManager->init();
 
 	if(g_map_GameObjects.find("character") != g_map_GameObjects.end())
 	{
@@ -186,6 +186,9 @@ int main(void)
 	::g_pFlyCamera->cameraLookAt(cameraTarget);
 	::g_pFlyCamera->movementSpeed = 100.0f;
 
+	::theSceneManager->init();
+	::theSceneManager->createStencilScene();
+	
 	// todo: generar nuevos objetos eye y target para cada escena y crear la camara viendo a ellos.
 
 	// Get the initial time
@@ -309,6 +312,7 @@ int main(void)
 		}//for (int index...
 		
 		theSceneManager->update();
+		theSceneManager->updateStencil();
 		
 		switch (cursorType)
 		{
@@ -348,9 +352,10 @@ int main(void)
 
 		// Tie the texture to the texture unit
 		glActiveTexture(GL_TEXTURE0 + 40);				// Texture Unit 40!!
-		glBindTexture(GL_TEXTURE_2D, pTheFBO->colourTexture_0_ID);	// Texture now assoc with texture unit 0
+		//glBindTexture(GL_TEXTURE_2D, pTheFBO->colourTexture_0_ID);	// Texture now assoc with texture unit 0
 		//auto texture = ::theSceneManager->scenesVector[0]->getFBO()->colourTexture_0_ID;
-		//glBindTexture(GL_TEXTURE_2D, texture);
+		auto texture = ::theSceneManager->theStencilScene->getFBO();
+		glBindTexture(GL_TEXTURE_2D, texture->colourTexture_0_ID);
 //		glBindTexture(GL_TEXTURE_2D, pTheFBO->depthTexture_ID);	// Texture now assoc with texture unit 0
 		GLint textSamp00_UL = glGetUniformLocation(shaderProgID, "secondPassColourTexture");
 		glUniform1i(textSamp00_UL, 40);	// Texture unit 40

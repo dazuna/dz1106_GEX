@@ -136,7 +136,7 @@ void cScene::setCameraParams()
 	
 	glViewport(0, 0, sceneWidth, sceneHeight);
 
-	drawSkyBox();
+	//drawSkyBox();
 	pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
 	
 }

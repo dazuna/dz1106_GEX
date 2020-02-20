@@ -28,6 +28,7 @@ public:
 	};
 	
     ~cScene();
+	cScene() = default;
     cScene(std::string name_,std::string jsonPath_, const std::string& stringEffect_,
 		std::vector<int> camIndex_,int sceneWidth_,int sceneHeight_);
 	

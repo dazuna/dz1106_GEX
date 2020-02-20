@@ -41,6 +41,7 @@ void tools::DrawObject(glm::mat4 m,
 	GLint shaderProgID,
 	cVAOManager* pVAOManager)
 {
+	if(!(pCurrentObject->isVisible)) return;
 	// Turns on "alpha transparency"
 	// Reads what's on the buffer already, and blends it (RGB+A)
 	glEnable(GL_BLEND);
@@ -116,10 +117,12 @@ void tools::DrawObject(glm::mat4 m,
 	if (pCurrentObject->disableDepthBufferTest)
 	{
 		glDisable(GL_DEPTH_TEST);					// DEPTH Test OFF
+		glDepthMask(GL_FALSE);
 	}
 	else
 	{
 		glEnable(GL_DEPTH_TEST);						// Turn ON depth test
+		glDepthMask(GL_TRUE);
 	}
 
 	if (pCurrentObject->disableDepthBufferWrite)

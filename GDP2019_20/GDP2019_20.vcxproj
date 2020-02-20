@@ -166,6 +166,7 @@
     <ClCompile Include="cShader.cpp" />
     <ClCompile Include="cShaderManager.cpp" />
     <ClCompile Include="cSimpleAssimpSkinnedMeshLoader_OneMesh.cpp" />
+    <ClCompile Include="SceneManager\cStencilScene.cpp" />
     <ClCompile Include="cVAOManager.cpp" />
     <ClCompile Include="DebugRenderer\cDebugRenderer.cpp" />
     <ClCompile Include="DebugRenderer\cDebugRenderer_BuiltInShapes.cpp" />
@@ -225,6 +226,7 @@
     <ClInclude Include="quaternion_utils\quaternion_utils.hpp" />
     <ClInclude Include="SceneManager\cScene.h" />
     <ClInclude Include="SceneManager\cSceneManager.h" />
+    <ClInclude Include="SceneManager\cStencilScene.h" />
     <ClInclude Include="skybox\skybox.h" />
     <ClInclude Include="sModelDrawInfo.h" />
     <ClInclude Include="sVertex_xyz_rgba_n_uv2_bt_4Bones.h" />
