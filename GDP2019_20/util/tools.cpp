@@ -134,34 +134,34 @@ void tools::DrawObject(glm::mat4 m,
 		glEnable(GL_DEPTH);								// Write to depth buffer
 	}
 
-	if (pCurrentObject->friendlyName == "wallBack")
-	{
-		GLint bMakeHoles_UL = glGetUniformLocation(shaderProgID, "makeHoles");
-		glUniform1f(bMakeHoles_UL, (float)GL_TRUE);
-	}
-	else
-	{
-		GLint bMakeHoles_UL = glGetUniformLocation(shaderProgID, "makeHoles");
-		glUniform1f(bMakeHoles_UL, (float)GL_FALSE);
-	}
-
-	if (debugger)
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	}
-
-	if (itsDeadJim && pCurrentObject->friendlyName == "ztarDestroyer")
-	{
-		GLint bMakeHoles_UL = glGetUniformLocation(shaderProgID, "itsDeadJim");
-		glUniform1f(bMakeHoles_UL, (float)GL_TRUE);
-		GLint boffset_UL = glGetUniformLocation(shaderProgID, "offset");
-		glUniform1f(boffset_UL, ::offset);
-	}
-	else
-	{
-		GLint bMakeHoles_UL = glGetUniformLocation(shaderProgID, "itsDeadJim");
-		glUniform1f(bMakeHoles_UL, (float)GL_FALSE);
-	}
+	//if (pCurrentObject->friendlyName == "wallBack")
+	//{
+	//	GLint bMakeHoles_UL = glGetUniformLocation(shaderProgID, "makeHoles");
+	//	glUniform1f(bMakeHoles_UL, (float)GL_TRUE);
+	//}
+	//else
+	//{
+	//	GLint bMakeHoles_UL = glGetUniformLocation(shaderProgID, "makeHoles");
+	//	glUniform1f(bMakeHoles_UL, (float)GL_FALSE);
+	//}
+	//
+	//if (debugger)
+	//{
+	//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//}
+	//
+	//if (itsDeadJim && pCurrentObject->friendlyName == "ztarDestroyer")
+	//{
+	//	GLint bMakeHoles_UL = glGetUniformLocation(shaderProgID, "itsDeadJim");
+	//	glUniform1f(bMakeHoles_UL, (float)GL_TRUE);
+	//	GLint boffset_UL = glGetUniformLocation(shaderProgID, "offset");
+	//	glUniform1f(boffset_UL, ::offset);
+	//}
+	//else
+	//{
+	//	GLint bMakeHoles_UL = glGetUniformLocation(shaderProgID, "itsDeadJim");
+	//	glUniform1f(bMakeHoles_UL, (float)GL_FALSE);
+	//}
 
 	GLint bIsBloom = glGetUniformLocation(shaderProgID, "isBloom");
 	glUniform1f(bIsBloom,float(GL_FALSE));

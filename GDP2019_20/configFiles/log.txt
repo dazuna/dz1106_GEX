@@ -43,8 +43,8 @@ velocity: vec3(0.000000, 0.000000, 0.000000)
 accel: vec3(0.000000, 0.000000, 0.000000)
 debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 friendlyName: sphereRefract
-meshName: sphereMesh
-meshURL: assets/models/Sphere_Radius_1_XYZ_n_uv.ply
+meshName: cubeMesh
+meshURL: assets/models/cube1_xyx_n_uv.ply
 positionXYZ: vec3(-150.000000, 25.000000, -45.000000)
 rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)

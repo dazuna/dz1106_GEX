@@ -321,7 +321,7 @@ int main(void)
 		
 		//::theSceneManager->drawObjectWithFBO(window,"defScreen",0);
 		rotateTieFighter();
-		fluctuateReflectionSphere();
+		//fluctuateReflectionSphere();
 		theSceneManager->update();
 		theSceneManager->updateStencil(window);
 		// TODO: Invert the rule for pre Stencil Buffer...
