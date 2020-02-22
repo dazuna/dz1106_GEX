@@ -153,6 +153,8 @@ void cSceneManager::loadPreStencilBuffer()
 	theStencilScene->preStencilObjs.push_back(pGameObjects->at("wall_2"));
 	theStencilScene->preStencilObjs.push_back(pGameObjects->at("wall_3"));
 	theStencilScene->preStencilObjs.push_back(pGameObjects->at("wall_4"));
+	theStencilScene->preStencilObjs.push_back(pGameObjects->at("sphereReflect"));
+	theStencilScene->preStencilObjs.push_back(pGameObjects->at("sphereRefract"));
 }
 
 void cSceneManager::updateStencil(GLFWwindow* window)

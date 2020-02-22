@@ -77,10 +77,11 @@ std::map<std::string, cLight*> g_map_pLights;
 std::map<std::string, cLight*>::iterator selectedLight = g_map_pLights.begin();
 cSceneManager* theSceneManager = cSceneManager::getTheSceneManager();
 cAnimatedPlayer* theAnimatedPlayer = cAnimatedPlayer::getAnimatedPlayer();
-//bool g_BallCollided = false;
-
 selectedType cursorType = selectedType::GAMEOBJECT;
+
+// weirdly specific functions
 void rotateTieFighter();
+void fluctuateReflectionSphere();
 
 int main(void)
 {
@@ -320,6 +321,7 @@ int main(void)
 		
 		//::theSceneManager->drawObjectWithFBO(window,"defScreen",0);
 		rotateTieFighter();
+		fluctuateReflectionSphere();
 		theSceneManager->update();
 		theSceneManager->updateStencil(window);
 		// TODO: Invert the rule for pre Stencil Buffer...
@@ -366,5 +368,16 @@ void rotateTieFighter()
 	{
 		auto tie = ::g_map_GameObjects.at("tieFighter");
 		tie->updateOrientation(glm::vec3(0,1,0));
+	}
+}
+
+void fluctuateReflectionSphere()
+{
+	if(::g_map_GameObjects.find("sphereReflect") != ::g_map_GameObjects.end())
+	{
+		auto refSphere = ::g_map_GameObjects.at("sphereReflect");
+		refSphere->scale += float(::averageDeltaTime);
+		if(refSphere->scale > 20.f)
+		{ refSphere->scale = 15.f; }
 	}
 }

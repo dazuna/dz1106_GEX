@@ -170,6 +170,29 @@ void tools::DrawObject(glm::mat4 m,
 		glUniform1f(bIsBloom,float(GL_TRUE));
 	}
 
+	GLint bIsNightVision = glGetUniformLocation(shaderProgID, "isNightVision");
+	glUniform1f(bIsNightVision,float(GL_FALSE));
+	if (isNightVision && pCurrentObject->friendlyName == "theQuad")
+	{
+		glUniform1f(bIsNightVision,float(GL_TRUE));
+	}
+
+	//uniform bool shouldReflect;
+	//uniform bool shoulfRefract;	
+	GLint bShouldReflect = glGetUniformLocation(shaderProgID, "shouldReflect");
+	glUniform1f(bShouldReflect,float(GL_FALSE));
+	if (pCurrentObject->friendlyName == "sphereReflect")
+	{
+		glUniform1f(bShouldReflect,float(GL_TRUE));
+	}
+
+	GLint bShouldRefract = glGetUniformLocation(shaderProgID, "shoulfRefract");
+	glUniform1f(bShouldRefract,float(GL_FALSE));
+	if (pCurrentObject->friendlyName == "sphereRefract")
+	{
+		glUniform1f(bShouldRefract,float(GL_TRUE));
+	}
+
 	// ************************** SKYBOX **************************
 	// glCullFace(GL_BACK) only front facing tris are drawn. --> EVERYTHING ELSE IS DISABLED
 	// make a draw skybox subfunction... :D
@@ -185,17 +208,11 @@ void tools::DrawObject(glm::mat4 m,
 		// Set to all identity
 		const int NUMBEROFBONES = 100;
 
-		// Taken from "Skinned Mesh 2 - todo.docx"
+		// Taken from "Skinned Mesh 2"
 		std::vector< glm::mat4x4 > vecFinalTransformation;	
 		std::vector< glm::mat4x4 > vecOffsets;
 		std::vector< glm::mat4x4 > vecObjectBoneTransformation;
-
-		// This loads the bone transforms from the animation model
-		//pCurrentObject->pSM->BoneTransform( HACK_FrameTime,	// 0.0f // Frame time
-		//								    pCurrentObject->pSM->mapAnimationFriendlyNameTo_pScene.begin()->first,
-		//									vecFinalTransformation, 
-		//									vecObjectBoneTransformation, 
-		//								    vecOffsets );
+		
 		pCurrentObject->pAS->update(float(averageDeltaTime),
 			vecFinalTransformation,vecOffsets,vecObjectBoneTransformation);
 

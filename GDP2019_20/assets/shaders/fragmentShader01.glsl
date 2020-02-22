@@ -72,6 +72,8 @@ uniform float screenHeight;
 
 uniform bool isBloom;
 uniform bool isNightVision;
+uniform bool shouldReflect;
+uniform bool shoulfRefract;
 
 // Really appears as:
 // uniform vec4 theLights[0].position
@@ -82,6 +84,7 @@ uniform bool isNightVision;
 // uniform vec4 theLights[0].param1
 // uniform vec4 theLights[0].param2
 vec3 bloom();
+vec3 greyScale(vec3 texRGB);
 vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal, 
                             vec3 vertexWorldPos, vec4 vertexSpecular );
 	 
@@ -97,21 +100,18 @@ void main()
 	
 	if ( passNumber == 1 )
 	{
-		// It's the 2nd pass
-		//pixelColour = vec4( 0.0f, 1.0f, 0.0f, 1.0f );
-		//vec3 texRGB = texture( secondPassColourTexture, fUVx2.st ).rgb;
-		// This will calculate the screen texture coordinates based 
-		// on what's actually being rendered on the screen. 
-		// So you just need to FILL the ENTIRE screen with something.
 		vec2 textCoords = vec2( gl_FragCoord.x / screenWidth, 
 		                         gl_FragCoord.y / screenHeight );
 		vec3 texRGB = texture( secondPassColourTexture, textCoords.st ).rgb;
-		pixelColour.rgb = (texRGB);
-		pixelColour.a = 1.0f;		
-//		float depthValue = texture( secondPassColourTexture, textCoords.st ).r;
-//		depthValue /= 10.0f;
-//		pixelColour.rgb = vec3(depthValue,depthValue,depthValue);
-//		pixelColour.a = 1.0f;	
+		if(isNightVision)
+		{
+			pixelColour.rgb = greyScale(texRGB);
+		}
+		else
+		{
+			pixelColour.rgb = (texRGB);
+		}
+		pixelColour.a = 1.0f;
 		return;
 	}
 
@@ -121,26 +121,7 @@ void main()
 		vec3 texRGB = texture( secondPassColourTexture, fUVx2.st ).rgb;
 		if(isBloom)
 		{
-			//pixelColour.rgb = bloom();
-			float bo = 0.0055f;		// For "blurr offset"		
-			vec2 uvs = fUVx2.st;			// Make a copy of the texture coords
-			
-			int screenWidth = 1080;
-			int screenHeight = 720;
-			
-			vec3 texRGB1 = texture( secondPassColourTexture, vec2(uvs.s + 0.0f, uvs.t + 0.0f) ).rgb;
-			vec3 texRGB2 = texture( secondPassColourTexture, vec2(uvs.s - bo, uvs.t + 0.0f) ).rgb;
-			vec3 texRGB3 = texture( secondPassColourTexture, vec2(uvs.s + bo, uvs.t + 0.0f) ).rgb;
-			vec3 texRGB4 = texture( secondPassColourTexture, vec2(uvs.s + 0.0f, uvs.t - bo) ).rgb;
-			vec3 texRGB5 = texture( secondPassColourTexture, vec2(uvs.s + 0.0f, uvs.t + bo) ).rgb;
-			
-			vec3 RGB = 0.5f * texRGB1 +
-						0.125f * texRGB2 +
-						0.125f * texRGB3 +
-						0.125f * texRGB4 +
-						0.125f * texRGB5;
-
-			pixelColour.rgb = (RGB);//*2.0f);
+			pixelColour.rgb = bloom();
 			pixelColour.a = 1.0f;
 			return;
 		}
@@ -163,8 +144,8 @@ void main()
 
 	// Shader Type #2
 	vec4 materialColour = diffuseColour;
-//	vec4 materialColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-//	vec4 specColour = vec4(0.0f,0.0f,0.0f,1.0f);// materialColour;
+	//vec4 materialColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	//vec4 specColour = vec4(0.0f,0.0f,0.0f,1.0f);// materialColour;
 	
 	vec3 tex0_RGB = texture( textSamp00, fUVx2.st ).rgb;
 	vec3 tex1_RGB = texture( textSamp01, fUVx2.st ).rgb;
@@ -176,9 +157,9 @@ void main()
 				  + ( tex_0_3_ratio.z * tex2_RGB )
 				  + ( tex_0_3_ratio.w * tex3_RGB );
 				  
-//	vec3 ChromeColour = texture( skyBox, refract(fNormal.xyz ).rgb;
-//	texRGB.rgb *= 0.001f;
-//	texRGB.rgb = ChromeColour.rgb;
+	//vec3 ChromeColour = texture( skyBox, refract(fNormal.xyz ).rgb;
+	//texRGB.rgb *= 0.001f;
+	//texRGB.rgb = ChromeColour.rgb;
 	vec4 outColour = calcualteLightContrib( texRGB.rgb, fNormal.xyz, 
 	                                        fVertWorldLocation.xyz, specularColour );
 	if( debugger )
@@ -186,6 +167,31 @@ void main()
 		pixelColour = outColour;
 		pixelColour.a = 1.0f;				// NOT transparent
 		return;
+	}
+
+	if( shouldReflect )
+	{
+		vec3 eyeVector = eyeLocation.xyz - fVertWorldLocation.xyz;
+		eyeVector = normalize(eyeVector);			
+		vec3 reflectVector = reflect( eyeVector, fNormal.xyz );
+		vec3 reflectColour = texture( skyBox, reflectVector.xyz ).rgb;
+	
+		outColour = calcualteLightContrib( reflectColour.rgb, fNormal.xyz, 
+												fVertWorldLocation.xyz, specularColour );
+	}
+
+	if( shoulfRefract )
+	{
+		vec3 eyeVector = eyeLocation.xyz - fVertWorldLocation.xyz;
+		eyeVector = normalize(eyeVector);		
+		//vec3 reflectVector = reflect( eyeVector, fNormal.xyz );
+		vec3 refractVector = refract( eyeVector, fNormal.xyz, 1.4f );		
+		//vec3 reflectColour = texture( skyBox, reflectVector.xyz ).rgb;
+		vec3 refractColour = texture( skyBox, refractVector.xyz ).rgb;		
+		//vec3 finalColour = 0.0f * reflectColour + 1.0f * refractColour;	
+		outColour = calcualteLightContrib( refractColour.rgb, fNormal.xyz, 
+												fVertWorldLocation.xyz, specularColour );
+		outColour = outColour * 2.0f;
 	}
 
 	pixelColour = outColour;
@@ -353,17 +359,12 @@ vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal,
 
 vec3 bloom()
 {
-	float bo = 0.0025f;		// For "blurr offset"		
+	//pixelColour.rgb = bloom();
+	float bo = 0.0055f;		// For "blurr offset"		
 	vec2 uvs = fUVx2.st;			// Make a copy of the texture coords
 	
 	int screenWidth = 1080;
-	int screenHeight = 720; 
-	
-	uvs.s = gl_FragCoord.x / float(screenWidth);		// "u" or "x"
-	uvs.t = gl_FragCoord.y / float(screenHeight);		// "v" or "y"
-
-	uvs.s = fVertWorldLocation.x / 50.0f;
-	uvs.t = fVertWorldLocation.y / 50.0f;
+	int screenHeight = 720;
 	
 	vec3 texRGB1 = texture( secondPassColourTexture, vec2(uvs.s + 0.0f, uvs.t + 0.0f) ).rgb;
 	vec3 texRGB2 = texture( secondPassColourTexture, vec2(uvs.s - bo, uvs.t + 0.0f) ).rgb;
@@ -376,8 +377,15 @@ vec3 bloom()
 				0.125f * texRGB3 +
 				0.125f * texRGB4 +
 				0.125f * texRGB5;
+	
+	return RGB;
+}
 
-	return (RGB*2.0f);	
-	// pixelColour.rgb = RGB * 2.0f;			// 2.0f because the projector is really dark!!
-	// pixelColour.a = 1.0f;
+vec3 greyScale(vec3 texRGB)
+{
+	//vec3 texRGB = texture( secondPassColourTexture, fUVx2.st ).rgb;
+	// Note that your eye doesn't see this, Use this equation instead: 0.21 R + 0.72 G + 0.07 B
+	float grey = ((texRGB.r*0.21f) + (texRGB.g*0.72f) + (texRGB.b*0.07f))/3.0f;
+	vec3 result = vec3(grey,grey,grey);
+	return result;
 }
