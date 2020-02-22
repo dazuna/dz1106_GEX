@@ -17,11 +17,11 @@ public:
 	cStencilScene* theStencilScene;
 	void createStencilScene();
 	void loadPreStencilBuffer();
-	void updateStencil();
-	
+	void updateStencil(GLFWwindow* window);
+
 	// properties
 	std::map<std::string, cGameObject*>* pGameObjects;
-	std::map<std::string, cLight*>* pLights;	
+	std::map<std::string, cLight*>* pLights;
 	std::vector<cScene*> scenesVector;
 	std::vector<cFlyCamera*> gCameras;
 	GLuint* shaderProgramId;
@@ -37,5 +37,7 @@ public:
 	void setShaderId(GLuint* shader);
 	void createCameraArray();
 	bool update();
+	void lastPass(GLFWwindow* window);
+	void drawObjectWithFBO(GLFWwindow* window, std::string name, int sceneNumber);
 };
 

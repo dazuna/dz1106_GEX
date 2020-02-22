@@ -26,6 +26,7 @@ uniform sampler2D textSamp03;
 //uniform sampler2D textSamp06;
 //uniform sampler2D textSamp07;
 uniform sampler2D secondPassColourTexture;
+uniform sampler2D scenePassColourTexture;
 
 uniform samplerCube skyBox;
 uniform bool bIsSkyBox;
@@ -69,6 +70,9 @@ uniform int passNumber;
 uniform float screenWidth;
 uniform float screenHeight;
 
+uniform bool isBloom;
+uniform bool isNightVision;
+
 // Really appears as:
 // uniform vec4 theLights[0].position
 // uniform vec4 theLights[0].diffuse
@@ -77,7 +81,7 @@ uniform float screenHeight;
 // uniform vec4 theLights[0].direction
 // uniform vec4 theLights[0].param1
 // uniform vec4 theLights[0].param2
-
+vec3 bloom();
 vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal, 
                             vec3 vertexWorldPos, vec4 vertexSpecular );
 	 
@@ -110,6 +114,45 @@ void main()
 //		pixelColour.a = 1.0f;	
 		return;
 	}
+
+	if ( passNumber == 50 )
+	{
+		// It's the 2nd pass //pixelColour = vec4( 0.0f, 1.0f, 0.0f, 1.0f );
+		vec3 texRGB = texture( secondPassColourTexture, fUVx2.st ).rgb;
+		if(isBloom)
+		{
+			//pixelColour.rgb = bloom();
+			float bo = 0.0055f;		// For "blurr offset"		
+			vec2 uvs = fUVx2.st;			// Make a copy of the texture coords
+			
+			int screenWidth = 1080;
+			int screenHeight = 720;
+			
+			vec3 texRGB1 = texture( secondPassColourTexture, vec2(uvs.s + 0.0f, uvs.t + 0.0f) ).rgb;
+			vec3 texRGB2 = texture( secondPassColourTexture, vec2(uvs.s - bo, uvs.t + 0.0f) ).rgb;
+			vec3 texRGB3 = texture( secondPassColourTexture, vec2(uvs.s + bo, uvs.t + 0.0f) ).rgb;
+			vec3 texRGB4 = texture( secondPassColourTexture, vec2(uvs.s + 0.0f, uvs.t - bo) ).rgb;
+			vec3 texRGB5 = texture( secondPassColourTexture, vec2(uvs.s + 0.0f, uvs.t + bo) ).rgb;
+			
+			vec3 RGB = 0.5f * texRGB1 +
+						0.125f * texRGB2 +
+						0.125f * texRGB3 +
+						0.125f * texRGB4 +
+						0.125f * texRGB5;
+
+			pixelColour.rgb = (RGB);//*2.0f);
+			pixelColour.a = 1.0f;
+			return;
+		}
+		else
+		{
+			pixelColour.rgb = (texRGB);
+			pixelColour.a = 1.0f;
+			return;
+		}
+		
+	}
+
 	// Shader Type #1  	
 	if ( bDoNotLight )
 	{
@@ -306,4 +349,35 @@ vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal,
 	finalObjectColour.a = 1.0f;
 	
 	return finalObjectColour;
+}
+
+vec3 bloom()
+{
+	float bo = 0.0025f;		// For "blurr offset"		
+	vec2 uvs = fUVx2.st;			// Make a copy of the texture coords
+	
+	int screenWidth = 1080;
+	int screenHeight = 720; 
+	
+	uvs.s = gl_FragCoord.x / float(screenWidth);		// "u" or "x"
+	uvs.t = gl_FragCoord.y / float(screenHeight);		// "v" or "y"
+
+	uvs.s = fVertWorldLocation.x / 50.0f;
+	uvs.t = fVertWorldLocation.y / 50.0f;
+	
+	vec3 texRGB1 = texture( secondPassColourTexture, vec2(uvs.s + 0.0f, uvs.t + 0.0f) ).rgb;
+	vec3 texRGB2 = texture( secondPassColourTexture, vec2(uvs.s - bo, uvs.t + 0.0f) ).rgb;
+	vec3 texRGB3 = texture( secondPassColourTexture, vec2(uvs.s + bo, uvs.t + 0.0f) ).rgb;
+	vec3 texRGB4 = texture( secondPassColourTexture, vec2(uvs.s + 0.0f, uvs.t - bo) ).rgb;
+	vec3 texRGB5 = texture( secondPassColourTexture, vec2(uvs.s + 0.0f, uvs.t + bo) ).rgb;
+	
+	vec3 RGB = 0.5f * texRGB1 +
+				0.125f * texRGB2 +
+				0.125f * texRGB3 +
+				0.125f * texRGB4 +
+				0.125f * texRGB5;
+
+	return (RGB*2.0f);	
+	// pixelColour.rgb = RGB * 2.0f;			// 2.0f because the projector is really dark!!
+	// pixelColour.a = 1.0f;
 }

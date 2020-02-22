@@ -1,5 +1,13 @@
 #include "skybox.h"
 
+#include "../globalStuff.h"
+#include "../cGameObject.h"
+#include "../cVAOManager.h"
+#include "../TextureManager/cBasicTextureManager.h"
+#include "../util/tools.h"
+#include <glm/glm.hpp>
+#include <string>
+
 bool createSkyBoxObject()
 {
 	cMesh* tempMesh = new cMesh();
@@ -11,12 +19,13 @@ bool createSkyBoxObject()
 	return true;
 }
 
-void drawSkyBox()
+void drawSkyBox(glm::vec3 positionSkyBox)
 {
 	// texture bindings
 	// SetUpTextureBindingsForObject(::pSkyBox, shaderProgID);
 	glUseProgram(shaderProgID);
-	::pSkyBox->positionXYZ = ::g_pFlyCamera->eye;
+	//::pSkyBox->positionXYZ = ::g_pFlyCamera->eye;
+	::pSkyBox->positionXYZ = positionSkyBox;
 	//::pSkyBox->positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::mat4 m = tools::calculateWorldMatrix(::pSkyBox);
 	GLint matModel_UL = glGetUniformLocation(shaderProgID, "matModel");

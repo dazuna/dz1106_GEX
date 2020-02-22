@@ -163,6 +163,13 @@ void tools::DrawObject(glm::mat4 m,
 		glUniform1f(bMakeHoles_UL, (float)GL_FALSE);
 	}
 
+	GLint bIsBloom = glGetUniformLocation(shaderProgID, "isBloom");
+	glUniform1f(bIsBloom,float(GL_FALSE));
+	if (isBloom && pCurrentObject->friendlyName == "defScreen")
+	{
+		glUniform1f(bIsBloom,float(GL_TRUE));
+	}
+
 	// ************************** SKYBOX **************************
 	// glCullFace(GL_BACK) only front facing tris are drawn. --> EVERYTHING ELSE IS DISABLED
 	// make a draw skybox subfunction... :D

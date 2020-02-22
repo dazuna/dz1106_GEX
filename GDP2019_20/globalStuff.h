@@ -53,3 +53,6 @@ extern float leftShieldHealth;
 extern float rightShieldHealth;
 extern bool itsDeadJim;
 extern float offset;
+
+extern bool isBloom;
+extern bool isNightVision;
