@@ -146,6 +146,7 @@ void cSceneManager::createStencilScene()
 void cSceneManager::loadPreStencilBuffer()
 {
 	//auto pSO = theStencilScene->preStencilObjs;
+	theStencilScene->preStencilObjs.push_back(pGameObjects->at("character"));
 	theStencilScene->preStencilObjs.push_back(pGameObjects->at("character2"));
 	theStencilScene->preStencilObjs.push_back(pGameObjects->at("thePlane"));
 	theStencilScene->preStencilObjs.push_back(pGameObjects->at("defScreen"));
@@ -181,75 +182,75 @@ void cSceneManager::updateStencil(GLFWwindow* window)
 		tools::DrawObject(matModelRoomPass,go,shaderProgID,pTheVAOManager);
 		go->isVisible = false;
 	}
-	drawObjectWithFBO(window,"defScreen",0);
+	//drawObjectWithFBO(window,"defScreen",0);
 	
-	// Clear the stencil  (and everything else)
-	glClearStencil(47);			// Buffer will be cleared to 47 (because it's a strange number)		
-	// Clear stencil (to the number 47)
-	glClear(GL_STENCIL_BUFFER_BIT);
+	//// Clear the stencil  (and everything else)
+	//glClearStencil(47);			// Buffer will be cleared to 47 (because it's a strange number)		
+	//// Clear stencil (to the number 47)
+	//glClear(GL_STENCIL_BUFFER_BIT);
 
-	// I'll keep the depth TEST on
-	// -> Because I want the doorways to overwrite the "back" of the room
-	// 
-	// What do I do with the "write to the depth buffer???"....
-	// 
-	// Set up the "Stencil Operation" 
-	// Buffer is filled with 47s. 
-	// I want to ALWAYS write another number (133)
-	//  only where the doorways are.
-	glEnable(GL_STENCIL_TEST);
+	//// I'll keep the depth TEST on
+	//// -> Because I want the doorways to overwrite the "back" of the room
+	//// 
+	//// What do I do with the "write to the depth buffer???"....
+	//// 
+	//// Set up the "Stencil Operation" 
+	//// Buffer is filled with 47s. 
+	//// I want to ALWAYS write another number (133)
+	////  only where the doorways are.
+	//glEnable(GL_STENCIL_TEST);
 
-	glStencilOp(GL_KEEP,		// Stencil fails KEEP the original value (47)
-				GL_KEEP,		// Depth fails KEEP the original value
-				GL_REPLACE);	// Stencil AND depth PASSES, REPLACE with 133
+	//glStencilOp(GL_KEEP,		// Stencil fails KEEP the original value (47)
+	//			GL_KEEP,		// Depth fails KEEP the original value
+	//			GL_REPLACE);	// Stencil AND depth PASSES, REPLACE with 133
 
-	glStencilFunc(GL_ALWAYS,	// If is succeed, ALWAYS do this
-				  133,			// Replace with this
-				  0xFF );		// Mask of 1111,1111 (no mask)
-	// I don't actually want to see the door stencil mask object
-	// Prevent writing to the colour buffer
-	glColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE );
-	// Depth TEST is still active, 
-	// but I don't write to the buffer; 
-	glDepthMask(GL_FALSE);
+	//glStencilFunc(GL_ALWAYS,	// If is succeed, ALWAYS do this
+	//			  133,			// Replace with this
+	//			  0xFF );		// Mask of 1111,1111 (no mask)
+	//// I don't actually want to see the door stencil mask object
+	//// Prevent writing to the colour buffer
+	//glColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE );
+	//// Depth TEST is still active, 
+	//// but I don't write to the buffer; 
+	//glDepthMask(GL_FALSE);
 
-	theStencilScene->theStencilObj->isVisible = true;
-	theStencilScene->theStencilObj->disableDepthBufferWrite = true;
-	tools::DrawObject(matModelRoomPass, theStencilScene->theStencilObj, shaderProgID, pTheVAOManager);
-	theStencilScene->theStencilObj->isVisible = false;
+	//theStencilScene->theStencilObj->isVisible = true;
+	//theStencilScene->theStencilObj->disableDepthBufferWrite = true;
+	//tools::DrawObject(matModelRoomPass, theStencilScene->theStencilObj, shaderProgID, pTheVAOManager);
+	//theStencilScene->theStencilObj->isVisible = false;
 
+	////{
+	////	glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+	////	glDepthMask(GL_TRUE);
+	////}
+	//
+	//// TUrn on writing to the depth buffer
+	//glDepthMask(GL_TRUE);
+	//// Clear the depth buffer
+	//glClear(GL_DEPTH_BUFFER_BIT);
+
+	//// Change the stencil test
+	//glStencilOp(GL_KEEP,		// Stencil fails KEEP the original value (47)
+	//			GL_KEEP,		// (stencil passes) Depth fails KEEP the original value
+	//			GL_KEEP);		// Stencil AND depth PASSES, Keep 133
+	//glStencilFunc(GL_EQUAL,		// Test if equal
+	//			  133,			//
+	//			  0xFF);
+
+	//// Draw the "inside the room" scene...
+	//// (only visible where the "door" model drew 133 to the stencil buffer
+	//glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
+	////for (int index = 0; index != pGameObjects->size(); index++)
+	//drawSkyBox(::g_pFlyCamera->eye);
+	//for (auto index = pGameObjects->begin(); index != pGameObjects->end(); index++)
 	//{
-	//	glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-	//	glDepthMask(GL_TRUE);
-	//}
-	
-	// TUrn on writing to the depth buffer
-	glDepthMask(GL_TRUE);
-	// Clear the depth buffer
-	glClear(GL_DEPTH_BUFFER_BIT);
+	//	cGameObject* pCurrentObject = index->second;
+	//	glm::mat4 matModel = glm::mat4(1.0f);	// Identity matrix
+	//	tools::DrawObject( matModel, pCurrentObject, shaderProgID, pTheVAOManager );
 
-	// Change the stencil test
-	glStencilOp(GL_KEEP,		// Stencil fails KEEP the original value (47)
-				GL_KEEP,		// (stencil passes) Depth fails KEEP the original value
-				GL_KEEP);		// Stencil AND depth PASSES, Keep 133
-	glStencilFunc(GL_EQUAL,		// Test if equal
-				  133,			//
-				  0xFF);
-
-	// Draw the "inside the room" scene...
-	// (only visible where the "door" model drew 133 to the stencil buffer
-	glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-
-	//for (int index = 0; index != pGameObjects->size(); index++)
-	drawSkyBox(::g_pFlyCamera->eye);
-	for (auto index = pGameObjects->begin(); index != pGameObjects->end(); index++)
-	{
-		cGameObject* pCurrentObject = index->second;
-		glm::mat4 matModel = glm::mat4(1.0f);	// Identity matrix
-		tools::DrawObject( matModel, pCurrentObject, shaderProgID, pTheVAOManager );
-
-	}//for (int index...
-	glDisable(GL_STENCIL_TEST);							// Disable stencil test
+	//}//for (int index...
+	//glDisable(GL_STENCIL_TEST);							// Disable stencil test
 }
 
 void cSceneManager::lastPass(GLFWwindow* window)

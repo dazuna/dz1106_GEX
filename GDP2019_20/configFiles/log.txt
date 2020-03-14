@@ -88,7 +88,7 @@ accel: vec3(0.000000, 0.000000, 0.000000)
 debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 friendlyName: character2
 meshName: character2Mesh
-meshURL: assets/modelsFBX/RPG-Character(FBX2013).fbx
+meshURL: assets/modelsFBX/Michelle/michelle.fbx
 positionXYZ: vec3(20.000000, 5.000000, 0.000000)
 rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
@@ -156,17 +156,6 @@ friendlyName: boxy
 meshName: cubeMesh
 meshURL: assets/models/cube1_xyx_n_uv.ply
 positionXYZ: vec3(50.000000, 8.000000, 50.000000)
-rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
-objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: tieFighter
-meshName: tieMesh
-meshURL: assets/models/TieInterceptorUV.ply
-positionXYZ: vec3(0.000000, 45.000000, 90.000000)
 rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
