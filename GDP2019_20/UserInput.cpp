@@ -183,11 +183,26 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				tempBool = ::pSkyBox->isVisible;
 				tempBool = !tempBool;
 			}
+			if (key == GLFW_KEY_F5 && action == GLFW_PRESS)
+			{
+				::isBloom = !::isBloom;
+				std::cout << "isBloom: " << isBloom << std::endl;
+			}
+			if (key == GLFW_KEY_F6 && action == GLFW_PRESS)
+			{
+				::isNightVision = !::isNightVision;
+				std::cout << "isNightVision: " << isNightVision << std::endl;
+				
+			}
 			if (key == GLFW_KEY_Z && action == GLFW_PRESS)
 			{
 				::g_map_GameObjects["cameraPosition0"]->positionXYZ = ::g_pFlyCamera->eye;
 			}
-			
+
+			if (key == GLFW_KEY_Z && action == GLFW_PRESS)
+			{
+				::g_map_GameObjects["cameraPosition0"]->positionXYZ = ::g_pFlyCamera->eye;
+			}
 		}
 
 		if (isShiftKeyDownByAlone(mods))

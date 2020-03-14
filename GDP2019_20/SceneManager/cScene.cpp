@@ -136,20 +136,23 @@ void cScene::setCameraParams()
 	
 	glViewport(0, 0, sceneWidth, sceneHeight);
 
-	drawSkyBox();
+	//drawSkyBox();
 	pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
 	
 }
 
 void cScene::drawSceneObjects()
 {
+	drawSkyBox(cameras[0]->eye);
 	for (auto itGO = sceneGameObjects.begin(); itGO != sceneGameObjects.end();itGO++)
 	{
 		glm::mat4 matModel = glm::mat4(1.0f);
-		if (itGO->second->isVisible)
-		{
-			tools::DrawObject(matModel, itGO->second, shaderProgID, pTheVAOManager);
-		}
+		//if (itGO->second->isVisible)
+		//{
+		itGO->second->isVisible = true;
+		tools::DrawObject(matModel, itGO->second, shaderProgID, pTheVAOManager);
+		itGO->second->isVisible = false;
+		//}
 	}
 }
 

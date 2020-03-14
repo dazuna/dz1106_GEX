@@ -62,6 +62,11 @@ double timer = 0.0;
 double averageDeltaTime;
 bool isDroneOn = false;
 bool cameraFollowPlayer = false;
+int width, height;
+
+// cool effects
+bool isBloom = false;
+bool isNightVision = false;
 
 // Load up my "scene" objects (now global)
 std::map<std::string, cMesh*> g_map_Mesh;
@@ -72,9 +77,11 @@ std::map<std::string, cLight*> g_map_pLights;
 std::map<std::string, cLight*>::iterator selectedLight = g_map_pLights.begin();
 cSceneManager* theSceneManager = cSceneManager::getTheSceneManager();
 cAnimatedPlayer* theAnimatedPlayer = cAnimatedPlayer::getAnimatedPlayer();
-//bool g_BallCollided = false;
-
 selectedType cursorType = selectedType::GAMEOBJECT;
+
+// weirdly specific functions
+void rotateTieFighter();
+void fluctuateReflectionSphere();
 
 int main(void)
 {
@@ -155,7 +162,7 @@ int main(void)
 	JSONLoader::JSONLoadLights(&::g_map_pLights,shaderProgID);
 	selectedLight = ::g_map_pLights.begin();
 
-	::theSceneManager->init();
+	//::theSceneManager->init();
 
 	if(g_map_GameObjects.find("character") != g_map_GameObjects.end())
 	{
@@ -186,6 +193,9 @@ int main(void)
 	::g_pFlyCamera->cameraLookAt(cameraTarget);
 	::g_pFlyCamera->movementSpeed = 100.0f;
 
+	::theSceneManager->init();
+	::theSceneManager->createStencilScene();
+	
 	// todo: generar nuevos objetos eye y target para cada escena y crear la camara viendo a ellos.
 
 	// Get the initial time
@@ -211,13 +221,13 @@ int main(void)
 	
 	while (!glfwWindowShouldClose(window))
 	{
-		// Draw everything to the external frame buffer
-		// (I get the frame buffer ID, and use that)
-		glBindFramebuffer(GL_FRAMEBUFFER, pTheFBO->ID);
-		pTheFBO->clearBuffers(true, true);
-		//// Set the passNumber to 0
-		GLint passNumber_UniLoc = glGetUniformLocation(shaderProgID, "passNumber");
-		glUniform1i(passNumber_UniLoc, 0);  //"passNumber"
+		//// Draw everything to the external frame buffer
+		//// (I get the frame buffer ID, and use that)
+		//glBindFramebuffer(GL_FRAMEBUFFER, pTheFBO->ID);
+		//pTheFBO->clearBuffers(true, true);
+		////// Set the passNumber to 0
+		//GLint passNumber_UniLoc = glGetUniformLocation(shaderProgID, "passNumber");
+		//glUniform1i(passNumber_UniLoc, 0);  //"passNumber"
 
 		// Get the initial time
 		double currentTime = glfwGetTime();
@@ -235,80 +245,86 @@ int main(void)
 
 		glUseProgram(shaderProgID);
 		
-		float ratio;
-		int width, height;
-		glm::mat4 p, v;
-		
-		glfwGetFramebufferSize(window, &width, &height);
-		ratio = width / (float)height;
-		
-		// Projection matrix
-		p = glm::perspective(0.6f,		// FOV
-			ratio,			// Aspect ratio
-			0.1f,			// Near clipping plane
-			15000.0f);		// Far clipping plane
-		
-		// View matrix
-		v = glm::mat4(1.0f);
-		
-		// v = glm::lookAt(cameraEye,
-		// 	cameraTarget,
-		// 	upVector);
-		
-		v = glm::lookAt( ::g_pFlyCamera->eye, 
-						 ::g_pFlyCamera->getAtInWorldSpace(), 
-						 ::g_pFlyCamera->getUpVector() );
-		
-		glViewport(0, 0, width, height);
-		
-		// Clear both the colour buffer (what we see) and the depth (or z) buffer.
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
-		////----------------------------
-		////		AQUI IBA LIGHTS
-		//// ---------------------------
-		for (auto pLight : ::g_map_pLights)
-		{
-			pLight.second->setUniforms();
-		}
-		
-		// Also set the position of my "eye" (the camera)
-		//uniform vec4 eyeLocation;
-		GLint eyeLocation_UL = glGetUniformLocation(shaderProgID, "eyeLocation");
-		
-		glUniform4f(eyeLocation_UL,
-			::g_pFlyCamera->eye.x,
-			::g_pFlyCamera->eye.y,
-			::g_pFlyCamera->eye.z, 1.0f);
+		//float ratio;
+		//int width, height;
+		//glm::mat4 p, v;
+		//
+		//glfwGetFramebufferSize(window, &width, &height);
+		//ratio = width / (float)height;
+		//
+		//// Projection matrix
+		//p = glm::perspective(0.6f,		// FOV
+		//	ratio,			// Aspect ratio
+		//	0.1f,			// Near clipping plane
+		//	15000.0f);		// Far clipping plane
+		//
+		//// View matrix
+		//v = glm::mat4(1.0f);
+		//
+		//// v = glm::lookAt(cameraEye,
+		//// 	cameraTarget,
+		//// 	upVector);
+		//
+		//v = glm::lookAt( ::g_pFlyCamera->eye, 
+		//				 ::g_pFlyCamera->getAtInWorldSpace(), 
+		//				 ::g_pFlyCamera->getUpVector() );
+		//
+		//glViewport(0, 0, width, height);
+		//
+		//// Clear both the colour buffer (what we see) and the depth (or z) buffer.
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//
+		//////----------------------------
+		//////		AQUI IBA LIGHTS
+		////// ---------------------------
+		//for (auto pLight : ::g_map_pLights)
+		//{
+		//	pLight.second->setUniforms();
+		//}
+		//
+		//// Also set the position of my "eye" (the camera)
+		////uniform vec4 eyeLocation;
+		//GLint eyeLocation_UL = glGetUniformLocation(shaderProgID, "eyeLocation");
+		//
+		//glUniform4f(eyeLocation_UL,
+		//	::g_pFlyCamera->eye.x,
+		//	::g_pFlyCamera->eye.y,
+		//	::g_pFlyCamera->eye.z, 1.0f);
 		
 		std::stringstream ssTitle;
 		tools::setWindowTitle(&ssTitle);
 		glfwSetWindowTitle(window, ssTitle.str().c_str());
 		
-		GLint matView_UL = glGetUniformLocation(shaderProgID, "matView");
-		GLint matProj_UL = glGetUniformLocation(shaderProgID, "matProj");
-		
-		glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
-		glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
-		
-		drawSkyBox();
+		//GLint matView_UL = glGetUniformLocation(shaderProgID, "matView");
+		//GLint matProj_UL = glGetUniformLocation(shaderProgID, "matProj");
+		//
+		//glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v));
+		//glUniformMatrix4fv(matProj_UL, 1, GL_FALSE, glm::value_ptr(p));
+		//
+		//drawSkyBox();
+		//
+		//// ************************** order transparent objects **************************
+		//tools::makeTransparentObjectsMap();
+		//std::vector<cGameObject*> theWorldVector = tools::getWorldMapAsVector();
+		//
+		//// **************************************************
+		//// Loop to draw everything in the scene
+		//for (int index = 0; index < theWorldVector.size(); index++)
+		//{
+		//	glm::mat4 matModel = glm::mat4(1.0f);
+		//	if (theWorldVector[index]->isVisible)
+		//	{
+		//		tools::DrawObject(matModel, theWorldVector[index], shaderProgID, pTheVAOManager);
+		//	}
+		//}//for (int index...
 
-		// ************************** order transparent objects **************************
-		tools::makeTransparentObjectsMap();
-		std::vector<cGameObject*> theWorldVector = tools::getWorldMapAsVector();
 		
-		// **************************************************
-		// Loop to draw everything in the scene
-		for (int index = 0; index < theWorldVector.size(); index++)
-		{
-			glm::mat4 matModel = glm::mat4(1.0f);
-			if (theWorldVector[index]->isVisible)
-			{
-				tools::DrawObject(matModel, theWorldVector[index], shaderProgID, pTheVAOManager);
-			}
-		}//for (int index...
-		
+		//::theSceneManager->drawObjectWithFBO(window,"defScreen",0);
+		rotateTieFighter();
+		//fluctuateReflectionSphere();
 		theSceneManager->update();
+		theSceneManager->updateStencil(window);
+		// TODO: Invert the rule for pre Stencil Buffer...
 		
 		switch (cursorType)
 		{
@@ -320,84 +336,18 @@ int main(void)
 		//	Update the objects through physics
 		averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		IntegrationStep_AAB(::g_map_GameObjects,float(averageDeltaTime));
-		pPhysic->TestForCollisions(::g_map_GameObjects);
+		pPhysic->TestForCollisions(::g_map_GameObjects);		
+
+		::theSceneManager->lastPass(window);
 		
+		glm::mat4 p, v; float ratio;
+		glfwGetFramebufferSize(window, &width, &height);
+		ratio = width / float(height);
+		p = glm::perspective(0.6f,ratio,0.1f,15000.0f);
+		v = glm::mat4(1.0f);
+		v = glm::lookAt( ::g_pFlyCamera->eye,::g_pFlyCamera->getAtInWorldSpace(),::g_pFlyCamera->getUpVector() );
+		//::theSceneManager->drawObjectWithFBO(window,"defScreen",0);
 		pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
-
-		// *******
-		// Start of 2nd pass
-		// The whole scene is now drawn (to the FBO)
-
-		// 1. Disable the FBO
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-		/*float ratio;
-		int width, height;*/
-		//glm::mat4 p, v;
-		glfwGetFramebufferSize(window, &width, &height);
-		//ratio = width / (float)height;
-
-		// 2. Clear the ACTUAL screen buffer
-		glViewport(0, 0, width, height);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		// 3. Use the FBO colour texture as the texture on that quad
-		//GLint passNumber_UniLoc = glGetUniformLocation(shaderProgID, "passNumber");
-		glUniform1i(passNumber_UniLoc, 1);  //"passNumber"
-		//glUniform1i(passNumber_UniLoc, 0);  //"passNumber"
-
-		// Tie the texture to the texture unit
-		glActiveTexture(GL_TEXTURE0 + 40);				// Texture Unit 40!!
-		glBindTexture(GL_TEXTURE_2D, pTheFBO->colourTexture_0_ID);	// Texture now assoc with texture unit 0
-		//auto texture = ::theSceneManager->scenesVector[0]->getFBO()->colourTexture_0_ID;
-		//glBindTexture(GL_TEXTURE_2D, texture);
-//		glBindTexture(GL_TEXTURE_2D, pTheFBO->depthTexture_ID);	// Texture now assoc with texture unit 0
-		GLint textSamp00_UL = glGetUniformLocation(shaderProgID, "secondPassColourTexture");
-		glUniform1i(textSamp00_UL, 40);	// Texture unit 40
-
-		// 4. Draw a single object (a triangle or quad)
-		cGameObject* pQuadOrIsIt = NULL;
-		if (tools::pFindObjectByFriendlyNameMap("theQuad"))
-		{
-			pQuadOrIsIt = ::g_map_GameObjects["theQuad"];
-		}
-		float oldScale = pQuadOrIsIt->scale;
-		pQuadOrIsIt->scale = 50.0f;
-		pQuadOrIsIt->isVisible = true;
-		pQuadOrIsIt->setOrientation(glm::vec3(0.0f, 180.0f, 0.0f));
-		pQuadOrIsIt->positionXYZ = glm::vec3(0.0f, 0.0f, 0.0f);
-		pQuadOrIsIt->isWireframe = false;
-
-		// Move the camera
-		// Maybe set it to orthographic, etc.
-
-		glm::mat4 v2 = glm::lookAt(glm::vec3(0.0f, 0.0f, -30.0f),		// Eye
-			glm::vec3(0.0f, 0.0f, 0.0f),			// At
-			glm::vec3(0.0f, 1.0f, 0.0f));		// Up
-
-		//GLint matView_UL = glGetUniformLocation(shaderProgID, "matView");
-		glUniformMatrix4fv(matView_UL, 1, GL_FALSE, glm::value_ptr(v2));
-
-		// Set the actual screen size
-		GLint screenWidth_UnitLoc = glGetUniformLocation(shaderProgID, "screenWidth");
-		GLint screenHeight_UnitLoc = glGetUniformLocation(shaderProgID, "screenHeight");
-
-		// Get the "screen" framebuffer size 
-		glfwGetFramebufferSize(window, &width, &height);
-
-		glUniform1f(screenWidth_UnitLoc, width);
-		glUniform1f(screenHeight_UnitLoc, height);
-
-		glm::mat4 matQuad = glm::mat4(1.0f);
-		tools::DrawObject(matQuad, pQuadOrIsIt,
-			shaderProgID, pTheVAOManager);
-
-		//drawSkyBox();
-		
-		//pQuadOrIsIt->scale = oldScale;
-		pQuadOrIsIt->isVisible = false;
-		// END OF 2nd pass
-		// ***********
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -410,4 +360,24 @@ int main(void)
 	// delete pTheVAOManager;
 
 	exit(EXIT_SUCCESS);
+}
+
+void rotateTieFighter()
+{
+	if(::g_map_GameObjects.find("tieFighter") != ::g_map_GameObjects.end())
+	{
+		auto tie = ::g_map_GameObjects.at("tieFighter");
+		tie->updateOrientation(glm::vec3(0,1,0));
+	}
+}
+
+void fluctuateReflectionSphere()
+{
+	if(::g_map_GameObjects.find("sphereReflect") != ::g_map_GameObjects.end())
+	{
+		auto refSphere = ::g_map_GameObjects.at("sphereReflect");
+		refSphere->scale += float(::averageDeltaTime);
+		if(refSphere->scale > 20.f)
+		{ refSphere->scale = 15.f; }
+	}
 }

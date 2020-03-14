@@ -197,6 +197,9 @@
     <ClCompile Include="cAnimatedPlayer\cAnimatedPlayer.cpp">
       <Filter>cAnimatedPlayer</Filter>
     </ClCompile>
+    <ClCompile Include="SceneManager\cStencilScene.cpp">
+      <Filter>cSceneManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cMesh.h">
@@ -321,6 +324,9 @@
     </ClInclude>
     <ClInclude Include="cAnimatedPlayer\cAnimatedPlayer.h">
       <Filter>cAnimatedPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager\cStencilScene.h">
+      <Filter>cSceneManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

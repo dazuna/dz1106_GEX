@@ -41,6 +41,7 @@ void tools::DrawObject(glm::mat4 m,
 	GLint shaderProgID,
 	cVAOManager* pVAOManager)
 {
+	if(!(pCurrentObject->isVisible)) return;
 	// Turns on "alpha transparency"
 	// Reads what's on the buffer already, and blends it (RGB+A)
 	glEnable(GL_BLEND);
@@ -116,10 +117,12 @@ void tools::DrawObject(glm::mat4 m,
 	if (pCurrentObject->disableDepthBufferTest)
 	{
 		glDisable(GL_DEPTH_TEST);					// DEPTH Test OFF
+		glDepthMask(GL_FALSE);
 	}
 	else
 	{
 		glEnable(GL_DEPTH_TEST);						// Turn ON depth test
+		glDepthMask(GL_TRUE);
 	}
 
 	if (pCurrentObject->disableDepthBufferWrite)
@@ -131,33 +134,63 @@ void tools::DrawObject(glm::mat4 m,
 		glEnable(GL_DEPTH);								// Write to depth buffer
 	}
 
-	if (pCurrentObject->friendlyName == "wallBack")
+	//if (pCurrentObject->friendlyName == "wallBack")
+	//{
+	//	GLint bMakeHoles_UL = glGetUniformLocation(shaderProgID, "makeHoles");
+	//	glUniform1f(bMakeHoles_UL, (float)GL_TRUE);
+	//}
+	//else
+	//{
+	//	GLint bMakeHoles_UL = glGetUniformLocation(shaderProgID, "makeHoles");
+	//	glUniform1f(bMakeHoles_UL, (float)GL_FALSE);
+	//}
+	//
+	//if (debugger)
+	//{
+	//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//}
+	//
+	//if (itsDeadJim && pCurrentObject->friendlyName == "ztarDestroyer")
+	//{
+	//	GLint bMakeHoles_UL = glGetUniformLocation(shaderProgID, "itsDeadJim");
+	//	glUniform1f(bMakeHoles_UL, (float)GL_TRUE);
+	//	GLint boffset_UL = glGetUniformLocation(shaderProgID, "offset");
+	//	glUniform1f(boffset_UL, ::offset);
+	//}
+	//else
+	//{
+	//	GLint bMakeHoles_UL = glGetUniformLocation(shaderProgID, "itsDeadJim");
+	//	glUniform1f(bMakeHoles_UL, (float)GL_FALSE);
+	//}
+
+	GLint bIsBloom = glGetUniformLocation(shaderProgID, "isBloom");
+	glUniform1f(bIsBloom,float(GL_FALSE));
+	if (isBloom && pCurrentObject->friendlyName == "defScreen")
 	{
-		GLint bMakeHoles_UL = glGetUniformLocation(shaderProgID, "makeHoles");
-		glUniform1f(bMakeHoles_UL, (float)GL_TRUE);
-	}
-	else
-	{
-		GLint bMakeHoles_UL = glGetUniformLocation(shaderProgID, "makeHoles");
-		glUniform1f(bMakeHoles_UL, (float)GL_FALSE);
+		glUniform1f(bIsBloom,float(GL_TRUE));
 	}
 
-	if (debugger)
+	GLint bIsNightVision = glGetUniformLocation(shaderProgID, "isNightVision");
+	glUniform1f(bIsNightVision,float(GL_FALSE));
+	if (isNightVision && pCurrentObject->friendlyName == "theQuad")
 	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glUniform1f(bIsNightVision,float(GL_TRUE));
 	}
 
-	if (itsDeadJim && pCurrentObject->friendlyName == "ztarDestroyer")
+	//uniform bool shouldReflect;
+	//uniform bool shoulfRefract;	
+	GLint bShouldReflect = glGetUniformLocation(shaderProgID, "shouldReflect");
+	glUniform1f(bShouldReflect,float(GL_FALSE));
+	if (pCurrentObject->friendlyName == "sphereReflect")
 	{
-		GLint bMakeHoles_UL = glGetUniformLocation(shaderProgID, "itsDeadJim");
-		glUniform1f(bMakeHoles_UL, (float)GL_TRUE);
-		GLint boffset_UL = glGetUniformLocation(shaderProgID, "offset");
-		glUniform1f(boffset_UL, ::offset);
+		glUniform1f(bShouldReflect,float(GL_TRUE));
 	}
-	else
+
+	GLint bShouldRefract = glGetUniformLocation(shaderProgID, "shoulfRefract");
+	glUniform1f(bShouldRefract,float(GL_FALSE));
+	if (pCurrentObject->friendlyName == "sphereRefract")
 	{
-		GLint bMakeHoles_UL = glGetUniformLocation(shaderProgID, "itsDeadJim");
-		glUniform1f(bMakeHoles_UL, (float)GL_FALSE);
+		glUniform1f(bShouldRefract,float(GL_TRUE));
 	}
 
 	// ************************** SKYBOX **************************
@@ -175,17 +208,11 @@ void tools::DrawObject(glm::mat4 m,
 		// Set to all identity
 		const int NUMBEROFBONES = 100;
 
-		// Taken from "Skinned Mesh 2 - todo.docx"
+		// Taken from "Skinned Mesh 2"
 		std::vector< glm::mat4x4 > vecFinalTransformation;	
 		std::vector< glm::mat4x4 > vecOffsets;
 		std::vector< glm::mat4x4 > vecObjectBoneTransformation;
-
-		// This loads the bone transforms from the animation model
-		//pCurrentObject->pSM->BoneTransform( HACK_FrameTime,	// 0.0f // Frame time
-		//								    pCurrentObject->pSM->mapAnimationFriendlyNameTo_pScene.begin()->first,
-		//									vecFinalTransformation, 
-		//									vecObjectBoneTransformation, 
-		//								    vecOffsets );
+		
 		pCurrentObject->pAS->update(float(averageDeltaTime),
 			vecFinalTransformation,vecOffsets,vecObjectBoneTransformation);
 
