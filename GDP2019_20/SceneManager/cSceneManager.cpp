@@ -279,9 +279,8 @@ void cSceneManager::lastPass(GLFWwindow* window)
 	// Tie the texture to the texture unit
 	glActiveTexture(GL_TEXTURE0 + 40);				// Texture Unit 40!!
 	//glBindTexture(GL_TEXTURE_2D, pTheFBO->colourTexture_0_ID);	// Texture now assoc with texture unit 0
-	//auto texture = ::theSceneManager->scenesVector[0]->getFBO()->colourTexture_0_ID;
-	//auto texture = ::theSceneManager->theStencilScene->getFBO();
-	auto texture = this->theStencilScene->getFBO();
+	auto texture = this->scenesVector[0]->getFBO();
+	//auto texture = this->theStencilScene->getFBO();
 	glBindTexture(GL_TEXTURE_2D, texture->colourTexture_0_ID);
 //		glBindTexture(GL_TEXTURE_2D, pTheFBO->depthTexture_ID);	// Texture now assoc with texture unit 0
 	GLint textSamp00_UL = glGetUniformLocation(shaderProgID, "secondPassColourTexture");

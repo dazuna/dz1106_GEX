@@ -320,11 +320,9 @@ int main(void)
 
 		
 		//::theSceneManager->drawObjectWithFBO(window,"defScreen",0);
-		rotateTieFighter();
 		//fluctuateReflectionSphere();
 		theSceneManager->update();
-		theSceneManager->updateStencil(window);
-		// TODO: Invert the rule for pre Stencil Buffer...
+		// theSceneManager->updateStencil(window);
 		
 		switch (cursorType)
 		{
@@ -336,7 +334,7 @@ int main(void)
 		//	Update the objects through physics
 		averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		IntegrationStep_AAB(::g_map_GameObjects,float(averageDeltaTime));
-		pPhysic->TestForCollisions(::g_map_GameObjects);		
+		//pPhysic->TestForCollisions(::g_map_GameObjects);		
 
 		::theSceneManager->lastPass(window);
 		
