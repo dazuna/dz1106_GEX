@@ -29,6 +29,7 @@
 #include "GFLW_callbacks.h"// Keyboard, error, mouse, etc. are now here
 #include "cFBO/cFBO.h"
 #include "cAnimatedPlayer/cAnimatedPlayer.h"
+#include "cMeshMap.h"
 
 cFBO* pTheFBO = NULL;
 
@@ -69,7 +70,8 @@ bool isBloom = false;
 bool isNightVision = false;
 
 // Load up my "scene" objects (now global)
-std::map<std::string, cMesh*> g_map_Mesh;
+// std::map<std::string, cMesh*> g_map_Mesh;
+cMeshMap* theMeshMap = cMeshMap::getTheMeshMap();
 std::map<std::string, cGameObject*> g_map_GameObjects;
 std::map<float, cGameObject*> closestTransparentObjects;
 std::map<std::string, cGameObject*>::iterator selectedGameObject = g_map_GameObjects.begin();
@@ -142,13 +144,14 @@ int main(void)
 	// SkyBoxTexture
 	setSkyBoxTexture();
 
-	::pTextureManager->SetBasePath("assets/textures");
-
 	//JSON Loader for objects
+	::pTextureManager->SetBasePath("assets/textures");
 	JSONLoader::JSONLoadGameObjects(&::g_map_GameObjects);
-	JSONLoader::JSONLoadMeshes(&g_map_Mesh, pTheModelLoader);
+	JSONLoader::loadDefaultMesh("assets/models/Sphere_Radius_1_XYZ_n_uv.ply");
+	//JSONLoader::JSONLoadMeshesSimple();
+	JSONLoader::LoadMeshes_Thread();
 	JSONLoader::JSONLoadTextures(&::g_map_GameObjects, ::pTextureManager);
-	JSONLoader::loadMeshToGPU(pTheVAOManager, &::g_map_Mesh, &::g_map_GameObjects, shaderProgID);
+	//JSONLoader::loadMeshToGPU(pTheVAOManager, &::g_map_Mesh, &::g_map_GameObjects, shaderProgID);
 	selectedGameObject = ::g_map_GameObjects.begin();
 
 	//	//	mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
@@ -158,45 +161,28 @@ int main(void)
 	//cPhysics* pPhysic = new cPhysics();
 	cLowPassFilter avgDeltaTimeThingy;
 
-	// Let there be lights.. I guess
+	// Let there be lights... I guess
 	JSONLoader::JSONLoadLights(&::g_map_pLights,shaderProgID);
 	selectedLight = ::g_map_pLights.begin();
 
-	//::theSceneManager->init();
-
-	if(g_map_GameObjects.find("character") != g_map_GameObjects.end())
-	{
-		::theAnimatedPlayer->addPlayableObject(g_map_GameObjects.at("character"));
-		::theAnimatedPlayer->selectedPlayable = ::theAnimatedPlayer->playAnimChars.begin();
-	}
-
-	if(g_map_GameObjects.find("character2") != g_map_GameObjects.end())
-	{
-		::theAnimatedPlayer->addPlayableObject(g_map_GameObjects.at("character2"));
-		::theAnimatedPlayer->selectedPlayable = ::theAnimatedPlayer->playAnimChars.begin();
-	}
-
-	// Adjust camera to first position (if existent in map)
-	if (tools::pFindObjectByFriendlyNameMap("cameraPosition0"))
-	{
-		cameraEye = ::g_map_GameObjects["cameraPosition0"]->positionXYZ;
-		if (tools::pFindObjectByFriendlyNameMap("cameraTarget0"))
-		{
-			cameraTarget = ::g_map_GameObjects["cameraTarget0"]->positionXYZ;
-			visionVector = glm::normalize(cameraTarget - cameraEye);
-		}
-		cameraTarget = cameraEye + visionVector;
-	}
+	/* Animation Set*/
+	//if(g_map_GameObjects.find("character") != g_map_GameObjects.end())
+	//{
+	//	::theAnimatedPlayer->addPlayableObject(g_map_GameObjects.at("character"));
+	//	::theAnimatedPlayer->selectedPlayable = ::theAnimatedPlayer->playAnimChars.begin();
+	//}
+	//if(g_map_GameObjects.find("character2") != g_map_GameObjects.end())
+	//{
+	//	::theAnimatedPlayer->addPlayableObject(g_map_GameObjects.at("character2"));
+	//	::theAnimatedPlayer->selectedPlayable = ::theAnimatedPlayer->playAnimChars.begin();
+	//}
 
 	::g_pFlyCamera = new cFlyCamera();
-	::g_pFlyCamera->eye = cameraEye;
-	::g_pFlyCamera->cameraLookAt(cameraTarget);
+	::g_pFlyCamera->eye = ::g_map_GameObjects["cameraPosition0"]->positionXYZ;
+	::g_pFlyCamera->cameraLookAt(::g_map_GameObjects["cameraTarget0"]->positionXYZ);
 	::g_pFlyCamera->movementSpeed = 100.0f;
 
 	::theSceneManager->init();
-	::theSceneManager->createStencilScene();
-	
-	// todo: generar nuevos objetos eye y target para cada escena y crear la camara viendo a ellos.
 
 	// Get the initial time
 	double lastTime = glfwGetTime();
@@ -204,31 +190,12 @@ int main(void)
 
 	createSkyBoxObject();
 
-	// Set up the FBO object
-	pTheFBO = new cFBO();
-	// Usually we make this the size of the screen.
-	std::string FBOError;
-	if (pTheFBO->init(1280, 720, FBOError))
-	{
-		std::cout << "Frame buffer is OK" << std::endl;
-	}
-	else
-	{
-		std::cout << "FBO Error: " << FBOError << std::endl;
-	}
-
 	pDebugRenderer->initialize();
 	
 	while (!glfwWindowShouldClose(window))
 	{
-		//// Draw everything to the external frame buffer
-		//// (I get the frame buffer ID, and use that)
-		//glBindFramebuffer(GL_FRAMEBUFFER, pTheFBO->ID);
-		//pTheFBO->clearBuffers(true, true);
-		////// Set the passNumber to 0
-		//GLint passNumber_UniLoc = glGetUniformLocation(shaderProgID, "passNumber");
-		//glUniform1i(passNumber_UniLoc, 0);  //"passNumber"
-
+		JSONLoader::loadMeshToGPU(pTheVAOManager, &::g_map_GameObjects, shaderProgID);
+		
 		// Get the initial time
 		double currentTime = glfwGetTime();
 		// Frame time... (how many seconds since last frame)
@@ -317,10 +284,8 @@ int main(void)
 		//		tools::DrawObject(matModel, theWorldVector[index], shaderProgID, pTheVAOManager);
 		//	}
 		//}//for (int index...
-
+				
 		
-		//::theSceneManager->drawObjectWithFBO(window,"defScreen",0);
-		//fluctuateReflectionSphere();
 		theSceneManager->update();
 		// theSceneManager->updateStencil(window);
 		
@@ -334,18 +299,17 @@ int main(void)
 		//	Update the objects through physics
 		averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		IntegrationStep_AAB(::g_map_GameObjects,float(averageDeltaTime));
-		//pPhysic->TestForCollisions(::g_map_GameObjects);		
+		//pPhysic->TestForCollisions(::g_map_GameObjects);
 
-		::theSceneManager->lastPass(window);
-		
 		glm::mat4 p, v; float ratio;
 		glfwGetFramebufferSize(window, &width, &height);
 		ratio = width / float(height);
 		p = glm::perspective(0.6f,ratio,0.1f,15000.0f);
 		v = glm::mat4(1.0f);
 		v = glm::lookAt( ::g_pFlyCamera->eye,::g_pFlyCamera->getAtInWorldSpace(),::g_pFlyCamera->getUpVector() );
-		//::theSceneManager->drawObjectWithFBO(window,"defScreen",0);
 		pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
+
+		::theSceneManager->lastPass(window);		
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -360,22 +324,3 @@ int main(void)
 	exit(EXIT_SUCCESS);
 }
 
-void rotateTieFighter()
-{
-	if(::g_map_GameObjects.find("tieFighter") != ::g_map_GameObjects.end())
-	{
-		auto tie = ::g_map_GameObjects.at("tieFighter");
-		tie->updateOrientation(glm::vec3(0,1,0));
-	}
-}
-
-void fluctuateReflectionSphere()
-{
-	if(::g_map_GameObjects.find("sphereReflect") != ::g_map_GameObjects.end())
-	{
-		auto refSphere = ::g_map_GameObjects.at("sphereReflect");
-		refSphere->scale += float(::averageDeltaTime);
-		if(refSphere->scale > 20.f)
-		{ refSphere->scale = 15.f; }
-	}
-}

@@ -159,6 +159,7 @@
     <ClCompile Include="cGameObject.cpp" />
     <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cLowPassFilter.cpp" />
+    <ClCompile Include="cMeshMap.cpp" />
     <ClCompile Include="cModelLoader.cpp" />
     <ClCompile Include="cModelLoader_assimp.cpp" />
     <ClCompile Include="cPhysics.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="GFLW_callbacks.h" />
     <ClInclude Include="GLCommon.h" />
     <ClInclude Include="globalStuff.h" />
+    <ClInclude Include="cMeshMap.h" />
     <ClInclude Include="JSONLoader.h" />
     <ClInclude Include="LightManager\cLightHelper.h" />
     <ClInclude Include="Particle\cParticleEmitter.h" />

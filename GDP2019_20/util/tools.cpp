@@ -246,17 +246,21 @@ void tools::DrawObject(glm::mat4 m,
 	// ************************************************
 
 	sModelDrawInfo drawInfo;
+	
 	if (pVAOManager->FindDrawInfoByModelName(pCurrentObject->meshName, drawInfo))
 	{
 		glBindVertexArray(drawInfo.VAO_ID);
-		glDrawElements(GL_TRIANGLES,
-			drawInfo.numberOfIndices,
-			GL_UNSIGNED_INT,
-			0);
+		glDrawElements(GL_TRIANGLES,drawInfo.numberOfIndices,GL_UNSIGNED_INT,0);
 		glBindVertexArray(0);
 	}
-
-	return;
+	else
+	{
+		pVAOManager->FindDrawInfoByModelName("sphereMesh", drawInfo);
+		glBindVertexArray(drawInfo.VAO_ID);
+		glDrawElements(GL_TRIANGLES,drawInfo.numberOfIndices,GL_UNSIGNED_INT,0);
+		glBindVertexArray(0);
+	}
+	
 } // DrawObject;
 
 // returns NULL (0) if we didn't find it.
@@ -385,23 +389,6 @@ void tools::drawGameObjectXYZ(cDebugRenderer* pDebugRenderer)
 		selectedGameObject->second->positionXYZ,
 		(selectedGameObject->second->positionXYZ + (selectedGameObject->second->getCurrentUP() * 3.0f)),
 		yellow);
-}
-
-void tools::drawNormalsXYZ(cDebugRenderer* pDebugRenderer)
-{
-	//selectedGameObject->second;
-	cMesh transMesh;
-	glm::mat4 matWorld = glm::mat4(1.0f);
-	CalculateTransformedMesh(*::g_map_Mesh[selectedGameObject->second->meshName.c_str()], matWorld, transMesh);
-	//std::vector<sPlyVertexXYZ_N_UV> vecVertices;
-	std::vector<sPlyVertexXYZ_N_UV>::iterator itVerts;
-	for (itVerts = transMesh.vecVertices.begin(); itVerts != transMesh.vecVertices.end(); itVerts++)
-	{
-		pDebugRenderer->addLine(
-			glm::vec3(itVerts->x, itVerts->y, itVerts->z),
-			glm::vec3(itVerts->nx, itVerts->ny, itVerts->nz),
-			glm::vec3(1.0f, 1.0f, 1.0f));
-	}
 }
 
 std::string tools::GLMvec3toString(glm::vec3 theGLMvec3)

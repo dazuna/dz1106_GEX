@@ -32,7 +32,7 @@ extern bool debugger;
 extern std::string console;
 
 // Load up my "scene" objects (now global)
-extern std::map<std::string, cMesh*> g_map_Mesh;
+// extern std::map<std::string, cMesh*> g_map_Mesh;
 extern std::map<std::string, cGameObject*> g_map_GameObjects;
 extern std::map<float, cGameObject*> closestTransparentObjects;
 extern std::map<std::string, cGameObject*>::iterator selectedGameObject;

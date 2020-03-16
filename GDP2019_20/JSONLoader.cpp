@@ -1,4 +1,5 @@
 #include "JSONLoader.h"
+#include "cMeshMap.h"
 
 using json = nlohmann::json;
 
@@ -33,7 +34,6 @@ bool JSONLoader::JSONLoadMeshes(std::map<std::string, cMesh*>* g_map_Mesh, cMode
 		}
 
 		// ASSIMP NORMAL STATIC LOAD
-		//pTheModelLoader->LoadPlyModel(location.c_str(), *tempMesh);
 		std::string errs;
 		cMesh* tempMesh = new cMesh();
 		pTheModelLoader->LoadModel_Assimp(location.c_str(), *tempMesh, errs);
@@ -42,6 +42,96 @@ bool JSONLoader::JSONLoadMeshes(std::map<std::string, cMesh*>* g_map_Mesh, cMode
 	//std::cout << j;
 	std::cout << "[OK]\n" << index << " models loaded" << std::endl;
 	return true;
+}
+
+void JSONLoader::loadDefaultMesh(std::string filename)
+{
+	std::string errs;
+	cMesh* tempMesh = new cMesh();
+	pTheModelLoader->LoadModel_Assimp(filename, *tempMesh, errs);
+	//::g_map_Mesh.insert({ "sphereMesh",tempMesh });
+	cMeshMap* theMeshMap = cMeshMap::getTheMeshMap();
+	theMeshMap->addMesh("sphereMesh",tempMesh);
+}
+
+bool JSONLoader::JSONLoadMeshes(std::map<std::string, cMesh*>* g_map_Mesh)
+{
+	std::cout << "loading meshes...";
+	cModelLoader* pTheModelLoader = new cModelLoader();
+	std::ifstream inFile(gameobjects_json.c_str());
+	json jsonArray;
+	int index = 0;
+	inFile >> jsonArray;
+
+	for (index = 0; index < jsonArray.size(); index++)
+	{
+		std::string name = jsonArray[index]["meshName"];
+		std::string location = jsonArray[index]["meshURL"];
+
+		// LOAD RIGGED THING
+		if (jsonArray[index].find("isSkinnedMesh") != jsonArray[index].end())
+		{
+			if(jsonArray[index]["isSkinnedMesh"])
+			{
+				loadSkinnedMesh(jsonArray,index);
+				continue;
+			}
+		}
+
+		// ASSIMP NORMAL STATIC LOAD
+		std::string errs;
+		cMesh* tempMesh = new cMesh();
+		pTheModelLoader->LoadModel_Assimp(location.c_str(), *tempMesh, errs);
+		//g_map_Mesh->insert({ name.c_str(),tempMesh });
+		cMeshMap* theMeshMap = cMeshMap::getTheMeshMap();
+		theMeshMap->addMesh(name,tempMesh);
+	}
+	//std::cout << j;
+	std::cout << "[OK]\n" << index << " models loaded" << std::endl;
+	return true;
+}
+
+bool JSONLoader::JSONLoadMeshesSimple()
+{
+	std::cout << "loading meshes...";
+	cModelLoader* pTheModelLoader = new cModelLoader();
+	std::ifstream inFile(gameobjects_json.c_str());
+	json jsonArray;
+	int index = 0;
+	inFile >> jsonArray;
+
+	for (index = 0; index < jsonArray.size(); index++)
+	{
+		std::string name = jsonArray[index]["meshName"];
+		std::string location = jsonArray[index]["meshURL"];
+
+		// LOAD RIGGED THING
+		if (jsonArray[index].find("isSkinnedMesh") != jsonArray[index].end())
+		{
+			if(jsonArray[index]["isSkinnedMesh"])
+			{
+				loadSkinnedMesh(jsonArray,index);
+				continue;
+			}
+		}
+
+		// ASSIMP NORMAL STATIC LOAD
+		std::string errs;
+		cMesh* tempMesh = new cMesh();
+		pTheModelLoader->LoadModel_Assimp(location.c_str(), *tempMesh, errs);
+		//g_map_Mesh->insert({ name.c_str(),tempMesh });
+		cMeshMap* theMeshMap = cMeshMap::getTheMeshMap();
+		theMeshMap->addMesh(name,tempMesh);
+	}
+	//std::cout << j;
+	std::cout << "[OK]\n" << index << " models loaded" << std::endl;
+	return true;
+}
+
+void JSONLoader::LoadMeshes_Thread()
+{
+	std::thread thread1(JSONLoadMeshesSimple);
+	thread1.detach();
 }
 
 bool JSONLoader::JSONLoadLights(std::map<std::string, cLight*>* g_map_pLights, GLuint shadProgID)
@@ -215,20 +305,37 @@ bool JSONLoader::JSONLoadGameObjects(
 }
 
 bool JSONLoader::loadMeshToGPU(cVAOManager* pTheVAOManager,
-	std::map<std::string, cMesh*>* g_map_Mesh,
 	std::map<std::string, cGameObject*>* g_map_GameObjects,
 	GLuint shaderProgID	)
 {
+	size_t count = 0;
+	cMeshMap* theMeshMap = cMeshMap::getTheMeshMap();
+	
 	for (auto itGO = g_map_GameObjects->begin(); itGO != g_map_GameObjects->end(); itGO++)
 	{
-		sModelDrawInfo drawInfo;
 		if(itGO->second->pAS) continue;
-		pTheVAOManager->LoadModelIntoVAO(
-			itGO->second->meshName,
-			*(g_map_Mesh->at(itGO->second->meshName)),
-			drawInfo, shaderProgID);
-
+		//if(g_map_Mesh->find(itGO->second->meshName) == g_map_Mesh->end()) continue;
+		if(!(theMeshMap->findMesh(itGO->second->meshName))) continue;
+		auto* pMesh = theMeshMap->getMesh(itGO->second->meshName);
+		if(pMesh->status == "loaded")
+		{
+			sModelDrawInfo drawInfo;
+			
+			pMesh = theMeshMap->getMesh(itGO->second->meshName);
+			pTheVAOManager->LoadModelIntoVAO(
+				itGO->second->meshName,
+				*(pMesh),
+				drawInfo, shaderProgID);
+			
+			pMesh = theMeshMap->getMesh(itGO->second->meshName);
+			pMesh->status = "on_gpu";
+			count++;
+		}
 	}//for (int index...
+	if(count > 0)
+	{
+		std::cout << "loaded meshes this frame: " << count << std::endl;
+	}
 	return true;
 }
 

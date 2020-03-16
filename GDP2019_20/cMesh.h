@@ -4,6 +4,7 @@
 #include <vector>		// "smart array"
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
+#include <string>
 
 // This structure matches the file, so that our life is
 //   simpler and happier, and we all get along.
@@ -32,10 +33,9 @@ struct AABBTriangle
 	glm::vec3 n;
 };
 
-class cMesh
+struct cMesh
 {
-public:
-	cMesh() {};			// Empty c'tor
+	cMesh() : status("not_loaded") {};			// Empty c'tor
 	~cMesh() {};		// Empty d'tor
 	// Store the vertices
 	std::vector<sPlyVertexXYZ_N_UV> vecVertices;
@@ -43,6 +43,8 @@ public:
 	std::vector<sPlyTriangle> vecTriangles;
 	// Store elegant
 	std::vector<AABBTriangle> vecABTriangles;
+	// Status of the Mesh
+	std::string status;
 };
 
 #endif 

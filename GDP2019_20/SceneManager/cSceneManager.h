@@ -30,6 +30,7 @@ public:
 	
 	// methods
 	bool init();
+	void loadAllObjectsToScene1();
 	bool addScene(cScene *pTheScene);
 	bool removeScene(cScene* pTheScene);
 	void setCameras2Scene(cScene* pTheScene);

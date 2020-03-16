@@ -200,6 +200,9 @@
     <ClCompile Include="SceneManager\cStencilScene.cpp">
       <Filter>cSceneManager</Filter>
     </ClCompile>
+    <ClCompile Include="cMeshMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cMesh.h">
@@ -327,6 +330,9 @@
     </ClInclude>
     <ClInclude Include="SceneManager\cStencilScene.h">
       <Filter>cSceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="cMeshMap.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
