@@ -6,13 +6,11 @@
 #include "cVAOManager.h"
 #include "util/tools.h"
 #include "SceneManager/cSceneManager.h"
-#include <glm/glm.hpp>
-#include <glm/vec3.hpp>
-#include <glm/gtx/string_cast.hpp>
 #include <nlohmann/json.hpp>
 #include <iostream>	
 #include <fstream>	
 #include <vector>
+#include <thread>
 #include <map>
 
 class JSONLoader
@@ -27,6 +25,12 @@ public:
 	static bool JSONLoadMeshes(
 		std::map<std::string, cMesh*>* g_map_Mesh,
 		cModelLoader* pTheModelLoader);
+	static void loadDefaultMesh(
+		std::string filename);
+	static bool JSONLoadMeshes(
+		std::map<std::string, cMesh*>* g_map_Mesh);
+	static bool JSONLoadMeshesSimple();
+	static void LoadMeshes_Thread();
 	static bool JSONLoadLights(
 		std::map<std::string, cLight*>* g_map_pLights,
 		GLuint shadProgID);
@@ -34,7 +38,6 @@ public:
 		std::map<std::string, cGameObject*>* g_map_GameObjects);
 	static bool loadMeshToGPU(
 		cVAOManager* pTheVAOManager,
-		std::map<std::string, cMesh*>* g_map_Mesh,
 		std::map<std::string, cGameObject*>* g_map_GameObjects,
 		GLuint shaderProgID);
 	static bool JSONSaveLights(

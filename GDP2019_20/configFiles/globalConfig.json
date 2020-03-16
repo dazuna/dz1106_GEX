@@ -7,7 +7,7 @@
             "name": "scene1",
             "jsonPath": "configScenes/scene1.json",
             "effect": "none",
-            "cameraNumber": [1],
+            "cameraNumber": [0],
             "width": 1280,
             "height": 720
         }

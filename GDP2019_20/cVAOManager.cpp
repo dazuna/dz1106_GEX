@@ -243,19 +243,13 @@ bool cVAOManager::FindDrawInfoByModelName(
 		std::string filename,
 		sModelDrawInfo &drawInfo) 
 {
-	std::map< std::string /*model name*/,
-			sModelDrawInfo /* info needed to draw*/ >::iterator 
-		itDrawInfo = this->m_map_ModelName_to_VAOID.find( filename );
+	auto itDrawInfo = this->m_map_ModelName_to_VAOID.find( filename );
 
-	// Find it? 
 	if ( itDrawInfo == this->m_map_ModelName_to_VAOID.end() )
 	{
-		// Nope
 		return false;
 	}
-
-	// Else we found the thing to draw
-	// ...so 'return' that information
+	
 	drawInfo = itDrawInfo->second;
 	return true;
 }

@@ -99,7 +99,7 @@ bool cModelLoader::LoadModel_Assimp(std::string filename,
 	// NOTE: Our scene will be deleted when the mImporter (on the stack) goes out of scope
 
 
-
+	theMesh.status = "loaded";
 
 	return true;
 }

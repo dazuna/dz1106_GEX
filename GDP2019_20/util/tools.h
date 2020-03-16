@@ -12,12 +12,9 @@
 #include "../cGameObject.h"
 #include "../cShaderManager.h"
 #include "../TextureManager/cBasicTextureManager.h"
-// JSON Stuff
-//#include "../JSONLoader.h"
 #include "../globalStuff.h"
 #include "../cAABB/cAABB.h"
 #include "../DebugRenderer/cDebugRenderer.h"
-// Used to visualize the attenuation of the lights...
 #include "../cFlyCamera/cFlyCamera.h"
 
 template <class T>
