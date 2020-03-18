@@ -189,3 +189,39 @@ cGraph::nodeVec cGraph::getNeighbors(int x, int y)
 	return result;
 }
 
+int cGraph::getHeuristicDistance(intPair a, intPair b)
+{
+	// first = x, second = y
+	return std::abs(a.first - b.first) + std::abs(a.second - b.second);
+}
+
+int cGraph::getCost(cNode origin, cNode destiny)
+{
+	intPair a = {origin.position.x,origin.position.y};
+	intPair b = {destiny.position.x,destiny.position.y};
+	// check if diagonal
+	if(a.first != b.first && a.second != b.second )
+	{
+		if(destiny.colour == "ylw")
+		{
+			return 28;
+		}
+		else
+		{
+			return 14;
+		}
+	}
+	else
+	{
+		if(destiny.colour == "ylw")
+		{
+			return 20;
+		}
+		else
+		{
+			return 10;
+		}
+	}
+}
+
+

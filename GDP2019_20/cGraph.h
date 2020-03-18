@@ -20,9 +20,11 @@ struct cNode
 struct cGraph 
 {
 	typedef std::vector<cNode*> nodeVec;
+    typedef std::pair<int,int> intPair;
+	
 	std::vector<nodeVec> mGraph;
     int width, height;
-	std::pair<int,int> start,finish,resource;
+	intPair start,finish,resource;
 
     cGraph(BMPImage* bmpImage);
 	void checkGoalOrResource(cNode* node,
@@ -32,6 +34,7 @@ struct cGraph
     void PrintGraph();
 
 	nodeVec getNeighbors(int x, int y);
-	
+	int getHeuristicDistance(intPair a, intPair b);
+	int getCost(cNode a, cNode b);
 };
 
