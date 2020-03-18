@@ -53,61 +53,6 @@ specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 velocity: vec3(0.000000, 0.000000, 0.000000)
 accel: vec3(0.000000, 0.000000, 0.000000)
 debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: aStarDestroyer
-meshName: aStarDestroyerMesh
-meshURL: assets/models/Stardestroyer.ply
-positionXYZ: vec3(0.000000, 10.000000, 0.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: aE75
-meshName: E75Mesh
-meshURL: assets/models/E75.ply
-positionXYZ: vec3(0.000000, 10.000000, 0.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: aE752
-meshName: E752Mesh
-meshURL: assets/models/E752.ply
-positionXYZ: vec3(30.000000, 10.000000, 0.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: aLeopard
-meshName: LeopardMesh
-meshURL: assets/models/Leopard.ply
-positionXYZ: vec3(60.000000, 10.000000, 0.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: aAbrams
-meshName: AbramsMesh
-meshURL: assets/models/Abrams.ply
-positionXYZ: vec3(90.000000, 10.000000, 0.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 friendlyName: stencilator
 meshName: stencilatorMesh
 meshURL: assets/models/sprite_tile.ply

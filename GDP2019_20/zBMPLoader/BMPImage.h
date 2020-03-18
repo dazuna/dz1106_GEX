@@ -2,6 +2,7 @@
 #define BMPImage_HG
 
 #include <string>
+#include <vector>
 
 class BMPImage
 {
@@ -16,7 +17,6 @@ public:
 	unsigned long GetImageSize(void);
 	char* GetData(void);
 
-private:
 	BMPImage(void);
 	bool LoadBMPFromFile(const std::string &filename);
 
@@ -26,6 +26,10 @@ private:
 	unsigned long m_ImageHeight;
 	unsigned long m_ImageSize;
 	char* m_pData;
+	std::vector<std::string> rgbVector;
+	std::pair<int,int> start;
+	std::pair<int,int> resource;
+	std::pair<int,int> finish;
 };
 
 #endif
