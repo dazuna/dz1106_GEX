@@ -170,6 +170,36 @@ int main(void)
 	//	std::cout << std::setprecision(2) << node->position.x << "," << node->position.z << std::endl;
 	//}
 
+	cNode* root = theGraph->mGraph[theGraph->start.first][theGraph->start.second];
+	cNode* resource = theGraph->Dijkstra(root);
+	std::cout << "Dijsktra path: " << std::endl;
+	if(resource)
+	{
+		auto resourcePath = theGraph->getParents(resource);
+		for(auto node : resourcePath)
+		{
+			std::cout << int(node->position.x) << "," << int(node->position.z) << std::endl;
+		}
+	}
+	std::cout << "End of Dijsktra path\n\n" << std::endl;
+
+	theGraph->ResetGraph();
+	root = theGraph->mGraph[theGraph->resource.first][theGraph->resource.second];
+	cNode* goal = theGraph->mGraph[theGraph->finish.first][theGraph->finish.second];
+	cNode* finish = theGraph->AStar(root,goal);
+	std::cout << "AStar path: " << std::endl;
+	if(resource)
+	{
+		auto finishPath = theGraph->getParents(finish);
+		for(auto node : finishPath)
+		{
+			std::cout << int(node->position.x) << "," << int(node->position.z) << std::endl;
+		}
+	}
+	std::cout << "End of AStar path\n\n" << std::endl;
+
+	return 0;
+	
 	//JSON Loader for objects
 	::pTextureManager->SetBasePath("assets/textures");
 	JSONLoader::JSONLoadGameObjects(&::g_map_GameObjects);

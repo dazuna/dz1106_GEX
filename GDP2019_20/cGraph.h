@@ -6,10 +6,11 @@
 
 struct cNode 
 {
+	// red,grn,blu,wht,ylw,blk
     std::string colour;
     bool visited;
-    float gCostSoFar;
-    float hDistance;
+    int gCostSoFar;
+    int hDistance;
     glm::vec3 position;
     cNode* parent;
 	bool isResource;
@@ -32,9 +33,17 @@ struct cGraph
 
     void ResetGraph();
     void PrintGraph();
+	nodeVec getParents(cNode* theNode);
 
+	// Algorithm Tools
 	nodeVec getNeighbors(int x, int y);
 	int getHeuristicDistance(intPair a, intPair b);
-	int getCost(cNode a, cNode b);
+	int getCost(cNode* a, cNode* b);
+	bool isNodeInOpenList(const nodeVec& openList, cNode* child);
+
+	// Algorithms
+	cNode* Dijkstra(cNode* rootNode);
+	cNode* AStar(cNode* rootNode, cNode* goal);
+	
 };
 
