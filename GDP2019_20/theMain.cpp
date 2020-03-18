@@ -9,6 +9,7 @@
 #include <iostream>
 #include <map>		
 #include <sstream>
+#include <iomanip>
 #include <float.h>
 #include <string>
 #include "cModelLoader.h"			
@@ -19,8 +20,6 @@
 #include "JSONLoader.h"// JSON Stuff	
 #include "cPhysics.h"
 #include "cLowPassFilter.h"
-//#include "PhysicsStuff.h"// The Physics function
-//#include "cAABB/cAABB.h"
 #include "cAABB/PhysicsAABBStuff.h"
 #include "DebugRenderer/cDebugRenderer.h"	
 #include "cLight.h"// Used to visualize the attenuation of the lights...
@@ -30,6 +29,8 @@
 #include "cFBO/cFBO.h"
 #include "cAnimatedPlayer/cAnimatedPlayer.h"
 #include "cMeshMap.h"
+#include "zBMPLoader/BMPLoader.h" // ############ PATH FINDING ##############
+#include  "cGraph.h"
 
 cFBO* pTheFBO = NULL;
 
@@ -39,7 +40,6 @@ glm::vec3 cameraEye = glm::vec3(0.0f, 50.0f, 100.0f);
 glm::vec3 cameraTarget = glm::vec3(0.0f, 50.0f, 0.0f);
 glm::vec3 visionVector = glm::normalize(cameraTarget - cameraEye);
 glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
-// vec3(21.258450, 22.228125, 37.885464)
 
 // This is a "normalized" direction (i.e. the length is 1.0f)
 glm::vec3 sexyLightSpotDirection = glm::vec3(0.0f, -1.0f, 0.0f);
@@ -57,6 +57,8 @@ extern std::map<unsigned long long /*ID*/, cAABB*> g_mapAABBs_World;
 playerController* pPlayerControl;
 //cLuaBrain* p_LuaScripts;
 //extern std::map<unsigned long long /*ID*/, cAABB*> g_vecAABBs_World;
+
+cGraph* theGraph;
 
 // pirateStuff
 double timer = 0.0;
@@ -144,6 +146,30 @@ int main(void)
 	// SkyBoxTexture
 	setSkyBoxTexture();
 
+	BMPLoader bmpLoader;
+	bmpLoader.createColorVector();
+	theGraph = new cGraph(bmpLoader.bmp);
+	
+	//theGraph->PrintGraph();
+	//auto neighbors = theGraph->getNeighbors(1,1);
+	//std::cout << "neighbors for [1,1]: " << std::endl;
+	//for(auto node : neighbors)
+	//{
+	//	std::cout << std::setprecision(2) << node->position.x << "," << node->position.z << std::endl;
+	//}
+	//neighbors = theGraph->getNeighbors(3,2);
+	//std::cout << "neighbors for [3,2]: " << std::endl;
+	//for(auto node : neighbors)
+	//{
+	//	std::cout << std::setprecision(2) << node->position.x << "," << node->position.z << std::endl;
+	//}
+	//neighbors = theGraph->getNeighbors(7,5);
+	//std::cout << "neighbors for [7,5]: " << std::endl;
+	//for(auto node : neighbors)
+	//{
+	//	std::cout << std::setprecision(2) << node->position.x << "," << node->position.z << std::endl;
+	//}
+
 	//JSON Loader for objects
 	::pTextureManager->SetBasePath("assets/textures");
 	JSONLoader::JSONLoadGameObjects(&::g_map_GameObjects);
@@ -188,7 +214,7 @@ int main(void)
 	double lastTime = glfwGetTime();
 	std::cout << "start loop!" << std::endl;
 
-	createSkyBoxObject();
+	createSkyBoxObject();	
 
 	pDebugRenderer->initialize();
 	
