@@ -219,7 +219,10 @@
       <Filter>BMPLoader</Filter>
     </ClCompile>
     <ClCompile Include="cGraph.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>PathFinder</Filter>
+    </ClCompile>
+    <ClCompile Include="sPathFinder.cpp">
+      <Filter>PathFinder</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -362,6 +365,9 @@
       <Filter>BMPLoader</Filter>
     </ClInclude>
     <ClInclude Include="cGraph.h">
+      <Filter>PathFinder</Filter>
+    </ClInclude>
+    <ClInclude Include="sPathFinder.h">
       <Filter>PathFinder</Filter>
     </ClInclude>
   </ItemGroup>

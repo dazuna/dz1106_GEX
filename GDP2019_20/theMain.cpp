@@ -31,6 +31,7 @@
 #include "cMeshMap.h"
 #include "zBMPLoader/BMPLoader.h" // ############ PATH FINDING ##############
 #include  "cGraph.h"
+#include "sPathFinder.h"
 
 cFBO* pTheFBO = NULL;
 
@@ -173,9 +174,10 @@ int main(void)
 	cNode* root = theGraph->mGraph[theGraph->start.first][theGraph->start.second];
 	cNode* resource = theGraph->Dijkstra(root);
 	std::cout << "Dijsktra path: " << std::endl;
+	cGraph::nodeVec resourcePath;
 	if(resource)
 	{
-		auto resourcePath = theGraph->getParents(resource);
+		resourcePath = theGraph->getParents(resource);
 		for(auto node : resourcePath)
 		{
 			std::cout << int(node->position.x) << "," << int(node->position.z) << std::endl;
@@ -188,9 +190,10 @@ int main(void)
 	cNode* goal = theGraph->mGraph[theGraph->finish.first][theGraph->finish.second];
 	cNode* finish = theGraph->AStar(root,goal);
 	std::cout << "AStar path: " << std::endl;
-	if(resource)
+	cGraph::nodeVec finishPath;
+	if(finish)
 	{
-		auto finishPath = theGraph->getParents(finish);
+		finishPath = theGraph->getParents(finish);
 		for(auto node : finishPath)
 		{
 			std::cout << int(node->position.x) << "," << int(node->position.z) << std::endl;
@@ -198,8 +201,9 @@ int main(void)
 	}
 	std::cout << "End of AStar path\n\n" << std::endl;
 
-	return 0;
-	
+	sPathFinder* thePathFinder = sPathFinder::getThePathFinder();
+	thePathFinder->init(resourcePath,finishPath,theGraph);
+		
 	//JSON Loader for objects
 	::pTextureManager->SetBasePath("assets/textures");
 	JSONLoader::JSONLoadGameObjects(&::g_map_GameObjects);
@@ -244,8 +248,11 @@ int main(void)
 	double lastTime = glfwGetTime();
 	std::cout << "start loop!" << std::endl;
 
-	createSkyBoxObject();	
+	createSkyBoxObject();
 
+	thePathFinder->setTheGameObject(::g_map_GameObjects.at("sphereRed"));
+	thePathFinder->setTheResource(::g_map_GameObjects.at("sphereWhite"));
+	
 	pDebugRenderer->initialize();
 	
 	while (!glfwWindowShouldClose(window))
@@ -356,6 +363,8 @@ int main(void)
 		averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		IntegrationStep_AAB(::g_map_GameObjects,float(averageDeltaTime));
 		//pPhysic->TestForCollisions(::g_map_GameObjects);
+
+		thePathFinder->update(float(averageDeltaTime));
 
 		glm::mat4 p, v; float ratio;
 		glfwGetFramebufferSize(window, &width, &height);

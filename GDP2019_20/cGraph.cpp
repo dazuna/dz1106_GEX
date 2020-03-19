@@ -35,7 +35,7 @@ cGraph::cGraph(BMPImage* bmpImage)
 		for(auto x = 0; x < width; x++)
 		{
 			const std::string color = (bmpImage->rgbVector[idx]);
-			auto newNode = new cNode(color,glm::vec3(x,10,y));
+			auto newNode = new cNode(color,glm::vec3(x,y,1));
 			
 			// check if the node is the goal, start, or resource
 			checkGoalOrResource(newNode,{x,y});
@@ -286,7 +286,7 @@ cNode* cGraph::Dijkstra(cNode* rootNode)
         }
         closedList.push_back(currNode);
 
-        //std::cout << int(currNode->position.x) <<","<< int(currNode->position.z) << std::endl;
+        //std::cout << int(currNode->position.x) <<","<< int(currNode->position.y) << std::endl;
         currNode->visited = true;
         if (currNode->isResource) 
         {
@@ -294,7 +294,7 @@ cNode* cGraph::Dijkstra(cNode* rootNode)
         }
 
         //Go through every child node node
-    	nodeVec neighbors = getNeighbors(int(currNode->position.x),int(currNode->position.z));
+    	nodeVec neighbors = getNeighbors(int(currNode->position.x),int(currNode->position.y));
         for(auto child : neighbors) 
         {    
             if(child->visited == false)
@@ -319,8 +319,8 @@ cNode* cGraph::Dijkstra(cNode* rootNode)
 
 cNode* cGraph::AStar(cNode* rootNode, cNode* goal)
 {
-	intPair a = std::make_pair(int(rootNode->position.x),int(rootNode->position.z));
-	intPair b = std::make_pair(int(goal->position.x),int(goal->position.z));
+	intPair a = std::make_pair(int(rootNode->position.x),int(rootNode->position.y));
+	intPair b = std::make_pair(int(goal->position.x),int(goal->position.y));
     rootNode->hDistance = getHeuristicDistance(a,b);
     rootNode->gCostSoFar = 0;
 
@@ -355,7 +355,7 @@ cNode* cGraph::AStar(cNode* rootNode, cNode* goal)
         }
         closedList.push_back(currNode);
 
-		std::cout << int(currNode->position.x) <<","<< int(currNode->position.z) << std::endl;
+		std::cout << int(currNode->position.x) <<","<< int(currNode->position.y) << std::endl;
         currNode->visited = true;
         if (currNode->isFinish) 
         {
@@ -363,7 +363,7 @@ cNode* cGraph::AStar(cNode* rootNode, cNode* goal)
         }
 
         //Go through every child node node 
-    	nodeVec neighbors = getNeighbors(int(currNode->position.x),int(currNode->position.z));
+    	nodeVec neighbors = getNeighbors(int(currNode->position.x),int(currNode->position.y));
         for (auto child : neighbors)
         {
             if (child->visited == false)
@@ -375,7 +375,7 @@ cNode* cGraph::AStar(cNode* rootNode, cNode* goal)
                     child->parent = currNode;
                     if (!isNodeInOpenList(openList, child))
                     {
-                    	intPair tempPair = std::make_pair(int(child->position.x),int(child->position.z));
+                    	intPair tempPair = std::make_pair(int(child->position.x),int(child->position.y));
                         child->hDistance = getHeuristicDistance(tempPair, b);
                         openList.push_back(child);
                     }

@@ -186,6 +186,7 @@
     <ClCompile Include="SceneManager\cScene.cpp" />
     <ClCompile Include="SceneManager\cSceneManager.cpp" />
     <ClCompile Include="skybox\skybox.cpp" />
+    <ClCompile Include="sPathFinder.cpp" />
     <ClCompile Include="TextureManager\C24BitBMPpixel.cpp" />
     <ClCompile Include="TextureManager\cBasicTextureManager.cpp" />
     <ClCompile Include="TextureManager\cGLColourHelper.cpp" />
@@ -236,6 +237,7 @@
     <ClInclude Include="SceneManager\cStencilScene.h" />
     <ClInclude Include="skybox\skybox.h" />
     <ClInclude Include="sModelDrawInfo.h" />
+    <ClInclude Include="sPathFinder.h" />
     <ClInclude Include="sVertex_xyz_rgba_n_uv2_bt_4Bones.h" />
     <ClInclude Include="TextureManager\C24BitBMPpixel.h" />
     <ClInclude Include="TextureManager\cBasicTextureManager.h" />
