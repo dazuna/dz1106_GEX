@@ -1,7 +1,7 @@
 friendlyName: cameraPosition0
 meshName: cubeMesh
 meshURL: assets/models/cube1_xyx_n_uv.ply
-positionXYZ: vec3(0.000000, 30.000000, -80.000000)
+positionXYZ: vec3(80.000000, 80.000000, 250.000000)
 rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
@@ -12,7 +12,7 @@ debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 friendlyName: cameraTarget0
 meshName: cubeMesh
 meshURL: assets/models/cube1_xyx_n_uv.ply
-positionXYZ: vec3(0.000000, 10.000000, 0.000000)
+positionXYZ: vec3(80.000000, 80.000000, 0.000000)
 rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
@@ -34,7 +34,7 @@ debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 friendlyName: sphereRed
 meshName: sphereMesh
 meshURL: assets/models/Sphere_Radius_1_XYZ_n_uv.ply
-positionXYZ: vec3(3.000000, 10.000000, 5.000000)
+positionXYZ: vec3(0.000000, 0.000000, -10.000000)
 rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
@@ -45,7 +45,7 @@ debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 friendlyName: sphereWhite
 meshName: sphereMesh
 meshURL: assets/models/Sphere_Radius_1_XYZ_n_uv.ply
-positionXYZ: vec3(-3.000000, 10.000000, 5.000000)
+positionXYZ: vec3(0.000000, 0.000000, 10.000000)
 rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
@@ -53,54 +53,10 @@ specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 velocity: vec3(0.000000, 0.000000, 0.000000)
 accel: vec3(0.000000, 0.000000, 0.000000)
 debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: aStarDestroyer
-meshName: aStarDestroyerMesh
-meshURL: assets/models/Stardestroyer.ply
-positionXYZ: vec3(0.000000, 10.000000, 0.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: aE75
-meshName: E75Mesh
-meshURL: assets/models/E75.ply
-positionXYZ: vec3(0.000000, 10.000000, 0.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: aE752
-meshName: E752Mesh
-meshURL: assets/models/E752.ply
-positionXYZ: vec3(30.000000, 10.000000, 0.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: aLeopard
-meshName: LeopardMesh
-meshURL: assets/models/Leopard.ply
-positionXYZ: vec3(60.000000, 10.000000, 0.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
-objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: aAbrams
-meshName: AbramsMesh
-meshURL: assets/models/Abrams.ply
-positionXYZ: vec3(90.000000, 10.000000, 0.000000)
+friendlyName: zResourceMap
+meshName: terrainMesh
+meshURL: assets/models/sprite_tile2.ply
+positionXYZ: vec3(80.000000, 80.000000, 0.000000)
 rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)

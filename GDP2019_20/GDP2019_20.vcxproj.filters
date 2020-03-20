@@ -75,6 +75,12 @@
     <Filter Include="cAnimatedPlayer">
       <UniqueIdentifier>{a2e6db9c-29e5-475f-aba5-3ee0c37a866e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BMPLoader">
+      <UniqueIdentifier>{155542dc-7e29-4310-9c41-38dad233ba35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PathFinder">
+      <UniqueIdentifier>{7d715e86-a9b5-41d1-b1d8-bdc05b6cbcc5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -202,6 +208,21 @@
     </ClCompile>
     <ClCompile Include="cMeshMap.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="zBMPLoader\BMPImage.cpp">
+      <Filter>BMPLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="zBMPLoader\BMPLoader.cpp">
+      <Filter>BMPLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="zBMPLoader\ResourceManager.cpp">
+      <Filter>BMPLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="cGraph.cpp">
+      <Filter>PathFinder</Filter>
+    </ClCompile>
+    <ClCompile Include="sPathFinder.cpp">
+      <Filter>PathFinder</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -333,6 +354,21 @@
     </ClInclude>
     <ClInclude Include="cMeshMap.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zBMPLoader\BMPImage.h">
+      <Filter>BMPLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="zBMPLoader\BMPLoader.h">
+      <Filter>BMPLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="zBMPLoader\ResourceManager.h">
+      <Filter>BMPLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="cGraph.h">
+      <Filter>PathFinder</Filter>
+    </ClInclude>
+    <ClInclude Include="sPathFinder.h">
+      <Filter>PathFinder</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

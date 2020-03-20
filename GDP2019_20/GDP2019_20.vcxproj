@@ -157,6 +157,7 @@
     <ClCompile Include="cFBO\cFBO.cpp" />
     <ClCompile Include="cFlyCamera\cFlyCamera.cpp" />
     <ClCompile Include="cGameObject.cpp" />
+    <ClCompile Include="cGraph.cpp" />
     <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cLowPassFilter.cpp" />
     <ClCompile Include="cMeshMap.cpp" />
@@ -185,6 +186,7 @@
     <ClCompile Include="SceneManager\cScene.cpp" />
     <ClCompile Include="SceneManager\cSceneManager.cpp" />
     <ClCompile Include="skybox\skybox.cpp" />
+    <ClCompile Include="sPathFinder.cpp" />
     <ClCompile Include="TextureManager\C24BitBMPpixel.cpp" />
     <ClCompile Include="TextureManager\cBasicTextureManager.cpp" />
     <ClCompile Include="TextureManager\cGLColourHelper.cpp" />
@@ -192,6 +194,9 @@
     <ClCompile Include="theMain.cpp" />
     <ClCompile Include="UserInput.cpp" />
     <ClCompile Include="util\tools.cpp" />
+    <ClCompile Include="zBMPLoader\BMPImage.cpp" />
+    <ClCompile Include="zBMPLoader\BMPLoader.cpp" />
+    <ClCompile Include="zBMPLoader\ResourceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bRotatable\bRotatable.hpp" />
@@ -202,6 +207,7 @@
     <ClInclude Include="cFBO\cFBO.h" />
     <ClInclude Include="cFlyCamera\cFlyCamera.h" />
     <ClInclude Include="cGameObject.h" />
+    <ClInclude Include="cGraph.h" />
     <ClInclude Include="cLight.h" />
     <ClInclude Include="cLowPassFilter.h" />
     <ClInclude Include="cMesh.h" />
@@ -231,12 +237,16 @@
     <ClInclude Include="SceneManager\cStencilScene.h" />
     <ClInclude Include="skybox\skybox.h" />
     <ClInclude Include="sModelDrawInfo.h" />
+    <ClInclude Include="sPathFinder.h" />
     <ClInclude Include="sVertex_xyz_rgba_n_uv2_bt_4Bones.h" />
     <ClInclude Include="TextureManager\C24BitBMPpixel.h" />
     <ClInclude Include="TextureManager\cBasicTextureManager.h" />
     <ClInclude Include="TextureManager\cGLColourHelper.h" />
     <ClInclude Include="TextureManager\CTextureFromBMP.h" />
     <ClInclude Include="util\tools.h" />
+    <ClInclude Include="zBMPLoader\BMPImage.h" />
+    <ClInclude Include="zBMPLoader\BMPLoader.h" />
+    <ClInclude Include="zBMPLoader\ResourceManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TODO_Feeney.notes" />
