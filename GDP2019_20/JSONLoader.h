@@ -40,10 +40,10 @@ public:
 		cVAOManager* pTheVAOManager,
 		std::map<std::string, cGameObject*>* g_map_GameObjects,
 		GLuint shaderProgID);
-	static bool JSONSaveLights(
-		std::map<std::string, cLight*>* g_map_pLights);
-	static bool JSONSaveGameObjects(
-		std::map<std::string, cGameObject*>* g_map_GameObjects);
+	//static bool JSONSaveLights(std::map<std::string, cLight*>* g_map_pLights);
+	static void JSONSaveLights();
+	//static bool JSONSaveGameObjects(std::map<std::string, cGameObject*>* g_map_GameObjects);
+	static void JSONSaveGos();
 	static bool JSONLoadTextures(
 		std::map<std::string, cGameObject*>* pGameObjects,
 		cBasicTextureManager* pTextureManager);

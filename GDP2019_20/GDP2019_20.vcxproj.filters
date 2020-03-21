@@ -197,9 +197,6 @@
     <ClCompile Include="cVAOManager.cpp">
       <Filter>ModelLoader</Filter>
     </ClCompile>
-    <ClCompile Include="cAnimationState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cAnimatedPlayer\cAnimatedPlayer.cpp">
       <Filter>cAnimatedPlayer</Filter>
     </ClCompile>
@@ -223,6 +220,12 @@
     </ClCompile>
     <ClCompile Include="sPathFinder.cpp">
       <Filter>PathFinder</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonState.cpp">
+      <Filter>JSON</Filter>
+    </ClCompile>
+    <ClCompile Include="cAnimationState.cpp">
+      <Filter>cAnimatedPlayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -337,9 +340,6 @@
     <ClInclude Include="sVertex_xyz_rgba_n_uv2_bt_4Bones.h">
       <Filter>cAssimp</Filter>
     </ClInclude>
-    <ClInclude Include="cAnimationState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cModelLoader.h">
       <Filter>ModelLoader</Filter>
     </ClInclude>
@@ -370,6 +370,18 @@
     <ClInclude Include="sPathFinder.h">
       <Filter>PathFinder</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonState.h">
+      <Filter>JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="cAnimationState.h">
+      <Filter>cAnimatedPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="definitions.h">
+      <Filter>util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\fragmentShader01.glsl">
@@ -399,5 +411,8 @@
     <Text Include="configFiles\log.txt">
       <Filter>configFiles</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SimpleEngine.rc" />
   </ItemGroup>
 </Project>

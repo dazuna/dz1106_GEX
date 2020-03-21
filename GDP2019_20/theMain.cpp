@@ -17,7 +17,8 @@
 #include "cGameObject.h"
 #include "cShaderManager.h"
 #include "TextureManager/cBasicTextureManager.h"
-#include "JSONLoader.h"// JSON Stuff	
+#include "JSONLoader.h"// JSON Stuff
+#include "JsonState.h"
 #include "cPhysics.h"
 #include "cLowPassFilter.h"
 #include "cAABB/PhysicsAABBStuff.h"
@@ -30,7 +31,7 @@
 #include "cAnimatedPlayer/cAnimatedPlayer.h"
 #include "cMeshMap.h"
 #include "zBMPLoader/BMPLoader.h" // ############ PATH FINDING ##############
-#include  "cGraph.h"
+#include "cGraph.h"
 #include "sPathFinder.h"
 
 cFBO* pTheFBO = NULL;
@@ -56,7 +57,6 @@ cPhysics* pPhysic = new cPhysics();
 cBasicTextureManager* pTextureManager = NULL;
 extern std::map<unsigned long long /*ID*/, cAABB*> g_mapAABBs_World;
 playerController* pPlayerControl;
-//cLuaBrain* p_LuaScripts;
 //extern std::map<unsigned long long /*ID*/, cAABB*> g_vecAABBs_World;
 
 cGraph* theGraph;
@@ -150,60 +150,22 @@ int main(void)
 	BMPLoader bmpLoader;
 	bmpLoader.createColorVector();
 	theGraph = new cGraph(bmpLoader.bmp);
-	
-	//theGraph->PrintGraph();
-	//auto neighbors = theGraph->getNeighbors(1,1);
-	//std::cout << "neighbors for [1,1]: " << std::endl;
-	//for(auto node : neighbors)
-	//{
-	//	std::cout << std::setprecision(2) << node->position.x << "," << node->position.z << std::endl;
-	//}
-	//neighbors = theGraph->getNeighbors(3,2);
-	//std::cout << "neighbors for [3,2]: " << std::endl;
-	//for(auto node : neighbors)
-	//{
-	//	std::cout << std::setprecision(2) << node->position.x << "," << node->position.z << std::endl;
-	//}
-	//neighbors = theGraph->getNeighbors(7,5);
-	//std::cout << "neighbors for [7,5]: " << std::endl;
-	//for(auto node : neighbors)
-	//{
-	//	std::cout << std::setprecision(2) << node->position.x << "," << node->position.z << std::endl;
-	//}
 
 	cNode* root = theGraph->mGraph[theGraph->start.first][theGraph->start.second];
 	cNode* resource = theGraph->Dijkstra(root);
-	std::cout << "Dijsktra path: " << std::endl;
 	cGraph::nodeVec resourcePath;
-	if(resource)
-	{
-		resourcePath = theGraph->getParents(resource);
-		for(auto node : resourcePath)
-		{
-			std::cout << int(node->position.x) << "," << int(node->position.z) << std::endl;
-		}
-	}
-	std::cout << "End of Dijsktra path\n\n" << std::endl;
+	if(resource) resourcePath = theGraph->getParents(resource);
 
 	theGraph->ResetGraph();
 	root = theGraph->mGraph[theGraph->resource.first][theGraph->resource.second];
 	cNode* goal = theGraph->mGraph[theGraph->finish.first][theGraph->finish.second];
 	cNode* finish = theGraph->AStar(root,goal);
-	std::cout << "AStar path: " << std::endl;
 	cGraph::nodeVec finishPath;
-	if(finish)
-	{
-		finishPath = theGraph->getParents(finish);
-		for(auto node : finishPath)
-		{
-			std::cout << int(node->position.x) << "," << int(node->position.z) << std::endl;
-		}
-	}
-	std::cout << "End of AStar path\n\n" << std::endl;
+	if(finish) finishPath = theGraph->getParents(finish);
 
 	sPathFinder* thePathFinder = sPathFinder::getThePathFinder();
 	thePathFinder->init(resourcePath,finishPath,theGraph);
-		
+	
 	//JSON Loader for objects
 	::pTextureManager->SetBasePath("assets/textures");
 	JSONLoader::JSONLoadGameObjects(&::g_map_GameObjects);
@@ -250,8 +212,16 @@ int main(void)
 
 	createSkyBoxObject();
 
-	thePathFinder->setTheGameObject(::g_map_GameObjects.at("sphereRed"));
-	thePathFinder->setTheResource(::g_map_GameObjects.at("sphereWhite"));
+	//thePathFinder->setTheGameObject(::g_map_GameObjects.at("sphereRed"));
+	//thePathFinder->setTheResource(::g_map_GameObjects.at("sphereWhite"));
+
+	JsonState* theJsonState = JsonState::getTheJsonState();
+	std::ofstream outFile("./configFiles/tempLog.json");
+	//outFile << theJsonState->JSONObjects;
+	auto sphereRed = ::g_map_GameObjects.at("sphereRed");
+	sphereRed->positionXYZ += glm::vec3(10,10,20);
+	theJsonState->mergeObject(sphereRed);
+	outFile << theJsonState->JSONObjects;
 	
 	pDebugRenderer->initialize();
 	
@@ -348,7 +318,6 @@ int main(void)
 		//	}
 		//}//for (int index...
 				
-		
 		theSceneManager->update();
 		// theSceneManager->updateStencil(window);
 		
@@ -363,8 +332,7 @@ int main(void)
 		averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		IntegrationStep_AAB(::g_map_GameObjects,float(averageDeltaTime));
 		//pPhysic->TestForCollisions(::g_map_GameObjects);
-
-		thePathFinder->update(float(averageDeltaTime));
+		//thePathFinder->update(float(averageDeltaTime));
 
 		glm::mat4 p, v; float ratio;
 		glfwGetFramebufferSize(window, &width, &height);

@@ -1,5 +1,6 @@
 #include "JSONLoader.h"
 #include "cMeshMap.h"
+#include "JsonState.h"
 
 using json = nlohmann::json;
 
@@ -143,6 +144,9 @@ bool JSONLoader::JSONLoadLights(std::map<std::string, cLight*>* g_map_pLights, G
 	int index = 0;
 	inFile >> jsonArray;
 
+	JsonState* theJsonState = JsonState::getTheJsonState();
+	theJsonState->JSONLights = jsonArray;
+
 	for (index = 0; index < jsonArray.size(); index++)
 	{
 		std::string name = jsonArray[index]["name"];
@@ -191,16 +195,19 @@ bool JSONLoader::JSONLoadLights(std::map<std::string, cLight*>* g_map_pLights, G
 	return true;
 }
 
-bool JSONLoader::JSONLoadGameObjects(
-	std::map<std::string, cGameObject*>* g_map_GameObjects)
+bool JSONLoader::JSONLoadGameObjects(std::map<std::string, cGameObject*>* g_map_GameObjects)
 {
 	std::cout << "loading objects...";
-	std::ifstream inFile(gameobjects_json.c_str());
+	std::ifstream inFile(gameobjects_json);
 	std::ofstream outFile("./configFiles/log.txt");
-	std::ofstream outFile2(bkp_gameobjects_json.c_str());
+	std::ofstream outFile2(bkp_gameobjects_json);
 	json jsonArray;
 	int index = 0;
 	inFile >> jsonArray;
+
+	// integrate JsonState
+	JsonState* theJsonState = JsonState::getTheJsonState();
+	theJsonState->JSONObjects = jsonArray;
 
 	for (index = 0; index < jsonArray.size(); index++)
 	{
@@ -339,107 +346,125 @@ bool JSONLoader::loadMeshToGPU(cVAOManager* pTheVAOManager,
 	return true;
 }
 
-bool JSONLoader::JSONSaveLights(std::map<std::string, cLight*>* g_map_pLights)
+//bool JSONLoader::JSONSaveLights(std::map<std::string, cLight*>* g_map_pLights)
+//{
+//	std::cout << "saving lights...";
+//	std::ofstream outFile("./configFiles/lights.json");
+//	auto index = g_map_pLights->begin();
+//	int x = 0;
+//	json jsonArray;
+//
+//	for (index; index != g_map_pLights->end(); index++, x++)
+//	{
+//		json jsonObject;
+//		jsonObject["name"] = index->second->getName();
+//		jsonObject["positionXYZ"][0] = index->second->positionXYZ.x;
+//		jsonObject["positionXYZ"][1] = index->second->positionXYZ.y;
+//		jsonObject["positionXYZ"][2] = index->second->positionXYZ.z;
+//		jsonObject["LinearAtten"] = index->second->LinearAtten;
+//		jsonObject["QuadraticAtten"] = index->second->QuadraticAtten;
+//		jsonObject["diffuse"][0] = index->second->diffuse.x;
+//		jsonObject["diffuse"][1] = index->second->diffuse.y;
+//		jsonObject["diffuse"][2] = index->second->diffuse.z;
+//		jsonObject["specular"][0] = index->second->specular.x;
+//		jsonObject["specular"][1] = index->second->specular.y;
+//		jsonObject["specular"][2] = index->second->specular.z;
+//		jsonObject["direction"][0] = index->second->getCurrentAT().x;
+//		jsonObject["direction"][1] = index->second->getCurrentAT().y;
+//		jsonObject["direction"][2] = index->second->getCurrentAT().z;
+//		jsonObject["type"] = index->second->type;
+//		jsonObject["innerAngle"] = index->second->innerAngle;
+//		jsonObject["outerAngle"] = index->second->outerAngle;
+//		jsonObject["lightW"] = index->second->lightW;
+//		jsonObject["lightSwitch"] = index->second->lightSwitch;
+//		jsonArray[x] = jsonObject;
+//	}
+//	//std::cout << jsonArray;
+//	outFile << jsonArray;
+//	std::cout << "[OK]\n" << x << " lights saved!" << std::endl;
+//	return true;
+//}
+
+void JSONLoader::JSONSaveLights()
 {
 	std::cout << "saving lights...";
 	std::ofstream outFile("./configFiles/lights.json");
-	auto index = g_map_pLights->begin();
-	int x = 0;
-	json jsonArray;
-
-	for (index; index != g_map_pLights->end(); index++, x++)
-	{
-		json jsonObject;
-		jsonObject["name"] = index->second->getName();
-		jsonObject["positionXYZ"][0] = index->second->positionXYZ.x;
-		jsonObject["positionXYZ"][1] = index->second->positionXYZ.y;
-		jsonObject["positionXYZ"][2] = index->second->positionXYZ.z;
-		jsonObject["LinearAtten"] = index->second->LinearAtten;
-		jsonObject["QuadraticAtten"] = index->second->QuadraticAtten;
-		jsonObject["diffuse"][0] = index->second->diffuse.x;
-		jsonObject["diffuse"][1] = index->second->diffuse.y;
-		jsonObject["diffuse"][2] = index->second->diffuse.z;
-		jsonObject["specular"][0] = index->second->specular.x;
-		jsonObject["specular"][1] = index->second->specular.y;
-		jsonObject["specular"][2] = index->second->specular.z;
-		jsonObject["direction"][0] = index->second->getCurrentAT().x;
-		jsonObject["direction"][1] = index->second->getCurrentAT().y;
-		jsonObject["direction"][2] = index->second->getCurrentAT().z;
-		jsonObject["type"] = index->second->type;
-		jsonObject["innerAngle"] = index->second->innerAngle;
-		jsonObject["outerAngle"] = index->second->outerAngle;
-		jsonObject["lightW"] = index->second->lightW;
-		jsonObject["lightSwitch"] = index->second->lightSwitch;
-		jsonArray[x] = jsonObject;
-	}
-	//std::cout << jsonArray;
-	outFile << jsonArray;
-	std::cout << "[OK]\n" << x << " lights saved!" << std::endl;
-	return true;
+	JsonState* theJsonState = JsonState::getTheJsonState();
+	outFile << theJsonState->JSONLights;
+	std::cout << "[OK]" << std::endl;
 }
 
-bool JSONLoader::JSONSaveGameObjects(std::map<std::string, cGameObject*>* g_map_GameObjects)
+//bool JSONLoader::JSONSaveGameObjects(std::map<std::string, cGameObject*>* g_map_GameObjects)
+//{
+//	std::cout << "saving gameObjects...";
+//	std::ofstream outFile("./configFiles/gameObjects.json");
+//	std::map<std::string, cGameObject*>::iterator index = g_map_GameObjects->begin();
+//	int x = 0;
+//	json jsonArray;
+//
+//	for (index; index != g_map_GameObjects->end(); index++, x++)
+//	{
+//		json jsonObject;
+//		jsonObject["friendlyName"] = index->second->friendlyName;
+//		jsonObject["meshName"] = index->second->meshName;
+//		jsonObject["meshURL"] = index->second->meshURL;
+//		jsonObject["positionXYZ"][0] = index->second->positionXYZ.x;
+//		jsonObject["positionXYZ"][1] = index->second->positionXYZ.y;
+//		jsonObject["positionXYZ"][2] = index->second->positionXYZ.z;
+//		jsonObject["rotationXYZ"][0] = index->second->getEulerAngle().x;
+//		jsonObject["rotationXYZ"][1] = index->second->getEulerAngle().y;
+//		jsonObject["rotationXYZ"][2] = index->second->getEulerAngle().z;
+//		jsonObject["scale"] = index->second->scale;
+//		jsonObject["objectColourRGBA"][0] = index->second->objectColourRGBA.x;
+//		jsonObject["objectColourRGBA"][1] = index->second->objectColourRGBA.y;
+//		jsonObject["objectColourRGBA"][2] = index->second->objectColourRGBA.z;
+//		jsonObject["objectColourRGBA"][3] = index->second->objectColourRGBA.w;
+//		jsonObject["diffuseColour"][0] = index->second->diffuseColour.x;
+//		jsonObject["diffuseColour"][1] = index->second->diffuseColour.y;
+//		jsonObject["diffuseColour"][2] = index->second->diffuseColour.z;
+//		jsonObject["diffuseColour"][3] = index->second->diffuseColour.w;
+//		jsonObject["specularColour"][0] = index->second->specularColour.x;
+//		jsonObject["specularColour"][1] = index->second->specularColour.y;
+//		jsonObject["specularColour"][2] = index->second->specularColour.z;
+//		jsonObject["specularColour"][3] = index->second->specularColour.w;
+//		jsonObject["velocity"][0] = index->second->velocity.x;
+//		jsonObject["velocity"][1] = index->second->velocity.y;
+//		jsonObject["velocity"][2] = index->second->velocity.z;
+//		jsonObject["accel"][0] = index->second->accel.x;
+//		jsonObject["accel"][1] = index->second->accel.y;
+//		jsonObject["accel"][2] = index->second->accel.z;
+//		jsonObject["inverseMass"] = index->second->inverseMass;
+//		jsonObject["physicsShapeType"] = index->second->physicsShapeType;
+//		jsonObject["isWireframe"] = index->second->isWireframe;
+//		jsonObject["debugColour"][0] = index->second->debugColour.x;
+//		jsonObject["debugColour"][1] = index->second->debugColour.y;
+//		jsonObject["debugColour"][2] = index->second->debugColour.z;
+//		jsonObject["debugColour"][3] = index->second->debugColour.w;
+//		jsonObject["texture"][0] = index->second->textures[0];
+//		jsonObject["texture"][1] = index->second->textures[1];
+//		jsonObject["texture"][2] = index->second->textures[2];
+//		jsonObject["texture"][3] = index->second->textures[3];
+//		jsonObject["textureRatio"][0] = index->second->textureRatio[0];
+//		jsonObject["textureRatio"][1] = index->second->textureRatio[1];
+//		jsonObject["textureRatio"][2] = index->second->textureRatio[2];
+//		jsonObject["textureRatio"][3] = index->second->textureRatio[3];
+//		jsonObject["isVisible"] = index->second->isVisible;
+//		jsonObject["alphaTransparency"] = index->second->alphaTransparency;
+//		jsonArray[x] = jsonObject;
+//	}
+//	//std::cout << jsonArray;
+//	outFile << jsonArray;
+//	std::cout << "[OK]\n" << x << " lights saved!" << std::endl;
+//	return true;
+//}
+
+void JSONLoader::JSONSaveGos()
 {
 	std::cout << "saving gameObjects...";
 	std::ofstream outFile("./configFiles/gameObjects.json");
-	std::map<std::string, cGameObject*>::iterator index = g_map_GameObjects->begin();
-	int x = 0;
-	json jsonArray;
-
-	for (index; index != g_map_GameObjects->end(); index++, x++)
-	{
-		json jsonObject;
-		jsonObject["friendlyName"] = index->second->friendlyName;
-		jsonObject["meshName"] = index->second->meshName;
-		jsonObject["meshURL"] = index->second->meshURL;
-		jsonObject["positionXYZ"][0] = index->second->positionXYZ.x;
-		jsonObject["positionXYZ"][1] = index->second->positionXYZ.y;
-		jsonObject["positionXYZ"][2] = index->second->positionXYZ.z;
-		jsonObject["rotationXYZ"][0] = index->second->getEulerAngle().x;
-		jsonObject["rotationXYZ"][1] = index->second->getEulerAngle().y;
-		jsonObject["rotationXYZ"][2] = index->second->getEulerAngle().z;
-		jsonObject["scale"] = index->second->scale;
-		jsonObject["objectColourRGBA"][0] = index->second->objectColourRGBA.x;
-		jsonObject["objectColourRGBA"][1] = index->second->objectColourRGBA.y;
-		jsonObject["objectColourRGBA"][2] = index->second->objectColourRGBA.z;
-		jsonObject["objectColourRGBA"][3] = index->second->objectColourRGBA.w;
-		jsonObject["diffuseColour"][0] = index->second->diffuseColour.x;
-		jsonObject["diffuseColour"][1] = index->second->diffuseColour.y;
-		jsonObject["diffuseColour"][2] = index->second->diffuseColour.z;
-		jsonObject["diffuseColour"][3] = index->second->diffuseColour.w;
-		jsonObject["specularColour"][0] = index->second->specularColour.x;
-		jsonObject["specularColour"][1] = index->second->specularColour.y;
-		jsonObject["specularColour"][2] = index->second->specularColour.z;
-		jsonObject["specularColour"][3] = index->second->specularColour.w;
-		jsonObject["velocity"][0] = index->second->velocity.x;
-		jsonObject["velocity"][1] = index->second->velocity.y;
-		jsonObject["velocity"][2] = index->second->velocity.z;
-		jsonObject["accel"][0] = index->second->accel.x;
-		jsonObject["accel"][1] = index->second->accel.y;
-		jsonObject["accel"][2] = index->second->accel.z;
-		jsonObject["inverseMass"] = index->second->inverseMass;
-		jsonObject["physicsShapeType"] = index->second->physicsShapeType;
-		jsonObject["isWireframe"] = index->second->isWireframe;
-		jsonObject["debugColour"][0] = index->second->debugColour.x;
-		jsonObject["debugColour"][1] = index->second->debugColour.y;
-		jsonObject["debugColour"][2] = index->second->debugColour.z;
-		jsonObject["debugColour"][3] = index->second->debugColour.w;
-		jsonObject["texture"][0] = index->second->textures[0];
-		jsonObject["texture"][1] = index->second->textures[1];
-		jsonObject["texture"][2] = index->second->textures[2];
-		jsonObject["texture"][3] = index->second->textures[3];
-		jsonObject["textureRatio"][0] = index->second->textureRatio[0];
-		jsonObject["textureRatio"][1] = index->second->textureRatio[1];
-		jsonObject["textureRatio"][2] = index->second->textureRatio[2];
-		jsonObject["textureRatio"][3] = index->second->textureRatio[3];
-		jsonObject["isVisible"] = index->second->isVisible;
-		jsonObject["alphaTransparency"] = index->second->alphaTransparency;
-		jsonArray[x] = jsonObject;
-	}
-	//std::cout << jsonArray;
-	outFile << jsonArray;
-	std::cout << "[OK]\n" << x << " lights saved!" << std::endl;
-	return true;
+	JsonState* theJsonState = JsonState::getTheJsonState();
+	outFile << theJsonState->JSONObjects;
+	std::cout << "[OK]" << std::endl;
 }
 
 bool JSONLoader::JSONLoadTextures(std::map<std::string, cGameObject*>* pGameObjects, cBasicTextureManager* pTextureManager)

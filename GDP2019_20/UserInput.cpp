@@ -422,8 +422,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			if (key == GLFW_KEY_S && action == GLFW_PRESS)
 			{
-				JSONLoader::JSONSaveLights(&::g_map_pLights);
-				JSONLoader::JSONSaveGameObjects(&::g_map_GameObjects);
+				JSONLoader::JSONSaveLights();
+				JSONLoader::JSONSaveGos();
 			}
 			if (key == GLFW_KEY_W && action == GLFW_PRESS)
 			{

@@ -168,6 +168,7 @@
     <ClCompile Include="cShader.cpp" />
     <ClCompile Include="cShaderManager.cpp" />
     <ClCompile Include="cSimpleAssimpSkinnedMeshLoader_OneMesh.cpp" />
+    <ClCompile Include="JsonState.cpp" />
     <ClCompile Include="SceneManager\cStencilScene.cpp" />
     <ClCompile Include="cVAOManager.cpp" />
     <ClCompile Include="DebugRenderer\cDebugRenderer.cpp" />
@@ -222,16 +223,19 @@
     <ClInclude Include="DebugRenderer\cGLRenderStateHelper.h" />
     <ClInclude Include="DebugRenderer\COpenGLError.h" />
     <ClInclude Include="DebugRenderer\iDebugRenderer.h" />
+    <ClInclude Include="definitions.h" />
     <ClInclude Include="GFLW_callbacks.h" />
     <ClInclude Include="GLCommon.h" />
     <ClInclude Include="globalStuff.h" />
     <ClInclude Include="cMeshMap.h" />
     <ClInclude Include="JSONLoader.h" />
+    <ClInclude Include="JsonState.h" />
     <ClInclude Include="LightManager\cLightHelper.h" />
     <ClInclude Include="Particle\cParticleEmitter.h" />
     <ClInclude Include="PhysicsStuff.h" />
     <ClInclude Include="playerController\playerController.h" />
     <ClInclude Include="quaternion_utils\quaternion_utils.hpp" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="SceneManager\cScene.h" />
     <ClInclude Include="SceneManager\cSceneManager.h" />
     <ClInclude Include="SceneManager\cStencilScene.h" />
@@ -260,6 +264,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="configFiles\log.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SimpleEngine.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
