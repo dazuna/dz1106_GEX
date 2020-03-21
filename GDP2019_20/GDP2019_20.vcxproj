@@ -235,7 +235,6 @@
     <ClInclude Include="PhysicsStuff.h" />
     <ClInclude Include="playerController\playerController.h" />
     <ClInclude Include="quaternion_utils\quaternion_utils.hpp" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="SceneManager\cScene.h" />
     <ClInclude Include="SceneManager\cSceneManager.h" />
     <ClInclude Include="SceneManager\cStencilScene.h" />
@@ -264,9 +263,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="configFiles\log.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="SimpleEngine.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

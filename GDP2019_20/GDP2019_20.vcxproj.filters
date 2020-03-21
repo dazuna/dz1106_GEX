@@ -370,9 +370,6 @@
     <ClInclude Include="sPathFinder.h">
       <Filter>PathFinder</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="JsonState.h">
       <Filter>JSON</Filter>
     </ClInclude>
@@ -411,8 +408,5 @@
     <Text Include="configFiles\log.txt">
       <Filter>configFiles</Filter>
     </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="SimpleEngine.rc" />
   </ItemGroup>
 </Project>
