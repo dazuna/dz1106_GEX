@@ -16,7 +16,7 @@
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 1.0,
     "specularColour": [1.0, 1.0, 1.0, 1.0],
-    "texture": ["", "", "", ""],
+    "texture": ["White.png", "", "", ""],
     "textureRatio": [0.0, 0.0, 0.0, 0.0],
     "velocity": [0.0, 0.0, 0.0]
   },
@@ -37,7 +37,7 @@
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 1.0,
     "specularColour": [1.0, 1.0, 1.0, 1.0],
-    "texture": ["", "", "", ""],
+    "texture": ["White.png", "", "", ""],
     "textureRatio": [0.0, 0.0, 0.0, 0.0],
     "velocity": [0.0, 0.0, 0.0]
   },
@@ -58,7 +58,7 @@
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 1.0,
     "specularColour": [1.0, 1.0, 1.0, 1.0],
-    "texture": ["Green.bmp", "", "", ""],
+    "texture": ["Green.png", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0],
     "velocity": [0.0, 0.0, 0.0]
   },
@@ -79,7 +79,7 @@
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 1.0,
     "specularColour": [1.0, 1.0, 1.0, 1.0],
-    "texture": ["Red.bmp", "", "", ""],
+    "texture": ["Red.png", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0],
     "velocity": [0.0, 0.0, 0.0]
   },
@@ -100,7 +100,7 @@
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 1.0,
     "specularColour": [1.0, 1.0, 1.0, 1.0],
-    "texture": ["White.bmp", "", "", ""],
+    "texture": ["White.png", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0],
     "velocity": [0.0, 0.0, 0.0]
   },
@@ -121,7 +121,7 @@
     "rotationXYZ": [0, 0, 0],
     "scale": 10,
     "specularColour": [1.0, 1.0, 1.0, 1.0],
-    "texture": ["resourceMap.bmp", "", "", ""],
+    "texture": ["resourceMap.png", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0],
     "velocity": [0.0, 0.0, 0.0]
   },
@@ -143,7 +143,7 @@
     "rotationXYZ": [90.0, -0.0, 0.0],
     "scale": 5.0,
     "specularColour": [1.0, 1.0, 1.0, 1.0],
-    "texture": ["boxy.bmp", "", "", ""],
+    "texture": ["boxy.png", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0],
     "velocity": [0.0, 0.0, 0.0]
   },
@@ -164,7 +164,7 @@
     "rotationXYZ": [0.0, 0.0, 90.0],
     "scale": 3.0,
     "specularColour": [1.0, 1.0, 1.0, 1.0],
-    "texture": ["boxy.bmp", "", "", ""],
+    "texture": ["boxy.png", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0],
     "velocity": [0.0, 0.0, 0.0]
   },
@@ -185,7 +185,7 @@
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 1.0,
     "specularColour": [1.0, 1.0, 1.0, 1.0],
-    "texture": ["Green.bmp", "", "", ""],
+    "texture": ["Green.png", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0],
     "velocity": [0.0, 0.0, 0.0]
   }

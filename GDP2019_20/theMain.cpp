@@ -151,6 +151,8 @@ int main(void)
 	// SkyBoxTexture
 	setSkyBoxTexture();
 
+	// PathFinding Stuff 
+	/*
 	BMPLoader bmpLoader;
 	bmpLoader.createColorVector();
 	theGraph = new cGraph(bmpLoader.bmp);
@@ -169,6 +171,7 @@ int main(void)
 
 	sPathFinder* thePathFinder = sPathFinder::getThePathFinder();
 	thePathFinder->init(resourcePath,finishPath,theGraph);
+	*/
 	
 	//JSON Loader for objects
 	::pTextureManager->SetBasePath("assets/textures");
