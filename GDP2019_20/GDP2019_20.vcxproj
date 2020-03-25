@@ -168,6 +168,13 @@
     <ClCompile Include="cShader.cpp" />
     <ClCompile Include="cShaderManager.cpp" />
     <ClCompile Include="cSimpleAssimpSkinnedMeshLoader_OneMesh.cpp" />
+    <ClCompile Include="ImGUI_utils.cpp" />
+    <ClCompile Include="include\imgui\imgui.cpp" />
+    <ClCompile Include="include\imgui\imgui_demo.cpp" />
+    <ClCompile Include="include\imgui\imgui_draw.cpp" />
+    <ClCompile Include="include\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="include\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="JsonState.cpp" />
     <ClCompile Include="SceneManager\cStencilScene.cpp" />
     <ClCompile Include="cVAOManager.cpp" />
@@ -228,6 +235,15 @@
     <ClInclude Include="GLCommon.h" />
     <ClInclude Include="globalStuff.h" />
     <ClInclude Include="cMeshMap.h" />
+    <ClInclude Include="ImGUI_utils.h" />
+    <ClInclude Include="include\imgui\imconfig.h" />
+    <ClInclude Include="include\imgui\imgui.h" />
+    <ClInclude Include="include\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="include\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="include\imgui\imgui_internal.h" />
+    <ClInclude Include="include\imgui\imstb_rectpack.h" />
+    <ClInclude Include="include\imgui\imstb_textedit.h" />
+    <ClInclude Include="include\imgui\imstb_truetype.h" />
     <ClInclude Include="JSONLoader.h" />
     <ClInclude Include="JsonState.h" />
     <ClInclude Include="LightManager\cLightHelper.h" />
@@ -260,6 +276,7 @@
     <None Include="configFiles\gameObjects.json" />
     <None Include="configFiles\lights.json" />
     <None Include="configFiles\meshToLoad.json" />
+    <None Include="include\imgui\imgui.ini" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="configFiles\log.txt" />
