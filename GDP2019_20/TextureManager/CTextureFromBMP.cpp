@@ -11,10 +11,23 @@
 
 #include <fstream>
 #include <iostream>
+#include <vector>
+#include "../LodePNG/lodepng.h"
 
 //#define DEBUG_MODE_BITMAPREAD
 //#define DEBUG_MODE_BITMAPDISPLAY
 //#define DEBUG_MODE_TEXTUREREPLACEMENT
+
+std::string GetColourCharacter(unsigned char r, unsigned char g, unsigned char b)
+{
+	if (r == 255	&& g == 0	&& b == 0)		return "red";
+	if (r == 0		&& g == 255 && b == 0)		return "grn";
+	if (r == 0		&& g == 0	&& b == 255)	return "blu";
+	if (r == 255	&& g == 255 && b == 255)	return "wht";
+	if (r == 255	&& g == 255 && b == 0)		return "ylw";
+	if (r == 0		&& g == 0	&& b == 0)		return "blk";
+	return "xxx";
+}
 
 CTextureFromBMP::CTextureFromBMP()
 : m_Height_or_Rows(0), m_Width_or_Columns(0), m_OriginalHeight(0), m_OriginalWidth(0), m_p_theImages(0),
@@ -55,10 +68,7 @@ std::string CTextureFromBMP::getFileNameFullPath(void)
 	return this->m_fileNameFullPath;
 }
 
-
-
-bool CTextureFromBMP::CreateNewTextureFromBMPFile2( std::string textureName, std::string fileNameFullPath, 
-												    /*GLenum textureUnit,*/ bool bGenerateMIPMap )	
+bool CTextureFromBMP::CreateNewTextureFromBMPFile2( std::string textureName, std::string fileNameFullPath, /*GLenum textureUnit,*/ bool bGenerateMIPMap )	
 {
 	bool bReturnVal = true;
 
@@ -77,7 +87,8 @@ bool CTextureFromBMP::CreateNewTextureFromBMPFile2( std::string textureName, std
 	}
 
 
-	if ( !this->LoadBMP2( fileNameFullPath ) )
+	//if ( !this->LoadBMP2( fileNameFullPath ) )
+	if ( !this->LoadPNG( fileNameFullPath ) )
 	{
 		return false;
 	}
@@ -173,7 +184,6 @@ bool CTextureFromBMP::CreateNewTextureFromBMPFile2( std::string textureName, std
 
 	return bReturnVal;
 }
-
 
 bool CTextureFromBMP::CreateNewCubeTextureFromBMPFiles( std::string cubeMapName, 
 													    std::string posX_fileName, std::string negX_fileName, 
@@ -634,6 +644,55 @@ bool CTextureFromBMP::LoadBMP2( std::string fileName )
 	return true;
 }
 
+// Loads it in one "go" instead of streaming it
+bool CTextureFromBMP::LoadPNG( std::string fileName )
+{
+	// Load file and decode image.
+	std::vector<unsigned char> image;
+	unsigned width, height;
+	unsigned error = lodepng::decode(image, width, height, fileName);
+
+	// If there's an error, display it.
+	if ( this->m_bHave_cout_output )
+	{
+		if(error != 0) 
+		{
+			std::cout << "error " << error << ": " << lodepng_error_text(error) << fileName << std::endl;
+			return false;
+		}
+	}
+
+	//this->m_Height_or_Rows = height;
+	//this->m_Width_or_Columns = width;
+
+	this->m_Height_or_Rows = this->m_OriginalHeight = this->m_numberOfRows = height;
+	this->m_Width_or_Columns = this->m_OriginalWidth = this->m_numberOfColumns = width;
+
+	// Allocate enough space...
+	this->m_p_theImages = new C24BitBMPpixel[this->m_numberOfColumns * this->m_numberOfRows];
+	
+	int idx=0,pixelCount=0;
+
+	for (unsigned long y = 0; y < height; y++)
+	{		
+		for (unsigned long x = 0; x < width; x++)
+		{
+			auto red = image[idx++];
+			auto green = image[idx++];
+			auto blue = image[idx++];
+			auto alpha = image[idx++];
+			
+			//std::cout << GetColourCharacter(red,green,blue) << " ";
+			this->m_p_theImages[pixelCount].redPixel = red;
+			this->m_p_theImages[pixelCount].greenPixel = green;
+			this->m_p_theImages[pixelCount].bluePixel = blue;
+			pixelCount++;
+		}
+		//std::cout << std::endl;
+	}
+	
+	return true;
+}
 
 //// When done, this->m_p_theImages contains a valid, loaded 24 bit BMP.
 //bool CTextureFromBMP::LoadBMP( std::string fileName )
@@ -919,7 +978,6 @@ std::string CTextureFromBMP::DecodeLastError(int errorNum)
 	return lastErrorString;
 }
 
-
 // These functions shift numbers by one, two, and three bytes.
 unsigned long CTextureFromBMP::ShiftAndAdd_Byte_to_ULong(unsigned long theULong, char theByte, int bytesToShift)
 {
@@ -953,7 +1011,6 @@ unsigned short CTextureFromBMP::ShiftAndAdd_Byte_to_UShort(unsigned short theUSh
 	return theUShort;
 }
 
-
 // These are used to read the data from a file.
 unsigned long CTextureFromBMP::ReadAnUnsignedLong(std::ifstream& theStream)
 {
@@ -970,10 +1027,6 @@ unsigned long CTextureFromBMP::ReadAnUnsignedLong(std::ifstream& theStream)
 	ulTheReturnVal = ShiftAndAdd_Byte_to_ULong(ulTheReturnVal, static_cast<unsigned char>(TheByte), 3);
 	return ulTheReturnVal;
 }
-
-
-
-
 
 void CTextureFromBMP::WriteAsUnsignedShort( unsigned short value, std::ofstream& theStream )
 {

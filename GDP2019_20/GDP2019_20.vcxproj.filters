@@ -227,6 +227,9 @@
     <ClCompile Include="cAnimationState.cpp">
       <Filter>cAnimatedPlayer</Filter>
     </ClCompile>
+    <ClCompile Include="LodePNG\lodepng.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cMesh.h">
@@ -378,6 +381,9 @@
     </ClInclude>
     <ClInclude Include="definitions.h">
       <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="LodePNG\lodepng.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

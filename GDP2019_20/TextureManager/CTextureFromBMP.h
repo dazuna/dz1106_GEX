@@ -43,6 +43,7 @@ public:
 	bool CreateNewBMPFromCurrentTexture( int mipMapLevel );
 	//bool LoadBMP( std::string fileName );
 	bool LoadBMP2( std::string fileName );		// Faster loader
+	bool LoadPNG(std::string fileName);
 	bool SaveBMP( std::string fileName );
 	// Deletes the data (and the array) - used after calling LoadBMP
 	bool ClearBMP( void );	
