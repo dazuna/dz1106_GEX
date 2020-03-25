@@ -33,6 +33,10 @@
 #include "zBMPLoader/BMPLoader.h" // ############ PATH FINDING ##############
 #include "cGraph.h"
 #include "sPathFinder.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
+#include "ImGUI_utils.h"
 
 cFBO* pTheFBO = NULL;
 
@@ -121,7 +125,7 @@ int main(void)
 	glfwSetMouseButtonCallback(window, mouse_button_callback);
 
 	void ProcessAsyncMouse(GLFWwindow * window);
-	void ProcessAsyncKeys(GLFWwindow * window);	
+	void ProcessAsyncKeys(GLFWwindow * window);
 
 	//	OpenGL and GLFW are good to go, so load the model
 	// cModelLoader* pTheModelLoader = new cModelLoader();
@@ -224,6 +228,8 @@ int main(void)
 	outFile << theJsonState->JSONObjects;
 	
 	pDebugRenderer->initialize();
+
+	ImGUI_utils::init(window);
 	
 	while (!glfwWindowShouldClose(window))
 	{
@@ -344,8 +350,24 @@ int main(void)
 
 		::theSceneManager->lastPass(window);		
 
-		glfwSwapBuffers(window);
 		glfwPollEvents();
+
+		// Example of how to display a JSON
+		// As I have it now, it has to be displayed every frame
+		// (it disappears if you don't diplay it)
+		// We can change this if we need to.
+		nlohmann::json jData;
+		jData["title"] = "Selected game Object";
+		auto gameObj = selectedGameObject->second;
+		jData["name"] = gameObj->friendlyName;
+		jData["position"] = glm::to_string(gameObj->positionXYZ);
+		jData["rotation"] = glm::to_string(gameObj->getEulerAngle());
+		jData["direction"] = glm::to_string(gameObj->getCurrentAT());
+		jData["scale"] = gameObj->scale;
+		ImGUI_utils::displayJSON(jData);
+		ImGUI_utils::render();
+		
+		glfwSwapBuffers(window);
 	}
 	glfwDestroyWindow(window);
 	glfwTerminate();

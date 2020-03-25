@@ -16,6 +16,7 @@
 #include "../cAABB/cAABB.h"
 #include "../DebugRenderer/cDebugRenderer.h"
 #include "../cFlyCamera/cFlyCamera.h"
+#include <nlohmann/json.hpp>
 
 template <class T>
 T randInRange(T min, T max)
