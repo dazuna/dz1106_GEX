@@ -233,7 +233,7 @@ bool CTextureFromBMP::CreateNewCubeTextureFromBMPFiles( std::string cubeMapName,
 					
 	// Positive X image...
 	// Assume all the images are the same size. If not, then it will screw up
-	if ( this->LoadBMP2( posX_fileName ) )
+	if ( this->LoadPNG( posX_fileName ) )
 	{
 		glTexStorage2D( GL_TEXTURE_CUBE_MAP, 
 		            10, // Mipmap levels
@@ -263,7 +263,7 @@ bool CTextureFromBMP::CreateNewCubeTextureFromBMPFiles( std::string cubeMapName,
 
 
 	// Negative X image...
-	if ( this->LoadBMP2( negX_fileName ) )
+	if ( this->LoadPNG( negX_fileName ) )
 	{
 		glTexSubImage2D( GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, 0, 0, this->m_numberOfColumns, this->m_numberOfRows, GL_RGB, GL_UNSIGNED_BYTE, this->m_p_theImages );
 		this->ClearBMP();
@@ -276,7 +276,7 @@ bool CTextureFromBMP::CreateNewCubeTextureFromBMPFiles( std::string cubeMapName,
 	}
 
 	// Positive Y image...
-	if ( this->LoadBMP2( posY_fileName ) )
+	if ( this->LoadPNG( posY_fileName ) )
 	{
 		glTexSubImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, 0, 0, this->m_numberOfColumns, this->m_numberOfRows, GL_RGB, GL_UNSIGNED_BYTE, this->m_p_theImages );
 		this->ClearBMP();
@@ -289,7 +289,7 @@ bool CTextureFromBMP::CreateNewCubeTextureFromBMPFiles( std::string cubeMapName,
 	}
 
 	// Negative Y image...
-	if ( this->LoadBMP2( negY_fileName ) )
+	if ( this->LoadPNG( negY_fileName ) )
 	{
 		glTexSubImage2D( GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, 0, 0, this->m_numberOfColumns, this->m_numberOfRows, GL_RGB, GL_UNSIGNED_BYTE, this->m_p_theImages );
 		this->ClearBMP();
@@ -302,7 +302,7 @@ bool CTextureFromBMP::CreateNewCubeTextureFromBMPFiles( std::string cubeMapName,
 	}
 
 	// Positive Z image...
-	if ( this->LoadBMP2( posZ_fileName ) )
+	if ( this->LoadPNG( posZ_fileName ) )
 	{
 		glTexSubImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, 0, 0, this->m_numberOfColumns, this->m_numberOfRows, GL_RGB, GL_UNSIGNED_BYTE, this->m_p_theImages );
 		this->ClearBMP();
@@ -315,7 +315,7 @@ bool CTextureFromBMP::CreateNewCubeTextureFromBMPFiles( std::string cubeMapName,
 	}
 
 	// Negative Z image...
-	if ( this->LoadBMP2( negZ_fileName ) )
+	if ( this->LoadPNG( negZ_fileName ) )
 	{
 		glTexSubImage2D( GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, 0, 0, this->m_numberOfColumns, this->m_numberOfRows, GL_RGB, GL_UNSIGNED_BYTE, this->m_p_theImages );
 		this->ClearBMP();
