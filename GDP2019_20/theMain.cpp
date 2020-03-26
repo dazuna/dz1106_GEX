@@ -37,6 +37,7 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "ImGUI_utils.h"
+#include "Terrain.h"
 
 cFBO* pTheFBO = NULL;
 
@@ -150,28 +151,6 @@ int main(void)
 	
 	// SkyBoxTexture
 	setSkyBoxTexture();
-
-	// PathFinding Stuff 
-	/*
-	BMPLoader bmpLoader;
-	bmpLoader.createColorVector();
-	theGraph = new cGraph(bmpLoader.bmp);
-
-	cNode* root = theGraph->mGraph[theGraph->start.first][theGraph->start.second];
-	cNode* resource = theGraph->Dijkstra(root);
-	cGraph::nodeVec resourcePath;
-	if(resource) resourcePath = theGraph->getParents(resource);
-
-	theGraph->ResetGraph();
-	root = theGraph->mGraph[theGraph->resource.first][theGraph->resource.second];
-	cNode* goal = theGraph->mGraph[theGraph->finish.first][theGraph->finish.second];
-	cNode* finish = theGraph->AStar(root,goal);
-	cGraph::nodeVec finishPath;
-	if(finish) finishPath = theGraph->getParents(finish);
-
-	sPathFinder* thePathFinder = sPathFinder::getThePathFinder();
-	thePathFinder->init(resourcePath,finishPath,theGraph);
-	*/
 	
 	//JSON Loader for objects
 	::pTextureManager->SetBasePath("assets/textures");
@@ -225,12 +204,11 @@ int main(void)
 	JsonState* theJsonState = JsonState::getTheJsonState();
 	std::ofstream outFile("./configFiles/tempLog.json");
 	//outFile << theJsonState->JSONObjects;
-	auto sphereRed = ::g_map_GameObjects.at("sphereRed");
-	sphereRed->positionXYZ += glm::vec3(10,10,20);
-	theJsonState->mergeObject(sphereRed);
-	outFile << theJsonState->JSONObjects;
 	
 	pDebugRenderer->initialize();
+
+	Terrain::loadTerrain("./assets/textures/terrain.png");
+	Terrain::setTerrainObjects();
 
 	ImGUI_utils::init(window);
 	
@@ -359,15 +337,15 @@ int main(void)
 		// As I have it now, it has to be displayed every frame
 		// (it disappears if you don't diplay it)
 		// We can change this if we need to.
-		nlohmann::json jData;
-		jData["title"] = "Selected game Object";
-		auto gameObj = selectedGameObject->second;
-		jData["name"] = gameObj->friendlyName;
-		jData["position"] = glm::to_string(gameObj->positionXYZ);
-		jData["rotation"] = glm::to_string(gameObj->getEulerAngle());
-		jData["direction"] = glm::to_string(gameObj->getCurrentAT());
-		jData["scale"] = gameObj->scale;
-		ImGUI_utils::displayJSON(jData);
+		//nlohmann::json jData;
+		//jData["title"] = "Selected game Object";
+		//auto gameObj = selectedGameObject->second;
+		//jData["name"] = gameObj->friendlyName;
+		//jData["position"] = glm::to_string(gameObj->positionXYZ);
+		//jData["rotation"] = glm::to_string(gameObj->getEulerAngle());
+		//jData["direction"] = glm::to_string(gameObj->getCurrentAT());
+		//jData["scale"] = gameObj->scale;
+		//ImGUI_utils::displayJSON(jData);
 		ImGUI_utils::render();
 		
 		glfwSwapBuffers(window);

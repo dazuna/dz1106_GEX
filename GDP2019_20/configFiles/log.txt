@@ -12,7 +12,7 @@ debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 friendlyName: cameraTarget0
 meshName: cubeMesh
 meshURL: assets/models/cube1_xyx_n_uv.ply
-positionXYZ: vec3(80.000000, 80.000000, 0.000000)
+positionXYZ: vec3(0.000000, 0.000000, 0.000000)
 rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
@@ -31,20 +31,9 @@ specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 velocity: vec3(0.000000, 0.000000, 0.000000)
 accel: vec3(0.000000, 0.000000, 0.000000)
 debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: sphereRed
-meshName: sphereMesh
-meshURL: assets/models/Sphere_Radius_1_XYZ_n_uv.ply
-positionXYZ: vec3(10.000000, 10.000000, 10.000000)
-rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
-objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: sphereWhite
-meshName: sphereMesh
-meshURL: assets/models/Sphere_Radius_1_XYZ_n_uv.ply
+friendlyName: groundBlock
+meshName: terrainBlock
+meshURL: assets/models/ground.fbx
 positionXYZ: vec3(0.000000, 0.000000, 10.000000)
 rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
@@ -53,11 +42,33 @@ specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 velocity: vec3(0.000000, 0.000000, 0.000000)
 accel: vec3(0.000000, 0.000000, 0.000000)
 debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: zResourceMap
-meshName: terrainMesh
-meshURL: assets/models/sprite_tile2.ply
-positionXYZ: vec3(80.000000, 80.000000, 0.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+friendlyName: tree
+meshName: oak
+meshURL: assets/models/oak.ply
+positionXYZ: vec3(0.000000, 0.000000, 10.000000)
+rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
+objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+friendlyName: forestBlock
+meshName: terrainBlock
+meshURL: assets/models/ground.fbx
+positionXYZ: vec3(0.000000, 0.000000, 10.000000)
+rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
+objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+friendlyName: wallBlock
+meshName: terrainBlock
+meshURL: assets/models/ground.fbx
+positionXYZ: vec3(0.000000, 0.000000, 10.000000)
+rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
@@ -69,17 +80,6 @@ meshName: stencilatorMesh
 meshURL: assets/models/sprite_tile.ply
 positionXYZ: vec3(0.000000, 50.000000, 194.000000)
 rotationXYZ: vec3(90.000000, -0.000000, 0.000000)
-objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
-diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-velocity: vec3(0.000000, 0.000000, 0.000000)
-accel: vec3(0.000000, 0.000000, 0.000000)
-debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
-friendlyName: defScreen
-meshName: defScreenMesh
-meshURL: assets/models/sprite_tile.ply
-positionXYZ: vec3(190.000000, 50.000000, 0.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 90.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
