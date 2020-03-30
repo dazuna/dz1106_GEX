@@ -13,6 +13,7 @@
 #include "bRotatable/bRotatable.hpp"
 #include "cSimpleAssimpSkinnedMeshLoader_OneMesh.h"
 #include "cAnimationState.h"
+#include <mutex>
 
 enum eShapeTypes
 {
@@ -67,18 +68,9 @@ public:
 
 	//cSimpleAssimpSkinnedMesh* pSM;
 	cAnimationState* pAS;
+	std::string animationStateStatus;
 
-public:
-	// glm::quat getQOrientation(void);
-	// // Overwrite the orientation
-	// void setOrientation(glm::vec3 EulerAngleDegreesXYZ);
-	// void setOrientation(glm::quat qAngle);
-	// // Updates the existing angle
-	// void updateOrientation(glm::vec3 EulerAngleDegreesXYZ);
-	// void updateOrientation(glm::quat qAngle);
-	// glm::vec3 getEulerAngle(void);
-	void getVecColliders(std::vector<glm::vec3>* vecColliders);
-	void setVecCollider(std::vector<glm::vec3> vecColliders);
+	
 	glm::mat4 getWorldMatrix();
 	// ID
 	unsigned int getUniqueID(void);

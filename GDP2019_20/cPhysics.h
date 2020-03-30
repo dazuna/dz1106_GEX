@@ -44,7 +44,7 @@ public:
 	
 	// This "moves" the objects based on the inegration step
 	void IntegrationStep(
-		std::map<std::string, cGameObject*> g_map_GameObjects, 
+		std::map<std::string, cGameObject*>& g_map_GameObjects, 
 		float deltaTime);
 
 	void TestForCollisions(std::map<std::string, cGameObject*> g_map_GameObjects);

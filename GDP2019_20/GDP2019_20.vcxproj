@@ -151,7 +151,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="bRotatable\bRotatable.cpp" />
-    <ClCompile Include="cAABB\PhysicsAABBStuff.cpp" />
     <ClCompile Include="cAnimatedPlayer\cAnimatedPlayer.cpp" />
     <ClCompile Include="cAnimationState.cpp" />
     <ClCompile Include="cFBO\cFBO.cpp" />
@@ -210,8 +209,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bRotatable\bRotatable.hpp" />
-    <ClInclude Include="cAABB\cAABB.h" />
-    <ClInclude Include="cAABB\PhysicsAABBStuff.h" />
     <ClInclude Include="cAnimatedPlayer\cAnimatedPlayer.h" />
     <ClInclude Include="cAnimationState.h" />
     <ClInclude Include="cFBO\cFBO.h" />

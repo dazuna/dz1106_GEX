@@ -170,9 +170,6 @@
     <ClCompile Include="skybox\skybox.cpp">
       <Filter>skybox</Filter>
     </ClCompile>
-    <ClCompile Include="cAABB\PhysicsAABBStuff.cpp">
-      <Filter>cAABB</Filter>
-    </ClCompile>
     <ClCompile Include="playerController\playerController.cpp">
       <Filter>playerController</Filter>
     </ClCompile>
@@ -336,12 +333,6 @@
     </ClInclude>
     <ClInclude Include="skybox\skybox.h">
       <Filter>skybox</Filter>
-    </ClInclude>
-    <ClInclude Include="cAABB\cAABB.h">
-      <Filter>cAABB</Filter>
-    </ClInclude>
-    <ClInclude Include="cAABB\PhysicsAABBStuff.h">
-      <Filter>cAABB</Filter>
     </ClInclude>
     <ClInclude Include="playerController\playerController.h">
       <Filter>playerController</Filter>

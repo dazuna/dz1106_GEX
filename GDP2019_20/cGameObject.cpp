@@ -25,8 +25,8 @@ cGameObject::cGameObject()
 
 	this->m_pDebugRenderer = NULL;
 	this->alphaTransparency = 1.0f;
-// The Skinned Mesh (assimp) object
-	//this->pSM = NULL;
+	// The Skinned Mesh (assimp) object
+	// this->pSM = NULL;
 	this->pAS = NULL;
 
 	return;
@@ -81,22 +81,22 @@ void cGameObject::setDebugRenderer(iDebugRenderer* pDebugRenderer)
 unsigned int cGameObject::next_uniqueID = 1000;	// Starting at 1000, just because
 
 
-void cGameObject::getVecColliders(std::vector<glm::vec3>* vecColliders)
-{
-	glm::mat4 transMat = this->getWorldMatrix();
-	for (int i = 0; i < this->vecColliders.size(); i++)
-	{
-		glm::vec4 tempVec4 = glm::vec4(this->vecColliders[i], 1);
-		tempVec4 = transMat * tempVec4;
-		vecColliders->push_back(tempVec4);
-	}
-	return;
-}
-
-void cGameObject::setVecCollider(std::vector<glm::vec3> vecColliders)
-{
-	this->vecColliders = vecColliders;
-}
+//void cGameObject::getVecColliders(std::vector<glm::vec3>* vecColliders)
+//{
+//	glm::mat4 transMat = this->getWorldMatrix();
+//	for (int i = 0; i < this->vecColliders.size(); i++)
+//	{
+//		glm::vec4 tempVec4 = glm::vec4(this->vecColliders[i], 1);
+//		tempVec4 = transMat * tempVec4;
+//		vecColliders->push_back(tempVec4);
+//	}
+//	return;
+//}
+//
+//void cGameObject::setVecCollider(std::vector<glm::vec3> vecColliders)
+//{
+//	this->vecColliders = vecColliders;
+//}
 
 glm::mat4 cGameObject::getWorldMatrix()
 {

@@ -27,7 +27,7 @@ glm::vec3 cPhysics::getGravity(void)
 }
 
 
-void cPhysics::IntegrationStep(std::map<std::string, cGameObject*> g_map_GameObjects, float deltaTime)
+void cPhysics::IntegrationStep(std::map<std::string, cGameObject*>& g_map_GameObjects, float deltaTime)
 {
 	for (std::map<std::string, cGameObject*>::iterator itGO = g_map_GameObjects.begin();
 		itGO != g_map_GameObjects.end();
@@ -48,13 +48,7 @@ void cPhysics::IntegrationStep(std::map<std::string, cGameObject*> g_map_GameObj
 		{
 			pCurObj->positionXYZ += pCurObj->velocity * deltaTime;
 		}
-
-		if (pCurObj->positionXYZ.y < -55.0f)
-		{
-			pCurObj->positionXYZ = glm::vec3(get_random(-5.0f,5.0f), 20.0f, 0.0f);
-			pCurObj->velocity = glm::vec3(0.0f, -2.0f, 0.0f);
-		}
-
+		
 	}//for (unsigned int index = 0;
 
 	return;

@@ -418,16 +418,6 @@ void tools::setWindowTitle(std::stringstream* ssTitle)
 	case selectedType::SOUND:break;
 	}
 	*ssTitle << " || FPS: " << (int)(1 / averageDeltaTime);
-	*ssTitle << " || leftShield: " << leftShieldHealth;
-	*ssTitle << " || rightShield: " << rightShieldHealth;
-	if (itsDeadJim)
-	{
-		*ssTitle << "You've destroyed the Star Destroyer!";
-	}
-	//*ssTitle << " isDroneOn: " << isDroneOn;
-	//*ssTitle << "   Tgt: " << GLMvec3toString(cameraTarget);
-	//*ssTitle << "   Vis: " << GLMvec3toString(visionVector);
-	//*ssTitle << "   XYZ: " << GLMvec3toString(visionVector);
 }
 
 void tools::drawPyramidPlayer(cDebugRenderer* pDebugRenderer)
@@ -640,14 +630,14 @@ void tools::CalculateTransformedMesh(cMesh& originalMesh, glm::mat4 matWorld,cMe
 	return;
 }
 
-void tools::drawAABBs()
-{
-	std::map<unsigned long long, cAABB*>::iterator itAABB;
-	for (itAABB = ::g_mapAABBs_World.begin(); itAABB != ::g_mapAABBs_World.end(); itAABB++)
-	{
-		itAABB->second->drawAABBSelf(::pDebugRenderer);
-	}
-}
+//void tools::drawAABBs()
+//{
+//	std::map<unsigned long long, cAABB*>::iterator itAABB;
+//	for (itAABB = ::g_mapAABBs_World.begin(); itAABB != ::g_mapAABBs_World.end(); itAABB++)
+//	{
+//		itAABB->second->drawAABBSelf(::pDebugRenderer);
+//	}
+//}
 
 void tools::drawSphere(glm::vec3 position, std::string texture, float sscale, float alphaT, float lifetime)
 {
@@ -763,3 +753,4 @@ void tools::SetUpTextureBindingsForObject(cGameObject* pCurrentObject, GLint sha
 
 	return;
 }
+

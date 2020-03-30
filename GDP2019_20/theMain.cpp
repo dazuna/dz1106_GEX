@@ -21,7 +21,7 @@
 #include "JsonState.h"
 #include "cPhysics.h"
 #include "cLowPassFilter.h"
-#include "cAABB/PhysicsAABBStuff.h"
+//#include "cAABB/PhysicsAABBStuff.h"
 #include "DebugRenderer/cDebugRenderer.h"	
 #include "cLight.h"// Used to visualize the attenuation of the lights...
 #include "cFlyCamera/cFlyCamera.h"
@@ -158,6 +158,7 @@ int main(void)
 	JSONLoader::loadDefaultMesh("assets/models/Sphere_Radius_1_XYZ_n_uv.ply");
 	//JSONLoader::JSONLoadMeshesSimple();
 	JSONLoader::LoadMeshes_Thread();
+	JSONLoader::JSONLoadSkinnedMeshes();
 	JSONLoader::JSONLoadTextures(&::g_map_GameObjects, ::pTextureManager);
 	//JSONLoader::loadMeshToGPU(pTheVAOManager, &::g_map_Mesh, &::g_map_GameObjects, shaderProgID);
 	selectedGameObject = ::g_map_GameObjects.begin();
@@ -317,7 +318,8 @@ int main(void)
 
 		//	Update the objects through physics
 		averageDeltaTime = avgDeltaTimeThingy.getAverage();
-		IntegrationStep_AAB(::g_map_GameObjects,float(averageDeltaTime));
+		//IntegrationStep_AAB(::g_map_GameObjects,float(averageDeltaTime));
+		pPhysic->IntegrationStep(::g_map_GameObjects,float(averageDeltaTime));
 		//pPhysic->TestForCollisions(::g_map_GameObjects);
 		//thePathFinder->update(float(averageDeltaTime));
 

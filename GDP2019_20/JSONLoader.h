@@ -1,5 +1,6 @@
 #pragma once
 
+//#include "definitions.h"
 #include "cModelLoader.h"	
 #include "cGameObject.h"
 #include "cLight.h"
@@ -27,9 +28,9 @@ public:
 		cModelLoader* pTheModelLoader);
 	static void loadDefaultMesh(
 		std::string filename);
-	static bool JSONLoadMeshes(
-		std::map<std::string, cMesh*>* g_map_Mesh);
+	static bool JSONLoadMeshes();
 	static bool JSONLoadMeshesSimple();
+	static bool JSONLoadSkinnedMeshes();
 	static void LoadMeshes_Thread();
 	static bool JSONLoadLights(
 		std::map<std::string, cLight*>* g_map_pLights,
