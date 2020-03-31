@@ -60,7 +60,7 @@ cGameObject::cGameObject(cGameObject* newGO)
 	this->textureRatio = newGO->textureRatio;
 	// The Skinned Mesh (assimp) object
 	//this->pSM = NULL;
-	this->pAS = NULL;
+	this->pAS = cAnimationState::copy(newGO->pAS);
 }
 
 unsigned int cGameObject::getUniqueID(void)

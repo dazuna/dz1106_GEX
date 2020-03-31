@@ -167,6 +167,7 @@
     <ClCompile Include="cShader.cpp" />
     <ClCompile Include="cShaderManager.cpp" />
     <ClCompile Include="cSimpleAssimpSkinnedMeshLoader_OneMesh.cpp" />
+    <ClCompile Include="GameTools.cpp" />
     <ClCompile Include="ImGUI_utils.cpp" />
     <ClCompile Include="include\imgui\imgui.cpp" />
     <ClCompile Include="include\imgui\imgui_demo.cpp" />
@@ -201,6 +202,7 @@
     <ClCompile Include="TextureManager\cGLColourHelper.cpp" />
     <ClCompile Include="TextureManager\CTextureFromBMP.cpp" />
     <ClCompile Include="theMain.cpp" />
+    <ClCompile Include="Units.cpp" />
     <ClCompile Include="UserInput.cpp" />
     <ClCompile Include="util\tools.cpp" />
     <ClCompile Include="zBMPLoader\BMPImage.cpp" />
@@ -230,6 +232,7 @@
     <ClInclude Include="DebugRenderer\COpenGLError.h" />
     <ClInclude Include="DebugRenderer\iDebugRenderer.h" />
     <ClInclude Include="definitions.h" />
+    <ClInclude Include="GameTools.h" />
     <ClInclude Include="GFLW_callbacks.h" />
     <ClInclude Include="GLCommon.h" />
     <ClInclude Include="globalStuff.h" />
@@ -263,6 +266,7 @@
     <ClInclude Include="TextureManager\cBasicTextureManager.h" />
     <ClInclude Include="TextureManager\cGLColourHelper.h" />
     <ClInclude Include="TextureManager\CTextureFromBMP.h" />
+    <ClInclude Include="Units.h" />
     <ClInclude Include="util\tools.h" />
     <ClInclude Include="zBMPLoader\BMPImage.h" />
     <ClInclude Include="zBMPLoader\BMPLoader.h" />

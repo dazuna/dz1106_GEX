@@ -111,3 +111,19 @@ void cAnimationState::stopActiveAnimation()
 		this->isReverse = false;
 	}
 }
+
+cAnimationState* cAnimationState::copy(cAnimationState* original)
+{
+	if (original == nullptr) return nullptr;
+	auto newAS = new cAnimationState(original->pSM);
+	newAS->pSM = original->pSM;
+	newAS->frameTimer = 0.f;
+	newAS->isReverse = original->isReverse;
+	newAS->defaultAnimation = new sStateDetails(*original->defaultAnimation);
+	for (const auto& state_pair : original->mapAnimationStates)
+	{
+		auto og_state = state_pair.second;
+		newAS->mapAnimationStates[state_pair.first] = new sStateDetails(*og_state);
+	}
+	return newAS;
+}

@@ -87,6 +87,9 @@
     <Filter Include="imgui\include">
       <UniqueIdentifier>{507d8bc8-0c5a-430b-a3fe-8919b856344a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MiracleKnightStuff">
+      <UniqueIdentifier>{a07852cd-639d-4d50-87d2-ba9badbfaffa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="theMain.cpp">
@@ -255,7 +258,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Terrain.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>MiracleKnightStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTools.cpp">
+      <Filter>MiracleKnightStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Units.cpp">
+      <Filter>MiracleKnightStuff</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -433,8 +442,14 @@
     <ClInclude Include="LodePNG\lodepng.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameTools.h">
+      <Filter>MiracleKnightStuff</Filter>
+    </ClInclude>
     <ClInclude Include="Terrain.h">
-      <Filter>Header Files</Filter>
+      <Filter>MiracleKnightStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Units.h">
+      <Filter>MiracleKnightStuff</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

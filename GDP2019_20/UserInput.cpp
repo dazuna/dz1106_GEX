@@ -18,6 +18,7 @@
 #include "cLuaBrain/cLuaBrain.h"
 
 #include "cAnimatedPlayer/cAnimatedPlayer.h"
+#include "Units.h"
 
 bool isOnlyShiftKeyDown(int mods);
 bool isOnlyCtrlKeyDown(int mods);
@@ -142,7 +143,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 		{
 			if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
-			{
+			{	
 				switch (cursorType)
 				{
 				case selectedType::GAMEOBJECT:

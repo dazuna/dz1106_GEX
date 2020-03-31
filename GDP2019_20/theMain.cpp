@@ -37,7 +37,7 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "ImGUI_utils.h"
-#include "Terrain.h"
+#include "GameTools.h"
 
 cFBO* pTheFBO = NULL;
 
@@ -208,8 +208,7 @@ int main(void)
 	
 	pDebugRenderer->initialize();
 
-	Terrain::loadTerrain("./assets/textures/terrain.png");
-	Terrain::setTerrainObjects();
+	GameTools::init();
 
 	ImGUI_utils::init(window);
 	

@@ -41,4 +41,5 @@ class cAnimationState
 		std::vector<glm::mat4> &Offsets);
 	void setActiveAnimation(std::string name, bool shouldReverse = false);
 	void stopActiveAnimation();
+	static cAnimationState* copy(cAnimationState* original);
 };

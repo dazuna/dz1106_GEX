@@ -3,11 +3,11 @@
 #include <iostream>
 #include "util/tools.h"
 #include "SceneManager/cSceneManager.h"
+#include "GameTools.h"
 
 matTerrain Terrain::terrainGrid;
 unsigned Terrain::width = 0,
 	Terrain::height = 0;
-float Terrain::worldScale = 10.0f;
 
 std::string Terrain::getTypeFromColor(unsigned char r, unsigned char g, unsigned char b)
 {
@@ -87,10 +87,10 @@ void Terrain::setTerrainObjects()
 			} else continue;
 			newTerrain->isVisible = true;
 			// The cube model is 2 units long
-			newTerrain->scale = worldScale / 100;
-			newTerrain->positionXYZ = coordToWorldPos(i, j);
+			newTerrain->scale = GameTools::worldScale / 100;
+			newTerrain->positionXYZ = GameTools::coordToWorldPos(i, j);
 			// put the top of the terrain on the xz plane
-			newTerrain->positionXYZ.y = -worldScale / 2;
+			newTerrain->positionXYZ.y = -GameTools::worldScale / 2;
 			//::g_map_GameObjects[newTerrain->friendlyName] = newTerrain;
 			auto theSceneManager = cSceneManager::getTheSceneManager();
 			theSceneManager->scenesVector[0]->addGameObject(newTerrain);
@@ -100,7 +100,7 @@ void Terrain::setTerrainObjects()
 			if (terrainGrid[i][j] == "wall")
 			{
 				newTerrain = new cGameObject(newTerrain);
-				newTerrain->positionXYZ.y += worldScale;
+				newTerrain->positionXYZ.y += GameTools::worldScale;
 				//::g_map_GameObjects[newTerrain->friendlyName] = newTerrain;
 				theSceneManager->scenesVector[0]->addGameObject(newTerrain);
 			}
@@ -115,16 +115,11 @@ void Terrain::setTerrainObjects()
 				}
 				auto tree = new cGameObject(::g_map_GameObjects["tree"]);
 				tree->isVisible = true;
-				tree->scale = worldScale;
-				tree->positionXYZ = coordToWorldPos(i, j);
+				tree->scale = GameTools::worldScale;
+				tree->positionXYZ = GameTools::coordToWorldPos(i, j);
 				//::g_map_GameObjects[tree->friendlyName] = tree;
 				theSceneManager->scenesVector[0]->addGameObject(tree);
 			}
 		}
 	}
-}
-
-glm::vec3 Terrain::coordToWorldPos(int i, int j)
-{
-	return glm::vec3(i * worldScale, 0, j * worldScale);
 }

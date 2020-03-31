@@ -68,7 +68,6 @@ public:
 
 	//cSimpleAssimpSkinnedMesh* pSM;
 	cAnimationState* pAS;
-	std::string animationStateStatus;
 
 	
 	glm::mat4 getWorldMatrix();
