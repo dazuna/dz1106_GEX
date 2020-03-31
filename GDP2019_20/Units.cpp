@@ -5,7 +5,9 @@
 #include "SceneManager/cSceneManager.h"
 #include "GameTools.h"
 
-vUnits GameUnits::playerUnits, GameUnits::enemyUnits;
+vUnits GameUnits::allyUnits, GameUnits::enemyUnits;
+vUnits::iterator GameUnits::selectedAlly = GameUnits::allyUnits.begin(),
+GameUnits::selectedEnemy = GameUnits::enemyUnits.begin();
 
 GameUnit* GameUnits::getUnitByCoord(const vUnits& units, int x, int y)
 {
@@ -65,12 +67,22 @@ bool GameUnits::loadUnits(vUnits& vUnits, std::string filename)
 
 bool GameUnits::loadAllies(std::string filename)
 {
-	return loadUnits(playerUnits, filename);
+	auto res = loadUnits(allyUnits, filename);
+	if (res)
+	{
+		selectedAlly = allyUnits.begin();
+	}
+	return res;
 }
 
 bool GameUnits::loadEnemies(std::string filename)
 {
-	return loadUnits(enemyUnits, filename);
+	auto res = loadUnits(enemyUnits, filename);
+	if (res)
+	{
+		selectedEnemy = enemyUnits.begin();
+	}
+	return res;
 }
 
 cGameObject* createUnitObj(GameUnit* unit)
@@ -97,7 +109,7 @@ cGameObject* createUnitObj(GameUnit* unit)
 
 void GameUnits::setUnitObjects()
 {
-	for (auto unit : playerUnits)
+	for (auto unit : allyUnits)
 	{
 		cGameObject* newUnit = createUnitObj(unit);
 		if (newUnit)
@@ -116,4 +128,26 @@ void GameUnits::setUnitObjects()
 			newUnit->textures[0] = "Red.png";
 		}
 	}
+}
+
+void GameUnits::nextAlly()
+{
+	(*selectedAlly)->gameObj->textures[0] = "Blue.png";
+	selectedAlly++;
+	if (selectedAlly == allyUnits.end())
+	{
+		selectedAlly = allyUnits.begin();
+	}
+	(*selectedAlly)->gameObj->textures[0] = "Yellow.png";
+}
+
+void GameUnits::previousAlly()
+{
+	(*selectedAlly)->gameObj->textures[0] = "Blue.png";
+	if (selectedAlly == allyUnits.begin())
+	{
+		selectedAlly = allyUnits.end();
+	}
+	selectedAlly--;
+	(*selectedAlly)->gameObj->textures[0] = "Yellow.png";
 }

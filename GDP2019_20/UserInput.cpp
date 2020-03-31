@@ -204,6 +204,16 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			{
 				::g_map_GameObjects["cameraPosition0"]->positionXYZ = ::g_pFlyCamera->eye;
 			}
+
+			// Game controls
+			if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
+			{
+				GameUnits::nextAlly();
+			}
+			if (key == GLFW_KEY_UP && action == GLFW_PRESS)
+			{
+				GameUnits::previousAlly();
+			}
 		}
 
 		if (isShiftKeyDownByAlone(mods))

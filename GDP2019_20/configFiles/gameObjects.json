@@ -164,7 +164,7 @@
     "rotationXYZ": [0,0,0],
     "scale": 0,
     "specularColour": [1.0, 1.0, 1.0, 1.0],
-    "texture": ["Red.png", "Blue.png", "", ""],
+    "texture": ["Red.png", "Blue.png", "Yellow.png", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0],
     "velocity": [0.0, 0.0, 0.0],
     "zAnimations": 

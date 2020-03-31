@@ -334,19 +334,7 @@ int main(void)
 
 		glfwPollEvents();
 
-		// Example of how to display a JSON
-		// As I have it now, it has to be displayed every frame
-		// (it disappears if you don't diplay it)
-		// We can change this if we need to.
-		//nlohmann::json jData;
-		//jData["title"] = "Selected game Object";
-		//auto gameObj = selectedGameObject->second;
-		//jData["name"] = gameObj->friendlyName;
-		//jData["position"] = glm::to_string(gameObj->positionXYZ);
-		//jData["rotation"] = glm::to_string(gameObj->getEulerAngle());
-		//jData["direction"] = glm::to_string(gameObj->getCurrentAT());
-		//jData["scale"] = gameObj->scale;
-		//ImGUI_utils::displayJSON(jData);
+		GameTools::displaySelectedAlly();
 		ImGUI_utils::render();
 		
 		glfwSwapBuffers(window);

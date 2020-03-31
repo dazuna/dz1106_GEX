@@ -6,4 +6,5 @@ struct GameTools
 	static float worldScale;
 	static glm::vec3 coordToWorldPos(int i, int j);
 	static void init();
+	static void displaySelectedAlly();
 };

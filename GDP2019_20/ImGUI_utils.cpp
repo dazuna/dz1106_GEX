@@ -76,16 +76,14 @@ void ImGUI_utils::renderJSON(nlohmann::json data)
 {
 	if (!data.is_object()) return;
 
-	int flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-
 	if (jsonContains(data, "title"))
 	{
-		ImGui::Begin(data["title"].get<std::string>().c_str(), nullptr, flags);
+		ImGui::Begin(data["title"].get<std::string>().c_str(), nullptr);
 		data.erase("title");
 	}
 	else
 	{
-		ImGui::Begin("the title is a lie", nullptr, flags | ImGuiWindowFlags_NoTitleBar);
+		ImGui::Begin("the title is a lie", nullptr, ImGuiWindowFlags_NoTitleBar);
 	}
 	
 	if (jsonContains(data, "pos"))
@@ -125,19 +123,15 @@ void ImGUI_utils::renderJSON(nlohmann::json data)
 
 void ImGUI_utils::renderMenu()
 {
-	int flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-	ImGui::Begin("Actions", nullptr, flags);
+	ImGui::Begin("Actions", nullptr);
 	int screenWidth, screenHeight;
 	int width = 200;
 	int height = 150;
-	glfwGetFramebufferSize(window, &screenWidth, &screenHeight);
-	ImGui::SetWindowPos(ImVec2(screenWidth - width, screenHeight - height));
-	ImGui::SetWindowSize(ImVec2(width,  height));
 	// Si necesitamos hacer el menú más dinámico, podemos agregar variables estáticas
 	// para aparecer/desaparecer los botones
-	ImGui::SetNextItemWidth(ImGui::GetWindowWidth() * 0.9);
+	ImGui::SetNextItemWidth(0.9 * ImGui::GetWindowWidth());
 	bool movedThisFrame = ImGui::Button("Move");
-	ImGui::SetNextItemWidth(ImGui::GetWindowWidth() * 0.9);
+	ImGui::SetNextItemWidth(0.9 * ImGui::GetWindowWidth());
 	bool attackedThisFrame = ImGui::Button("Attack");
 
 	// Podemos cambiar esto a que los botones actualicen variables estaticas que
