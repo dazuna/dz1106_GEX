@@ -2,6 +2,7 @@
 #include "Terrain.h"
 #include "Units.h"
 #include "ImGUI_utils.h"
+#include "GameCursor.h"
 
 float GameTools::worldScale = 10.0f;
 
@@ -18,6 +19,11 @@ void GameTools::init()
 	GameUnits::loadAllies("./assets/textures/playerUnits.png");
 	GameUnits::loadEnemies("./assets/textures/enemyUnits.png");
 	GameUnits::setUnitObjects();
+	GameCursor::init();
+	GameCursor::setPosition(
+		(*GameUnits::selectedAlly)->coord_x,
+		(*GameUnits::selectedAlly)->coord_y
+	);
 }
 
 void GameTools::displaySelectedAlly()
@@ -28,4 +34,10 @@ void GameTools::displaySelectedAlly()
 		jAlly["title"] = "Selected unit";
 		ImGUI_utils::displayJSON(jAlly);
 	}
+}
+
+bool GameTools::validCoord(int x, int y)
+{
+	return x < Terrain::width && x >= 0 &&
+		y < Terrain::height && y >= 0;
 }

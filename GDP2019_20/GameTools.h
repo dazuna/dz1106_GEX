@@ -7,4 +7,5 @@ struct GameTools
 	static glm::vec3 coordToWorldPos(int i, int j);
 	static void init();
 	static void displaySelectedAlly();
+	static bool validCoord(int x, int y);
 };

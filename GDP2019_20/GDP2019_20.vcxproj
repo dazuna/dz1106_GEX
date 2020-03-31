@@ -167,6 +167,7 @@
     <ClCompile Include="cShader.cpp" />
     <ClCompile Include="cShaderManager.cpp" />
     <ClCompile Include="cSimpleAssimpSkinnedMeshLoader_OneMesh.cpp" />
+    <ClCompile Include="GameCursor.cpp" />
     <ClCompile Include="GameTools.cpp" />
     <ClCompile Include="ImGUI_utils.cpp" />
     <ClCompile Include="include\imgui\imgui.cpp" />
@@ -232,6 +233,7 @@
     <ClInclude Include="DebugRenderer\COpenGLError.h" />
     <ClInclude Include="DebugRenderer\iDebugRenderer.h" />
     <ClInclude Include="definitions.h" />
+    <ClInclude Include="GameCursor.h" />
     <ClInclude Include="GameTools.h" />
     <ClInclude Include="GFLW_callbacks.h" />
     <ClInclude Include="GLCommon.h" />

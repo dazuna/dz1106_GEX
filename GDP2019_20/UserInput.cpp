@@ -19,6 +19,7 @@
 
 #include "cAnimatedPlayer/cAnimatedPlayer.h"
 #include "Units.h"
+#include "GameCursor.h"
 
 bool isOnlyShiftKeyDown(int mods);
 bool isOnlyCtrlKeyDown(int mods);
@@ -137,9 +138,40 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	bool debugControls = false;
 	debugControls = !(theAnimatedPlayer->isPlayModeOn);
 
-	if (debugControls)
+	// Game controls
+	if (isShiftKeyDownByAlone(mods))
 	{
-	
+		if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
+		{
+			GameUnits::nextAlly();
+		}
+		if (key == GLFW_KEY_UP && action == GLFW_PRESS)
+		{
+			GameUnits::previousAlly();
+		}
+	}
+	else
+	{
+		if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
+		{
+			GameCursor::moveCursor(0, 1);
+		}
+		if (key == GLFW_KEY_UP && action == GLFW_PRESS)
+		{
+			GameCursor::moveCursor(0, -1);
+		}
+		if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
+		{
+			GameCursor::moveCursor(-1, 0);
+		}
+		if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
+		{
+			GameCursor::moveCursor(1, 0);
+		}
+	}
+
+	if (debugControls)
+	{	
 		if ( !isShiftKeyDownByAlone(mods) && !isCtrlKeyDownByAlone(mods) )
 		{
 			if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
@@ -203,16 +235,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			if (key == GLFW_KEY_Z && action == GLFW_PRESS)
 			{
 				::g_map_GameObjects["cameraPosition0"]->positionXYZ = ::g_pFlyCamera->eye;
-			}
-
-			// Game controls
-			if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
-			{
-				GameUnits::nextAlly();
-			}
-			if (key == GLFW_KEY_UP && action == GLFW_PRESS)
-			{
-				GameUnits::previousAlly();
 			}
 		}
 

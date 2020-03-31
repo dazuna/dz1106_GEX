@@ -386,6 +386,7 @@ void JSONLoader::JSONSaveGos()
 	std::cout << "saving gameObjects...";
 	std::ofstream outFile("./configFiles/gameObjects.json");
 	JsonState* theJsonState = JsonState::getTheJsonState();
+	theJsonState->mergeAllObjects(::g_map_GameObjects);
 	outFile << theJsonState->JSONObjects;
 	std::cout << "[OK]" << std::endl;
 }

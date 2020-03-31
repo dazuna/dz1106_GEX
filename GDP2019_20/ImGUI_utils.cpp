@@ -129,9 +129,9 @@ void ImGUI_utils::renderMenu()
 	int height = 150;
 	// Si necesitamos hacer el menú más dinámico, podemos agregar variables estáticas
 	// para aparecer/desaparecer los botones
-	ImGui::SetNextItemWidth(0.9 * ImGui::GetWindowWidth());
+	ImGui::SetNextItemWidth(0.9f * ImGui::GetWindowWidth());
 	bool movedThisFrame = ImGui::Button("Move");
-	ImGui::SetNextItemWidth(0.9 * ImGui::GetWindowWidth());
+	ImGui::SetNextItemWidth(0.9f * ImGui::GetWindowWidth());
 	bool attackedThisFrame = ImGui::Button("Attack");
 
 	// Podemos cambiar esto a que los botones actualicen variables estaticas que

@@ -4,6 +4,7 @@
 #include "util/tools.h"
 #include "SceneManager/cSceneManager.h"
 #include "GameTools.h"
+#include "GameCursor.h"
 
 vUnits GameUnits::allyUnits, GameUnits::enemyUnits;
 vUnits::iterator GameUnits::selectedAlly = GameUnits::allyUnits.begin(),
@@ -139,6 +140,7 @@ void GameUnits::nextAlly()
 		selectedAlly = allyUnits.begin();
 	}
 	(*selectedAlly)->gameObj->textures[0] = "Yellow.png";
+	GameCursor::setPosition((*selectedAlly)->coord_x, (*selectedAlly)->coord_y);
 }
 
 void GameUnits::previousAlly()
@@ -150,4 +152,5 @@ void GameUnits::previousAlly()
 	}
 	selectedAlly--;
 	(*selectedAlly)->gameObj->textures[0] = "Yellow.png";
+	GameCursor::setPosition((*selectedAlly)->coord_x, (*selectedAlly)->coord_y);
 }

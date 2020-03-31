@@ -1,7 +1,7 @@
 friendlyName: cameraPosition0
 meshName: cubeMesh
 meshURL: assets/models/cube1_xyx_n_uv.ply
-positionXYZ: vec3(80.000000, 80.000000, 250.000000)
+positionXYZ: vec3(19.203259, 58.721153, 72.910278)
 rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
@@ -13,7 +13,7 @@ friendlyName: cameraTarget0
 meshName: cubeMesh
 meshURL: assets/models/cube1_xyx_n_uv.ply
 positionXYZ: vec3(0.000000, 0.000000, 0.000000)
-rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
+rotationXYZ: vec3(0.000000, 0.000000, -4.999999)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
@@ -75,11 +75,22 @@ specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 velocity: vec3(0.000000, 0.000000, 0.000000)
 accel: vec3(0.000000, 0.000000, 0.000000)
 debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+friendlyName: cursor
+meshName: diamond
+meshURL: assets/models/diamond.ply
+positionXYZ: vec3(21.000000, 20.000000, 29.000000)
+rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
+objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
+diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
+velocity: vec3(0.000000, 0.000000, 0.000000)
+accel: vec3(0.000000, 0.000000, 0.000000)
+debugColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 friendlyName: knight
 meshName: knightMesh
 meshURL: assets/modelsFBX/Knight/Knight.fbx
 positionXYZ: vec3(0.000000, 5.000000, 0.000000)
-rotationXYZ: vec3(0.000000, 0.000000, 0.000000)
+rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
@@ -101,7 +112,7 @@ friendlyName: theQuad
 meshName: quadMesh
 meshURL: assets/models/1x1_2Tri_Quad_2_Sided_xyz_n_uv.ply
 positionXYZ: vec3(0.000000, 0.000000, 0.000000)
-rotationXYZ: vec3(0.000000, -0.000000, 0.000000)
+rotationXYZ: vec3(180.000000, -0.000005, 180.000000)
 objectColourRGBA: vec4(0.000000, 0.000000, 0.000000, 1.000000)
 diffuseColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)
 specularColour: vec4(1.000000, 1.000000, 1.000000, 1.000000)

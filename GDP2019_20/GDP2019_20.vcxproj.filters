@@ -266,6 +266,9 @@
     <ClCompile Include="Units.cpp">
       <Filter>MiracleKnightStuff</Filter>
     </ClCompile>
+    <ClCompile Include="GameCursor.cpp">
+      <Filter>MiracleKnightStuff</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cMesh.h">
@@ -449,6 +452,9 @@
       <Filter>MiracleKnightStuff</Filter>
     </ClInclude>
     <ClInclude Include="Units.h">
+      <Filter>MiracleKnightStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="GameCursor.h">
       <Filter>MiracleKnightStuff</Filter>
     </ClInclude>
   </ItemGroup>
