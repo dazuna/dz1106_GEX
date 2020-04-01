@@ -1,4 +1,4 @@
-#include "Units.h"
+#include "GameArmies.h"
 #include "LodePNG/lodepng.h"
 #include <iostream>
 #include "util/tools.h"
@@ -6,11 +6,11 @@
 #include "GameTools.h"
 #include "GameCursor.h"
 
-vUnits GameUnits::allyUnits, GameUnits::enemyUnits;
-vUnits::iterator GameUnits::selectedAlly = GameUnits::allyUnits.begin(),
-GameUnits::selectedEnemy = GameUnits::enemyUnits.begin();
+vUnits GameArmies::allyUnits, GameArmies::enemyUnits;
+vUnits::iterator GameArmies::selectedAlly = GameArmies::allyUnits.begin(),
+GameArmies::selectedEnemy = GameArmies::enemyUnits.begin();
 
-GameUnit* GameUnits::getUnitByCoord(const vUnits& units, int x, int y)
+GameUnit* GameArmies::getUnitByCoord(const vUnits& units, int x, int y)
 {
 	for (auto unit : units)
 	{
@@ -22,7 +22,7 @@ GameUnit* GameUnits::getUnitByCoord(const vUnits& units, int x, int y)
 	return nullptr;
 }
 
-std::string GameUnits::getTypeFromColor(unsigned char r, unsigned char g, unsigned char b)
+std::string GameArmies::getTypeFromColor(unsigned char r, unsigned char g, unsigned char b)
 {
 	if (r == 255 && g == 0 && b == 0) return "sword";
 	if (r == 0 && g == 255 && b == 0) return "archer";
@@ -30,7 +30,7 @@ std::string GameUnits::getTypeFromColor(unsigned char r, unsigned char g, unsign
 	return "";
 }
 
-bool GameUnits::loadUnits(vUnits& vUnits, std::string filename)
+bool GameArmies::loadUnits(vUnits& vUnits, std::string filename)
 {
 	std::vector<unsigned char> image;
 	unsigned width, height;
@@ -66,7 +66,7 @@ bool GameUnits::loadUnits(vUnits& vUnits, std::string filename)
 	return true;
 }
 
-bool GameUnits::loadAllies(std::string filename)
+bool GameArmies::loadAllies(std::string filename)
 {
 	auto res = loadUnits(allyUnits, filename);
 	if (res)
@@ -76,7 +76,7 @@ bool GameUnits::loadAllies(std::string filename)
 	return res;
 }
 
-bool GameUnits::loadEnemies(std::string filename)
+bool GameArmies::loadEnemies(std::string filename)
 {
 	auto res = loadUnits(enemyUnits, filename);
 	if (res)
@@ -104,11 +104,12 @@ cGameObject* createUnitObj(GameUnit* unit)
 	newUnit->positionXYZ = GameTools::coordToWorldPos(unit->coord_x, unit->coord_y);
 	auto theSceneManager = cSceneManager::getTheSceneManager();
 	theSceneManager->scenesVector[0]->addGameObject(newUnit);
+	::g_map_GameObjects[newUnit->friendlyName] = newUnit;
 	unit->gameObj = newUnit;
 	return newUnit;
 }
 
-void GameUnits::setUnitObjects()
+void GameArmies::setUnitObjects()
 {
 	for (auto unit : allyUnits)
 	{
@@ -131,7 +132,7 @@ void GameUnits::setUnitObjects()
 	}
 }
 
-void GameUnits::nextAlly()
+void GameArmies::nextAlly()
 {
 	(*selectedAlly)->gameObj->textures[0] = "Blue.png";
 	selectedAlly++;
@@ -143,7 +144,7 @@ void GameUnits::nextAlly()
 	GameCursor::setPosition((*selectedAlly)->coord_x, (*selectedAlly)->coord_y);
 }
 
-void GameUnits::previousAlly()
+void GameArmies::previousAlly()
 {
 	(*selectedAlly)->gameObj->textures[0] = "Blue.png";
 	if (selectedAlly == allyUnits.begin())
@@ -153,4 +154,23 @@ void GameUnits::previousAlly()
 	selectedAlly--;
 	(*selectedAlly)->gameObj->textures[0] = "Yellow.png";
 	GameCursor::setPosition((*selectedAlly)->coord_x, (*selectedAlly)->coord_y);
+}
+
+bool GameArmies::isCoordOccupied(int x, int y)
+{
+	for (auto unit : allyUnits)
+	{
+		if (unit->coord_y == y && unit->coord_x == x)
+		{
+			return true;
+		}
+	}
+	for (auto unit : enemyUnits)
+	{
+		if (unit->coord_y == y && unit->coord_x == x)
+		{
+			return true;
+		}
+	}
+	return false;
 }

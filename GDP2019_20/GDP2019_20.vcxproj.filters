@@ -263,10 +263,13 @@
     <ClCompile Include="GameTools.cpp">
       <Filter>MiracleKnightStuff</Filter>
     </ClCompile>
-    <ClCompile Include="Units.cpp">
+    <ClCompile Include="GameCursor.cpp">
       <Filter>MiracleKnightStuff</Filter>
     </ClCompile>
-    <ClCompile Include="GameCursor.cpp">
+    <ClCompile Include="GameArmies.cpp">
+      <Filter>MiracleKnightStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUnit.cpp">
       <Filter>MiracleKnightStuff</Filter>
     </ClCompile>
   </ItemGroup>
@@ -451,10 +454,13 @@
     <ClInclude Include="Terrain.h">
       <Filter>MiracleKnightStuff</Filter>
     </ClInclude>
-    <ClInclude Include="Units.h">
+    <ClInclude Include="GameCursor.h">
       <Filter>MiracleKnightStuff</Filter>
     </ClInclude>
-    <ClInclude Include="GameCursor.h">
+    <ClInclude Include="GameArmies.h">
+      <Filter>MiracleKnightStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUnit.h">
       <Filter>MiracleKnightStuff</Filter>
     </ClInclude>
   </ItemGroup>

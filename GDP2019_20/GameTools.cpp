@@ -1,6 +1,6 @@
 #include "GameTools.h"
 #include "Terrain.h"
-#include "Units.h"
+#include "GameArmies.h"
 #include "ImGUI_utils.h"
 #include "GameCursor.h"
 
@@ -14,23 +14,23 @@ glm::vec3 GameTools::coordToWorldPos(int i, int j)
 void GameTools::init()
 {
 	std::cout << "Initializing game stuff..." << std::endl;
-	Terrain::loadTerrain("./assets/textures/terrain.png");
+	Terrain::loadTerrain("./assets/textures/maps/small/terrain.png");
 	Terrain::setTerrainObjects();
-	GameUnits::loadAllies("./assets/textures/playerUnits.png");
-	GameUnits::loadEnemies("./assets/textures/enemyUnits.png");
-	GameUnits::setUnitObjects();
+	GameArmies::loadAllies("./assets/textures/maps/small/playerUnits.png");
+	GameArmies::loadEnemies("./assets/textures/maps/small/enemyUnits.png");
+	GameArmies::setUnitObjects();
 	GameCursor::init();
 	GameCursor::setPosition(
-		(*GameUnits::selectedAlly)->coord_x,
-		(*GameUnits::selectedAlly)->coord_y
+		(*GameArmies::selectedAlly)->coord_x,
+		(*GameArmies::selectedAlly)->coord_y
 	);
 }
 
 void GameTools::displaySelectedAlly()
 {
-	if (GameUnits::selectedAlly != GameUnits::allyUnits.end())
+	if (GameArmies::selectedAlly != GameArmies::allyUnits.end())
 	{
-		auto jAlly = (*GameUnits::selectedAlly)->toJSON();
+		auto jAlly = (*GameArmies::selectedAlly)->toJSON();
 		jAlly["title"] = "Selected unit";
 		ImGUI_utils::displayJSON(jAlly);
 	}
@@ -40,4 +40,17 @@ bool GameTools::validCoord(int x, int y)
 {
 	return x < Terrain::width && x >= 0 &&
 		y < Terrain::height && y >= 0;
+}
+
+void GameTools::update()
+{
+	// TODO: Maybe just update the units of the active turn??
+	for (auto unit : GameArmies::allyUnits)
+	{
+		unit->update();
+	}
+	for (auto unit : GameArmies::enemyUnits)
+	{
+		unit->update();
+	}
 }

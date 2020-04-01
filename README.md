@@ -1,9 +1,13 @@
-# Program: GDP1
+# Miracle Knight
 
-## Physics 1
+Turn-grid strategy game.
 
-## Professor: Michael Feeney
+## Controls
 
-### By David Zuniga Navarro
+WASD and mouse for fly Camera (while development)
 
-Please refer to the readme.docx
+Arrow keys for moving the grid cursor.
+
+Shift + Up or Down to select units
+
+Ctrl + arrow keys to move the selected unit.

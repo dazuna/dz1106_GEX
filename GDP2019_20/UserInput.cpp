@@ -18,7 +18,7 @@
 #include "cLuaBrain/cLuaBrain.h"
 
 #include "cAnimatedPlayer/cAnimatedPlayer.h"
-#include "Units.h"
+#include "GameArmies.h"
 #include "GameCursor.h"
 
 bool isOnlyShiftKeyDown(int mods);
@@ -143,11 +143,31 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	{
 		if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
 		{
-			GameUnits::nextAlly();
+			GameArmies::nextAlly();
 		}
 		if (key == GLFW_KEY_UP && action == GLFW_PRESS)
 		{
-			GameUnits::previousAlly();
+			GameArmies::previousAlly();
+		}
+	}
+	else if (isCtrlKeyDownByAlone(mods))
+	{
+		auto unit = *GameArmies::selectedAlly;
+		if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
+		{
+			unit->moveAction(0, 1);
+		}
+		if (key == GLFW_KEY_UP && action == GLFW_PRESS)
+		{
+			unit->moveAction(0, -1);
+		}
+		if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
+		{
+			unit->moveAction(-1, 0);
+		}
+		if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
+		{
+			unit->moveAction(1, 0);
 		}
 	}
 	else

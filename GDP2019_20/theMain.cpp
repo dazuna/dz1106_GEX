@@ -306,6 +306,7 @@ int main(void)
 		//}//for (int index...
 				
 		theSceneManager->update();
+		GameTools::update();
 		// theSceneManager->updateStencil(window);
 		
 		switch (cursorType)

@@ -173,7 +173,7 @@
     "debugColour": [1.0, 1.0, 1.0, 1.0],
     "diffuseColour": [1.0, 1.0, 1.0, 1.0],
     "friendlyName": "knight",
-    "inverseMass": 0.0,
+    "inverseMass": -1,
     "isSkinnedMesh": true,
     "isVisible": false,
     "isWireframe": false,
@@ -197,7 +197,7 @@
       {
         "animName": "Run",
         "isReplaceable": true,
-        "location": "assets/modelsFBX/Knight/Knight@Run.FBX"
+        "location": "assets/modelsFBX/RPG_Run.fbx"
       }
     ]
   },
