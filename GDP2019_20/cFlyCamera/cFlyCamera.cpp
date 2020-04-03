@@ -1,4 +1,5 @@
 #include "cFlyCamera.h"
+#include "../steeringBehaviour/cSteeringBehaviour.hpp"
 
 //#include <glm/glm.hpp>
 //#include <glm/vec3.hpp> // glm::vec3
@@ -6,37 +7,35 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 
+cFlyCamera* cFlyCamera::the_camera_ = new cFlyCamera();
+
+cFlyCamera* cFlyCamera::getTheCamera()
+{
+	return the_camera_;
+}
 
 cFlyCamera::cFlyCamera()
 {
 	this->eye = glm::vec3(0,10,-10);
-
 	// This will be constant
 	this->m_frontOfCamera = glm::vec3(0.0f, 0.0f, 1.0f);
-
 	this->m_upIsYVector = glm::vec3(0.0f, 1.0f, 0.0f);
-
-
 	this->movementSpeed = 4.0f;
-
-
 	// Set initial orientation (all zero on Euler axes)
 	this->qOrientation = glm::quat(glm::vec3(0.0f, 0.0f, 0.0f));
-
 	this->m_UpdateAtFromOrientation();
 	this->m_UpdateUpFromOrientation();
-
-	//// Initial "at" is 1 unit in front of the camera, along z
-	//this->at = this->m_frontOfCamera;
 
 	// If we are using the mouse
 	this->setMouseXY(0.0, 0.0);
 	this->m_MouseWheel = 0.0f;
-
 	this->m_Mouse_Initial_State_Is_Set = false;
-
 	this->bKeepCameraFacingUp = true;
 
+	// battle camera stuffs
+	offsetFromBattle = glm::vec3(0,20,30);
+	isBCOn = false;
+	
 	return;
 }
 
@@ -214,36 +213,6 @@ void cFlyCamera::adjMeshOrientationQ(glm::quat adjOrientQ)
 	return;
 }
 
-void cFlyCamera::followPlayer(cGameObject* cPlayer, bool isFollowON)
-{
-	if (!isFollowON) { return; } // Do not follow player
-
-	glm::vec3 origin = cPlayer->positionXYZ;
-	glm::vec3 newAt = glm::vec3(1, 0, 0);
-	newAt *= 200.0f;
-	this->eye = newAt + origin;
-
-	return;
-}
-
-void cFlyCamera::watchPlayer(playerController* cPlayer)
-{
-	glm::quat orientation = glm::conjugate(glm::toQuat(glm::lookAt(cPlayer->pPlayer->positionXYZ, this->eye, this->getUpVector())));
-	this->qOrientation = orientation;
-	this->m_UpdateAtFromOrientation();
-	this->m_UpdateUpFromOrientation();
-	return;
-}
-
-void cFlyCamera::cameraLookAt(glm::vec3 target)
-{
-	glm::quat orientation = glm::conjugate(glm::toQuat(glm::lookAt(target, this->eye, this->getUpVector())));
-	this->qOrientation = orientation;
-	this->m_UpdateAtFromOrientation();
-	this->m_UpdateUpFromOrientation();
-	return;
-}
-
 void cFlyCamera::m_UpdateAtFromOrientation(void)
 {
 	// Have a rotation around the origin (eye)
@@ -347,4 +316,56 @@ float cFlyCamera::getDeltaMouseY(void)
 float cFlyCamera::getMouseWheel(void)
 {
 	return this->m_MouseWheel;
+}
+
+void cFlyCamera::followPlayer(cGameObject* cPlayer, bool isFollowON)
+{
+	if (!isFollowON) { return; } // Do not follow player
+
+	glm::vec3 origin = cPlayer->positionXYZ;
+	glm::vec3 newAt = glm::vec3(1, 0, 0);
+	newAt *= 200.0f;
+	this->eye = newAt + origin;
+
+	return;
+}
+
+void cFlyCamera::watchPlayer(playerController* cPlayer)
+{
+	glm::quat orientation = glm::conjugate(glm::toQuat(glm::lookAt(cPlayer->pPlayer->positionXYZ, this->eye, this->getUpVector())));
+	this->qOrientation = orientation;
+	this->m_UpdateAtFromOrientation();
+	this->m_UpdateUpFromOrientation();
+	return;
+}
+
+void cFlyCamera::cameraLookAt(glm::vec3 target)
+{
+	glm::quat orientation = glm::conjugate(glm::toQuat(glm::lookAt(target, this->eye, this->getUpVector())));
+	this->qOrientation = orientation;
+	this->m_UpdateAtFromOrientation();
+	this->m_UpdateUpFromOrientation();
+	return;
+}
+
+void cFlyCamera::battleCamera()
+{
+	if(!isBCOn)
+	{
+		camPos->positionXYZ = this->eye;
+		battlePos->positionXYZ = this->getAtInWorldSpace();
+		return;
+	}
+	auto desiredPosition = battleTarget+offsetFromBattle;
+
+	auto dist = glm::distance(desiredPosition,camPos->positionXYZ);
+	if(dist < 1.f){ isBCOn = false; return; }
+	camPos->velocity = cSteeringBehaviour::arriveBhvr(
+		camPos->positionXYZ,camPos->velocity,
+		desiredPosition,0.3f,35.f);
+	battlePos->velocity = cSteeringBehaviour::arriveBhvr(
+		battlePos->positionXYZ,battlePos->velocity,
+		battleTarget,0.3f,50.f);
+	this->eye = camPos->positionXYZ;
+	cameraLookAt(battlePos->positionXYZ);
 }

@@ -13,6 +13,9 @@ extern cDebugRenderer* pDebugRenderer;
 class cFlyCamera
 {
 public:
+	static cFlyCamera* the_camera_;
+	static cFlyCamera* getTheCamera();
+	
 	cFlyCamera();
 	cFlyCamera(glm::vec3 visionVec3);
 	// Use these to allow us to use the LookAt() transform
@@ -81,6 +84,12 @@ public:
 	void followPlayer(cGameObject* cPlayer, bool isFollowON);
 	void watchPlayer(playerController* cPlayer);
 	void cameraLookAt(glm::vec3 target);
+	// battle camera
+	void battleCamera();
+	glm::vec3 offsetFromBattle,battleTarget;
+	cGameObject* camPos,*battlePos;
+	bool isBCOn;
+	
 private:
 	// This will lead to direction, etc.
 	glm::quat qOrientation;

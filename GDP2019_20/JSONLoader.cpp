@@ -239,64 +239,99 @@ bool JSONLoader::JSONLoadGameObjects(std::map<std::string, cGameObject*>* g_map_
 
 	for (index = 0; index < jsonArray.size(); index++)
 	{
+		cGameObject* tempGameObject = new cGameObject();
+		
 		std::string friendlyName = jsonArray[index]["friendlyName"];
-		outFile << "friendlyName: " << friendlyName << std::endl;
+		tempGameObject->friendlyName = friendlyName;		
 		std::string meshName = jsonArray[index]["meshName"];
-		outFile << "meshName: " << meshName << std::endl;
+		tempGameObject->meshName = meshName;		
 		std::string meshURL = jsonArray[index]["meshURL"];
-		outFile << "meshURL: " << meshURL << std::endl;
+		tempGameObject->meshURL = meshURL;		
 		glm::vec3 positionXYZ = glm::vec3(
 			jsonArray[index]["positionXYZ"][0],
 			jsonArray[index]["positionXYZ"][1],
 			jsonArray[index]["positionXYZ"][2]);
-		outFile << "positionXYZ: " << glm::to_string(positionXYZ) << std::endl;
+		tempGameObject->positionXYZ = positionXYZ;		
 		glm::vec3 rotationXYZ = glm::vec3(
 			jsonArray[index]["rotationXYZ"][0],
 			jsonArray[index]["rotationXYZ"][1],
 			jsonArray[index]["rotationXYZ"][2]);
-		outFile << "rotationXYZ: " << glm::to_string(rotationXYZ) << std::endl;
+		tempGameObject->setOrientation(rotationXYZ);		
 		float scale = jsonArray[index]["scale"];
-		glm::vec4 objectColourRGBA = glm::vec4(
-			jsonArray[index]["objectColourRGBA"][0],
-			jsonArray[index]["objectColourRGBA"][1],
-			jsonArray[index]["objectColourRGBA"][2],
-			jsonArray[index]["objectColourRGBA"][3]);
-		outFile << "objectColourRGBA: " << glm::to_string(objectColourRGBA) << std::endl;
-		glm::vec4 diffuseColour = glm::vec4(
-			jsonArray[index]["diffuseColour"][0],
-			jsonArray[index]["diffuseColour"][1],
-			jsonArray[index]["diffuseColour"][2],
-			jsonArray[index]["diffuseColour"][3]);
-		outFile << "diffuseColour: " << glm::to_string(diffuseColour) << std::endl;
-		glm::vec4 specularColour = glm::vec4(
-			jsonArray[index]["specularColour"][0],
-			jsonArray[index]["specularColour"][1],
-			jsonArray[index]["specularColour"][2],
-			jsonArray[index]["specularColour"][3]);
-		outFile << "specularColour: " << glm::to_string(specularColour) << std::endl;
-		glm::vec3 velocity = glm::vec3(
-			jsonArray[index]["velocity"][0],
-			jsonArray[index]["velocity"][1],
-			jsonArray[index]["velocity"][2]);
-		outFile << "velocity: " << glm::to_string(velocity) << std::endl;
-		glm::vec3 accel = glm::vec3(
-			jsonArray[index]["accel"][0],
-			jsonArray[index]["accel"][1],
-			jsonArray[index]["accel"][2]);
-		outFile << "accel: " << glm::to_string(accel) << std::endl;
-		float inverseMass = jsonArray[index]["inverseMass"];
+		tempGameObject->scale = scale;
 
-		int physicsShapeType = jsonArray[index]["physicsShapeType"];
-		bool isWireframe = jsonArray[index]["isWireframe"];
-		glm::vec4 debugColour = glm::vec4(
-			jsonArray[index]["debugColour"][0],
-			jsonArray[index]["debugColour"][1],
-			jsonArray[index]["debugColour"][2],
-			jsonArray[index]["debugColour"][3]);
-		outFile << "debugColour: " << glm::to_string(debugColour) << std::endl;
-		bool isVisible = jsonArray[index]["isVisible"];
-
-		cGameObject* tempGameObject = new cGameObject();
+		if (jsonArray[index].find("objectColourRGBA") != jsonArray[index].end())
+		{
+			glm::vec4 objectColourRGBA = glm::vec4(
+				jsonArray[index]["objectColourRGBA"][0],
+				jsonArray[index]["objectColourRGBA"][1],
+				jsonArray[index]["objectColourRGBA"][2],
+				jsonArray[index]["objectColourRGBA"][3]);
+			tempGameObject->objectColourRGBA = objectColourRGBA;
+		}		
+		if (jsonArray[index].find("diffuseColour") != jsonArray[index].end())
+		{
+			glm::vec4 diffuseColour = glm::vec4(
+				jsonArray[index]["diffuseColour"][0],
+				jsonArray[index]["diffuseColour"][1],
+				jsonArray[index]["diffuseColour"][2],
+				jsonArray[index]["diffuseColour"][3]);
+			tempGameObject->diffuseColour = diffuseColour;
+		}		
+		if (jsonArray[index].find("specularColour") != jsonArray[index].end())
+		{
+			glm::vec4 specularColour = glm::vec4(
+				jsonArray[index]["specularColour"][0],
+				jsonArray[index]["specularColour"][1],
+				jsonArray[index]["specularColour"][2],
+				jsonArray[index]["specularColour"][3]);
+			tempGameObject->specularColour = specularColour;
+		}		
+		if (jsonArray[index].find("velocity") != jsonArray[index].end())
+		{
+			glm::vec3 velocity = glm::vec3(
+				jsonArray[index]["velocity"][0],
+				jsonArray[index]["velocity"][1],
+				jsonArray[index]["velocity"][2]);
+			tempGameObject->velocity = velocity;
+		}
+		if (jsonArray[index].find("accel") != jsonArray[index].end())
+		{
+			glm::vec3 accel = glm::vec3(
+				jsonArray[index]["accel"][0],
+				jsonArray[index]["accel"][1],
+				jsonArray[index]["accel"][2]);
+			tempGameObject->accel = accel;
+		}		
+		if (jsonArray[index].find("inverseMass") != jsonArray[index].end())
+		{
+			float inverseMass = jsonArray[index]["inverseMass"];
+			tempGameObject->inverseMass = inverseMass;
+		}		
+		if (jsonArray[index].find("physicsShapeType") != jsonArray[index].end())
+		{
+			int physicsShapeType = jsonArray[index]["physicsShapeType"];
+			tempGameObject->physicsShapeType = eShapeTypes(physicsShapeType);
+		}		
+		if (jsonArray[index].find("isWireframe") != jsonArray[index].end())
+		{
+			bool isWireframe = jsonArray[index]["isWireframe"];
+			tempGameObject->isWireframe = isWireframe;
+		}
+		if (jsonArray[index].find("debugColour") != jsonArray[index].end())
+		{
+			glm::vec4 debugColour = glm::vec4(
+				jsonArray[index]["debugColour"][0],
+				jsonArray[index]["debugColour"][1],
+				jsonArray[index]["debugColour"][2],
+				jsonArray[index]["debugColour"][3]);
+			tempGameObject->debugColour = debugColour;
+		}		
+		if (jsonArray[index].find("isVisible") != jsonArray[index].end())
+		{
+			bool isVisible = jsonArray[index]["isVisible"];
+			tempGameObject->isVisible = isVisible;
+		}
 		if (jsonArray[index].find("texture") != jsonArray[index].end())
 		{
 			for (int i = 0; i < jsonArray[index]["texture"].size(); i++)
@@ -315,22 +350,7 @@ bool JSONLoader::JSONLoadGameObjects(std::map<std::string, cGameObject*>* g_map_
 		{
 			tempGameObject->alphaTransparency = jsonArray[index]["alphaTransparency"];
 		}
-		tempGameObject->friendlyName = friendlyName;
-		tempGameObject->meshName = meshName;
-		tempGameObject->meshURL = meshURL;
-		tempGameObject->positionXYZ = positionXYZ;
-		tempGameObject->setOrientation(rotationXYZ);
-		tempGameObject->scale = scale;
-		tempGameObject->objectColourRGBA = objectColourRGBA;
-		tempGameObject->diffuseColour = diffuseColour;
-		tempGameObject->specularColour = specularColour;
-		tempGameObject->velocity = velocity;
-		tempGameObject->accel = accel;
-		tempGameObject->inverseMass = inverseMass;
-		tempGameObject->physicsShapeType = (eShapeTypes)physicsShapeType;
-		tempGameObject->isWireframe = isWireframe;
-		tempGameObject->debugColour = debugColour;
-		tempGameObject->isVisible = isVisible;
+		
 		g_map_GameObjects->insert({ friendlyName.c_str(),tempGameObject });
 	}
 	//std::cout << j;
