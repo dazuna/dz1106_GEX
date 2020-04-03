@@ -168,10 +168,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
 		{
 			unit->moveAction(1, 0);
-		}
+		}		
 	}
 	else
 	{
+		auto unit = *GameArmies::selectedAlly;
 		if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
 		{
 			GameCursor::moveCursor(0, 1);
@@ -187,6 +188,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
 		{
 			GameCursor::moveCursor(1, 0);
+		}
+		if (key == GLFW_KEY_C && action == GLFW_PRESS)
+		{
+			unit->attkAction();
 		}
 	}
 
@@ -255,6 +260,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			if (key == GLFW_KEY_Z && action == GLFW_PRESS)
 			{
 				::g_map_GameObjects["cameraPosition0"]->positionXYZ = ::g_pFlyCamera->eye;
+			}
+			if (key == GLFW_KEY_M && action == GLFW_PRESS)
+			{
+				::g_pFlyCamera->isBCOn = !::g_pFlyCamera->isBCOn;
 			}
 		}
 

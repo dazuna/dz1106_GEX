@@ -1,7 +1,10 @@
 #include "GameUnit.h"
+
+#include "cFlyCamera/cFlyCamera.h"
 #include "Terrain.h"
 #include "GameTools.h"
 #include "GameArmies.h"
+#include "GameCursor.h"
 
 nlohmann::json GameUnit::toJSON()
 {
@@ -12,6 +15,7 @@ nlohmann::json GameUnit::toJSON()
 	res["health"] = health;
 	res["range"] = range;
 	res["rest movement"] = rest_movement;
+	res["state"] = state;
 	return res;
 }
 
@@ -41,10 +45,40 @@ bool GameUnit::moveAction(int dir_x, int dir_y)
 	auto targetPos = GameTools::coordToWorldPos(new_x, new_y);
 	gameObj->setAT(targetPos - gameObj->positionXYZ);
 	gameObj->velocity = gameObj->getCurrentAT() * GameTools::worldScale * 3.f;
+	GameCursor::setCoordinates(new_x,new_y);
 	return true;
 }
 
-void GameUnit::update()
+bool GameUnit::attkAction()
+{
+	// The unit is waiting for an action
+	if (state != "waiting") return false;
+	// The coord is inside the board
+	int new_x = GameCursor::coord_x;
+	int new_y = GameCursor::coord_y;
+	if (!GameTools::validCoord(new_x, new_y)) return false;
+
+	auto dist = getDistToCoord(new_x,new_y);
+	std::cout << "dist to cursor: " << dist << std::endl;
+	std::cout << "range: " << this->range << std::endl;
+	//return false;
+	if(dist > range) return false;
+	auto enemy = GameArmies::getUnitByCoord(GameArmies::enemyUnits,new_x,new_y);
+	if(!enemy) return false;
+	
+	gameObj->setAT(enemy->gameObj->positionXYZ-gameObj->positionXYZ);
+	state = "wait4attacking";
+	//gameObj->pAS->setActiveAnimation("Attack");
+
+	auto cam = cFlyCamera::getTheCamera();
+	cam->battleTarget = gameObj->positionXYZ;
+	cam->isBCOn = true;
+	
+	
+	return true;
+}
+
+void GameUnit::update(float dt)
 {
 	if (state == "walking")
 	{
@@ -62,4 +96,33 @@ void GameUnit::update()
 			state = "waiting";
 		}
 	}
+	if(state == "wait4attacking")
+	{
+		timer+=dt;
+		if(timer > 1.f)
+		{
+			wait++;
+			timer = 0.f;
+		}
+		if(wait >= 4)
+		{
+			gameObj->pAS->setActiveAnimation("Attack");
+			state = "attacking";			
+		}
+	}
+	if(state == "attacking")
+	{
+		if(!gameObj->pAS->activeAnimation)
+		{
+			state = "inactive";
+			wait = 0;
+		}
+	}
+}
+
+int GameUnit::getDistToCoord(int tar_x, int tar_y)
+{
+	int dist_x = std::abs(coord_x-tar_x);
+	int dist_y = std::abs(coord_y-tar_y);
+	return(dist_x+dist_y);
 }

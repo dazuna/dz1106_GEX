@@ -141,7 +141,7 @@ void GameArmies::nextAlly()
 		selectedAlly = allyUnits.begin();
 	}
 	(*selectedAlly)->gameObj->textures[0] = "Yellow.png";
-	GameCursor::setPosition((*selectedAlly)->coord_x, (*selectedAlly)->coord_y);
+	GameCursor::setCoordinates((*selectedAlly)->coord_x, (*selectedAlly)->coord_y);
 }
 
 void GameArmies::previousAlly()
@@ -153,7 +153,7 @@ void GameArmies::previousAlly()
 	}
 	selectedAlly--;
 	(*selectedAlly)->gameObj->textures[0] = "Yellow.png";
-	GameCursor::setPosition((*selectedAlly)->coord_x, (*selectedAlly)->coord_y);
+	GameCursor::setCoordinates((*selectedAlly)->coord_x, (*selectedAlly)->coord_y);
 }
 
 bool GameArmies::isCoordOccupied(int x, int y)

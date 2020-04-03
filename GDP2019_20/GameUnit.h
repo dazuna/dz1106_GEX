@@ -17,12 +17,19 @@ struct GameUnit
 	int health = 10, range = 1,
 		movement = 5, rest_movement = 5;
 
+	float timer = 0;
+	int wait = 0;
+	
 	nlohmann::json toJSON();
 	/*
 	 * The player tells a unit to move in a certain direction
 	 */
 	bool moveAction(int dir_x, int dir_y);
-	void update();
+	/* Unit attacks a unit selected by the cursor, if it's in range*/
+	bool attkAction();
+	void update(float dt);
+
+	int getDistToCoord(int tar_x, int tar_y);
 };
 
 typedef std::vector<GameUnit*> vUnits;

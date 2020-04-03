@@ -30,7 +30,7 @@ void GameCursor::moveCursor(int dir_x, int dir_y)
 	}
 }
 
-void GameCursor::setPosition(int new_x, int new_y)
+void GameCursor::setCoordinates(int new_x, int new_y)
 {
 	if (GameTools::validCoord(new_x, new_y))
 	{

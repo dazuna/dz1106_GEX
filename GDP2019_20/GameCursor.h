@@ -7,5 +7,5 @@ struct GameCursor
 	static cGameObject* cursorObj;
 	static void init();
 	static void moveCursor(int dir_x, int dir_y);
-	static void setPosition(int new_x, int new_y);
+	static void setCoordinates(int new_x, int new_y);
 };

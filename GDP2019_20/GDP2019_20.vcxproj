@@ -198,6 +198,7 @@
     <ClCompile Include="SceneManager\cSceneManager.cpp" />
     <ClCompile Include="skybox\skybox.cpp" />
     <ClCompile Include="sPathFinder.cpp" />
+    <ClCompile Include="steeringBehaviour\cSteeringBehaviour.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TextureManager\C24BitBMPpixel.cpp" />
     <ClCompile Include="TextureManager\cBasicTextureManager.cpp" />
@@ -264,6 +265,7 @@
     <ClInclude Include="skybox\skybox.h" />
     <ClInclude Include="sModelDrawInfo.h" />
     <ClInclude Include="sPathFinder.h" />
+    <ClInclude Include="steeringBehaviour\cSteeringBehaviour.hpp" />
     <ClInclude Include="sVertex_xyz_rgba_n_uv2_bt_4Bones.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="TextureManager\C24BitBMPpixel.h" />

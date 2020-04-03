@@ -20,7 +20,7 @@ void GameTools::init()
 	GameArmies::loadEnemies("./assets/textures/maps/small/enemyUnits.png");
 	GameArmies::setUnitObjects();
 	GameCursor::init();
-	GameCursor::setPosition(
+	GameCursor::setCoordinates(
 		(*GameArmies::selectedAlly)->coord_x,
 		(*GameArmies::selectedAlly)->coord_y
 	);
@@ -42,15 +42,15 @@ bool GameTools::validCoord(int x, int y)
 		y < Terrain::height && y >= 0;
 }
 
-void GameTools::update()
+void GameTools::update(float dt)
 {
 	// TODO: Maybe just update the units of the active turn??
 	for (auto unit : GameArmies::allyUnits)
 	{
-		unit->update();
+		unit->update(dt);
 	}
 	for (auto unit : GameArmies::enemyUnits)
 	{
-		unit->update();
+		unit->update(dt);
 	}
 }

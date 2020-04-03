@@ -8,5 +8,5 @@ struct GameTools
 	static void init();
 	static void displaySelectedAlly();
 	static bool validCoord(int x, int y);
-	static void update();
+	static void update(float dt);
 };
