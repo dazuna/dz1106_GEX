@@ -29,7 +29,7 @@ void GameCursor::moveCursor(int dir_x, int dir_y)
 		auto newWorldPos = GameTools::coordToWorldPos(new_x, new_y);
 		newWorldPos.y = cursorObj->positionXYZ.y;
 		cursorObj->positionXYZ = newWorldPos;
-		newWorldPos.y = cursorSquare->positionXYZ.y;		
+		newWorldPos.y = cursorSquare->positionXYZ.y;
 		cursorSquare->positionXYZ = newWorldPos;
 	}
 }

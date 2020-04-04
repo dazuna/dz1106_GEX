@@ -1,0 +1,31 @@
+  {
+    "friendlyName": "knight",
+    "isSkinnedMesh": true,
+    "isVisible": false,
+    "meshName": "knightMesh",
+    "meshURL": "assets/modelsFBX/KnightPack/Knight.fbx",
+    "positionXYZ": [0.0, 5.0, 0.0],
+    "rotationXYZ": [0.0, -0.0, 0.0],
+    "scale": 0.0,
+    "texture": ["Red.png", "Blue.png", "Yellow.png", ""],
+    "textureRatio": [1.0, 0.0, 0.0, 0.0],
+    "inverseMass": -1.0,
+    "zAnimations": [
+      {
+        "animName": "Idle", "isReplaceable": true,
+        "location": "assets/modelsFBX/KnightPack/Knight_Idle.FBX"
+      },
+      {
+        "animName": "Run", "isReplaceable": true,
+        "location": "assets/modelsFBX/KnightPack/Knight_Run.fbx"
+      },
+      {
+        "animName": "Attack", "isReplaceable": false, 
+        "location": "assets/modelsFBX/KnightPack/Knight_Attack1.fbx"
+      },
+      {
+        "animName": "GetHit", "isReplaceable": false, 
+        "location": "assets/modelsFBX/KnightPack/Knight_GetHit.fbx"
+      }
+    ]
+  },
