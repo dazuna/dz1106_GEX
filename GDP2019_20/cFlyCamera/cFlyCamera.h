@@ -85,10 +85,14 @@ public:
 	void watchPlayer(playerController* cPlayer);
 	void cameraLookAt(glm::vec3 target);
 	// battle camera
-	void battleCamera();
 	glm::vec3 offsetFromBattle,battleTarget;
 	cGameObject* camPos,*battlePos;
-	bool isBCOn;
+	/* zoom_in, zoom_out, normal*/
+	std::string state;
+	void battleCamera();
+	void zoomOutCamera();
+	void normalCamera();
+	void gameCameraUpdate();
 	
 private:
 	// This will lead to direction, etc.

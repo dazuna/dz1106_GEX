@@ -29,7 +29,7 @@ void ImGUI_utils::init(GLFWwindow *window)
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
 
-	io.Fonts->AddFontFromFileTTF("./assets/fonts/dejavu/DejaVuSans.ttf", 30.0f);
+	io.Fonts->AddFontFromFileTTF("./assets/fonts/dejavu/DejaVuSans.ttf", 20.0f);
 
 	// Setup Platform/Renderer bindings
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -127,7 +127,7 @@ void ImGUI_utils::renderMenu()
 	int screenWidth, screenHeight;
 	int width = 200;
 	int height = 150;
-	// Si necesitamos hacer el menú más dinámico, podemos agregar variables estáticas
+	// Si necesitamos hacer el menï¿½ mï¿½s dinï¿½mico, podemos agregar variables estï¿½ticas
 	// para aparecer/desaparecer los botones
 	ImGui::SetNextItemWidth(0.9f * ImGui::GetWindowWidth());
 	bool movedThisFrame = ImGui::Button("Move");
@@ -135,7 +135,7 @@ void ImGUI_utils::renderMenu()
 	bool attackedThisFrame = ImGui::Button("Attack");
 
 	// Podemos cambiar esto a que los botones actualicen variables estaticas que
-	// sean leidas por otras cosas o que directamente esta función llame a
+	// sean leidas por otras cosas o que directamente esta funciï¿½n llame a
 	// funciones para manejar que los botones sean picados
 	if (movedThisFrame)
 	{

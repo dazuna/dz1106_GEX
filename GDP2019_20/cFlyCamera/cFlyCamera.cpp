@@ -33,8 +33,8 @@ cFlyCamera::cFlyCamera()
 	this->bKeepCameraFacingUp = true;
 
 	// battle camera stuffs
-	offsetFromBattle = glm::vec3(0,20,30);
-	isBCOn = false;
+	this->offsetFromBattle = glm::vec3(0,20,30);
+	this->state = "normal";
 	
 	return;
 }
@@ -350,22 +350,42 @@ void cFlyCamera::cameraLookAt(glm::vec3 target)
 
 void cFlyCamera::battleCamera()
 {
-	if(!isBCOn)
-	{
-		camPos->positionXYZ = this->eye;
-		battlePos->positionXYZ = this->getAtInWorldSpace();
-		return;
-	}
+	if(state != "zoom_in") { return; }
 	auto desiredPosition = battleTarget+offsetFromBattle;
-
 	auto dist = glm::distance(desiredPosition,camPos->positionXYZ);
-	if(dist < 1.f){ isBCOn = false; return; }
+	if(dist < 1.f){ state = "normal"; return; }
 	camPos->velocity = cSteeringBehaviour::arriveBhvr(
 		camPos->positionXYZ,camPos->velocity,
-		desiredPosition,0.3f,35.f);
+		desiredPosition,0.3f,40.f);
 	battlePos->velocity = cSteeringBehaviour::arriveBhvr(
 		battlePos->positionXYZ,battlePos->velocity,
 		battleTarget,0.3f,50.f);
 	this->eye = camPos->positionXYZ;
 	cameraLookAt(battlePos->positionXYZ);
+}
+
+void cFlyCamera::zoomOutCamera()
+{
+	if(state != "zoom_out") { return; }
+	auto desiredPosition = battleTarget+offsetFromBattle+glm::vec3(0,50,0);
+	auto dist = glm::distance(desiredPosition,camPos->positionXYZ);	
+	if(dist < 1.f){ state = "normal"; return; }
+	camPos->velocity = cSteeringBehaviour::arriveBhvr(
+		camPos->positionXYZ,camPos->velocity,
+		desiredPosition,0.3f,35.f);	
+	this->eye = camPos->positionXYZ;
+}
+
+void cFlyCamera::normalCamera()
+{	
+	if(state != "normal") { return; }
+	camPos->positionXYZ = this->eye;
+	battlePos->positionXYZ = this->getAtInWorldSpace();
+}
+
+void cFlyCamera::gameCameraUpdate()
+{
+	normalCamera();
+	battleCamera();
+	zoomOutCamera();
 }

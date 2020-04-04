@@ -334,6 +334,7 @@ bool JSONLoader::JSONLoadGameObjects(std::map<std::string, cGameObject*>* g_map_
 		}
 		if (jsonArray[index].find("texture") != jsonArray[index].end())
 		{
+			tempGameObject->textures.clear();
 			for (int i = 0; i < jsonArray[index]["texture"].size(); i++)
 			{
 				tempGameObject->textures.push_back(jsonArray[index]["texture"][i]);

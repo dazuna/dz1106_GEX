@@ -8,34 +8,6 @@ static glm::vec3 cyan = glm::vec3(0, 1, 1);
 static glm::vec3 yellow = glm::vec3(1, 1, 0);
 auto HACK_FrameTime = 0.f;
 
-
-glm::mat4 tools::calculateWorldMatrix(cGameObject* pCurrentObject)
-{
-	glm::mat4 matWorld = glm::mat4(1.0f);
-	// ******* TRANSLATION TRANSFORM *********
-	glm::mat4 matTrans
-		= glm::translate(glm::mat4(1.0f),
-			glm::vec3(pCurrentObject->positionXYZ.x,
-				pCurrentObject->positionXYZ.y,
-				pCurrentObject->positionXYZ.z));
-	matWorld = matWorld * matTrans;
-	// ******* TRANSLATION TRANSFORM *********
-
-	// ******* ROTATION TRANSFORM *********
-	glm::mat4 matRotation = glm::mat4(pCurrentObject->getQOrientation());
-	matWorld = matWorld * matRotation;
-	// ******* ROTATION TRANSFORM *********
-
-	// ******* SCALE TRANSFORM *********
-	glm::mat4 scale = glm::scale(glm::mat4(1.0f),
-		glm::vec3(pCurrentObject->scale,
-			pCurrentObject->scale,
-			pCurrentObject->scale));
-	matWorld = matWorld * scale;
-	// ******* SCALE TRANSFORM *********
-	return matWorld;
-}
-
 void tools::DrawObject(glm::mat4 m,
 	cGameObject* pCurrentObject,
 	GLint shaderProgID,
@@ -193,11 +165,14 @@ void tools::DrawObject(glm::mat4 m,
 		glUniform1f(bShouldRefract,float(GL_TRUE));
 	}
 
-	// ************************** SKYBOX **************************
-	// glCullFace(GL_BACK) only front facing tris are drawn. --> EVERYTHING ELSE IS DISABLED
-	// make a draw skybox subfunction... :D
-	// disable everything and load the skybox first
-
+	// uniform bool discardBlack;
+	GLint bDiscardBlack = glGetUniformLocation(shaderProgID, "discardBlack");
+	glUniform1f(bDiscardBlack,float(GL_FALSE));
+	if(pCurrentObject->friendlyName == "squareCursor")
+	{		
+		glUniform1f(bDiscardBlack,float(GL_TRUE));
+	}
+	
 	GLint isSkinnedMesh_UniLoc = glad_glGetUniformLocation( shaderProgID, "isSkinnedMesh");
 
 
@@ -262,6 +237,33 @@ void tools::DrawObject(glm::mat4 m,
 	}
 	
 } // DrawObject;
+
+glm::mat4 tools::calculateWorldMatrix(cGameObject* pCurrentObject)
+{
+	glm::mat4 matWorld = glm::mat4(1.0f);
+	// ******* TRANSLATION TRANSFORM *********
+	glm::mat4 matTrans
+		= glm::translate(glm::mat4(1.0f),
+			glm::vec3(pCurrentObject->positionXYZ.x,
+				pCurrentObject->positionXYZ.y,
+				pCurrentObject->positionXYZ.z));
+	matWorld = matWorld * matTrans;
+	// ******* TRANSLATION TRANSFORM *********
+
+	// ******* ROTATION TRANSFORM *********
+	glm::mat4 matRotation = glm::mat4(pCurrentObject->getQOrientation());
+	matWorld = matWorld * matRotation;
+	// ******* ROTATION TRANSFORM *********
+
+	// ******* SCALE TRANSFORM *********
+	glm::mat4 scale = glm::scale(glm::mat4(1.0f),
+		glm::vec3(pCurrentObject->scale,
+			pCurrentObject->scale,
+			pCurrentObject->scale));
+	matWorld = matWorld * scale;
+	// ******* SCALE TRANSFORM *********
+	return matWorld;
+}
 
 // returns NULL (0) if we didn't find it.
 bool tools::pFindObjectByFriendlyNameMap(std::string name)

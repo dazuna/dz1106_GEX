@@ -2,17 +2,7 @@
 
 cGameObject::cGameObject()
 {
-	this->scale = 1.0f;
-	this->isVisible = true;
 
-	this->isWireframe = false;
-	this->debugColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-
-	this->velocity = glm::vec3(0.0f,0.0f,0.0f);
-	this->accel = glm::vec3(0.0f,0.0f,0.0f);
-	this->inverseMass = 0.0f;	// Infinite mass
-	this->physicsShapeType = UNKNOWN;
-	this->m_qRotation = glm::quat(glm::vec3(0.0f, 0.0f, 0.0f));
 	// Set the unique ID
 	// Take the value of the static int, 
 	//  set this to the instance variable
@@ -20,14 +10,29 @@ cGameObject::cGameObject()
 	// Then increment the static variable
 	cGameObject::next_uniqueID++;
 
+	// used to be loaded in the json...
+	this->scale = 1.0f;
+	this->isVisible = true;
+	this->m_qRotation = glm::quat(glm::vec3(0));
+	this->objectColourRGBA = glm::vec4(1);
+	this->diffuseColour = glm::vec4(1);
+	this->debugColour = glm::vec4(1);
+	this->specularColour = glm::vec4(1);
+	this->velocity = glm::vec3(0);
+	this->accel = glm::vec3(0);
+	this->inverseMass = 0.0f;	// Infinite mass
+	this->physicsShapeType = UNKNOWN;
+	this->isWireframe = false;
+	this->textures = {"White.png","","",""};
+	this->alphaTransparency = 1.f;
+	this->m_pDebugRenderer = NULL;
+	this->alphaTransparency = 1.0f;
+	
 	this->disableDepthBufferTest = false;
 	this->disableDepthBufferWrite = false;
 
-	this->m_pDebugRenderer = NULL;
-	this->alphaTransparency = 1.0f;
-	// The Skinned Mesh (assimp) object
-	// this->pSM = NULL;
-	this->pAS = NULL;
+	// The Skinned Mesh (assimp) animated object
+	this->pAS = nullptr;
 
 	return;
 }

@@ -9,6 +9,7 @@
 nlohmann::json GameUnit::toJSON()
 {
 	nlohmann::json res;
+	auto cam = cFlyCamera::getTheCamera();
 	res["type"] = type;
 	res["x"] = coord_x + 1;
 	res["y"] = Terrain::height - coord_y;
@@ -16,6 +17,7 @@ nlohmann::json GameUnit::toJSON()
 	res["range"] = range;
 	res["rest movement"] = rest_movement;
 	res["state"] = state;
+	res["camState"] = cam->state;
 	return res;
 }
 
@@ -66,16 +68,23 @@ bool GameUnit::attkAction()
 	auto enemy = GameArmies::getUnitByCoord(GameArmies::enemyUnits,new_x,new_y);
 	if(!enemy) return false;
 	
-	gameObj->setAT(enemy->gameObj->positionXYZ-gameObj->positionXYZ);
+	gameObj->setAT(enemy->gameObj->positionXYZ - gameObj->positionXYZ);
 	state = "wait4attacking";
-	//gameObj->pAS->setActiveAnimation("Attack");
+	enemy->state = "wait4getHit";
 
 	auto cam = cFlyCamera::getTheCamera();
 	cam->battleTarget = gameObj->positionXYZ;
-	cam->isBCOn = true;
+	cam->state = "zoom_in";
 	
 	
 	return true;
+}
+
+void GameUnit::getHitAction(int dir_x, int dir_y)
+{
+	auto targetPos = GameTools::coordToWorldPos(dir_x, dir_y);
+	gameObj->setAT(targetPos - gameObj->positionXYZ);
+	state = "wait4getHit";
 }
 
 void GameUnit::update(float dt)
@@ -110,12 +119,28 @@ void GameUnit::update(float dt)
 			state = "attacking";			
 		}
 	}
-	if(state == "attacking")
+	if(state == "attacking" || state == "gotHit")
 	{
 		if(!gameObj->pAS->activeAnimation)
 		{
+			auto cam = cFlyCamera::getTheCamera();
+			cam->state = "zoom_out";
 			state = "inactive";
 			wait = 0;
+		}
+	}
+	if(state == "wait4getHit")
+	{
+		timer+=dt;
+		if(timer > 1.f)
+		{
+			wait++;
+			timer = 0.f;
+		}
+		if(wait >= 4)
+		{
+			gameObj->pAS->setActiveAnimation("GetHit");
+			state = "gotHit";			
 		}
 	}
 }

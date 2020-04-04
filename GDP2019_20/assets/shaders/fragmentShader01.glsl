@@ -11,7 +11,7 @@ uniform vec4 specularColour;
 // Used to draw debug (or unlit) objects
 uniform vec4 debugColour;			
 uniform bool bDoNotLight;
-uniform bool makeHoles;
+uniform bool discardBlack;
 uniform bool debugger;
 
 uniform vec4 eyeLocation;
@@ -197,9 +197,9 @@ void main()
 	pixelColour = outColour;
 	pixelColour.a = diffuseColour.a; 		// "a" for alpha, same as "w"
 	
-	if( makeHoles )
+	if( discardBlack )
 	{
-		if ( tex3_RGB.r <= 0.01f )		// Basically "black"
+		if ( tex3_RGB.r <= 0.01f && tex3_RGB.g <= 0.01f && tex3_RGB.b <= 0.01f)		// Basically "black"
 		{
 			discard;
 		}

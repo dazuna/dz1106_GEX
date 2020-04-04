@@ -261,10 +261,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			{
 				::g_map_GameObjects["cameraPosition0"]->positionXYZ = ::g_pFlyCamera->eye;
 			}
-			if (key == GLFW_KEY_M && action == GLFW_PRESS)
-			{
-				::g_pFlyCamera->isBCOn = !::g_pFlyCamera->isBCOn;
-			}
 		}
 
 		if (isShiftKeyDownByAlone(mods))

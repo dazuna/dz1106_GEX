@@ -7,6 +7,7 @@
     "positionXYZ": [34,113,174],
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 1.0,
+    "inverseMass": -1.0,
     "texture": ["White.png", "", "", ""],
     "textureRatio": [0.0, 0.0, 0.0, 0.0]
   },
@@ -18,6 +19,7 @@
     "positionXYZ": [0.0, 0.0, 0.0],
     "rotationXYZ": [0.0, 0.0, 0.0],
     "scale": 1.0,
+    "inverseMass": -1.0,
     "texture": ["White.png", "", "", ""],
     "textureRatio": [0.0, 0.0, 0.0, 0.0]
   },
@@ -29,7 +31,7 @@
     "positionXYZ": [200.0, 200.0, 0.0],
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 1.0,
-    "texture": ["Green.png", "", "", ""],
+    "texture": ["Green.png", "", "", ""], 
     "textureRatio": [1.0, 0.0, 0.0, 0.0]
   },
   {
@@ -81,7 +83,7 @@
     "isVisible": false,
     "meshName": "diamond",
     "meshURL": "assets/models/diamond.ply",
-    "positionXYZ": [21.0, 20.0, 29.0],
+    "positionXYZ": [21.0, 15.0, 29.0],
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 1.6,
     "texture": ["Yellow.png", "", "", ""],
@@ -98,6 +100,7 @@
     "scale": 0.0,
     "texture": ["Red.png", "Blue.png", "Yellow.png", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0],
+    "inverseMass": -1.0,
     "zAnimations": [
       {
         "animName": "Idle", "isReplaceable": true,
@@ -110,6 +113,10 @@
       {
         "animName": "Attack", "isReplaceable": false, 
         "location": "assets/modelsFBX/Knight/Knight@Attack1.fbx"
+      },
+      {
+        "animName": "GetHit", "isReplaceable": false, 
+        "location": "assets/modelsFBX/Knight/Knight@GetHit.fbx"
       }
     ]
   },
@@ -122,6 +129,17 @@
     "rotationXYZ": [90.0, -0.0, 0.0],
     "scale": 5.0,
     "texture": ["boxy.png", "", "", ""],
+    "textureRatio": [1.0, 0.0, 0.0, 0.0]
+  },
+  {
+    "friendlyName": "squareCursor",
+    "isVisible": true,
+    "meshName": "squareCursorMesh",
+    "meshURL": "assets/models/squareCursor.ply",
+    "positionXYZ": [0,0.5,0],
+    "rotationXYZ": [0,0,0],
+    "scale": 1,
+    "texture": ["selectSquare.png", "", "", "selectSquare.png"],
     "textureRatio": [1.0, 0.0, 0.0, 0.0]
   },
   {

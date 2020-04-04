@@ -1,0 +1,35 @@
+ply
+format ascii 1.0
+comment VCGLIB generated
+element vertex 8
+property float x
+property float y
+property float z
+property float nx
+property float ny
+property float nz
+property float texture_u
+property float texture_v
+element face 12
+property list uchar int vertex_indices
+end_header
+-5 -0.125 -5 -0.5773503 -0.5773503 -0.5773503 0.000000 0.000000
+5 -0.125 -5 0.3333333 -0.6666667 -0.6666667 0.000000 1.000000
+-5 0.125 -5 -0.6666667 0.3333333 -0.6666667 0.000000 0.000000
+5 0.125 -5 0.6666667 0.6666667 -0.3333333 0.000000 1.000000
+-5 -0.125 5 -0.6666667 -0.6666667 0.3333333 1.000000 0.000000
+5 -0.125 5 0.6666667 -0.3333333 0.6666667 1.000000 1.000000
+-5 0.125 5 -0.3333333 0.6666667 0.6666667 1.000000 0.000000
+5 0.125 5 0.5773503 0.5773503 0.5773503 1.000000 1.000000
+3 2 1 0 
+3 1 2 3 
+3 4 2 0 
+3 2 4 6 
+3 1 4 0 
+3 4 1 5 
+3 6 5 7 
+3 5 6 4 
+3 3 6 7 
+3 6 3 2 
+3 5 3 7 
+3 3 5 1 

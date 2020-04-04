@@ -254,11 +254,11 @@ int main(void)
 		pPhysic->IntegrationStep(::g_map_GameObjects,float(averageDeltaTime));
 
 		GameTools::update(float(averageDeltaTime));
-		::g_pFlyCamera->battleCamera();
+		::g_pFlyCamera->gameCameraUpdate();
 
-		glm::mat4 p, v; float ratio;
+		glm::mat4 p, v;
 		glfwGetFramebufferSize(window, &width, &height);
-		ratio = width / float(height);
+		float ratio = width / float(height);
 		p = glm::perspective(0.6f,ratio,0.1f,15000.0f);
 		v = glm::mat4(1.0f);
 		v = glm::lookAt( ::g_pFlyCamera->eye,::g_pFlyCamera->getAtInWorldSpace(),::g_pFlyCamera->getUpVector() );

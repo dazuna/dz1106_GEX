@@ -21,12 +21,12 @@ struct GameUnit
 	int wait = 0;
 	
 	nlohmann::json toJSON();
-	/*
-	 * The player tells a unit to move in a certain direction
-	 */
+	/* The player tells a unit to move in a certain direction */
 	bool moveAction(int dir_x, int dir_y);
 	/* Unit attacks a unit selected by the cursor, if it's in range*/
 	bool attkAction();
+	/* Action performed when unit gets hit */
+	void getHitAction(int dir_x, int dir_y);
 	void update(float dt);
 
 	int getDistToCoord(int tar_x, int tar_y);

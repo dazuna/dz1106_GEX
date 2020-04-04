@@ -5,6 +5,7 @@
 
 int GameCursor::coord_x = -1, GameCursor::coord_y = -1;
 cGameObject* GameCursor::cursorObj = nullptr;
+cGameObject* GameCursor::cursorSquare = nullptr;
 
 void GameCursor::init()
 {
@@ -14,7 +15,8 @@ void GameCursor::init()
 		return;
 	}
 
-	cursorObj = ::g_map_GameObjects["cursor"];
+	cursorObj = ::g_map_GameObjects.at("cursor");
+	cursorSquare = ::g_map_GameObjects.at("squareCursor");
 }
 
 void GameCursor::moveCursor(int dir_x, int dir_y)
@@ -27,6 +29,8 @@ void GameCursor::moveCursor(int dir_x, int dir_y)
 		auto newWorldPos = GameTools::coordToWorldPos(new_x, new_y);
 		newWorldPos.y = cursorObj->positionXYZ.y;
 		cursorObj->positionXYZ = newWorldPos;
+		newWorldPos.y = cursorSquare->positionXYZ.y;		
+		cursorSquare->positionXYZ = newWorldPos;
 	}
 }
 
@@ -38,5 +42,7 @@ void GameCursor::setCoordinates(int new_x, int new_y)
 		auto newWorldPos = GameTools::coordToWorldPos(new_x, new_y);
 		newWorldPos.y = cursorObj->positionXYZ.y;
 		cursorObj->positionXYZ = newWorldPos;
+		newWorldPos.y = cursorSquare->positionXYZ.y;		
+		cursorSquare->positionXYZ = newWorldPos;
 	}
 }
