@@ -87,12 +87,14 @@ public:
 	// battle camera
 	glm::vec3 offsetFromBattle,battleTarget;
 	cGameObject* camPos,*battlePos;
-	/* zoom_in, zoom_out, normal*/
-	std::string state;
+	/* zoom_in, zoom_out, wait, normal*/
+	std::string state, nextAction;
+	float timer, waitTimer, timeToWait;
 	void battleCamera();
 	void zoomOutCamera();
 	void normalCamera();
-	void gameCameraUpdate();
+	void waitCamera(float dt);
+	void gameCameraUpdate(float dt);
 	
 private:
 	// This will lead to direction, etc.

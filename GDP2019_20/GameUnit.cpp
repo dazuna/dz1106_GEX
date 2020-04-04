@@ -119,12 +119,24 @@ void GameUnit::update(float dt)
 			state = "attacking";			
 		}
 	}
-	if(state == "attacking" || state == "gotHit")
+	if(state == "gotHit")
 	{
 		if(!gameObj->pAS->activeAnimation)
 		{
+			state = "inactive";
+			wait = 0;
+		}
+	}
+	if(state == "attacking")
+	{
+		if(!gameObj->pAS->activeAnimation)
+		{
+			/* setup camera wait */
 			auto cam = cFlyCamera::getTheCamera();
-			cam->state = "zoom_out";
+			cam->state = "wait";
+			cam->timeToWait = 3.f;
+			cam->nextAction = "zoom_out";
+			/* /setup camera wait */
 			state = "inactive";
 			wait = 0;
 		}

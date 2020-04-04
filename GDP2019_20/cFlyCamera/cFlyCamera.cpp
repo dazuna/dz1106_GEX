@@ -35,6 +35,8 @@ cFlyCamera::cFlyCamera()
 	// battle camera stuffs
 	this->offsetFromBattle = glm::vec3(0,20,30);
 	this->state = "normal";
+	this->timer = 0.f;
+	this->waitTimer = 0.f;
 	
 	return;
 }
@@ -383,9 +385,29 @@ void cFlyCamera::normalCamera()
 	battlePos->positionXYZ = this->getAtInWorldSpace();
 }
 
-void cFlyCamera::gameCameraUpdate()
+void cFlyCamera::waitCamera(float dt)
+{
+	if(state != "wait") return;
+	camPos->positionXYZ = this->eye;
+	battlePos->positionXYZ = this->getAtInWorldSpace();
+	timer += dt;
+	if(timer > 1.f)
+	{
+		timer = 0.f;
+		waitTimer += 1.f;
+	}
+	if(waitTimer >= timeToWait)
+	{
+		waitTimer = 0.f;
+		state = nextAction;
+	}	
+}
+
+void cFlyCamera::gameCameraUpdate(float dt)
 {
 	normalCamera();
 	battleCamera();
 	zoomOutCamera();
+	waitCamera(dt);
 }
+

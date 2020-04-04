@@ -254,7 +254,7 @@ int main(void)
 		pPhysic->IntegrationStep(::g_map_GameObjects,float(averageDeltaTime));
 
 		GameTools::update(float(averageDeltaTime));
-		::g_pFlyCamera->gameCameraUpdate();
+		::g_pFlyCamera->gameCameraUpdate(float(averageDeltaTime));
 
 		glm::mat4 p, v;
 		glfwGetFramebufferSize(window, &width, &height);
