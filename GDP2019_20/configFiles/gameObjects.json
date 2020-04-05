@@ -94,25 +94,25 @@
     "isSkinnedMesh": true,
     "isVisible": false,
     "meshName": "knightMesh",
-    "meshURL": "assets/modelsFBX/Knight/Knight.fbx",
+    "meshURL": "assets/modelsFBX/Knight/nordstrom_joined.fbx",
     "positionXYZ": [0.0, 5.0, 0.0],
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 0.0,
-    "texture": ["Red.png", "Blue.png", "Yellow.png", ""],
+    "texture": ["Paladin_diffuse.png", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0],
     "inverseMass": -1.0,
     "zAnimations": [
       {
         "animName": "Idle", "isReplaceable": true,
-        "location": "assets/modelsFBX/Knight/Knight@Idle.FBX"
+        "location": "assets/modelsFBX/Knight/sword and shield idle.FBX"
       },
       {
         "animName": "Run", "isReplaceable": true,
-        "location": "assets/modelsFBX/RPG_Run.fbx"
+        "location": "assets/modelsFBX/Knight/sword and shield run.fbx"
       },
       {
         "animName": "Attack", "isReplaceable": false, 
-        "location": "assets/modelsFBX/Knight/Knight@Attack1.fbx"
+        "location": "assets/modelsFBX/Knight/sword and shield slash.fbx"
       },
       {
         "animName": "GetHit", "isReplaceable": false, 

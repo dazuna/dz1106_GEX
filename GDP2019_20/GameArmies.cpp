@@ -117,7 +117,7 @@ void GameArmies::setUnitObjects()
 		if (newUnit)
 		{
 			newUnit->setAT(glm::vec3(1, 0, 0));
-			newUnit->textures[0] = "Blue.png";
+			//newUnit->textures[0] = "Blue.png";
 		}
 	}
 	
@@ -127,32 +127,32 @@ void GameArmies::setUnitObjects()
 		if (newUnit)
 		{
 			newUnit->setAT(glm::vec3(-1, 0, 0));
-			newUnit->textures[0] = "Red.png";
+			//newUnit->textures[0] = "Red.png";
 		}
 	}
 }
 
 void GameArmies::nextAlly()
 {
-	(*selectedAlly)->gameObj->textures[0] = "Blue.png";
+	//(*selectedAlly)->gameObj->textures[0] = "Blue.png";
 	selectedAlly++;
 	if (selectedAlly == allyUnits.end())
 	{
 		selectedAlly = allyUnits.begin();
 	}
-	(*selectedAlly)->gameObj->textures[0] = "Yellow.png";
+	//(*selectedAlly)->gameObj->textures[0] = "Yellow.png";
 	GameCursor::setCoordinates((*selectedAlly)->coord_x, (*selectedAlly)->coord_y);
 }
 
 void GameArmies::previousAlly()
 {
-	(*selectedAlly)->gameObj->textures[0] = "Blue.png";
+	//(*selectedAlly)->gameObj->textures[0] = "Blue.png";
 	if (selectedAlly == allyUnits.begin())
 	{
 		selectedAlly = allyUnits.end();
 	}
 	selectedAlly--;
-	(*selectedAlly)->gameObj->textures[0] = "Yellow.png";
+	//(*selectedAlly)->gameObj->textures[0] = "Yellow.png";
 	GameCursor::setCoordinates((*selectedAlly)->coord_x, (*selectedAlly)->coord_y);
 }
 
