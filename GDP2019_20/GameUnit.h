@@ -15,7 +15,7 @@ struct GameUnit
 	cGameObject* gameObj = nullptr;
 	// TODO: change this per type of unit
 	int health = 10, range = 1,
-		movement = 5, rest_movement = 5;
+		movement = 5, rest_movement = 5, atkPwr = 2;
 
 	float timer = 0;
 	int wait = 0;
@@ -31,7 +31,7 @@ struct GameUnit
 	 */
 	bool enemyAttack();
 	/* Action performed when unit gets hit */
-	void getHitAction(int dir_x, int dir_y);
+	void getHitAction(int dir_x, int dir_y, int dmgTaken);
 	void update(float dt);
 
 	int getDistToCoord(int tar_x, int tar_y);

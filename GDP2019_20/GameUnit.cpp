@@ -5,6 +5,7 @@
 #include "GameTools.h"
 #include "GameArmies.h"
 #include "GameCursor.h"
+#include "GameEvents.h"
 
 nlohmann::json GameUnit::toJSON()
 {
@@ -34,6 +35,9 @@ bool GameUnit::moveAction(int dir_x, int dir_y)
 	if (coordType == "tree" && rest_movement < 2) return false;
 	if (coordType == "ground" && rest_movement < 1) return false;
 
+	// save state
+	GameEvents::saveGameState();
+	
 	// We're good to move
 	target_x = new_x; target_y = new_y;
 	if (coordType == "tree") rest_movement -= 2;
@@ -44,6 +48,7 @@ bool GameUnit::moveAction(int dir_x, int dir_y)
 	gameObj->setAT(targetPos - gameObj->positionXYZ);
 	gameObj->velocity = gameObj->getCurrentAT() * GameTools::worldScale * 3.f;
 	GameCursor::setCoordinates(new_x,new_y);
+	
 	return true;
 }
 
@@ -64,14 +69,15 @@ bool GameUnit::attkAction()
 	auto enemy = GameArmies::getUnitByCoord(GameArmies::enemyUnits,new_x,new_y);
 	if(!enemy) return false;
 	
+	GameEvents::saveGameState();
+	
 	gameObj->setAT(enemy->gameObj->positionXYZ - gameObj->positionXYZ);
 	state = "wait4attacking";
-	enemy->getHitAction(coord_x, coord_y);
+	enemy->getHitAction(coord_x,coord_y,atkPwr);
 
 	auto cam = cFlyCamera::getTheCamera();
 	cam->battleTarget = gameObj->positionXYZ;
 	cam->state = "zoom_in";
-	
 	
 	return true;
 }
@@ -102,10 +108,12 @@ bool GameUnit::enemyAttack()
 }
 
 void GameUnit::getHitAction(int dir_x, int dir_y)
+void GameUnit::getHitAction(int dir_x, int dir_y, int dmgTaken)
 {
 	auto targetPos = GameTools::coordToWorldPos(dir_x, dir_y);
 	gameObj->setAT(targetPos - gameObj->positionXYZ);
 	state = "wait4getHit";
+	health -= dmgTaken;
 }
 
 void GameUnit::update(float dt)

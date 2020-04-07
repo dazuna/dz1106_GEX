@@ -5,6 +5,7 @@
 #include "GameCursor.h"
 #include "GamePathFinding.h"
 #include "EnemyAI.h"
+#include "GameEvents.h"
 
 float GameTools::worldScale = 10.0f;
 bool GameTools::isPlayerTurn = true;
@@ -87,3 +88,4 @@ void GameTools::changeTurn()
 		GameArmies::selectUnit(GameArmies::selectedAlly);
 	}
 }
+

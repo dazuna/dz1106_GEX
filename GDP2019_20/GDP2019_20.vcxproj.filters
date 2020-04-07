@@ -284,6 +284,9 @@
     <ClCompile Include="EnemyAI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameEvents.cpp">
+      <Filter>MiracleKnightStuff</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cMesh.h">
@@ -483,6 +486,9 @@
     </ClInclude>
     <ClInclude Include="EnemyAI.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEvents.h">
+      <Filter>MiracleKnightStuff</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
