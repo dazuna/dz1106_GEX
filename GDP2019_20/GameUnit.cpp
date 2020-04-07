@@ -107,7 +107,6 @@ bool GameUnit::enemyAttack()
 	return true;
 }
 
-void GameUnit::getHitAction(int dir_x, int dir_y)
 void GameUnit::getHitAction(int dir_x, int dir_y, int dmgTaken)
 {
 	auto targetPos = GameTools::coordToWorldPos(dir_x, dir_y);
