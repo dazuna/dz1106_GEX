@@ -25,11 +25,17 @@ struct GameUnit
 	bool moveAction(int dir_x, int dir_y);
 	/* Unit attacks a unit selected by the cursor, if it's in range*/
 	bool attkAction();
+	/*
+	 * Attack action called by the AI.
+	 * It checks against the allyArmy and does not zooms the camera
+	 */
+	bool enemyAttack();
 	/* Action performed when unit gets hit */
 	void getHitAction(int dir_x, int dir_y);
 	void update(float dt);
 
 	int getDistToCoord(int tar_x, int tar_y);
+	void reset();
 };
 
 typedef std::vector<GameUnit*> vUnits;

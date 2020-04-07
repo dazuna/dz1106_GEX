@@ -16,6 +16,11 @@ struct GameArmies
 	static void setUnitObjects();
 	static void nextAlly();
 	static void previousAlly();
+	/*
+	 * Sets all of the extra things to show that a unit is selected
+	 * Like moving the cursor, maybe changing the unit's color, etc
+	 */
+	static void selectUnit(vUnits::iterator selectedUnit);
 	static bool isCoordOccupied(int x, int y);
 };
 

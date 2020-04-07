@@ -4,6 +4,8 @@
 #include "imgui/imgui_impl_opengl3.h"
 #include <glm/vec3.hpp>
 #include <iostream>
+#include "EnemyAI.h"
+#include "GameTools.h"
 
 /*
  * Esto esta aqui mientras porque no puedo incluir tools y
@@ -62,6 +64,13 @@ void ImGUI_utils::render()
 	jsonsToDisplay.clear();
 
 	renderMenu();
+
+	if (!GameTools::isPlayerTurn)
+	{
+		ImGui::Begin("Enemy Turn", nullptr, ImGuiWindowFlags_NoTitleBar);
+		ImGui::Text("ENEMY TURN!");
+		ImGui::End();
+	}
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -129,6 +138,7 @@ void ImGUI_utils::renderMenu()
 	int height = 150;
 	// Si necesitamos hacer el men� m�s din�mico, podemos agregar variables est�ticas
 	// para aparecer/desaparecer los botones
+	ImGui::Text(EnemyAI::state.c_str());
 	ImGui::SetNextItemWidth(0.9f * ImGui::GetWindowWidth());
 	bool movedThisFrame = ImGui::Button("Move");
 	ImGui::SetNextItemWidth(0.9f * ImGui::GetWindowWidth());

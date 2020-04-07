@@ -3,8 +3,11 @@
 #include "GameArmies.h"
 #include "ImGUI_utils.h"
 #include "GameCursor.h"
+#include "GamePathFinding.h"
+#include "EnemyAI.h"
 
 float GameTools::worldScale = 10.0f;
+bool GameTools::isPlayerTurn = true;
 
 glm::vec3 GameTools::coordToWorldPos(int i, int j)
 {
@@ -20,10 +23,7 @@ void GameTools::init()
 	GameArmies::loadEnemies("./assets/textures/maps/small/enemyUnits.png");
 	GameArmies::setUnitObjects();
 	GameCursor::init();
-	GameCursor::setCoordinates(
-		(*GameArmies::selectedAlly)->coord_x,
-		(*GameArmies::selectedAlly)->coord_y
-	);
+	GameArmies::selectUnit(GameArmies::selectedAlly);
 }
 
 void GameTools::displaySelectedAlly()
@@ -44,7 +44,6 @@ bool GameTools::validCoord(int x, int y)
 
 void GameTools::update(float dt)
 {
-	// TODO: Maybe just update the units of the active turn??
 	for (auto unit : GameArmies::allyUnits)
 	{
 		unit->update(dt);
@@ -52,5 +51,39 @@ void GameTools::update(float dt)
 	for (auto unit : GameArmies::enemyUnits)
 	{
 		unit->update(dt);
+	}
+	if (!isPlayerTurn)
+	{
+		EnemyAI::update();
+	}
+}
+
+bool GameTools::isCoordWalkable(int x, int y)
+{
+	// The coord is inside the board
+	if (!validCoord(x, y)) return false;
+	auto terrainType = Terrain::terrainGrid[x][y];
+	// the terrain is walkable
+	if (!Terrain::isTerrainWalkable(terrainType)) return false;
+	// is the space free
+	if (GameArmies::isCoordOccupied(x, y)) return false;
+	return true;
+}
+
+void GameTools::changeTurn()
+{
+	isPlayerTurn = !isPlayerTurn;
+	const auto& armyInTurn = isPlayerTurn ? GameArmies::allyUnits : GameArmies::enemyUnits;
+	for (auto unit : armyInTurn)
+	{
+		unit->reset();
+	}
+	if (!isPlayerTurn)
+	{
+		EnemyAI::state = "begin";
+	}
+	else
+	{
+		GameArmies::selectUnit(GameArmies::selectedAlly);
 	}
 }

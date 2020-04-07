@@ -278,6 +278,12 @@
     <ClCompile Include="steeringBehaviour\cSteeringBehaviour.cpp">
       <Filter>steeringBehaviors</Filter>
     </ClCompile>
+    <ClCompile Include="GamePathFinding.cpp">
+      <Filter>MiracleKnightStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cMesh.h">
@@ -471,6 +477,12 @@
     </ClInclude>
     <ClInclude Include="steeringBehaviour\cSteeringBehaviour.hpp">
       <Filter>steeringBehaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePathFinding.h">
+      <Filter>MiracleKnightStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAI.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

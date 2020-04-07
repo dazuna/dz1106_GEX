@@ -25,16 +25,12 @@ bool GameUnit::moveAction(int dir_x, int dir_y)
 {
 	// The unit is waiting for an action
 	if (state != "waiting") return false;
-	// The coord is inside the board
 	int new_x = coord_x + dir_x;
 	int new_y = coord_y + dir_y;
-	if (!GameTools::validCoord(new_x, new_y)) return false;
+	// Can we walk to that coordinate?
+	if (!GameTools::isCoordWalkable(new_x, new_y)) return false;
 	auto coordType = Terrain::terrainGrid[new_x][new_y];
-	// the terrain is walkable
-	if (coordType == "wall" || coordType == "water") return false;
-	// is the space free
-	if (GameArmies::isCoordOccupied(new_x, new_y)) return false;
-	// The unit has enough movement left to enter that terrain
+	// has the unit enough movement left to enter that terrain?
 	if (coordType == "tree" && rest_movement < 2) return false;
 	if (coordType == "ground" && rest_movement < 1) return false;
 
@@ -77,6 +73,31 @@ bool GameUnit::attkAction()
 	cam->state = "zoom_in";
 	
 	
+	return true;
+}
+
+bool GameUnit::enemyAttack()
+{
+	// The unit is waiting for an action
+	if (state != "waiting") return false;
+	// The coord is inside the board
+	int new_x = GameCursor::coord_x;
+	int new_y = GameCursor::coord_y;
+	if (!GameTools::validCoord(new_x, new_y)) return false;
+
+	auto dist = getDistToCoord(new_x, new_y);
+	//return false;
+	if (dist > range) return false;
+	auto enemy = GameArmies::getUnitByCoord(GameArmies::allyUnits, new_x, new_y);
+	if (!enemy) return false;
+
+	gameObj->setAT(enemy->gameObj->positionXYZ - gameObj->positionXYZ);
+	state = "attacking";
+	gameObj->pAS->setActiveAnimation("Attack");
+	enemy->gameObj->setAT(gameObj->positionXYZ - enemy->gameObj->positionXYZ);
+	enemy->state = "gotHit";
+	enemy->gameObj->pAS->setActiveAnimation("GetHit");
+
 	return true;
 }
 
@@ -131,12 +152,15 @@ void GameUnit::update(float dt)
 	{
 		if(!gameObj->pAS->activeAnimation)
 		{
-			/* setup camera wait */
-			auto cam = cFlyCamera::getTheCamera();
-			cam->state = "wait";
-			cam->timeToWait = 3.f;
-			cam->nextAction = "zoom_out";
-			/* /setup camera wait */
+			if (GameTools::isPlayerTurn)
+			{
+				/* setup camera wait */
+				auto cam = cFlyCamera::getTheCamera();
+				cam->state = "wait";
+				cam->timeToWait = 3.f;
+				cam->nextAction = "zoom_out";
+				/* /setup camera wait */
+			}
 			state = "inactive";
 			wait = 0;
 		}
@@ -162,4 +186,11 @@ int GameUnit::getDistToCoord(int tar_x, int tar_y)
 	int dist_x = std::abs(coord_x-tar_x);
 	int dist_y = std::abs(coord_y-tar_y);
 	return(dist_x+dist_y);
+}
+
+void GameUnit::reset()
+{
+	rest_movement = movement;
+	state = "waiting";
+	hasAttacked = false;
 }
