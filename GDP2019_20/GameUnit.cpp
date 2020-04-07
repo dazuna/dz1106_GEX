@@ -73,23 +73,25 @@ bool GameUnit::attkAction()
 	auto enemy = GameArmies::getUnitByCoord(GameArmies::enemyUnits,new_x,new_y);
 	if(!enemy) return false;
 	
+	GameEvents::saveGameState();
+	
 	gameObj->setAT(enemy->gameObj->positionXYZ - gameObj->positionXYZ);
 	state = "wait4attacking";
-	enemy->state = "wait4getHit";
+	enemy->getHitAction(coord_x,coord_y,atkPwr);
 
 	auto cam = cFlyCamera::getTheCamera();
 	cam->battleTarget = gameObj->positionXYZ;
 	cam->state = "zoom_in";
 	
-	
 	return true;
 }
 
-void GameUnit::getHitAction(int dir_x, int dir_y)
+void GameUnit::getHitAction(int dir_x, int dir_y, int dmgTaken)
 {
 	auto targetPos = GameTools::coordToWorldPos(dir_x, dir_y);
 	gameObj->setAT(targetPos - gameObj->positionXYZ);
 	state = "wait4getHit";
+	health -= dmgTaken;
 }
 
 void GameUnit::update(float dt)
