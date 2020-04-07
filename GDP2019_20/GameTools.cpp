@@ -3,6 +3,7 @@
 #include "GameArmies.h"
 #include "ImGUI_utils.h"
 #include "GameCursor.h"
+#include "GameEvents.h"
 
 float GameTools::worldScale = 10.0f;
 
@@ -54,3 +55,4 @@ void GameTools::update(float dt)
 		unit->update(dt);
 	}
 }
+

@@ -5,6 +5,7 @@
 #include "GameTools.h"
 #include "GameArmies.h"
 #include "GameCursor.h"
+#include "GameEvents.h"
 
 nlohmann::json GameUnit::toJSON()
 {
@@ -38,6 +39,9 @@ bool GameUnit::moveAction(int dir_x, int dir_y)
 	if (coordType == "tree" && rest_movement < 2) return false;
 	if (coordType == "ground" && rest_movement < 1) return false;
 
+	// save state
+	GameEvents::saveGameState();
+	
 	// We're good to move
 	target_x = new_x; target_y = new_y;
 	if (coordType == "tree") rest_movement -= 2;
@@ -48,6 +52,7 @@ bool GameUnit::moveAction(int dir_x, int dir_y)
 	gameObj->setAT(targetPos - gameObj->positionXYZ);
 	gameObj->velocity = gameObj->getCurrentAT() * GameTools::worldScale * 3.f;
 	GameCursor::setCoordinates(new_x,new_y);
+	
 	return true;
 }
 

@@ -72,11 +72,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir)include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)lib/Debug64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)lib/Debug64;$(LibraryPath);$(ProjectDir)lib\Release64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)lib\Release64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)lib\Release64;$(LibraryPath);$(ProjectDir)lib\Release64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(ProjectDir)include;$(IncludePath)</IncludePath>
@@ -107,7 +107,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;assimp-vc141-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -168,6 +168,7 @@
     <ClCompile Include="cShaderManager.cpp" />
     <ClCompile Include="cSimpleAssimpSkinnedMeshLoader_OneMesh.cpp" />
     <ClCompile Include="GameCursor.cpp" />
+    <ClCompile Include="GameEvents.cpp" />
     <ClCompile Include="GameTools.cpp" />
     <ClCompile Include="GameUnit.cpp" />
     <ClCompile Include="ImGUI_utils.cpp" />
@@ -236,6 +237,7 @@
     <ClInclude Include="DebugRenderer\iDebugRenderer.h" />
     <ClInclude Include="definitions.h" />
     <ClInclude Include="GameCursor.h" />
+    <ClInclude Include="GameEvents.h" />
     <ClInclude Include="GameTools.h" />
     <ClInclude Include="GameUnit.h" />
     <ClInclude Include="GFLW_callbacks.h" />

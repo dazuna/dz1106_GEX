@@ -278,6 +278,9 @@
     <ClCompile Include="steeringBehaviour\cSteeringBehaviour.cpp">
       <Filter>steeringBehaviors</Filter>
     </ClCompile>
+    <ClCompile Include="GameEvents.cpp">
+      <Filter>MiracleKnightStuff</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cMesh.h">
@@ -471,6 +474,9 @@
     </ClInclude>
     <ClInclude Include="steeringBehaviour\cSteeringBehaviour.hpp">
       <Filter>steeringBehaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEvents.h">
+      <Filter>MiracleKnightStuff</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,7 @@
 #include "cAnimatedPlayer/cAnimatedPlayer.h"
 #include "GameArmies.h"
 #include "GameCursor.h"
+#include "GameEvents.h"
 
 bool isOnlyShiftKeyDown(int mods);
 bool isOnlyCtrlKeyDown(int mods);
@@ -148,6 +149,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		if (key == GLFW_KEY_UP && action == GLFW_PRESS)
 		{
 			GameArmies::previousAlly();
+		}
+		if (key == GLFW_KEY_M && action == GLFW_PRESS)
+		{
+			GameEvents::goBackInTime(1);
 		}
 	}
 	else if (isCtrlKeyDownByAlone(mods))
