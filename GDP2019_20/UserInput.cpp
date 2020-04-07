@@ -20,6 +20,7 @@
 #include "cAnimatedPlayer/cAnimatedPlayer.h"
 #include "GameArmies.h"
 #include "GameCursor.h"
+#include "GameTools.h"
 
 bool isOnlyShiftKeyDown(int mods);
 bool isOnlyCtrlKeyDown(int mods);
@@ -139,59 +140,64 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	debugControls = !(theAnimatedPlayer->isPlayModeOn);
 
 	// Game controls
-	if (isShiftKeyDownByAlone(mods))
+	if (GameTools::isPlayerTurn)
 	{
-		if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
+		if (isShiftKeyDownByAlone(mods))
 		{
-			GameArmies::nextAlly();
-		}
-		if (key == GLFW_KEY_UP && action == GLFW_PRESS)
+			if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
+			{
+				GameArmies::nextAlly();
+			}
+			if (key == GLFW_KEY_UP && action == GLFW_PRESS)
+			{
+				GameArmies::previousAlly();
+			}
+		} else if (isCtrlKeyDownByAlone(mods))
 		{
-			GameArmies::previousAlly();
-		}
-	}
-	else if (isCtrlKeyDownByAlone(mods))
-	{
-		auto unit = *GameArmies::selectedAlly;
-		if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
+			auto unit = *GameArmies::selectedAlly;
+			if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
+			{
+				unit->moveAction(0, 1);
+			}
+			if (key == GLFW_KEY_UP && action == GLFW_PRESS)
+			{
+				unit->moveAction(0, -1);
+			}
+			if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
+			{
+				unit->moveAction(-1, 0);
+			}
+			if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
+			{
+				unit->moveAction(1, 0);
+			}
+		} else
 		{
-			unit->moveAction(0, 1);
-		}
-		if (key == GLFW_KEY_UP && action == GLFW_PRESS)
-		{
-			unit->moveAction(0, -1);
-		}
-		if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
-		{
-			unit->moveAction(-1, 0);
-		}
-		if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
-		{
-			unit->moveAction(1, 0);
-		}		
-	}
-	else
-	{
-		auto unit = *GameArmies::selectedAlly;
-		if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
-		{
-			GameCursor::moveCursor(0, 1);
-		}
-		if (key == GLFW_KEY_UP && action == GLFW_PRESS)
-		{
-			GameCursor::moveCursor(0, -1);
-		}
-		if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
-		{
-			GameCursor::moveCursor(-1, 0);
-		}
-		if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
-		{
-			GameCursor::moveCursor(1, 0);
-		}
-		if (key == GLFW_KEY_C && action == GLFW_PRESS)
-		{
-			unit->attkAction();
+			auto unit = *GameArmies::selectedAlly;
+			if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
+			{
+				GameCursor::moveCursor(0, 1);
+			}
+			if (key == GLFW_KEY_UP && action == GLFW_PRESS)
+			{
+				GameCursor::moveCursor(0, -1);
+			}
+			if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
+			{
+				GameCursor::moveCursor(-1, 0);
+			}
+			if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
+			{
+				GameCursor::moveCursor(1, 0);
+			}
+			if (key == GLFW_KEY_C && action == GLFW_PRESS)
+			{
+				unit->attkAction();
+			}
+			if (key == GLFW_KEY_ENTER && action == GLFW_PRESS)
+			{
+				GameTools::changeTurn();
+			}
 		}
 	}
 

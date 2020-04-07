@@ -123,3 +123,10 @@ void Terrain::setTerrainObjects()
 		}
 	}
 }
+
+bool Terrain::isTerrainWalkable(std::string type)
+{
+	auto res = type != "wall" && type != "water";
+	//std::cout << type << " is " << (res ? "" : "not") << " walkable" << std::endl;
+	return res;
+}

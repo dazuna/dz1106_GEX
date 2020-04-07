@@ -167,7 +167,9 @@
     <ClCompile Include="cShader.cpp" />
     <ClCompile Include="cShaderManager.cpp" />
     <ClCompile Include="cSimpleAssimpSkinnedMeshLoader_OneMesh.cpp" />
+    <ClCompile Include="EnemyAI.cpp" />
     <ClCompile Include="GameCursor.cpp" />
+    <ClCompile Include="GamePathFinding.cpp" />
     <ClCompile Include="GameTools.cpp" />
     <ClCompile Include="GameUnit.cpp" />
     <ClCompile Include="ImGUI_utils.cpp" />
@@ -235,7 +237,9 @@
     <ClInclude Include="DebugRenderer\COpenGLError.h" />
     <ClInclude Include="DebugRenderer\iDebugRenderer.h" />
     <ClInclude Include="definitions.h" />
+    <ClInclude Include="EnemyAI.h" />
     <ClInclude Include="GameCursor.h" />
+    <ClInclude Include="GamePathFinding.h" />
     <ClInclude Include="GameTools.h" />
     <ClInclude Include="GameUnit.h" />
     <ClInclude Include="GFLW_callbacks.h" />

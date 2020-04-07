@@ -14,7 +14,8 @@ GameUnit* GameArmies::getUnitByCoord(const vUnits& units, int x, int y)
 {
 	for (auto unit : units)
 	{
-		if (unit->coord_x == x && unit->coord_y == y)
+		if (unit->coord_x == x && unit->coord_y == y &&
+			unit->health > 0)
 		{
 			return unit;
 		}
@@ -141,7 +142,7 @@ void GameArmies::nextAlly()
 		selectedAlly = allyUnits.begin();
 	}
 	//(*selectedAlly)->gameObj->textures[0] = "Yellow.png";
-	GameCursor::setCoordinates((*selectedAlly)->coord_x, (*selectedAlly)->coord_y);
+	selectUnit(selectedAlly);
 }
 
 void GameArmies::previousAlly()
@@ -153,7 +154,12 @@ void GameArmies::previousAlly()
 	}
 	selectedAlly--;
 	//(*selectedAlly)->gameObj->textures[0] = "Yellow.png";
-	GameCursor::setCoordinates((*selectedAlly)->coord_x, (*selectedAlly)->coord_y);
+	selectUnit(selectedAlly);
+}
+
+void GameArmies::selectUnit(vUnits::iterator selectedUnit)
+{
+	GameCursor::setCoordinates((*selectedUnit)->coord_x, (*selectedUnit)->coord_y);
 }
 
 bool GameArmies::isCoordOccupied(int x, int y)
