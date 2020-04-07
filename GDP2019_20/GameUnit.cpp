@@ -66,7 +66,7 @@ bool GameUnit::attkAction()
 	
 	gameObj->setAT(enemy->gameObj->positionXYZ - gameObj->positionXYZ);
 	state = "wait4attacking";
-	enemy->state = "wait4getHit";
+	enemy->getHitAction(coord_x, coord_y);
 
 	auto cam = cFlyCamera::getTheCamera();
 	cam->battleTarget = gameObj->positionXYZ;
