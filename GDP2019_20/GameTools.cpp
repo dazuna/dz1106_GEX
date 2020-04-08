@@ -7,7 +7,7 @@
 #include "EnemyAI.h"
 #include "GameEvents.h"
 
-float GameTools::worldScale = 10.0f;
+float GameTools::worldScale = 20.0f;
 bool GameTools::isPlayerTurn = true;
 
 glm::vec3 GameTools::coordToWorldPos(int i, int j)
@@ -18,13 +18,13 @@ glm::vec3 GameTools::coordToWorldPos(int i, int j)
 void GameTools::init()
 {
 	std::cout << "Initializing game stuff..." << std::endl;
-	Terrain::loadTerrain("./assets/textures/maps/small/terrain.png");
+	Terrain::loadTerrain("./assets/textures/maps/small/resourceMap3.png");
 	Terrain::setTerrainObjects();
-	GameArmies::loadAllies("./assets/textures/maps/small/playerUnits.png");
-	GameArmies::loadEnemies("./assets/textures/maps/small/enemyUnits.png");
-	GameArmies::setUnitObjects();
-	GameCursor::init();
-	GameArmies::selectUnit(GameArmies::selectedAlly);
+	//GameArmies::loadAllies("./assets/textures/maps/small/playerUnits.png");
+	//GameArmies::loadEnemies("./assets/textures/maps/small/enemyUnits.png");
+	//GameArmies::setUnitObjects();
+	//GameCursor::init();
+	//GameArmies::selectUnit(GameArmies::selectedAlly);
 }
 
 void GameTools::displaySelectedAlly()

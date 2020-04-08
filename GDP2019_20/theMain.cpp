@@ -262,8 +262,8 @@ int main(void)
 		averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		pPhysic->IntegrationStep(::g_map_GameObjects,float(averageDeltaTime));
 
-		GameTools::update(float(averageDeltaTime));
-		::g_pFlyCamera->gameCameraUpdate(float(averageDeltaTime));
+		//GameTools::update(float(averageDeltaTime));
+		//::g_pFlyCamera->gameCameraUpdate(float(averageDeltaTime));
 
 		glm::mat4 p, v;
 		glfwGetFramebufferSize(window, &width, &height);
@@ -277,7 +277,7 @@ int main(void)
 
 		glfwPollEvents();
 
-		GameTools::displaySelectedAlly();
+		//GameTools::displaySelectedAlly();
 		ImGUI_utils::render();
 		
 		glfwSwapBuffers(window);

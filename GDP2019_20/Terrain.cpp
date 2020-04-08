@@ -11,12 +11,12 @@ unsigned Terrain::width = 0,
 
 std::string Terrain::getTypeFromColor(unsigned char r, unsigned char g, unsigned char b)
 {
-	if (r == 255 && g == 0 && b == 0) return "tree";
-	if (r == 0 && g == 255 && b == 0) return "ground";
-	if (r == 0 && g == 0 && b == 255) return "water";
+	//if (r == 0 && g == 0 && b == 255) return "water";
 	//if (r == 255 && g == 255 && b == 255) return "wht";
 	//if (r == 255 && g == 255 && b == 0) return "ylw";
 	if (r == 0 && g == 0 && b == 0) return "wall";
+	if (r == 0 && g == 255 && b == 0) return "tree";
+	if (r == 255 && g == 255 && b == 255) return "ground";
 	return "xxx";
 }
 
@@ -104,27 +104,27 @@ void Terrain::setTerrainObjects()
 					continue;
 				}
 				newTerrain = new cGameObject(::g_map_GameObjects["mossyRock"]);
-				newTerrain->scale *= GameTools::worldScale;
+				newTerrain->scale *= (GameTools::worldScale*2);
 				newTerrain->isVisible = true;
 				newTerrain->positionXYZ = GameTools::coordToWorldPos(i, j);
 				theSceneManager->scenesVector[0]->addGameObject(newTerrain);
 			}
 			
 			// Add a tree to the top of forest blocks
-			if (terrainGrid[i][j] == "tree")
-			{
-				if (!tools::pFindObjectByFriendlyNameMap("tree"))
-				{
-					std::cout << "No tree base object!!" << std::endl;
-					continue;
-				}
-				auto tree = new cGameObject(::g_map_GameObjects["tree"]);
-				tree->isVisible = true;
-				tree->scale = GameTools::worldScale;
-				tree->positionXYZ = GameTools::coordToWorldPos(i, j);
-				//::g_map_GameObjects[tree->friendlyName] = tree;
-				theSceneManager->scenesVector[0]->addGameObject(tree);
-			}
+			//if (terrainGrid[i][j] == "tree")
+			//{
+			//	if (!tools::pFindObjectByFriendlyNameMap("tree"))
+			//	{
+			//		std::cout << "No tree base object!!" << std::endl;
+			//		continue;
+			//	}
+			//	//auto tree = new cGameObject(::g_map_GameObjects["tree"]);
+			//	//tree->isVisible = true;
+			//	//tree->scale = GameTools::worldScale;
+			//	//tree->positionXYZ = GameTools::coordToWorldPos(i, j);
+			//	////::g_map_GameObjects[tree->friendlyName] = tree;
+			//	//theSceneManager->scenesVector[0]->addGameObject(tree);
+			//}
 		}
 	}
 }

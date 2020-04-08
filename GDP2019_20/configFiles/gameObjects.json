@@ -87,54 +87,6 @@
   },
   {
     "alphaTransparency": 1.0,
-    "friendlyName": "cursor",
-    "isVisible": true,
-    "meshName": "diamond",
-    "meshURL": "assets/models/diamond.ply",
-    "positionXYZ": [30.0, 15.0, 70.0],
-    "rotationXYZ": [0.0, -0.0, 0.0],
-    "scale": 1.600000023841858,
-    "texture": ["Yellow.png", "", "", ""],
-    "textureRatio": [1.0, 0.0, 0.0, 0.0]
-  },
-  {
-    "alphaTransparency": 1.0,
-    "friendlyName": "knight",
-    "inverseMass": -1.0,
-    "isSkinnedMesh": true,
-    "isVisible": false,
-    "meshName": "knightMesh",
-    "meshURL": "assets/modelsFBX/Knight/nordstrom_joined.fbx",
-    "positionXYZ": [0.0, 5.0, 0.0],
-    "rotationXYZ": [0.0, -0.0, 0.0],
-    "scale": 0.0,
-    "texture": ["Paladin_diffuse.png", "", "", ""],
-    "textureRatio": [1.0, 0.0, 0.0, 0.0],
-    "zAnimations": [
-      {
-        "animName": "Idle",
-        "isReplaceable": true,
-        "location": "assets/modelsFBX/Knight/sword and shield idle.FBX"
-      },
-      {
-        "animName": "Run",
-        "isReplaceable": true,
-        "location": "assets/modelsFBX/Knight/sword and shield run.fbx"
-      },
-      {
-        "animName": "Attack",
-        "isReplaceable": false,
-        "location": "assets/modelsFBX/Knight/sword and shield slash.fbx"
-      },
-      {
-        "animName": "GetHit",
-        "isReplaceable": false,
-        "location": "assets/modelsFBX/Knight/sword and shield impact.fbx"
-      }
-    ]
-  },
-  {
-    "alphaTransparency": 1.0,
     "friendlyName": "stencilator",
     "isVisible": true,
     "meshName": "stencilatorMesh",
@@ -143,18 +95,6 @@
     "rotationXYZ": [90.0, -0.0, 0.0],
     "scale": 5.0,
     "texture": ["boxy.png", "", "", ""],
-    "textureRatio": [1.0, 0.0, 0.0, 0.0]
-  },
-  {
-    "alphaTransparency": 1.0,
-    "friendlyName": "squareCursor",
-    "isVisible": true,
-    "meshName": "squareCursorMesh",
-    "meshURL": "assets/models/squareCursor.ply",
-    "positionXYZ": [30.0, 0.5, 70.0],
-    "rotationXYZ": [0.0, -0.0, 0.0],
-    "scale": 1.0,
-    "texture": ["selectSquare.png", "", "", "selectSquare.png"],
     "textureRatio": [1.0, 0.0, 0.0, 0.0]
   },
   {
@@ -174,10 +114,22 @@
     "friendlyName": "mossyRock",
     "isVisible": false,
     "meshName": "mossyRock",
-    "meshURL": "assets/models/mossy_rocks.ply",
+    "meshURL": "assets/models/Sphere_Radius_1_XYZ_n_uv.ply",
     "positionXYZ": [0,0,0],
     "rotationXYZ": [0,0,0],
     "scale": 0.2,
+    "texture": ["mossy_rocks.png", "", "", ""],
+    "textureRatio": [1.0, 0.0, 0.0, 0.0]
+  },
+  {
+    "alphaTransparency": 1.0,
+    "friendlyName": "vehicle",
+    "isVisible": true,
+    "meshName": "vehicle",
+    "meshURL": "assets/models/cone.fbx",
+    "positionXYZ": [10,20,10],
+    "rotationXYZ": [0,0,0],
+    "scale": 1,
     "texture": ["mossy_rocks.png", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0]
   }
