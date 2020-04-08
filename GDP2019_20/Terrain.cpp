@@ -15,7 +15,7 @@ std::string Terrain::getTypeFromColor(unsigned char r, unsigned char g, unsigned
 	//if (r == 255 && g == 255 && b == 255) return "wht";
 	//if (r == 255 && g == 255 && b == 0) return "ylw";
 	if (r == 0 && g == 0 && b == 0) return "wall";
-	if (r == 0 && g == 255 && b == 0) return "tree";
+	if (r == 0 && g == 255 && b == 0) return "vehicleSpawn";
 	if (r == 255 && g == 255 && b == 255) return "ground";
 	return "xxx";
 }
@@ -68,7 +68,7 @@ void Terrain::setTerrainObjects()
 					continue;
 				}
 				newTerrain = new cGameObject(::g_map_GameObjects["groundBlock"]);
-			} else if (terrainGrid[i][j] == "tree")
+			} else if (terrainGrid[i][j] == "vehicleSpawn")
 			{
 				if (!tools::pFindObjectByFriendlyNameMap("forestBlock"))
 				{
@@ -109,22 +109,24 @@ void Terrain::setTerrainObjects()
 				newTerrain->positionXYZ = GameTools::coordToWorldPos(i, j);
 				theSceneManager->scenesVector[0]->addGameObject(newTerrain);
 			}
-			
-			// Add a tree to the top of forest blocks
-			//if (terrainGrid[i][j] == "tree")
-			//{
-			//	if (!tools::pFindObjectByFriendlyNameMap("tree"))
-			//	{
-			//		std::cout << "No tree base object!!" << std::endl;
-			//		continue;
-			//	}
-			//	//auto tree = new cGameObject(::g_map_GameObjects["tree"]);
-			//	//tree->isVisible = true;
-			//	//tree->scale = GameTools::worldScale;
-			//	//tree->positionXYZ = GameTools::coordToWorldPos(i, j);
-			//	////::g_map_GameObjects[tree->friendlyName] = tree;
-			//	//theSceneManager->scenesVector[0]->addGameObject(tree);
-			//}
+
+			if(terrainGrid[i][j] == "vehicleSpawn")
+			{
+				if (!tools::pFindObjectByFriendlyNameMap("vehicle"))
+				{
+					std::cout << "No vehicle model!!" << std::endl;
+					continue;
+				}
+				newTerrain = new cGameObject(::g_map_GameObjects["vehicle"]);
+				newTerrain->setAT(glm::vec3(0,0,-1));
+				newTerrain->scale *= (GameTools::worldScale);
+				newTerrain->isVisible = true;
+				newTerrain->positionXYZ = GameTools::coordToWorldPos(i, j);
+				newTerrain->positionXYZ += glm::vec3(0,newTerrain->scale,0);
+				theSceneManager->scenesVector[0]->addGameObject(newTerrain);
+				::g_map_GameObjects.insert({newTerrain->friendlyName,newTerrain});
+				GameTools::vehicles.push_back(cVehicle(newTerrain));
+			}
 		}
 	}
 }

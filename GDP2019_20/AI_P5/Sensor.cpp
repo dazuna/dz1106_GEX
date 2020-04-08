@@ -15,7 +15,7 @@ Sensor::Sensor(cGameObject* vehicle, float distanceBetween, float angle) :
 		std::cout << "No sphereSensor template!!" << std::endl;
 		return;
 	}
-	auto sensorTemplate = ::g_map_GameObjects["shpereSensor"];
+	auto sensorTemplate = ::g_map_GameObjects["sphereSensor"];
 	
 	for (int i = 0; i < nObjects; i++)
 	{

@@ -168,6 +168,7 @@
     <ClCompile Include="cShader.cpp" />
     <ClCompile Include="cShaderManager.cpp" />
     <ClCompile Include="cSimpleAssimpSkinnedMeshLoader_OneMesh.cpp" />
+    <ClCompile Include="cVehicle.cpp" />
     <ClCompile Include="EnemyAI.cpp" />
     <ClCompile Include="GameCursor.cpp" />
     <ClCompile Include="GamePathFinding.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="cShaderManager.h" />
     <ClInclude Include="cSimpleAssimpSkinnedMeshLoader_OneMesh.h" />
     <ClInclude Include="cVAOManager.h" />
+    <ClInclude Include="cVehicle.h" />
     <ClInclude Include="DebugRenderer\cDebugRenderer.h" />
     <ClInclude Include="DebugRenderer\cDebugRenderer_built_in_shaders.h" />
     <ClInclude Include="DebugRenderer\CErrorLog.h" />

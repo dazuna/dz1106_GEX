@@ -293,6 +293,9 @@
     <ClCompile Include="AI_P5\Sensor.cpp">
       <Filter>AI_P5</Filter>
     </ClCompile>
+    <ClCompile Include="cVehicle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cMesh.h">
@@ -497,6 +500,9 @@
       <Filter>MiracleKnightStuff</Filter>
     </ClInclude>
     <ClInclude Include="AI_P5\Sensor.h">
+      <Filter>AI_P5</Filter>
+    </ClInclude>
+    <ClInclude Include="cVehicle.h">
       <Filter>AI_P5</Filter>
     </ClInclude>
   </ItemGroup>

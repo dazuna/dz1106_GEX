@@ -9,6 +9,7 @@
 
 float GameTools::worldScale = 20.0f;
 bool GameTools::isPlayerTurn = true;
+vecVehicles GameTools::vehicles;
 
 glm::vec3 GameTools::coordToWorldPos(int i, int j)
 {

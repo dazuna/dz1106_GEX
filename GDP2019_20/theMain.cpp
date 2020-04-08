@@ -32,6 +32,7 @@
 #include "cMeshMap.h"
 #include "zBMPLoader/BMPLoader.h" // ############ PATH FINDING ##############
 #include "cGraph.h"
+#include "cVehicle.h"
 #include "sPathFinder.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
@@ -218,6 +219,12 @@ int main(void)
 	pDebugRenderer->initialize();
 
 	GameTools::init();
+
+	//cVehicle oneVehicle(::g_map_GameObjects.at("vehicle"));
+	//for (auto sensor : oneVehicle.mSensors)
+	//{
+	//	std::cout<<sensor.first<<std::endl;
+	//}
 
 	ImGUI_utils::init(window);
 	
