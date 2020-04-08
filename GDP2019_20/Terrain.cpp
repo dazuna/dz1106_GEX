@@ -78,12 +78,12 @@ void Terrain::setTerrainObjects()
 				newTerrain = new cGameObject(::g_map_GameObjects["forestBlock"]);
 			} else if (terrainGrid[i][j] == "wall")
 			{
-				if (!tools::pFindObjectByFriendlyNameMap("wallBlock"))
+				if (!tools::pFindObjectByFriendlyNameMap("groundBlock"))
 				{
-					std::cout << "No wallBlock model!!" << std::endl;
+					std::cout << "No groundBlock model!!" << std::endl;
 					continue;
 				}
-				newTerrain = new cGameObject(::g_map_GameObjects["wallBlock"]);
+				newTerrain = new cGameObject(::g_map_GameObjects["groundBlock"]);
 			} else continue;
 			newTerrain->isVisible = true;
 			// The cube model is 2 units long
@@ -95,13 +95,18 @@ void Terrain::setTerrainObjects()
 			auto theSceneManager = cSceneManager::getTheSceneManager();
 			theSceneManager->scenesVector[0]->addGameObject(newTerrain);
 
-			// Add a wall block on top of the ground
-			// maybe we could change this to a more "proper" prop
+			// Add some rocks on top of the wall block
 			if (terrainGrid[i][j] == "wall")
 			{
-				newTerrain = new cGameObject(newTerrain);
-				newTerrain->positionXYZ.y += GameTools::worldScale;
-				//::g_map_GameObjects[newTerrain->friendlyName] = newTerrain;
+				if (!tools::pFindObjectByFriendlyNameMap("mossyRock"))
+				{
+					std::cout << "No mossyRock model!!" << std::endl;
+					continue;
+				}
+				newTerrain = new cGameObject(::g_map_GameObjects["mossyRock"]);
+				newTerrain->scale *= GameTools::worldScale;
+				newTerrain->isVisible = true;
+				newTerrain->positionXYZ = GameTools::coordToWorldPos(i, j);
 				theSceneManager->scenesVector[0]->addGameObject(newTerrain);
 			}
 			

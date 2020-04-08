@@ -34,6 +34,8 @@ cGameObject::cGameObject()
 	// The Skinned Mesh (assimp) animated object
 	this->pAS = nullptr;
 
+	jGraphicEffects["toonLighting"] = true;
+
 	return;
 }
 
@@ -66,6 +68,7 @@ cGameObject::cGameObject(cGameObject* newGO)
 	// The Skinned Mesh (assimp) object
 	//this->pSM = NULL;
 	this->pAS = cAnimationState::copy(newGO->pAS);
+	jGraphicEffects = newGO->jGraphicEffects;
 }
 
 unsigned int cGameObject::getUniqueID(void)

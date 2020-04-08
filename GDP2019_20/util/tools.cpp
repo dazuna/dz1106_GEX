@@ -175,6 +175,15 @@ void tools::DrawObject(glm::mat4 m,
 	
 	GLint isSkinnedMesh_UniLoc = glad_glGetUniformLocation( shaderProgID, "isSkinnedMesh");
 
+	if (pCurrentObject->jGraphicEffects.find("toonLighting") != pCurrentObject->jGraphicEffects.end() &&
+		pCurrentObject->jGraphicEffects["toonLighting"])
+	{
+		glUniform1f(glGetUniformLocation(shaderProgID, "toonLighting"), (float)GL_TRUE);
+	}
+	else
+	{
+		glUniform1f(glGetUniformLocation(shaderProgID, "toonLighting"), (float)GL_FALSE);
+	}
 
 	if (pCurrentObject->pAS != NULL)
 	{
@@ -741,14 +750,15 @@ void tools::SetUpTextureBindingsForObject(cGameObject* pCurrentObject, GLint sha
 		pCurrentObject->textureRatio[2],
 		pCurrentObject->textureRatio[3]);
 
+	if (pCurrentObject->jGraphicEffects.find("toonLighting") != pCurrentObject->jGraphicEffects.end() &&
+		pCurrentObject->jGraphicEffects["toonLighting"])
 	{
-		//textureWhatTheWhat
-		GLuint texSampWHAT_ID = ::pTextureManager->getTextureIDFromName("WhatTheWhat.bmp");
-		glActiveTexture(GL_TEXTURE13);				// Texture Unit 13
-		glBindTexture(GL_TEXTURE_2D, texSampWHAT_ID);	// Texture now assoc with texture unit 0
-
-		GLint textureWhatTheWhat_UL = glGetUniformLocation(shaderProgID, "textureWhatTheWhat");
-		glUniform1i(textureWhatTheWhat_UL, 13);	// Texture unit 13
+		// for toon lighting
+		GLuint light_gradient_UL = ::pTextureManager->getTextureIDFromName("light_gradient.png");
+		glActiveTexture(GL_TEXTURE0 + 10);				// Texture Unit 10
+		glBindTexture(GL_TEXTURE_2D, light_gradient_UL);	// Texture now assoc with texture unit 10
+		GLint textSamp10_UL = glGetUniformLocation(shaderProgID, "lightGradientSampler");
+		glUniform1i(textSamp10_UL, 10);	// Texture unit 10
 	}
 
 
