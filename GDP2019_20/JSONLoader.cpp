@@ -260,6 +260,11 @@ bool JSONLoader::JSONLoadGameObjects(std::map<std::string, cGameObject*>* g_map_
 		float scale = jsonArray[index]["scale"];
 		tempGameObject->scale = scale;
 
+		if (jsonArray[index].find("radius") != jsonArray[index].end())
+		{
+			tempGameObject->SPHERE_radius = jsonArray[index]["radius"];
+		}
+
 		if (jsonArray[index].find("objectColourRGBA") != jsonArray[index].end())
 		{
 			glm::vec4 objectColourRGBA = glm::vec4(

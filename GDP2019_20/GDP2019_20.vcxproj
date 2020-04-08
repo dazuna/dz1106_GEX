@@ -150,6 +150,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AI_P5\Sensor.cpp" />
     <ClCompile Include="bRotatable\bRotatable.cpp" />
     <ClCompile Include="cAnimatedPlayer\cAnimatedPlayer.cpp" />
     <ClCompile Include="cAnimationState.cpp" />
@@ -216,6 +217,7 @@
     <ClCompile Include="zBMPLoader\ResourceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AI_P5\Sensor.h" />
     <ClInclude Include="bRotatable\bRotatable.hpp" />
     <ClInclude Include="cAnimatedPlayer\cAnimatedPlayer.h" />
     <ClInclude Include="cAnimationState.h" />

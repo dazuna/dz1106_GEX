@@ -69,6 +69,7 @@ cGameObject::cGameObject(cGameObject* newGO)
 	//this->pSM = NULL;
 	this->pAS = cAnimationState::copy(newGO->pAS);
 	jGraphicEffects = newGO->jGraphicEffects;
+	this->SPHERE_radius = newGO->SPHERE_radius;
 }
 
 unsigned int cGameObject::getUniqueID(void)
