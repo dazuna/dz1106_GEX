@@ -16,6 +16,8 @@ void tools::DrawObject(glm::mat4 m,
 	if(!(pCurrentObject->isVisible)) return;
 	// Turns on "alpha transparency"
 	// Reads what's on the buffer already, and blends it (RGB+A)
+	shaderProgID = ::shaderProgID;
+	pVAOManager = ::pTheVAOManager;
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	// texture bindings

@@ -129,9 +129,11 @@
     "meshURL": "assets/models/Sphere_Radius_1_XYZ_n_uv.ply",
     "positionXYZ": [0,0,0],
     "rotationXYZ": [0,0,0],
-    "scale": 0.2,
+    "scale": 0.4,
     "texture": ["mossy_rocks.png", "", "", ""],
-    "textureRatio": [1.0, 0.0, 0.0, 0.0]
+    "textureRatio": [1.0, 0.0, 0.0, 0.0],
+    "radius": 1,
+    "physicsShapeType": 1
   },
   {
     "alphaTransparency": 1.0,
@@ -144,5 +146,18 @@
     "scale": 0.1,
     "texture": ["mossy_rocks.png", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0]
+  },
+  {
+    "friendlyName": "sphereSensor",
+    "positionXYZ": [0,0,0],
+    "rotationXYZ": [0,0,0],
+    "isVisible": false,
+    "meshName": "sphereMesh",
+    "meshURL": "assets/models/Sphere_Radius_1_XYZ_n_uv.ply",
+    "texture": ["Red.png", "", "", ""],
+    "scale": 1,
+    "textureRatio": [1,0,0,0],
+    "radius": 1,
+    "physicsShapeType": 1
   }
 ]

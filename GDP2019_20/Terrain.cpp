@@ -104,7 +104,8 @@ void Terrain::setTerrainObjects()
 					continue;
 				}
 				newTerrain = new cGameObject(::g_map_GameObjects["mossyRock"]);
-				newTerrain->scale *= (GameTools::worldScale*2);
+				newTerrain->scale *= GameTools::worldScale;
+				newTerrain->SPHERE_radius *= GameTools::worldScale;
 				newTerrain->isVisible = true;
 				newTerrain->positionXYZ = GameTools::coordToWorldPos(i, j);
 				theSceneManager->scenesVector[0]->addGameObject(newTerrain);
