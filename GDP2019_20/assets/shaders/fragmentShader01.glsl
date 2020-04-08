@@ -13,6 +13,7 @@ uniform vec4 debugColour;
 uniform bool bDoNotLight;
 uniform bool discardBlack;
 uniform bool debugger;
+uniform bool toonLighting;
 
 uniform vec4 eyeLocation;
 
@@ -27,6 +28,7 @@ uniform sampler2D textSamp03;
 //uniform sampler2D textSamp07;
 uniform sampler2D secondPassColourTexture;
 uniform sampler2D scenePassColourTexture;
+uniform sampler2D lightGradientSampler;
 
 uniform samplerCube skyBox;
 uniform bool bIsSkyBox;
@@ -87,6 +89,7 @@ vec3 bloom();
 vec3 greyScale(vec3 texRGB);
 vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal, 
                             vec3 vertexWorldPos, vec4 vertexSpecular );
+float calcualteLightPower(  vec3 vertexNormal, vec3 vertexWorldPos, vec4 vertexSpecular );
 	 
 void main()  
 {
@@ -160,8 +163,22 @@ void main()
 	//vec3 ChromeColour = texture( skyBox, refract(fNormal.xyz ).rgb;
 	//texRGB.rgb *= 0.001f;
 	//texRGB.rgb = ChromeColour.rgb;
-	vec4 outColour = calcualteLightContrib( texRGB.rgb, fNormal.xyz, 
+	
+	vec4 outColour;
+	if (toonLighting)
+	{
+		outColour.rgb = texRGB;
+		float lightPower = calcualteLightPower( fNormal.xyz, fVertWorldLocation.xyz, specularColour );
+		vec2 gradientUV = vec2(lightPower, 0);
+		vec3 lightGradient = texture( lightGradientSampler, gradientUV ).rgb;
+		outColour *= lightGradient.r;
+	}
+	else
+	{
+		outColour = calcualteLightContrib( texRGB.rgb, fNormal.xyz, 
 	                                        fVertWorldLocation.xyz, specularColour );
+	}
+
 	if( debugger )
 	{
 		pixelColour = outColour;
@@ -252,7 +269,7 @@ vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal,
 			// (This is part of the reason directional lights are fast to calculate)
 
 
-			return finalObjectColour;		
+			continue;
 		}
 		
 		// Assume it's a point light 
@@ -355,6 +372,118 @@ vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal,
 	finalObjectColour.a = 1.0f;
 	
 	return finalObjectColour;
+}
+
+float calcualteLightPower(  vec3 vertexNormal, vec3 vertexWorldPos, vec4 vertexSpecular )
+{
+	vec3 norm = normalize(vertexNormal);
+
+	float finalPower = 0.0;
+		
+	for ( int index = 0; index < NUMBEROFLIGHTS; index++ )
+	{	
+		// ********************************************************
+		// is light "on"
+		if ( theLights[index].param2.x == 0.0f )
+		{	// it's off
+			continue;
+		}
+		
+		// Cast to an int (note with c'tor)
+		int intLightType = int(theLights[index].param1.x);
+		
+		// We will do the directional light here... 
+		// (BEFORE the attenuation, since sunlight has no attenuation, really)
+		if ( intLightType == DIRECTIONAL_LIGHT_TYPE )		// = 2
+		{
+			// This is supposed to simulate sunlight. 
+			// SO: 
+			// -- There's ONLY direction, no position
+			// -- Almost always, there's only 1 of these in a scene
+			// Cheapest light to calculate. 
+			
+			// Get the dot product of the light and normalize
+			float dotProduct = dot( -theLights[index].direction.xyz,  
+									   normalize(norm.xyz) );	// -1 to 1
+
+			dotProduct = max( 0.0f, dotProduct );		// 0 to 1
+		
+			finalPower += dotProduct;
+
+			continue;
+		}
+		
+		// Assume it's a point light 
+		// intLightType = 0
+		
+		// Contribution for this light
+		vec3 vLightToVertex = theLights[index].position.xyz - vertexWorldPos.xyz;
+		float distanceToLight = length(vLightToVertex);	
+		vec3 lightVector = normalize(vLightToVertex);
+		// -1 to 1
+		float dotProduct = dot(lightVector, vertexNormal.xyz);	 
+		
+		// If it's negative, will clamp to 0 --- range from 0 to 1
+		dotProduct = max( 0.0f, dotProduct );	
+		
+		float lightPower = dotProduct;
+							   
+		// Attenuation
+		float attenuation = 1.0f / 
+				( theLights[index].atten.x + 										
+				  theLights[index].atten.y * distanceToLight +						
+				  theLights[index].atten.z * distanceToLight*distanceToLight );  	
+				  
+		// apply the attenuation in the power
+		lightPower *= attenuation;		
+		
+		// But is it a spot light
+		if ( intLightType == SPOT_LIGHT_TYPE )		// = 1
+		{	
+			// Yes, it's a spotlight
+			// Calcualate light vector (light to vertex, in world)
+			vec3 vertexToLight = vertexWorldPos.xyz - theLights[index].position.xyz;
+
+			vertexToLight = normalize(vertexToLight);
+
+			float currentLightRayAngle
+					= dot( vertexToLight.xyz, theLights[index].direction.xyz );
+					
+			currentLightRayAngle = max(0.0f, currentLightRayAngle);
+
+			//vec4 param1;	
+			// x = lightType, y = inner angle, z = outer angle, w = TBD
+
+			// Is this inside the cone? 
+			float outerConeAngleCos = cos(radians(theLights[index].param1.z));
+			float innerConeAngleCos = cos(radians(theLights[index].param1.y));
+							
+			// Is it completely outside of the spot?
+			if ( currentLightRayAngle < outerConeAngleCos )
+			{
+				// Nope. so it's in the dark
+				lightPower = 0.0;
+			}
+			else if ( currentLightRayAngle < innerConeAngleCos )
+			{
+				// Angle is between the inner and outer cone
+				// (this is called the penumbra of the spot light, by the way)
+				// 
+				// This blends the brightness from full brightness, near the inner cone
+				//	to black, near the outter cone
+				float penumbraRatio = (currentLightRayAngle - outerConeAngleCos) / 
+									  (innerConeAngleCos - outerConeAngleCos);
+									  
+				lightPower *= penumbraRatio;
+			}
+						
+		}// if ( intLightType == 1 )
+		finalPower += lightPower;
+	}//for(intindex=0...
+	
+	finalPower = max(0.0, finalPower);
+	finalPower = min(finalPower, 0.99);
+	return finalPower;
 }
 
 vec3 bloom()

@@ -351,6 +351,11 @@ bool JSONLoader::JSONLoadGameObjects(std::map<std::string, cGameObject*>* g_map_
 		{
 			tempGameObject->alphaTransparency = jsonArray[index]["alphaTransparency"];
 		}
+
+		if (jsonArray[index].find("graphicEffects") != jsonArray[index].end())
+		{
+			tempGameObject->jGraphicEffects = jsonArray[index]["graphicEffects"];
+		}
 		
 		g_map_GameObjects->insert({ friendlyName.c_str(),tempGameObject });
 	}

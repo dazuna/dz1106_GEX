@@ -1,29 +1,32 @@
 [
   {
+    "alphaTransparency": 1.0,
     "friendlyName": "cameraPosition0",
+    "inverseMass": -1.0,
     "isVisible": false,
     "meshName": "cubeMesh",
     "meshURL": "assets/models/cube1_xyx_n_uv.ply",
-    "positionXYZ": [34,113,174],
+    "positionXYZ": [43.36638641357422, 41.478023529052734, 77.85726165771484],
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 1.0,
-    "inverseMass": -1.0,
     "texture": ["White.png", "", "", ""],
     "textureRatio": [0.0, 0.0, 0.0, 0.0]
   },
   {
+    "alphaTransparency": 1.0,
     "friendlyName": "cameraTarget0",
+    "inverseMass": -1.0,
     "isVisible": false,
     "meshName": "cubeMesh",
     "meshURL": "assets/models/cube1_xyx_n_uv.ply",
-    "positionXYZ": [0.0, 0.0, 0.0],
-    "rotationXYZ": [0.0, 0.0, 0.0],
+    "positionXYZ": [43.3392448425293, 41.03508377075195, 76.96111297607422],
+    "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 1.0,
-    "inverseMass": -1.0,
     "texture": ["White.png", "", "", ""],
     "textureRatio": [0.0, 0.0, 0.0, 0.0]
   },
   {
+    "alphaTransparency": 1.0,
     "friendlyName": "sphere",
     "isVisible": false,
     "meshName": "sphereMesh",
@@ -31,10 +34,11 @@
     "positionXYZ": [200.0, 200.0, 0.0],
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 1.0,
-    "texture": ["Green.png", "", "", ""], 
+    "texture": ["Green.png", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0]
   },
   {
+    "alphaTransparency": 1.0,
     "friendlyName": "groundBlock",
     "isVisible": false,
     "meshName": "terrainBlock",
@@ -46,6 +50,7 @@
     "textureRatio": [1.0, 0.0, 0.0, 0.0]
   },
   {
+    "alphaTransparency": 1.0,
     "friendlyName": "tree",
     "isVisible": false,
     "meshName": "oak",
@@ -57,6 +62,7 @@
     "textureRatio": [1.0, 0.0, 0.0, 0.0]
   },
   {
+    "alphaTransparency": 1.0,
     "friendlyName": "forestBlock",
     "isVisible": false,
     "meshName": "terrainBlock",
@@ -68,10 +74,11 @@
     "textureRatio": [1.0, 0.0, 0.0, 0.0]
   },
   {
+    "alphaTransparency": 1.0,
     "friendlyName": "wallBlock",
     "isVisible": false,
     "meshName": "terrainBlock",
-    "meshURL": "assets/models/ground.fbx",
+    "meshURL": "assets/models/mossy_rocks.fbx",
     "positionXYZ": [0.0, 0.0, 10.0],
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 0.0,
@@ -79,18 +86,21 @@
     "textureRatio": [1.0, 0.0, 0.0, 0.0]
   },
   {
+    "alphaTransparency": 1.0,
     "friendlyName": "cursor",
-    "isVisible": false,
+    "isVisible": true,
     "meshName": "diamond",
     "meshURL": "assets/models/diamond.ply",
-    "positionXYZ": [21.0, 15.0, 29.0],
+    "positionXYZ": [30.0, 15.0, 70.0],
     "rotationXYZ": [0.0, -0.0, 0.0],
-    "scale": 1.6,
+    "scale": 1.600000023841858,
     "texture": ["Yellow.png", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0]
   },
   {
+    "alphaTransparency": 1.0,
     "friendlyName": "knight",
+    "inverseMass": -1.0,
     "isSkinnedMesh": true,
     "isVisible": false,
     "meshName": "knightMesh",
@@ -100,27 +110,31 @@
     "scale": 0.0,
     "texture": ["Paladin_diffuse.png", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0],
-    "inverseMass": -1.0,
     "zAnimations": [
       {
-        "animName": "Idle", "isReplaceable": true,
+        "animName": "Idle",
+        "isReplaceable": true,
         "location": "assets/modelsFBX/Knight/sword and shield idle.FBX"
       },
       {
-        "animName": "Run", "isReplaceable": true,
+        "animName": "Run",
+        "isReplaceable": true,
         "location": "assets/modelsFBX/Knight/sword and shield run.fbx"
       },
       {
-        "animName": "Attack", "isReplaceable": false, 
+        "animName": "Attack",
+        "isReplaceable": false,
         "location": "assets/modelsFBX/Knight/sword and shield slash.fbx"
       },
       {
-        "animName": "GetHit", "isReplaceable": false, 
+        "animName": "GetHit",
+        "isReplaceable": false,
         "location": "assets/modelsFBX/Knight/sword and shield impact.fbx"
       }
     ]
   },
   {
+    "alphaTransparency": 1.0,
     "friendlyName": "stencilator",
     "isVisible": true,
     "meshName": "stencilatorMesh",
@@ -132,17 +146,19 @@
     "textureRatio": [1.0, 0.0, 0.0, 0.0]
   },
   {
+    "alphaTransparency": 1.0,
     "friendlyName": "squareCursor",
     "isVisible": true,
     "meshName": "squareCursorMesh",
     "meshURL": "assets/models/squareCursor.ply",
-    "positionXYZ": [0,0.5,0],
-    "rotationXYZ": [0,0,0],
-    "scale": 1,
+    "positionXYZ": [30.0, 0.5, 70.0],
+    "rotationXYZ": [0.0, -0.0, 0.0],
+    "scale": 1.0,
     "texture": ["selectSquare.png", "", "", "selectSquare.png"],
     "textureRatio": [1.0, 0.0, 0.0, 0.0]
   },
   {
+    "alphaTransparency": 1.0,
     "friendlyName": "theQuad",
     "isVisible": false,
     "meshName": "quadMesh",
@@ -150,7 +166,19 @@
     "positionXYZ": [0.0, 0.0, 0.0],
     "rotationXYZ": [180.0, -5.008956122765085e-6, 180.0],
     "scale": 50.0,
-    "texture": ["Green.png", "", "", ""],
+    "texture": ["Red.png", "", "", ""],
+    "textureRatio": [1.0, 0.0, 0.0, 0.0]
+  },
+  {
+    "alphaTransparency": 1.0,
+    "friendlyName": "mossyRock",
+    "isVisible": false,
+    "meshName": "mossyRock",
+    "meshURL": "assets/models/mossy_rocks.ply",
+    "positionXYZ": [0,0,0],
+    "rotationXYZ": [0,0,0],
+    "scale": 0.2,
+    "texture": ["mossy_rocks.png", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0]
   }
 ]

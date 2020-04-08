@@ -160,6 +160,15 @@ int main(void)
 	JSONLoader::LoadMeshes_Thread();
 	JSONLoader::JSONLoadSkinnedMeshes();
 	JSONLoader::JSONLoadTextures(&::g_map_GameObjects, ::pTextureManager);
+
+	/*
+	 * Load light gradient texture for toon lighting
+	 */
+	if (!pTextureManager->Create2DTextureFromBMPFile("light_gradient.png", true))
+	{
+		std::cout << "No Light gradient texture!!" << std::endl;
+	}
+	
 	//JSONLoader::loadMeshToGPU(pTheVAOManager, &::g_map_Mesh, &::g_map_GameObjects, shaderProgID);
 	selectedGameObject = ::g_map_GameObjects.begin();
 

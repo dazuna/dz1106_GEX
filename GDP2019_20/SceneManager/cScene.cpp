@@ -149,9 +149,7 @@ void cScene::drawSceneObjects()
 		glm::mat4 matModel = glm::mat4(1.0f);
 		//if (itGO->second->isVisible)
 		//{
-		itGO->second->isVisible = true;
 		tools::DrawObject(matModel, itGO->second, shaderProgID, pTheVAOManager);
-		itGO->second->isVisible = false;
 		//}
 	}
 }

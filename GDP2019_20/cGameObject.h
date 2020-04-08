@@ -14,6 +14,7 @@
 #include "cSimpleAssimpSkinnedMeshLoader_OneMesh.h"
 #include "cAnimationState.h"
 #include <mutex>
+#include <nlohmann/json.hpp>
 
 enum eShapeTypes
 {
@@ -65,6 +66,7 @@ public:
 	bool isVisible;
 	bool disableDepthBufferTest;
 	bool disableDepthBufferWrite;
+	nlohmann::json jGraphicEffects;
 
 	//cSimpleAssimpSkinnedMesh* pSM;
 	cAnimationState* pAS;
