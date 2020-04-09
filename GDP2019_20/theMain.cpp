@@ -254,6 +254,14 @@ int main(void)
 				
 		theSceneManager->update();
 		// theSceneManager->updateStencil(window);
+
+		for (auto vehicle : GameTools::vehicles)
+		{
+			for (auto sensor : vehicle.mSensors)
+			{
+				sensor.second.getCollisionFuzzyValue();
+			}
+		}
 		
 		switch (cursorType)
 		{

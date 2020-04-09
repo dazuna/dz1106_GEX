@@ -10,8 +10,9 @@ struct Sensor
 	int nObjects = 3;
 
 	Sensor(cGameObject* vehicle, float distanceBetween, float angle);
+	Sensor() {}
 	void updatePosition();
-	float getCollisionFuzzyValue(const std::vector<cGameObject*>& colliders);
+	float getCollisionFuzzyValue();
 	void drawSensor(glm::vec3 pos);
 private:
 	bool checkCollision(cGameObject* A, cGameObject* B, glm::vec3& collisionPos);

@@ -262,7 +262,7 @@ bool JSONLoader::JSONLoadGameObjects(std::map<std::string, cGameObject*>* g_map_
 
 		if (jsonArray[index].find("radius") != jsonArray[index].end())
 		{
-			tempGameObject->SPHERE_radius = jsonArray[index]["radius"] * scale;
+			tempGameObject->SPHERE_radius = jsonArray[index]["radius"];
 		}
 
 		if (jsonArray[index].find("objectColourRGBA") != jsonArray[index].end())

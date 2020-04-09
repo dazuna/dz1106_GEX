@@ -294,7 +294,7 @@
       <Filter>AI_P5</Filter>
     </ClCompile>
     <ClCompile Include="cVehicle.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>AI_P5</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

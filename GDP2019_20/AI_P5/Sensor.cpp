@@ -42,16 +42,17 @@ void Sensor::updatePosition()
 	}
 }
 
-float Sensor::getCollisionFuzzyValue(const std::vector<cGameObject*>& colliders)
+float Sensor::getCollisionFuzzyValue()
 {
+	updatePosition();
 	auto theSceneManager = cSceneManager::getTheSceneManager();
 	glm::vec3 collisionPos;
-	for (const auto& collider : theSceneManager->scenesVector[0]->sceneGameObjects)
+	for (auto sphere : sensorSpheres)
 	{
 		/*
 		 * We check from the closest point to the farthest
 		 */
-		for (auto sphere : sensorSpheres)
+		for (const auto& collider : theSceneManager->scenesVector[0]->sceneGameObjects)
 		{
 			/*
 			 * We return the first collision detected
@@ -89,7 +90,6 @@ bool Sensor::checkCollision(cGameObject* pA, cGameObject* pB, glm::vec3& collisi
 	}
 	
 	glm::vec3 ABvec = pB->positionXYZ - pA->positionXYZ;
-	glm::vec3 BAvec = pA->positionXYZ - pB->positionXYZ;
 	if (glm::length(ABvec) <= pA->SPHERE_radius + pB->SPHERE_radius)
 	{
 		// TODO: get actual collision intersection point between the spheres

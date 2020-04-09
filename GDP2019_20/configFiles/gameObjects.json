@@ -39,18 +39,6 @@
   },
   {
     "alphaTransparency": 1.0,
-    "friendlyName": "sphereSensor",
-    "isVisible": false,
-    "meshName": "sphereMesh",
-    "meshURL": "assets/models/Sphere_Radius_1_XYZ_n_uv.ply",
-    "positionXYZ": [200.0, 200.0, 0.0],
-    "rotationXYZ": [0.0, -0.0, 0.0],
-    "scale": 1.0,
-    "texture": ["Red.png", "", "", ""],
-    "textureRatio": [1.0, 0.0, 0.0, 0.0]
-  },
-  {
-    "alphaTransparency": 1.0,
     "friendlyName": "groundBlock",
     "isVisible": false,
     "meshName": "terrainBlock",
@@ -132,7 +120,7 @@
     "scale": 0.4,
     "texture": ["mossy_rocks.png", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0],
-    "radius": 1,
+    "radius": 8,
     "physicsShapeType": 1
   },
   {

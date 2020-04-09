@@ -4,7 +4,8 @@
 cVehicle::cVehicle(cGameObject* theGO)
 {
 	pVehicleObj = theGO;
-	auto dstBtwn = theGO->scale * GameTools::worldScale;
+	// The cone model length is 2
+	auto dstBtwn = theGO->scale * 4;
 	mSensors.insert({"veryLeft",	Sensor(theGO,dstBtwn,60)});	
 	mSensors.insert({"Left",		Sensor(theGO,dstBtwn,30)});	
 	mSensors.insert({"Center",		Sensor(theGO,dstBtwn,0)});	
