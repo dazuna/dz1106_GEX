@@ -90,6 +90,19 @@ vec3 greyScale(vec3 texRGB);
 vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal, 
                             vec3 vertexWorldPos, vec4 vertexSpecular );
 float calcualteLightPower(  vec3 vertexNormal, vec3 vertexWorldPos, vec4 vertexSpecular );
+
+/*
+	FOG THINGS
+*/
+float eyeIntoFog = (1 - smoothstep(20, 50, eyeLocation.y)) * 0.95;
+vec3 fogColor = vec3(0.6, 0.6, 0.6);
+vec3 addFog(vec3 color)
+{
+	if (eyeIntoFog < 0.01) return color;
+	float distanceToCamera = length(fVertWorldLocation - eyeLocation);
+	float fogPower = smoothstep(0, 85, distanceToCamera) * eyeIntoFog;
+	return color = (1 - fogPower) * color + fogColor * fogPower;
+}
 	 
 void main()  
 {
@@ -98,6 +111,7 @@ void main()
 		vec3 skyColour = texture( skyBox, fNormal.xyz ).rgb;
 		pixelColour.rgb = skyColour.rgb;
 		pixelColour.a = 1.0f;
+		pixelColour.rgb = fogColor * eyeIntoFog + pixelColour.rgb * (1 - eyeIntoFog);
 		return;
 	}
 	
@@ -212,6 +226,9 @@ void main()
 	}
 
 	pixelColour = outColour;
+	
+	pixelColour.rgb = addFog(pixelColour.rgb);
+
 	pixelColour.a = diffuseColour.a; 		// "a" for alpha, same as "w"
 	
 	if( discardBlack )
