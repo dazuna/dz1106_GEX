@@ -38,6 +38,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 #include "ImGUI_utils.h"
 #include "GameTools.h"
+#include "Particle/cParticleEmitter.h"
 
 cFBO* pTheFBO = NULL;
 
@@ -60,11 +61,7 @@ cModelLoader* pTheModelLoader = new cModelLoader();
 cDebugRenderer* pDebugRenderer = new cDebugRenderer();
 cPhysics* pPhysic = new cPhysics();
 cBasicTextureManager* pTextureManager = NULL;
-extern std::map<unsigned long long /*ID*/, cAABB*> g_mapAABBs_World;
-playerController* pPlayerControl;
-//extern std::map<unsigned long long /*ID*/, cAABB*> g_vecAABBs_World;
-
-cGraph* theGraph;
+//cGraph* theGraph;
 
 // pirateStuff
 double timer = 0.0;
@@ -216,10 +213,16 @@ int main(void)
 	//thePathFinder->setTheResource(::g_map_GameObjects.at("sphereWhite"));
 	
 	pDebugRenderer->initialize();
-
 	GameTools::init();
-
 	ImGUI_utils::init(window);
+
+	auto pEmittter = new cParticleEmitter();
+	pEmittter->location = glm::vec3(0,20,0);
+	cParticleEmitter::sParticleCreationSettings sPCS;
+	cParticleEmitter::setSPCSDefaultValues(sPCS);
+	pEmittter->Initialize(sPCS);
+	pEmittter->enableNewParticles();
+	auto ball = ::g_map_GameObjects.at("sphere");
 	
 	while (!glfwWindowShouldClose(window))
 	{
@@ -264,6 +267,8 @@ int main(void)
 
 		GameTools::update(float(averageDeltaTime));
 		::g_pFlyCamera->gameCameraUpdate(float(averageDeltaTime));
+		pEmittter->location = ball->positionXYZ;
+		pEmittter->Step(float(averageDeltaTime));
 
 		glm::mat4 p, v;
 		glfwGetFramebufferSize(window, &width, &height);

@@ -28,13 +28,13 @@
   {
     "alphaTransparency": 1.0,
     "friendlyName": "sphere",
-    "isVisible": false,
+    "isVisible": true,
     "meshName": "sphereMesh",
     "meshURL": "assets/models/Sphere_Radius_1_XYZ_n_uv.ply",
-    "positionXYZ": [200.0, 200.0, 0.0],
-    "rotationXYZ": [0.0, -0.0, 0.0],
+    "positionXYZ": [0,20,0],
+    "rotationXYZ": [0,0,0],
     "scale": 1.0,
-    "texture": ["Green.png", "", "", ""],
+    "texture": ["White.png", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0]
   },
   {
@@ -179,6 +179,18 @@
     "rotationXYZ": [0,0,0],
     "scale": 0.2,
     "texture": ["mossy_rocks.png", "", "", ""],
+    "textureRatio": [1.0, 0.0, 0.0, 0.0]
+  },
+  {
+    "alphaTransparency": 1.0,
+    "friendlyName": "quadParticle",
+    "isVisible": false,
+    "meshName": "quadMesh",
+    "meshURL": "assets/models/squareCursor.ply",
+    "positionXYZ": [0.0, 0.0, 0.0],
+    "rotationXYZ": [1000,1000,1000],
+    "scale": 0.01,
+    "texture": ["White.png", "", "", "White.png"],
     "textureRatio": [1.0, 0.0, 0.0, 0.0]
   }
 ]
