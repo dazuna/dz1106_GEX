@@ -47,6 +47,7 @@ void cPhysics::IntegrationStep(std::map<std::string, cGameObject*>& g_map_GameOb
 		else if (pCurObj->inverseMass < 0.0f)
 		{
 			pCurObj->positionXYZ += pCurObj->velocity * deltaTime;
+			pCurObj->setAT(pCurObj->velocity);
 		}
 		
 	}//for (unsigned int index = 0;

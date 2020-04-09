@@ -123,6 +123,8 @@ void Terrain::setTerrainObjects()
 				newTerrain->isVisible = true;
 				newTerrain->positionXYZ = GameTools::coordToWorldPos(i, j);
 				newTerrain->positionXYZ += glm::vec3(0,newTerrain->scale,0);
+				newTerrain->velocity = newTerrain->getCurrentAT() * 15.f;
+				newTerrain->inverseMass = -1;
 				theSceneManager->scenesVector[0]->addGameObject(newTerrain);
 				::g_map_GameObjects.insert({newTerrain->friendlyName,newTerrain});
 				GameTools::vehicles.push_back(cVehicle(newTerrain));

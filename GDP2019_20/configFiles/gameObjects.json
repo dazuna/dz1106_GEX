@@ -117,10 +117,10 @@
     "meshURL": "assets/models/Sphere_Radius_1_XYZ_n_uv.ply",
     "positionXYZ": [0,0,0],
     "rotationXYZ": [0,0,0],
-    "scale": 0.4,
+    "scale": 0.6,
     "texture": ["mossy_rocks.png", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0],
-    "radius": 8,
+    "radius": 12,
     "physicsShapeType": 1
   },
   {
@@ -133,7 +133,9 @@
     "rotationXYZ": [0,0,0],
     "scale": 0.1,
     "texture": ["mossy_rocks.png", "", "", ""],
-    "textureRatio": [1.0, 0.0, 0.0, 0.0]
+    "textureRatio": [1.0, 0.0, 0.0, 0.0],
+    "physicsShapeType": 1, 
+    "radius": 6
   },
   {
     "friendlyName": "sphereSensor",

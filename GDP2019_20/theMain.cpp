@@ -254,14 +254,6 @@ int main(void)
 				
 		theSceneManager->update();
 		// theSceneManager->updateStencil(window);
-
-		for (auto vehicle : GameTools::vehicles)
-		{
-			for (auto sensor : vehicle.mSensors)
-			{
-				sensor.second.getCollisionFuzzyValue();
-			}
-		}
 		
 		switch (cursorType)
 		{
@@ -277,7 +269,7 @@ int main(void)
 		averageDeltaTime = avgDeltaTimeThingy.getAverage();
 		pPhysic->IntegrationStep(::g_map_GameObjects,float(averageDeltaTime));
 
-		//GameTools::update(float(averageDeltaTime));
+		GameTools::update(float(averageDeltaTime));
 		//::g_pFlyCamera->gameCameraUpdate(float(averageDeltaTime));
 
 		glm::mat4 p, v;

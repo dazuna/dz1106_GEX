@@ -19,7 +19,7 @@ glm::vec3 GameTools::coordToWorldPos(int i, int j)
 void GameTools::init()
 {
 	std::cout << "Initializing game stuff..." << std::endl;
-	Terrain::loadTerrain("./assets/textures/maps/small/resourceMap3.png");
+	Terrain::loadTerrain("./assets/textures/maps/small/10vehicles.png");
 	Terrain::setTerrainObjects();
 	//GameArmies::loadAllies("./assets/textures/maps/small/playerUnits.png");
 	//GameArmies::loadEnemies("./assets/textures/maps/small/enemyUnits.png");
@@ -46,17 +46,21 @@ bool GameTools::validCoord(int x, int y)
 
 void GameTools::update(float dt)
 {
-	for (auto unit : GameArmies::allyUnits)
+	//for (auto unit : GameArmies::allyUnits)
+	//{
+	//	unit->update(dt);
+	//}
+	//for (auto unit : GameArmies::enemyUnits)
+	//{
+	//	unit->update(dt);
+	//}
+	//if (!isPlayerTurn)
+	//{
+	//	EnemyAI::update();
+	//}
+	for(auto vehicle : vehicles)
 	{
-		unit->update(dt);
-	}
-	for (auto unit : GameArmies::enemyUnits)
-	{
-		unit->update(dt);
-	}
-	if (!isPlayerTurn)
-	{
-		EnemyAI::update();
+		vehicle.update(dt);
 	}
 }
 
