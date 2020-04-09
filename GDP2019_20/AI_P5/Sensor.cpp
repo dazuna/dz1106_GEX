@@ -8,7 +8,7 @@ Sensor::Sensor(cGameObject* vehicle, float distanceBetween, float angle) :
 	offsetAngle(angle),
 	distanceBetween(distanceBetween)
 {
-
+	nObjects = 4;
 	// Get the sensorShpere template
 	if (!tools::pFindObjectByFriendlyNameMap("sphereSensor"))
 	{
@@ -57,6 +57,7 @@ float Sensor::getCollisionFuzzyValue()
 			/*
 			 * We return the first collision detected
 			 */
+			if(collider.second == vehicle) {continue;}
 			if (checkCollision(sphere, collider.second, collisionPos))
 			{
 				drawSensor(collisionPos);
