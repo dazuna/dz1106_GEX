@@ -168,7 +168,7 @@ void tools::DrawObject(glm::mat4 m,
 	// uniform bool discardBlack;
 	GLint bDiscardBlack = glGetUniformLocation(shaderProgID, "discardBlack");
 	glUniform1f(bDiscardBlack,float(GL_FALSE));
-	if(pCurrentObject->friendlyName == "squareCursor")
+	if(pCurrentObject->tag == "discard")
 	{		
 		glUniform1f(bDiscardBlack,float(GL_TRUE));
 	}

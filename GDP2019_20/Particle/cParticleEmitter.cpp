@@ -3,6 +3,8 @@
 #include <glad/glad.h>
 #include "../util/tools.h"
 
+cParticleEmitter* cParticleEmitter::PEmtr = new cParticleEmitter();
+
 cParticle::cParticle()
 {
 	// Note: we aren't really using these default values...
@@ -41,16 +43,16 @@ cParticleEmitter::sParticleCreationSettings::sParticleCreationSettings()
 
 void cParticleEmitter::setSPCSDefaultValues(sParticleCreationSettings& sPCS)
 {
-	sPCS.minLifeSeconds = 1.0f; 
-	sPCS.maxLifeInSeconds = 3.0f;
+	sPCS.minLifeSeconds = float(0.3);
+	sPCS.maxLifeInSeconds = float(0.5);
 	sPCS.particleCreationVolume = cParticleEmitter::sParticleCreationSettings::SPHERE;
-	sPCS.minVelocity = glm::vec3(0.0f);
-	sPCS.maxVelocity = glm::vec3(10,10,10);
+	sPCS.minVelocity = glm::vec3(-20);
+	sPCS.maxVelocity = glm::vec3(20);
 	sPCS.minStartingScale = 0.01f;
 	sPCS.maxStartingScale = 0.1f;
 	sPCS.minScaleChangePercentPerSecond = 0.1f;	// 10%
 	sPCS.maxScaleChangePercentPerSecond = 0.5f;	// 100%
-	sPCS.numParticlesPerSecond = 15.f;
+	sPCS.numParticlesPerSecond = float(500);
 	sPCS.isImposterFaceCamera = true;
 	sPCS.bFadeOutOverLifetime = false;
 }
@@ -129,7 +131,7 @@ void cParticleEmitter::Initialize(cParticleEmitter::sParticleCreationSettings ne
 		pNewParticle->lifeTime = 0.0f;
 		this->m_vec_pParticles.push_back(pNewParticle);
 	}
-
+	this->m_generateNewParticles = false;
 	this->m_NewParticleSettings = newParticleSettings;
 	// Calculate now often we should create particles...
 	this->m_particleCreationPeriod = 1.0f / (float)this->m_NewParticleSettings.numParticlesPerSecond;
@@ -284,9 +286,6 @@ void cParticleEmitter::getParticles(std::vector<cParticle*>& vec_pParticles, glm
 
 void cParticleEmitter::drawParticles()
 {
-	// Turn on the "it's an imposter" shader switch
-	//GLint bIsImposter_UL = glGetUniformLocation(shaderProgID, "bIsImposter");
-	//glUniform1f(bIsImposter_UL, (float)GL_TRUE);
 	cGameObject* pQuadImposter =  ::g_map_GameObjects.at("quadParticle");
 	pQuadImposter->isVisible = true;
 	// Draw objects at the location of the particles...
@@ -300,8 +299,8 @@ void cParticleEmitter::drawParticles()
 		pQuadImposter->setOrientation( particle->qOrientation );
 		pQuadImposter->diffuseColour.a = particle->colourRGBA.a;
 		pQuadImposter->alphaTransparency = particle->colourRGBA.a;
+		pQuadImposter->tag = "discard";
 	    tools::DrawObject(glm::mat4(1), pQuadImposter, shaderProgID, pTheVAOManager);
 	}
 	pQuadImposter->isVisible = false;
-	//lUniform1f(bIsImposter_UL, (float)GL_FALSE);
 }

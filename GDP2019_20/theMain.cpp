@@ -216,12 +216,9 @@ int main(void)
 	GameTools::init();
 	ImGUI_utils::init(window);
 
-	auto pEmittter = new cParticleEmitter();
-	pEmittter->location = glm::vec3(0,20,0);
 	cParticleEmitter::sParticleCreationSettings sPCS;
 	cParticleEmitter::setSPCSDefaultValues(sPCS);
-	pEmittter->Initialize(sPCS);
-	pEmittter->enableNewParticles();
+	cParticleEmitter::PEmtr->Initialize(sPCS);
 	auto ball = ::g_map_GameObjects.at("sphere");
 	
 	while (!glfwWindowShouldClose(window))
@@ -267,8 +264,7 @@ int main(void)
 
 		GameTools::update(float(averageDeltaTime));
 		::g_pFlyCamera->gameCameraUpdate(float(averageDeltaTime));
-		pEmittter->location = ball->positionXYZ;
-		pEmittter->Step(float(averageDeltaTime));
+		cParticleEmitter::PEmtr->Step(averageDeltaTime);
 
 		glm::mat4 p, v;
 		glfwGetFramebufferSize(window, &width, &height);

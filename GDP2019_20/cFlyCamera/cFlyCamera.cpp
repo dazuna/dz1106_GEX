@@ -369,7 +369,7 @@ void cFlyCamera::battleCamera()
 void cFlyCamera::zoomOutCamera()
 {
 	if(state != "zoom_out") { return; }
-	auto desiredPosition = battleTarget+offsetFromBattle+glm::vec3(0,50,0);
+	auto desiredPosition = battleTarget+offsetFromBattle+glm::vec3(0,50,50);
 	auto dist = glm::distance(desiredPosition,camPos->positionXYZ);	
 	if(dist < 1.f){ state = "normal"; return; }
 	camPos->velocity = cSteeringBehaviour::arriveBhvr(

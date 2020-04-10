@@ -1,16 +1,17 @@
 #include "GameUnit.h"
-
-#include "cFlyCamera/cFlyCamera.h"
 #include "Terrain.h"
 #include "GameTools.h"
 #include "GameArmies.h"
 #include "GameCursor.h"
 #include "GameEvents.h"
+#include "cFlyCamera/cFlyCamera.h"
+#include "./Particle/cParticleEmitter.h"
 
 nlohmann::json GameUnit::toJSON()
 {
 	nlohmann::json res;
 	auto cam = cFlyCamera::getTheCamera();
+	auto part = cParticleEmitter::PEmtr;
 	res["type"] = type;
 	res["x"] = coord_x + 1;
 	res["y"] = Terrain::height - coord_y;
@@ -18,7 +19,8 @@ nlohmann::json GameUnit::toJSON()
 	res["range"] = range;
 	res["rest movement"] = rest_movement;
 	res["state"] = state;
-	res["camState"] = cam->state;
+	res["zcamState"] = cam->state;
+	res["zPE_createPart"] = (part->m_generateNewParticles ? "true" : "false");
 	return res;
 }
 
@@ -149,8 +151,13 @@ void GameUnit::update(float dt)
 	}
 	if(state == "gotHit")
 	{
+		auto particles = cParticleEmitter::PEmtr;
+		particles->location = GameTools::coordToWorldPos(coord_x, coord_y);
+		particles->location += glm::vec3(0,GameTools::worldScale*0.5f,0);
+		particles->m_generateNewParticles = true;
 		if(!gameObj->pAS->activeAnimation)
 		{
+			particles->m_generateNewParticles = false;
 			state = "inactive";
 			wait = 0;
 		}

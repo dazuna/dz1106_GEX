@@ -28,7 +28,7 @@
   {
     "alphaTransparency": 1.0,
     "friendlyName": "sphere",
-    "isVisible": true,
+    "isVisible": false,
     "meshName": "sphereMesh",
     "meshURL": "assets/models/Sphere_Radius_1_XYZ_n_uv.ply",
     "positionXYZ": [0,20,0],
@@ -190,7 +190,7 @@
     "positionXYZ": [0.0, 0.0, 0.0],
     "rotationXYZ": [1000,1000,1000],
     "scale": 0.01,
-    "texture": ["White.png", "", "", "White.png"],
+    "texture": ["spark1.png", "", "", "spark1.png"],
     "textureRatio": [1.0, 0.0, 0.0, 0.0]
   }
 ]

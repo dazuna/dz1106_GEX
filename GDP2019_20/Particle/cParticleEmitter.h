@@ -30,6 +30,8 @@ public:
 	cParticleEmitter();
 	glm::vec3 acceleration;
 	glm::vec3 location;
+	//static std::vector<cParticleEmitter*> vecPEmtrs;
+	static cParticleEmitter* PEmtr;
 
 	struct sParticleCreationSettings
 	{
@@ -72,7 +74,7 @@ public:
 	// If the particle is an imposter
 	glm::quat m_calcImposterRotationFromEye(glm::vec3 particlePos, glm::vec3 eye);
 	// Static consts can be set here, static can't
-	static const unsigned int DEFAULT_NUM_PARTICLES = 100;
+	static const unsigned int DEFAULT_NUM_PARTICLES = 1000;
 	std::vector<cParticle*> m_vec_pParticles;
 	
 	// Taken from line 229 of the DebugRenderer:
