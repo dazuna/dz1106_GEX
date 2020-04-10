@@ -237,7 +237,12 @@ void main()
 		{
 			discard;
 		}
+		outColour.rgb = texRGB;
 	}
+
+	pixelColour = outColour;
+	pixelColour.a = diffuseColour.a; 		// "a" for alpha, same as "w"
+	
 }	
 
 

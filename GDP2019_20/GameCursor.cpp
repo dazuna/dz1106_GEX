@@ -19,6 +19,7 @@ void GameCursor::init()
 	cursorObj = ::g_map_GameObjects.at("cursor");
 	cursorSquare = ::g_map_GameObjects.at("squareCursor");
 	repositionCamera();
+	cursorSquare->tag = "discard";
 }
 
 void GameCursor::moveCursor(int dir_x, int dir_y)
