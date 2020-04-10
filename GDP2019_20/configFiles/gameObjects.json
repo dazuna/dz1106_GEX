@@ -171,6 +171,18 @@
   },
   {
     "alphaTransparency": 1.0,
+    "friendlyName": "miniMapQuad",
+    "isVisible": false,
+    "meshName": "quadMesh",
+    "meshURL": "assets/models/1x1_2Tri_Quad_2_Sided_xyz_n_uv.ply",
+    "positionXYZ": [0.0, 0.0, 0.0],
+    "rotationXYZ": [0,0,0],
+    "scale": 0.5,
+    "texture": ["Red.png", "", "", ""],
+    "textureRatio": [1.0, 0.0, 0.0, 0.0]
+  },
+  {
+    "alphaTransparency": 1.0,
     "friendlyName": "mossyRock",
     "isVisible": false,
     "meshName": "mossyRock",

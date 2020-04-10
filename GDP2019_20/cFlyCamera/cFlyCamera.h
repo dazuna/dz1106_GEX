@@ -95,6 +95,11 @@ public:
 	void normalCamera();
 	void waitCamera(float dt);
 	void gameCameraUpdate(float dt);
+	/*
+	 * Fetches the quad object "miniMapQuad" and repositions
+	 * it in fron of the camera, to the corner.
+	 */
+	void repositionMiniMap();
 	
 private:
 	// This will lead to direction, etc.

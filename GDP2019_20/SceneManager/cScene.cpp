@@ -4,7 +4,7 @@
 #include <utility>
 
 cScene::~cScene() = default;
-cScene::cScene(std::string name_,std::string jsonPath_, const std::string& stringEffect_,
+cScene::cScene(std::string name_, std::string jsonPath_, const std::string & stringEffect_,
 				std::vector<int> camIndex_,int sceneWidth_,int sceneHeight_)
 	:name(std::move(name_)),jsonPath(std::move(jsonPath_)),stringEffect(stringEffect_),
 	effect(convertStrToSceneEffect(stringEffect_)),camIndex(std::move(camIndex_)),
@@ -147,10 +147,7 @@ void cScene::drawSceneObjects()
 	for (auto itGO = sceneGameObjects.begin(); itGO != sceneGameObjects.end();itGO++)
 	{
 		glm::mat4 matModel = glm::mat4(1.0f);
-		//if (itGO->second->isVisible)
-		//{
 		tools::DrawObject(matModel, itGO->second, shaderProgID, pTheVAOManager);
-		//}
 	}
 }
 

@@ -6,6 +6,7 @@
 #include <glm/vec4.hpp> // glm::vec4
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
+#include "../util/tools.h"
 
 cFlyCamera* cFlyCamera::the_camera_ = new cFlyCamera();
 
@@ -409,5 +410,20 @@ void cFlyCamera::gameCameraUpdate(float dt)
 	battleCamera();
 	zoomOutCamera();
 	waitCamera(dt);
+}
+
+void cFlyCamera::repositionMiniMap()
+{
+	if (tools::pFindObjectByFriendlyNameMap("miniMapQuad"))
+	{
+		auto mapQuad = ::g_map_GameObjects["miniMapQuad"];
+		auto left = glm::normalize(glm::cross(this->m_up, this->m_at));
+		auto litled_down = glm::normalize(glm::cross(left, this->m_at));
+		mapQuad->positionXYZ = this->eye
+			+ this->m_at * 5.f // in front of the camera
+			+ litled_down * 1.0f // a little down
+			+ left * 2.2f; //a little left
+		mapQuad->setOrientation(LookAt(-this->m_at, { 0,1,0 }));
+	}
 }
 

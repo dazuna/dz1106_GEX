@@ -6,6 +6,7 @@
 int GameCursor::coord_x = -1, GameCursor::coord_y = -1;
 cGameObject* GameCursor::cursorObj = nullptr;
 cGameObject* GameCursor::cursorSquare = nullptr;
+cFlyCamera* GameCursor::miniMapCamera = new cFlyCamera();
 
 void GameCursor::init()
 {
@@ -17,6 +18,7 @@ void GameCursor::init()
 
 	cursorObj = ::g_map_GameObjects.at("cursor");
 	cursorSquare = ::g_map_GameObjects.at("squareCursor");
+	repositionCamera();
 }
 
 void GameCursor::moveCursor(int dir_x, int dir_y)
@@ -32,6 +34,7 @@ void GameCursor::moveCursor(int dir_x, int dir_y)
 		newWorldPos.y = cursorSquare->positionXYZ.y;
 		cursorSquare->positionXYZ = newWorldPos;
 	}
+	repositionCamera();
 }
 
 void GameCursor::setCoordinates(int new_x, int new_y)
@@ -45,4 +48,19 @@ void GameCursor::setCoordinates(int new_x, int new_y)
 		newWorldPos.y = cursorSquare->positionXYZ.y;		
 		cursorSquare->positionXYZ = newWorldPos;
 	}
+	repositionCamera();
+}
+
+glm::vec3 GameCursor::getWorldPos()
+{
+	return GameTools::coordToWorldPos(coord_x, coord_y);
+}
+
+void GameCursor::repositionCamera()
+{
+	// 0.1 to the left to not look directly down
+	glm::vec3 offset = { 0,70,0.1 };
+	auto cursorPos = getWorldPos();
+	miniMapCamera->eye = cursorPos + offset;
+	miniMapCamera->cameraLookAt(cursorPos);
 }

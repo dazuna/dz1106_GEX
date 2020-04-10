@@ -128,9 +128,15 @@ void cSceneManager::createCameraArray()
 bool cSceneManager::update()
 {
 	auto result = true;
-	for(auto scene : scenesVector)
+	int sceneIdx = scenesVector.size() - 1;
+	for(;sceneIdx >= 0;sceneIdx--)
 	{
-		result = scene->update();
+		auto scene = scenesVector[sceneIdx];
+		scene->update();
+		if (sceneIdx == 0)
+		{
+			drawObjectWithFBO(nullptr, "miniMapQuad", 1);
+		}
 	}
 	return result;
 }

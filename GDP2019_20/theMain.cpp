@@ -38,6 +38,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 #include "ImGUI_utils.h"
 #include "GameTools.h"
+#include "GameCursor.h"
 
 cFBO* pTheFBO = NULL;
 
@@ -220,6 +221,23 @@ int main(void)
 	GameTools::init();
 
 	ImGUI_utils::init(window);
+
+	// Hardcoded settings for the minimap 
+	auto miniMapScene = new cScene(*::theSceneManager->scenesVector[0]);
+	// the mini map scene doesn't render the minimap
+	miniMapScene->sceneGameObjects.erase("miniMapQuad");
+	miniMapScene->cameras[0] = GameCursor::miniMapCamera;
+	miniMapScene->theFBO = new cFBO();
+	std::string fbo_error;
+	miniMapScene->sceneWidth = 80;
+	miniMapScene->sceneHeight = 80;
+	if (!miniMapScene->theFBO->init(miniMapScene->sceneWidth, miniMapScene->sceneHeight, fbo_error))
+	{
+		std::cout << "Error initializing the minimap FBO: " << fbo_error << std::endl;
+		return 1;
+	}
+
+	theSceneManager->addScene(miniMapScene);
 	
 	while (!glfwWindowShouldClose(window))
 	{
@@ -244,7 +262,8 @@ int main(void)
 		std::stringstream ssTitle;
 		tools::setWindowTitle(&ssTitle);
 		glfwSetWindowTitle(window, ssTitle.str().c_str());
-				
+
+		::g_pFlyCamera->repositionMiniMap();
 		theSceneManager->update();
 		// theSceneManager->updateStencil(window);
 		
