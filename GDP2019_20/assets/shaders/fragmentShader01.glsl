@@ -28,7 +28,9 @@ uniform sampler2D textSamp03;
 //uniform sampler2D textSamp07;
 uniform sampler2D secondPassColourTexture;
 uniform sampler2D scenePassColourTexture;
+uniform sampler2D outlineInfoTexture;
 uniform sampler2D lightGradientSampler;
+uniform int objectID;
 
 uniform samplerCube skyBox;
 uniform bool bIsSkyBox;
@@ -43,7 +45,8 @@ uniform vec4 tex_0_3_ratio;		// x = 0, y = 1, z = 2, w = 3
 // uniform sampler2D textures[10]; 	// for instance
 
 
-out vec4 pixelColour;			// RGB A   (0 to 1) 
+layout(location = 0) out vec4 pixelColour; // RGB A   (0 to 1) 
+layout(location = 1) out vec4 outlineInfo;
 
 // Fragment shader
 struct sLight
@@ -91,6 +94,10 @@ vec4 calcualteLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal,
                             vec3 vertexWorldPos, vec4 vertexSpecular );
 float calcualteLightPower(  vec3 vertexNormal, vec3 vertexWorldPos, vec4 vertexSpecular );
 
+
+vec3 eyeVector = eyeLocation.xyz - fVertWorldLocation.xyz;
+int outlineWidth = 8;
+
 /*
 	FOG THINGS
 */
@@ -103,9 +110,71 @@ vec3 addFog(vec3 color)
 	float fogPower = smoothstep(0, 85, distanceToCamera) * eyeIntoFog;
 	return color = (1 - fogPower) * color + fogColor * fogPower;
 }
+
+// *****************************************
+//     ___       _   _ _          
+//    / _ \ _  _| |_| (_)_ _  ___ 
+//   | (_) | || |  _| | | ' \/ -_)
+//    \___/ \_,_|\__|_|_|_||_\___|
+//                                
+vec4 buildOutlineInfo()
+{
+	return vec4(objectID, 0,0,1);
+}
+
+bool isCoordInWindow(vec2 screenCoord)
+{
+	return screenCoord.s >= 0 && screenCoord.s < screenWidth &&
+		screenCoord.t >= 0 && screenCoord.t < screenHeight;
+}
+
+bool isCoordDifferentObject(vec2 screenCoord, int sampledID)
+{
+	if (!isCoordInWindow(screenCoord)) return false;
+	vec2 textCoords = vec2( screenCoord.x / screenWidth, 
+							screenCoord.y / screenHeight );
+	vec4 otherPixelInfo = texture( outlineInfoTexture, textCoords );
+	return sampledID != int(otherPixelInfo.r);
+}
+// Determines if the pixel being rendered is in a border of an object
+// Reserved for the last pass. Samples the outlineInfoTexture.
+bool isPixelBorder()
+{
+	vec2 textCoords = vec2( gl_FragCoord.x / screenWidth, 
+								gl_FragCoord.y / screenHeight );
+	vec4 currentPixelInfo = texture( outlineInfoTexture, textCoords.st );
+	int currentPixelID = int(currentPixelInfo.r);
+	if (currentPixelID == 0)
+		return false;
+
+	int halfWidth = outlineWidth/2;
+
+	// horizontal
+	for (int s = -halfWidth; s <= halfWidth; s++)
+	{
+		if (isCoordDifferentObject(gl_FragCoord.st + vec2(s,0), int(currentPixelInfo.r)))
+			return true;
+	}
+
+	// vertical
+	for (int t = -halfWidth; t <= halfWidth; t++)
+	{
+		if (isCoordDifferentObject(gl_FragCoord.st + vec2(0,t), int(currentPixelInfo.r)))
+			return true;
+	}
+	return false;
+}
+//     ___       _   _ _             ___ _  _ ___  
+//    / _ \ _  _| |_| (_)_ _  ___   | __| \| |   \ 
+//   | (_) | || |  _| | | ' \/ -_)  | _|| .` | |) |
+//    \___/ \_,_|\__|_|_|_||_\___|  |___|_|\_|___/ 
+//                                                 
+// *****************************************
 	 
 void main()  
 {
+	outlineInfo = vec4(0,0,0,0);
+
 	if ( bIsSkyBox )
 	{
 		vec3 skyColour = texture( skyBox, fNormal.xyz ).rgb;
@@ -115,40 +184,29 @@ void main()
 		return;
 	}
 	
+	// Last pass deferred render
 	if ( passNumber == 1 )
 	{
 		vec2 textCoords = vec2( gl_FragCoord.x / screenWidth, 
 		                         gl_FragCoord.y / screenHeight );
 		vec3 texRGB = texture( secondPassColourTexture, textCoords.st ).rgb;
-		if(isNightVision)
-		{
-			pixelColour.rgb = greyScale(texRGB);
-		}
+		if (isPixelBorder())
+			pixelColour.rgb = vec3(0,0,0);
 		else
-		{
-			pixelColour.rgb = (texRGB);
-		}
+			pixelColour.rgb = texRGB;
 		pixelColour.a = 1.0f;
 		return;
 	}
 
+	// deferred render with objects UVs
 	if ( passNumber == 50 )
 	{
 		// It's the 2nd pass //pixelColour = vec4( 0.0f, 1.0f, 0.0f, 1.0f );
 		vec3 texRGB = texture( secondPassColourTexture, fUVx2.st ).rgb;
-		if(isBloom)
-		{
-			pixelColour.rgb = bloom();
-			pixelColour.a = 1.0f;
-			return;
-		}
-		else
-		{
-			pixelColour.rgb = (texRGB);
-			pixelColour.a = 1.0f;
-			return;
-		}
-		
+		outlineInfo = buildOutlineInfo();
+		pixelColour.rgb = (texRGB);
+		pixelColour.a = 1.0f;
+		return;
 	}
 
 	// Shader Type #1  	
@@ -156,6 +214,7 @@ void main()
 	{
 		pixelColour.rgb = debugColour.rgb;
 		pixelColour.a = 1.0f;				// NOT transparent
+		outlineInfo = vec4(1.0,1.0,1.0,1.0);
 		return;
 	}
 
@@ -213,7 +272,6 @@ void main()
 
 	if( shoulfRefract )
 	{
-		vec3 eyeVector = eyeLocation.xyz - fVertWorldLocation.xyz;
 		eyeVector = normalize(eyeVector);		
 		//vec3 reflectVector = reflect( eyeVector, fNormal.xyz );
 		vec3 refractVector = refract( eyeVector, fNormal.xyz, 1.4f );		
@@ -229,7 +287,8 @@ void main()
 	
 	pixelColour.rgb = addFog(pixelColour.rgb);
 
-	pixelColour.a = diffuseColour.a; 		// "a" for alpha, same as "w"
+	pixelColour.a = diffuseColour.a; 		// "a" for alpha, same as "w"		
+	outlineInfo = buildOutlineInfo();
 	
 	if( discardBlack )
 	{

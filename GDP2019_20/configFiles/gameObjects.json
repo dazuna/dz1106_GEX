@@ -19,7 +19,7 @@
     "isVisible": false,
     "meshName": "cubeMesh",
     "meshURL": "assets/models/cube1_xyx_n_uv.ply",
-    "positionXYZ": [43.3392448425293, 41.03508377075195, 76.96111297607422],
+    "positionXYZ": [43.3392448425293, 41.03508758544922, 76.96112060546875],
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 1.0,
     "texture": ["White.png", "", "", ""],
@@ -175,8 +175,12 @@
     "isVisible": false,
     "meshName": "quadMesh",
     "meshURL": "assets/models/1x1_2Tri_Quad_2_Sided_xyz_n_uv.ply",
-    "positionXYZ": [0.0, 0.0, 0.0],
-    "rotationXYZ": [0,0,0],
+    "positionXYZ": [41.04509735107422, 38.36678695678711, 73.88587951660156],
+    "rotationXYZ": [
+      -26.29138946533203,
+      1.7347819805145264,
+      2.6692658749993825e-8
+    ],
     "scale": 0.5,
     "texture": ["Red.png", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0]
@@ -187,10 +191,14 @@
     "isVisible": false,
     "meshName": "mossyRock",
     "meshURL": "assets/models/mossy_rocks.ply",
-    "positionXYZ": [0,0,0],
-    "rotationXYZ": [0,0,0],
-    "scale": 0.2,
+    "positionXYZ": [0.0, 0.0, 0.0],
+    "rotationXYZ": [0.0, -0.0, 0.0],
+    "scale": 0.20000000298023224,
     "texture": ["mossy_rocks.png", "", "", ""],
-    "textureRatio": [1.0, 0.0, 0.0, 0.0]
+    "textureRatio": [1.0, 0.0, 0.0, 0.0],
+    "graphicEffects":
+    {
+        "toonOutline": true
+    }
   }
 ]

@@ -16,6 +16,8 @@ bool cFBO::reset(int width, int height, std::string &error)
 bool cFBO::shutdown(void)
 {
 	glDeleteTextures( 1, &(this->colourTexture_0_ID) );
+	glDeleteTextures(1, &(this->outlineInfoBuffer_1_ID));
+	
 	glDeleteTextures( 1, &(this->depthTexture_ID) );
 
 	glDeleteFramebuffers( 1, &(this->ID) );
@@ -33,7 +35,12 @@ bool cFBO::init( int width, int height, std::string &error )
 	glGenFramebuffers( 1, &( this->ID ) );		// GL 3.0
 	glBindFramebuffer(GL_FRAMEBUFFER, this->ID);
 
-//************************************************************
+	//************************************************************
+	//     ___     _              
+	//    / __|___| |___ _  _ _ _ 
+	//   | (__/ _ \ / _ \ || | '_|
+	//    \___\___/_\___/\_,_|_|  
+	//                            
 	// Create the colour buffer (texture)
 	glGenTextures(1, &(this->colourTexture_0_ID ) );		//g_FBO_colourTexture
 	glBindTexture(GL_TEXTURE_2D, this->colourTexture_0_ID);
@@ -45,6 +52,27 @@ bool cFBO::init( int width, int height, std::string &error )
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+
+
+	//     ___        _   _ _              ___        __       
+	//    / _ \ _   _| |_| (_)_ __   ___  |_ _|_ __  / _| ___  
+	//   | | | | | | | __| | | '_ \ / _ \  | || '_ \| |_ / _ \ 
+	//   | |_| | |_| | |_| | | | | |  __/  | || | | |  _| (_) |
+	//    \___/ \__,_|\__|_|_|_| |_|\___| |___|_| |_|_|  \___/ 
+	//
+	//                                                         
+	glGenTextures(1, &(this->outlineInfoBuffer_1_ID));		//g_FBO_colourTexture
+	glBindTexture(GL_TEXTURE_2D, this->outlineInfoBuffer_1_ID);
+
+	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32UI,		// 4 unsigned 32 bit integers
+		this->width,				// g_FBO_SizeInPixes
+		this->height);			// g_FBO_SizeInPixes
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 //***************************************************************
 
 	// Create the depth buffer (texture)
@@ -74,6 +102,10 @@ bool cFBO::init( int width, int height, std::string &error )
 						 GL_COLOR_ATTACHMENT0,			// Colour goes to #0
 						 this->colourTexture_0_ID, 0);
 
+	glFramebufferTexture(GL_FRAMEBUFFER,
+						GL_COLOR_ATTACHMENT1,			// outline info goes to #1
+						this->outlineInfoBuffer_1_ID, 0);
+
 
 //	glFramebufferTexture(GL_FRAMEBUFFER,
 //						 GL_DEPTH_ATTACHMENT,
@@ -83,10 +115,11 @@ bool cFBO::init( int width, int height, std::string &error )
 						 this->depthTexture_ID, 0);
 
 	static const GLenum draw_bufers[] = 
-	{ 
-		GL_COLOR_ATTACHMENT0
+	{
+		GL_COLOR_ATTACHMENT0, // Color
+		GL_COLOR_ATTACHMENT1 // outline info
 	};
-	glDrawBuffers(1, draw_bufers);		// There are 4 outputs now
+	glDrawBuffers(2, draw_bufers);		// There are 2 outputs now
 
 	// ***************************************************************
 
@@ -134,10 +167,13 @@ void cFBO::clearBuffers(bool bClearColour, bool bClearDepth)
 {
 	glViewport(0, 0, this->width, this->height);
 	GLfloat	zero = 0.0f;
+	GLfloat zero_x3[3] = { zero, zero, zero };
+	GLfloat zero_x4[4] = { zero, zero, zero, zero };
 	GLfloat one = 1.0f;
 	if ( bClearColour )
 	{
-		glClearBufferfv(GL_COLOR, 0, &zero);		// Colour
+		glClearBufferfv(GL_COLOR, 0, zero_x3);		// Colour
+		glClearBufferfv(GL_COLOR, 1, zero_x4);		// Outline info
 	}
 	if ( bClearDepth )
 	{
