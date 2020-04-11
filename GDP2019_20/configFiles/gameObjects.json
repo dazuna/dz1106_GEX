@@ -59,7 +59,12 @@
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 0.0,
     "texture": ["tree_test.png", "", "", ""],
-    "textureRatio": [1.0, 0.0, 0.0, 0.0]
+    "textureRatio": [1.0, 0.0, 0.0, 0.0],
+    "graphicEffects":
+    {
+        "toonOutline": true,
+        "toonLighting": true
+    }
   },
   {
     "alphaTransparency": 1.0,
@@ -95,7 +100,12 @@
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 1.600000023841858,
     "texture": ["Yellow.png", "", "", ""],
-    "textureRatio": [1.0, 0.0, 0.0, 0.0]
+    "textureRatio": [1.0, 0.0, 0.0, 0.0],
+    "graphicEffects":
+    {
+        "toonOutline": true,
+        "toonLighting": true
+    }
   },
   {
     "alphaTransparency": 1.0,
@@ -131,7 +141,12 @@
         "isReplaceable": false,
         "location": "assets/modelsFBX/Knight/sword and shield impact.fbx"
       }
-    ]
+    ],
+    "graphicEffects":
+    {
+        "toonOutline": true,
+        "toonLighting": true
+    }
   },
   {
     "alphaTransparency": 1.0,
@@ -198,7 +213,8 @@
     "textureRatio": [1.0, 0.0, 0.0, 0.0],
     "graphicEffects":
     {
-        "toonOutline": true
+        "toonOutline": true,
+        "toonLighting": true
     }
   },
   {
