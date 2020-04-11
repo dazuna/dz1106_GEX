@@ -217,8 +217,6 @@ int main(void)
 	GameTools::init();
 	ImGUI_utils::init(window);
 
-	ImGUI_utils::init(window);
-
 	// Hardcoded settings for the minimap 
 	auto miniMapScene = new cScene(*::theSceneManager->scenesVector[0]);
 	// the mini map scene doesn't render the minimap
