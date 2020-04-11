@@ -225,12 +225,6 @@ void main()
 		outColour = outColour * 2.0f;
 	}
 
-	pixelColour = outColour;
-	
-	pixelColour.rgb = addFog(pixelColour.rgb);
-
-	pixelColour.a = diffuseColour.a; 		// "a" for alpha, same as "w"
-	
 	if( discardBlack )
 	{
 		if ( tex3_RGB.r <= 0.01f && tex3_RGB.g <= 0.01f && tex3_RGB.b <= 0.01f)		// Basically "black"
@@ -240,9 +234,9 @@ void main()
 		outColour.rgb = texRGB;
 	}
 
-	pixelColour = outColour;
-	pixelColour.a = diffuseColour.a; 		// "a" for alpha, same as "w"
-	
+	pixelColour = outColour;	
+	pixelColour.rgb = addFog(pixelColour.rgb);
+	pixelColour.a = diffuseColour.a; 		// "a" for alpha, same as "w"	
 }	
 
 

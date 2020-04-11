@@ -231,8 +231,8 @@ int main(void)
 		std::cout << "Error initializing the minimap FBO: " << fbo_error << std::endl;
 		return 1;
 	}
-
 	theSceneManager->addScene(miniMapScene);
+	
 	cParticleEmitter::sParticleCreationSettings sPCS;
 	cParticleEmitter::setSPCSDefaultValues(sPCS);
 	cParticleEmitter::PEmtr->Initialize(sPCS);
