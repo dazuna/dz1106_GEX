@@ -178,6 +178,10 @@ void cSceneManager::lastPass(GLFWwindow* window)
 	glBindTexture(GL_TEXTURE_2D, texture->outlineInfoBuffer_1_ID);
 	glUniform1i(glGetUniformLocation(shaderProgID, "outlineInfoTexture"), 41);
 
+	glActiveTexture(GL_TEXTURE0 + 42);
+	glBindTexture(GL_TEXTURE_2D, texture->depthTexture_ID);
+	glUniform1i(glGetUniformLocation(shaderProgID, "depthTexture"), 42);
+
 	// 4. Draw a single object (a triangle or quad)
 	cGameObject* pQuadOrIsIt = NULL;
 	if (tools::pFindObjectByFriendlyNameMap("theQuad"))

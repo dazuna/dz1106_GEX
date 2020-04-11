@@ -29,6 +29,7 @@ uniform sampler2D textSamp03;
 uniform sampler2D secondPassColourTexture;
 uniform sampler2D scenePassColourTexture;
 uniform sampler2D outlineInfoTexture;
+uniform sampler2D depthTexture;
 uniform sampler2D lightGradientSampler;
 uniform int objectID;
 
@@ -128,13 +129,27 @@ bool isCoordInWindow(vec2 screenCoord)
 		screenCoord.t >= 0 && screenCoord.t < screenHeight;
 }
 
-bool isCoordDifferentObject(vec2 screenCoord, int sampledID)
+bool isCoordDifferentObjectBehind(vec2 screenCoord, int sampledID)
 {
 	if (!isCoordInWindow(screenCoord)) return false;
+
+	// Is screenCoord on another object?
 	vec2 textCoords = vec2( screenCoord.x / screenWidth, 
 							screenCoord.y / screenHeight );
 	vec4 otherPixelInfo = texture( outlineInfoTexture, textCoords );
-	return sampledID != int(otherPixelInfo.r);
+	if(sampledID == int(otherPixelInfo.r))
+		return false;
+
+	// Is screenCoord behind what I'm coloring?
+	vec3 otherPixelDepth = texture( depthTexture, textCoords ).rgb;
+	textCoords = vec2( gl_FragCoord.x / screenWidth, 
+						gl_FragCoord.y / screenHeight );
+	vec3 thisPixelDepth = texture( depthTexture, textCoords ).rgb;
+
+	if (thisPixelDepth.r > otherPixelDepth.r)
+		return false;
+
+	return true;
 }
 // Determines if the pixel being rendered is in a border of an object
 // Reserved for the last pass. Samples the outlineInfoTexture.
@@ -152,14 +167,14 @@ bool isPixelBorder()
 	// horizontal
 	for (int s = -halfWidth; s <= halfWidth; s++)
 	{
-		if (isCoordDifferentObject(gl_FragCoord.st + vec2(s,0), int(currentPixelInfo.r)))
+		if (isCoordDifferentObjectBehind(gl_FragCoord.st + vec2(s,0), int(currentPixelInfo.r)))
 			return true;
 	}
 
 	// vertical
 	for (int t = -halfWidth; t <= halfWidth; t++)
 	{
-		if (isCoordDifferentObject(gl_FragCoord.st + vec2(0,t), int(currentPixelInfo.r)))
+		if (isCoordDifferentObjectBehind(gl_FragCoord.st + vec2(0,t), int(currentPixelInfo.r)))
 			return true;
 	}
 	return false;
