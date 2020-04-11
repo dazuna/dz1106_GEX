@@ -16,6 +16,14 @@ public:
 
 	GLuint ID;						// = 0;
 	GLuint colourTexture_0_ID;		// = 0;
+	/*
+	 * Each entry This buffer will consist of 4 unsigned integers, that will store
+	 * 1. Object ID (0 if the object is not to be outlined)
+	 * 2. Width of the outline
+	 * 3. Color ID of the outline. The colors are defined in an array in the fragment shader
+	 * 4. TBD. If it's set to 0, the shader won't sample the info from the texture
+	 */
+	GLuint outlineInfoBuffer_1_ID = 0;
 
 //	GLuint TBDTexture_1_ID;
 //	GLuint TBDTexture_2_ID;

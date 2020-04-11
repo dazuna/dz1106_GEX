@@ -185,6 +185,17 @@ void tools::DrawObject(glm::mat4 m,
 		glUniform1f(glGetUniformLocation(shaderProgID, "toonLighting"), (float)GL_FALSE);
 	}
 
+	auto jGraphicEffects = pCurrentObject->jGraphicEffects;
+	if (jGraphicEffects.contains("toonOutline") &&
+		jGraphicEffects["toonOutline"])
+	{
+		glUniform1i(glGetUniformLocation(shaderProgID, "objectID"), pCurrentObject->getUniqueID());
+	}
+	else
+	{
+		glUniform1i(glGetUniformLocation(shaderProgID, "objectID"), 0);
+	}
+
 	if (pCurrentObject->pAS != NULL)
 	{
 		glUniform1f(isSkinnedMesh_UniLoc, (float)GL_TRUE);
