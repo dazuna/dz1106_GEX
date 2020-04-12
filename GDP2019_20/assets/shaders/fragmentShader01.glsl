@@ -28,7 +28,6 @@ uniform sampler2D textSamp03;
 //uniform sampler2D textSamp07;
 uniform sampler2D secondPassColourTexture;
 uniform sampler2D scenePassColourTexture;
-uniform sampler2D outlineInfoTexture;
 uniform sampler2D depthTexture;
 uniform sampler2D lightGradientSampler;
 uniform int objectID;
@@ -45,9 +44,7 @@ uniform vec4 tex_0_3_ratio;		// x = 0, y = 1, z = 2, w = 3
 // instead of using the sample2DArray sampler;
 // uniform sampler2D textures[10]; 	// for instance
 
-
 layout(location = 0) out vec4 pixelColour; // RGB A   (0 to 1) 
-layout(location = 1) out vec4 outlineInfo;
 
 // Fragment shader
 struct sLight
@@ -97,7 +94,6 @@ float calcualteLightPower(  vec3 vertexNormal, vec3 vertexWorldPos, vec4 vertexS
 
 
 vec3 eyeVector = eyeLocation.xyz - fVertWorldLocation.xyz;
-int outlineWidth = 8;
 
 /*
 	FOG THINGS
@@ -118,9 +114,20 @@ vec3 addFog(vec3 color)
 //   | (_) | || |  _| | | ' \/ -_)
 //    \___/ \_,_|\__|_|_|_||_\___|
 //                                
+uniform sampler2D outlineInfoTexture;
+layout(location = 1) out vec4 outlineInfo;
+uniform int outlineColorID;
+uniform int outlineWidth;
+vec3 outlineColors[4] = { 
+	vec3(0,0,0), // black
+	vec3(0,0,164) / 255, // blue, for ally troops
+	vec3(140,0,0) / 255, // red, for enemy troops
+	vec3(1,1,1) // white, for selected ally troops
+};
+
 vec4 buildOutlineInfo()
 {
-	return vec4(objectID, 0,0,1);
+	return vec4(objectID,outlineWidth,outlineColorID,1);
 }
 
 bool isCoordInWindow(vec2 screenCoord)
@@ -153,30 +160,45 @@ bool isCoordDifferentObjectBehind(vec2 screenCoord, int sampledID)
 }
 // Determines if the pixel being rendered is in a border of an object
 // Reserved for the last pass. Samples the outlineInfoTexture.
-bool isPixelBorder()
+bool isPixelBorder(vec4 currentPixelInfo)
 {
 	vec2 textCoords = vec2( gl_FragCoord.x / screenWidth, 
 								gl_FragCoord.y / screenHeight );
-	vec4 currentPixelInfo = texture( outlineInfoTexture, textCoords.st );
 	int currentPixelID = int(currentPixelInfo.r);
+	vec3 thisPixelDepth = texture( depthTexture, textCoords ).rgb;
 	if (currentPixelID == 0)
 		return false;
 
-	int halfWidth = outlineWidth/2;
+	// in the depth buffer:
+	// farther > closer [0-1]
+	// 0.9997 is a good depth to stop doing outlines, far enough
+	// values less than 0.9997 will be outlined
+	if (thisPixelDepth.r > 0.9997)
+		return false;
+
+	float limit = int(currentPixelInfo.g);
 
 	// horizontal
-	for (int s = -halfWidth; s <= halfWidth; s++)
-	{
-		if (isCoordDifferentObjectBehind(gl_FragCoord.st + vec2(s,0), int(currentPixelInfo.r)))
-			return true;
-	}
+	// for (int s = -limit; s <= limit; s++)
+	// {
+	// 	if (isCoordDifferentObjectBehind(gl_FragCoord.st + vec2(s,0), int(currentPixelInfo.r)))
+	// 		return true;
+	// }
+	if (isCoordDifferentObjectBehind(gl_FragCoord.st + vec2(-limit,0), int(currentPixelInfo.r)))
+		return true;
+	if (isCoordDifferentObjectBehind(gl_FragCoord.st + vec2(limit,0), int(currentPixelInfo.r)))
+		return true;
 
 	// vertical
-	for (int t = -halfWidth; t <= halfWidth; t++)
-	{
-		if (isCoordDifferentObjectBehind(gl_FragCoord.st + vec2(0,t), int(currentPixelInfo.r)))
-			return true;
-	}
+	if (isCoordDifferentObjectBehind(gl_FragCoord.st + vec2(0, limit), int(currentPixelInfo.r)))
+		return true;
+	if (isCoordDifferentObjectBehind(gl_FragCoord.st + vec2(0, -limit), int(currentPixelInfo.r)))
+		return true;
+	// for (int t = -limit; t <= limit; t++)
+	// {
+	// 	if (isCoordDifferentObjectBehind(gl_FragCoord.st + vec2(0,t), int(currentPixelInfo.r)))
+	// 		return true;
+	// }
 	return false;
 }
 //     ___       _   _ _             ___ _  _ ___  
@@ -205,10 +227,23 @@ void main()
 		vec2 textCoords = vec2( gl_FragCoord.x / screenWidth, 
 		                         gl_FragCoord.y / screenHeight );
 		vec3 texRGB = texture( secondPassColourTexture, textCoords.st ).rgb;
-		if (isPixelBorder())
-			pixelColour.rgb = vec3(0,0,0);
+		vec4 currentPixelInfo = texture( outlineInfoTexture, textCoords.st );
+		vec3 thisPixelDepth = texture( depthTexture, textCoords ).rgb;
+		if (isPixelBorder(currentPixelInfo))
+		{
+			int sampledOutlineColorID = int(currentPixelInfo.b);
+			vec3 outlineColor;
+			if (sampledOutlineColorID > outlineColors.length())
+				outlineColor = vec3(0,0,0);
+			else
+			{
+				outlineColor = outlineColors[sampledOutlineColorID];
+			}
+			pixelColour.rgb = outlineColor;
+		}
 		else
 			pixelColour.rgb = texRGB;
+
 		pixelColour.a = 1.0f;
 		return;
 	}

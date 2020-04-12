@@ -74,6 +74,10 @@ bool GameArmies::loadAllies(std::string filename)
 	{
 		selectedAlly = allyUnits.begin();
 	}
+	for (auto ally : allyUnits)
+	{
+		ally->jAdditionalInfo["team"] = "player";
+	}
 	return res;
 }
 
@@ -83,6 +87,10 @@ bool GameArmies::loadEnemies(std::string filename)
 	if (res)
 	{
 		selectedEnemy = enemyUnits.begin();
+	}
+	for (auto enemy : enemyUnits)
+	{
+		enemy->jAdditionalInfo["team"] = "enemy";
 	}
 	return res;
 }
@@ -107,6 +115,15 @@ cGameObject* createUnitObj(GameUnit* unit)
 	theSceneManager->scenesVector[0]->addGameObject(newUnit);
 	::g_map_GameObjects[newUnit->friendlyName] = newUnit;
 	unit->gameObj = newUnit;
+
+	// Outline color
+
+	// The color of the outline is specified by index of an array defined in
+	// the fragment shader. 1 is blue, 2 is red.
+	int colorID = (unit->jAdditionalInfo["team"] == "player") ?
+		1 : 2;
+	unit->gameObj->jGraphicEffects["outlineColorID"] = colorID;
+	
 	return newUnit;
 }
 
@@ -133,33 +150,43 @@ void GameArmies::setUnitObjects()
 	}
 }
 
+/*
+ * Resets the properties of the object and other stuff
+ * to show the unit as not selected
+ */
+void deselectUnit(GameUnit* unit)
+{
+	unit->gameObj->jGraphicEffects["outlineWidth"] = 2;
+	unit->gameObj->jGraphicEffects["outlineColorID"] = 1;
+}
+
 void GameArmies::nextAlly()
 {
-	//(*selectedAlly)->gameObj->textures[0] = "Blue.png";
+	deselectUnit(*selectedAlly);
 	selectedAlly++;
 	if (selectedAlly == allyUnits.end())
 	{
 		selectedAlly = allyUnits.begin();
 	}
-	//(*selectedAlly)->gameObj->textures[0] = "Yellow.png";
 	selectUnit(selectedAlly);
 }
 
 void GameArmies::previousAlly()
 {
-	//(*selectedAlly)->gameObj->textures[0] = "Blue.png";
+	deselectUnit(*selectedAlly);
 	if (selectedAlly == allyUnits.begin())
 	{
 		selectedAlly = allyUnits.end();
 	}
 	selectedAlly--;
-	//(*selectedAlly)->gameObj->textures[0] = "Yellow.png";
 	selectUnit(selectedAlly);
 }
 
 void GameArmies::selectUnit(vUnits::iterator selectedUnit)
 {
 	GameCursor::setCoordinates((*selectedUnit)->coord_x, (*selectedUnit)->coord_y);
+	(*selectedUnit)->gameObj->jGraphicEffects["outlineWidth"] = 5;
+	(*selectedUnit)->gameObj->jGraphicEffects["outlineColorID"] = 3;
 }
 
 bool GameArmies::isCoordOccupied(int x, int y)

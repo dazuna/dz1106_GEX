@@ -19,6 +19,8 @@ struct GameUnit
 
 	float timer = 0;
 	int wait = 0;
+
+	nlohmann::json jAdditionalInfo;
 	
 	nlohmann::json toJSON();
 	/* The player tells a unit to move in a certain direction */
