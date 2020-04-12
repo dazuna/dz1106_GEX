@@ -35,6 +35,7 @@ cGameObject::cGameObject()
 	this->pAS = nullptr;
 
 	jGraphicEffects["toonLighting"] = true;
+	jGraphicEffects["outlineWidth"] = 2;
 
 	return;
 }

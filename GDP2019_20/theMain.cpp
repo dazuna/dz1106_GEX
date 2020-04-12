@@ -287,7 +287,7 @@ int main(void)
 		glm::mat4 p, v;
 		glfwGetFramebufferSize(window, &width, &height);
 		float ratio = width / float(height);
-		p = glm::perspective(0.6f,ratio,0.1f,15000.0f);
+		p = glm::perspective(0.6f,ratio,0.1f,1000.0f);
 		v = glm::mat4(1.0f);
 		v = glm::lookAt( ::g_pFlyCamera->eye,::g_pFlyCamera->getAtInWorldSpace(),::g_pFlyCamera->getUpVector() );
 		pDebugRenderer->RenderDebugObjects(v, p, 0.01f);

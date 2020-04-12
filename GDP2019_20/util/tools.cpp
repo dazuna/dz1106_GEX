@@ -195,6 +195,24 @@ void tools::DrawObject(glm::mat4 m,
 	{
 		glUniform1i(glGetUniformLocation(shaderProgID, "objectID"), 0);
 	}
+	
+	if (jGraphicEffects.contains("outlineColorID"))
+	{
+		glUniform1i(glGetUniformLocation(shaderProgID, "outlineColorID"), jGraphicEffects["outlineColorID"]);
+	}
+	else
+	{
+		glUniform1i(glGetUniformLocation(shaderProgID, "outlineColorID"), 0);
+	}
+
+	if (jGraphicEffects.contains("outlineWidth"))
+	{
+		glUniform1i(glGetUniformLocation(shaderProgID, "outlineWidth"), jGraphicEffects["outlineWidth"]);
+	}
+	else
+	{
+		glUniform1i(glGetUniformLocation(shaderProgID, "outlineWidth"), 0);
+	}
 
 	if (pCurrentObject->pAS != NULL)
 	{

@@ -169,7 +169,7 @@
     "positionXYZ": [30.0, 0.5, 70.0],
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 1.0,
-    "texture": ["selectSquare.png", "", "", "selectSquare.png"],
+    "texture": ["White.png", "", "", "selectSquare.png"],
     "textureRatio": [1.0, 0.0, 0.0, 0.0]
   },
   {

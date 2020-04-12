@@ -354,7 +354,7 @@ bool JSONLoader::JSONLoadGameObjects(std::map<std::string, cGameObject*>* g_map_
 
 		if (jsonArray[index].find("graphicEffects") != jsonArray[index].end())
 		{
-			tempGameObject->jGraphicEffects = jsonArray[index]["graphicEffects"];
+			tempGameObject->jGraphicEffects.merge_patch(jsonArray[index]["graphicEffects"]);
 		}
 		
 		g_map_GameObjects->insert({ friendlyName.c_str(),tempGameObject });
