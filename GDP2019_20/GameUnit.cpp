@@ -21,8 +21,6 @@ nlohmann::json GameUnit::toJSON()
 	res["state"] = state;
 	res["zcamState"] = cam->state;
 	res["zPE_createPart"] = (part->m_generateNewParticles ? "true" : "false");
-	res["zawarudo effect"] = GameEvents::effectState;
-	res["history_size"] = GameEvents::allyStates.size();
 	return res;
 }
 

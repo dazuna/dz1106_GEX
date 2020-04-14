@@ -6,6 +6,7 @@
 #include <iostream>
 #include "EnemyAI.h"
 #include "GameTools.h"
+#include "GameEvents.h"
 
 /*
  * Esto esta aqui mientras porque no puedo incluir tools y
@@ -69,6 +70,15 @@ void ImGUI_utils::render()
 	{
 		ImGui::Begin("Enemy Turn", nullptr, ImGuiWindowFlags_NoTitleBar);
 		ImGui::Text("ENEMY TURN!");
+		ImGui::End();
+	}
+	else if (GameEvents::effectState == "active")
+	{
+		ImGui::Begin("Rewinding time!");
+		ImGui::Text(
+			(std::to_string(GameEvents::allyStates.size() - GameEvents::stepsBack) + "/" +
+				std::to_string(GameEvents::allyStates.size())).c_str()
+		);
 		ImGui::End();
 	}
 
