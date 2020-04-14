@@ -154,10 +154,11 @@ int main(void)
 	::pTextureManager->SetBasePath("assets/textures");
 	JSONLoader::JSONLoadGameObjects(&::g_map_GameObjects);
 	JSONLoader::loadDefaultMesh("assets/models/Sphere_Radius_1_XYZ_n_uv.ply");
-	//JSONLoader::JSONLoadMeshesSimple();
-	JSONLoader::LoadMeshes_Thread();
+	JSONLoader::JSONLoadMeshesSimple();
+	//JSONLoader::LoadMeshes_Thread();
 	JSONLoader::JSONLoadSkinnedMeshes();
 	JSONLoader::JSONLoadTextures(&::g_map_GameObjects, ::pTextureManager);
+	JSONLoader::loadMeshToGPU(pTheVAOManager, &::g_map_GameObjects, shaderProgID);	
 
 	/*
 	 * Load light gradient texture for toon lighting
@@ -241,7 +242,7 @@ int main(void)
 	
 	while (!glfwWindowShouldClose(window))
 	{
-		JSONLoader::loadMeshToGPU(pTheVAOManager, &::g_map_GameObjects, shaderProgID);
+		//JSONLoader::loadMeshToGPU(pTheVAOManager, &::g_map_GameObjects, shaderProgID);
 		
 		// Get the initial time
 		double currentTime = glfwGetTime();

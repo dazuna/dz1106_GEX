@@ -4,6 +4,7 @@
 #include "util/tools.h"
 #include "SceneManager/cSceneManager.h"
 #include "GameTools.h"
+#include "InstanceRenderer.h"
 
 matTerrain Terrain::terrainGrid;
 unsigned Terrain::width = 0,
@@ -55,45 +56,100 @@ bool Terrain::loadTerrain(std::string filename)
 
 void Terrain::setTerrainObjects()
 {
+	// Initialize "blocks" instance renderer
+	if(InstanceRenderer::mapIR.find("blocks") == InstanceRenderer::mapIR.end())
+	{
+		std::cout << "couldn't find the \"blocks\" instance renderer" << std::endl;
+		std::cout << "creating \"blocks\" instance renderer..." << std::endl;
+		InstanceRenderer::mapIR.insert({"blocks",new InstanceRenderer()});
+	}
+	auto blocksIR = InstanceRenderer::mapIR.at("blocks");
+	if (!tools::pFindObjectByFriendlyNameMap("groundBlock"))
+	{
+		std::cout << "No groundBlock model!!" << std::endl;
+		return;;
+	}
+	blocksIR->gameObj = ::g_map_GameObjects.at("groundBlock");
+	
+	// Initialize "trees" instance renderer
+	if(InstanceRenderer::mapIR.find("trees") == InstanceRenderer::mapIR.end())
+	{
+		std::cout << "couldn't find the \"trees\" instance renderer" << std::endl;
+		std::cout << "creating \"trees\" instance renderer..." << std::endl;
+		InstanceRenderer::mapIR.insert({"trees",new InstanceRenderer()});
+	}
+	auto treesIR = InstanceRenderer::mapIR.at("trees");
+	if (!tools::pFindObjectByFriendlyNameMap("tree"))
+	{
+		std::cout << "No tree model!!" << std::endl;
+		return;;
+	}
+	treesIR->gameObj = ::g_map_GameObjects.at("tree");
+
+	// Initialize "trees" instance renderer
+	if(InstanceRenderer::mapIR.find("rocks") == InstanceRenderer::mapIR.end())
+	{
+		std::cout << "couldn't find the \"rocks\" instance renderer" << std::endl;
+		std::cout << "creating \"rocks\" instance renderer..." << std::endl;
+		InstanceRenderer::mapIR.insert({"rocks",new InstanceRenderer()});
+	}
+	auto rocksIR = InstanceRenderer::mapIR.at("rocks");
+	if (!tools::pFindObjectByFriendlyNameMap("mossyRock"))
+	{
+		std::cout << "No rock model!!" << std::endl;
+		return;;
+	}
+	rocksIR->gameObj = ::g_map_GameObjects.at("mossyRock");
+	
 	for (auto i = 0; i < width; i++)
 	{
 		for (auto j = 0; j < height; j++)
 		{
 			cGameObject* newTerrain;
-			if (terrainGrid[i][j] == "ground")
+			//if (terrainGrid[i][j] == "ground")
+			//{
+			//	if (!tools::pFindObjectByFriendlyNameMap("groundBlock"))
+			//	{
+			//		std::cout << "No groundBlock model!!" << std::endl;
+			//		continue;
+			//	}
+			//	newTerrain = new cGameObject(::g_map_GameObjects["groundBlock"]);
+			//} else if (terrainGrid[i][j] == "tree")
+			//{
+			//	if (!tools::pFindObjectByFriendlyNameMap("forestBlock"))
+			//	{
+			//		std::cout << "No forestBlock model!!" << std::endl;
+			//		continue;
+			//	}
+			//	newTerrain = new cGameObject(::g_map_GameObjects["groundBlock"]);
+			//} else if (terrainGrid[i][j] == "wall")
+			//{
+			//	if (!tools::pFindObjectByFriendlyNameMap("groundBlock"))
+			//	{
+			//		std::cout << "No groundBlock model!!" << std::endl;
+			//		continue;
+			//	}
+			//	newTerrain = new cGameObject(::g_map_GameObjects["groundBlock"]);
+			//} else continue;			
+			if (!tools::pFindObjectByFriendlyNameMap("groundBlock"))
 			{
-				if (!tools::pFindObjectByFriendlyNameMap("groundBlock"))
-				{
-					std::cout << "No groundBlock model!!" << std::endl;
-					continue;
-				}
-				newTerrain = new cGameObject(::g_map_GameObjects["groundBlock"]);
-			} else if (terrainGrid[i][j] == "tree")
-			{
-				if (!tools::pFindObjectByFriendlyNameMap("forestBlock"))
-				{
-					std::cout << "No forestBlock model!!" << std::endl;
-					continue;
-				}
-				newTerrain = new cGameObject(::g_map_GameObjects["forestBlock"]);
-			} else if (terrainGrid[i][j] == "wall")
-			{
-				if (!tools::pFindObjectByFriendlyNameMap("groundBlock"))
-				{
-					std::cout << "No groundBlock model!!" << std::endl;
-					continue;
-				}
-				newTerrain = new cGameObject(::g_map_GameObjects["groundBlock"]);
-			} else continue;
+				std::cout << "No groundBlock model!!" << std::endl;
+				continue;
+			}		
+			newTerrain = new cGameObject(::g_map_GameObjects["groundBlock"]);
 			newTerrain->isVisible = true;
 			// The cube model is 2 units long
 			newTerrain->scale = GameTools::worldScale / 100;
 			newTerrain->positionXYZ = GameTools::coordToWorldPos(i, j);
 			// put the top of the terrain on the xz plane
 			newTerrain->positionXYZ.y = -GameTools::worldScale / 2;
-			//::g_map_GameObjects[newTerrain->friendlyName] = newTerrain;
+			//::g_map_GameObjects[newTerrain->friendlyName] = newTerrain
+
+			// add to matrices vec
+			blocksIR->vecWMs.push_back(tools::calculateWorldMatrix(newTerrain));
+			
 			auto theSceneManager = cSceneManager::getTheSceneManager();
-			theSceneManager->scenesVector[0]->addGameObject(newTerrain);
+			//theSceneManager->scenesVector[0]->addGameObject(newTerrain);
 
 			// Add some rocks on top of the wall block
 			if (terrainGrid[i][j] == "wall")
@@ -106,8 +162,9 @@ void Terrain::setTerrainObjects()
 				newTerrain = new cGameObject(::g_map_GameObjects["mossyRock"]);
 				newTerrain->scale *= GameTools::worldScale;
 				newTerrain->isVisible = true;
-				newTerrain->positionXYZ = GameTools::coordToWorldPos(i, j);
-				theSceneManager->scenesVector[0]->addGameObject(newTerrain);
+				newTerrain->positionXYZ = GameTools::coordToWorldPos(i, j);				
+				rocksIR->vecWMs.push_back(tools::calculateWorldMatrix(newTerrain));
+				//theSceneManager->scenesVector[0]->addGameObject(newTerrain);
 			}
 			
 			// Add a tree to the top of forest blocks
@@ -122,9 +179,17 @@ void Terrain::setTerrainObjects()
 				tree->isVisible = true;
 				tree->scale = GameTools::worldScale;
 				tree->positionXYZ = GameTools::coordToWorldPos(i, j);
-				//::g_map_GameObjects[tree->friendlyName] = tree;
-				theSceneManager->scenesVector[0]->addGameObject(tree);
+
+				treesIR->vecWMs.push_back(tools::calculateWorldMatrix(tree));
 			}
+		}
+	}
+	for(std::pair<std::string,InstanceRenderer*> insRend : InstanceRenderer::mapIR)
+	{
+		//blocksIR->setVAOVariables();
+		if(!insRend.second->vecWMs.empty())
+		{
+			insRend.second->setVAOVariables();
 		}
 	}
 }
