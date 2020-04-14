@@ -180,6 +180,7 @@
     <ClCompile Include="include\imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="include\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="include\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="InstanceRenderer.cpp" />
     <ClCompile Include="JsonState.cpp" />
     <ClCompile Include="LodePNG\lodepng.cpp" />
     <ClCompile Include="SceneManager\cStencilScene.cpp" />
@@ -257,6 +258,7 @@
     <ClInclude Include="include\imgui\imstb_rectpack.h" />
     <ClInclude Include="include\imgui\imstb_textedit.h" />
     <ClInclude Include="include\imgui\imstb_truetype.h" />
+    <ClInclude Include="InstanceRenderer.h" />
     <ClInclude Include="JSONLoader.h" />
     <ClInclude Include="JsonState.h" />
     <ClInclude Include="LightManager\cLightHelper.h" />

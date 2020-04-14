@@ -3,6 +3,8 @@
 #include "../skybox/skybox.h"
 #include <utility>
 
+#include "../InstanceRenderer.h"
+
 cScene::~cScene() = default;
 cScene::cScene(std::string name_, std::string jsonPath_, const std::string & stringEffect_,
 				std::vector<int> camIndex_,int sceneWidth_,int sceneHeight_)
@@ -149,6 +151,12 @@ void cScene::drawSceneObjects()
 		glm::mat4 matModel = glm::mat4(1.0f);
 		tools::DrawObject(matModel, itGO->second, shaderProgID, pTheVAOManager);
 	}
+	if(InstanceRenderer::mapIR.find("blocks") == InstanceRenderer::mapIR.end())
+	{
+		std::cout << "couldn't find the \"blocks\" instance renderer" << std::endl;
+		return;
+	}
+	InstanceRenderer::mapIR["blocks"]->drawIR();
 }
 
 bool cScene::update()

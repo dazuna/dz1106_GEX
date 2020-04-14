@@ -69,8 +69,7 @@ public:
 						  unsigned int shaderProgramID);
 
 	// We don't want to return an int, likely
-	bool FindDrawInfoByModelName(std::string filename,
-								 sModelDrawInfo &drawInfo);
+	bool FindDrawInfoByModelName(std::string filename, sModelDrawInfo &drawInfo);
 	bool LoadModelDrawInfoIntoVAO(sModelDrawInfo& drawInfo, unsigned shaderProgramID);
 
 	std::string getLastError(bool bAndClear = true);

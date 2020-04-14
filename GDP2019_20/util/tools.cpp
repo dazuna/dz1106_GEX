@@ -175,6 +175,10 @@ void tools::DrawObject(glm::mat4 m,
 	
 	GLint isSkinnedMesh_UniLoc = glad_glGetUniformLocation( shaderProgID, "isSkinnedMesh");
 
+	// is Instanced always false here
+	glUniform1f(glGetUniformLocation( shaderProgID, "isInstanced"),float(GL_FALSE));
+	
+
 	if (pCurrentObject->jGraphicEffects.find("toonLighting") != pCurrentObject->jGraphicEffects.end() &&
 		pCurrentObject->jGraphicEffects["toonLighting"])
 	{

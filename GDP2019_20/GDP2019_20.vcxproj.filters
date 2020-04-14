@@ -48,9 +48,6 @@
     <Filter Include="skybox">
       <UniqueIdentifier>{116996f1-557b-426d-aa8c-e94571db01fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="cAABB">
-      <UniqueIdentifier>{b6dc76ca-4208-423c-8290-c92f4a4326ba}</UniqueIdentifier>
-    </Filter>
     <Filter Include="playerController">
       <UniqueIdentifier>{508ef16c-3212-496e-8596-e5d16befb8ff}</UniqueIdentifier>
     </Filter>
@@ -92,6 +89,12 @@
     </Filter>
     <Filter Include="steeringBehaviors">
       <UniqueIdentifier>{24f18735-78ff-44e0-b958-03487850bf43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cAABB">
+      <UniqueIdentifier>{b6dc76ca-4208-423c-8290-c92f4a4326ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="InstanceRenderer">
+      <UniqueIdentifier>{ca407cea-01a1-4f08-9ded-a1f34b01205c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +289,9 @@
     </ClCompile>
     <ClCompile Include="GameEvents.cpp">
       <Filter>MiracleKnightStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="InstanceRenderer.cpp">
+      <Filter>InstanceRenderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -489,6 +495,9 @@
     </ClInclude>
     <ClInclude Include="GameEvents.h">
       <Filter>MiracleKnightStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="InstanceRenderer.h">
+      <Filter>InstanceRenderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

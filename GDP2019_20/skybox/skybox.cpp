@@ -55,6 +55,8 @@ void drawSkyBox(glm::vec3 positionSkyBox)
 	GLint skyBoxSampler_UL = glGetUniformLocation(shaderProgID, "skyBox");
 	glUniform1i(skyBoxSampler_UL, 26);	// Texture unit 26
 
+	glUniform1f(glGetUniformLocation(shaderProgID, "isInstanced"),float(GL_FALSE));
+	
 	sModelDrawInfo drawInfo;
 	if (pTheVAOManager->FindDrawInfoByModelName(::pSkyBox->meshName, drawInfo))
 	{

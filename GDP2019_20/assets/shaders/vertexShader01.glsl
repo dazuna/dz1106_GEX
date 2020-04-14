@@ -8,14 +8,15 @@ uniform mat4 matProj;		// Projection transform
 
 //uniform sampler2D textSamp00;
 
-in vec4 vColour;				// Was vec3
-in vec4 vPosition;				// Was vec3
-in vec4 vNormal;				// Vertex normal
-in vec4 vUVx2;					// 2 x Texture coords
-in vec4 vTangent;				// For bump mapping
-in vec4 vBiNormal;				// For bump mapping
-in vec4 vBoneID;				// For skinned mesh (FBX)
-in vec4 vBoneWeight;			// For skinned mesh (FBX)
+layout (location = 0) in vec4 vColour;				// Was vec3
+layout (location = 1) in vec4 vPosition;				// Was vec3
+layout (location = 2) in vec4 vNormal;				// Vertex normal
+layout (location = 3) in vec4 vUVx2;					// 2 x Texture coords
+layout (location = 4) in vec4 vTangent;				// For bump mapping
+layout (location = 5) in vec4 vBiNormal;				// For bump mapping
+layout (location = 6) in vec4 vBoneID;				// For skinned mesh (FBX)
+layout (location = 7) in vec4 vBoneWeight;			// For skinned mesh (FBX)
+layout (location = 8) in mat4 instanceMatrix;
 
 //out vec3 color;
 //out vec4 vertWorld;			// Location of the vertex in the world
@@ -26,6 +27,7 @@ out vec4 fUVx2;
 
 uniform bool itsDeadJim;
 uniform float offset;
+uniform bool isInstanced;
 
 const int MAXNUMBEROFBONES = 100;
 uniform mat4 matBonesArray[MAXNUMBEROFBONES];
@@ -78,18 +80,23 @@ void main()
 		// *************************************************
 	}
 	else
-	{		
+	{	
+		mat4 matModelCpy = matModel;
+		if(isInstanced)
+		{
+			matModelCpy = instanceMatrix;
+		}
+
 		//vertPosition.xyz += ( vNormal.xyz * textOffset.x );		
 		vec4 vertOriginal = vec4(vertPosition.xyz, 1.0f);
 		
-		mat4 matMVP = matProj * matView * matModel;	
-				
+		mat4 matMVP = matProj * matView * matModelCpy;	
+
 		gl_Position = matMVP * vertOriginal;
 		
 		// Vertex location in "world space"
 		// Vec4 = mat4x4 * vec4
-		fVertWorldLocation = matModel * vertOriginal;		
-		
+		fVertWorldLocation = matModelCpy * vertOriginal;
 		//mat4 matModelInverseTranspose = inverse(transpose(matModel));
 		
 		vec3 theNormal = normalize(vNormal.xyz);
@@ -100,27 +107,5 @@ void main()
 		fColour = vColour;	
 		fUVx2 = vUVx2;
 	
-	}//if (isSkinnedMesh)
-	
-	// gl_Position = matMVP * vec4(vertPosition.xyz, 1.0);
-	
-	// // Vertex location in "world space"
-	// // Vec4 = mat4x4 * vec4
-	// fVertWorldLocation = matModel * vec4(vertPosition.xyz, 1.0);		
-	
-	// //mat4 matModelInverseTranspose = inverse(transpose(matModel));
-	
-	// vec3 theNormal = normalize(vNormal.xyz);
- 	// fNormal = matModelInverseTranspose * vec4(theNormal, 1.0f);
-	// fNormal.xyz = normalize(fNormal.xyz); 
-	
-	// // Pass the colour and UV unchanged.
-    // fColour = vColour;	
-	// fUVx2 = vUVx2;
-	// // 
-	//	vec3 tex0_RGB = texture( textSamp00, fUVx2.st ).rgb;
-	//	if ( tex0_RGB.r <= 0.01f )		// Basically "black"
-	//	{
-	//		discard;
-	//	}
+	}
 }
