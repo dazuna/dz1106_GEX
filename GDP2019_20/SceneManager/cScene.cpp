@@ -151,12 +151,10 @@ void cScene::drawSceneObjects()
 		glm::mat4 matModel = glm::mat4(1.0f);
 		tools::DrawObject(matModel, itGO->second, shaderProgID, pTheVAOManager);
 	}
-	if(InstanceRenderer::mapIR.find("blocks") == InstanceRenderer::mapIR.end())
+	for(auto insRend : InstanceRenderer::mapIR)
 	{
-		std::cout << "couldn't find the \"blocks\" instance renderer" << std::endl;
-		return;
+		insRend.second->drawIR();
 	}
-	InstanceRenderer::mapIR["blocks"]->drawIR();
 }
 
 bool cScene::update()

@@ -71,6 +71,36 @@ void Terrain::setTerrainObjects()
 	}
 	blocksIR->gameObj = ::g_map_GameObjects.at("groundBlock");
 	
+	// Initialize "trees" instance renderer
+	if(InstanceRenderer::mapIR.find("trees") == InstanceRenderer::mapIR.end())
+	{
+		std::cout << "couldn't find the \"trees\" instance renderer" << std::endl;
+		std::cout << "creating \"trees\" instance renderer..." << std::endl;
+		InstanceRenderer::mapIR.insert({"trees",new InstanceRenderer()});
+	}
+	auto treesIR = InstanceRenderer::mapIR.at("trees");
+	if (!tools::pFindObjectByFriendlyNameMap("tree"))
+	{
+		std::cout << "No tree model!!" << std::endl;
+		return;;
+	}
+	treesIR->gameObj = ::g_map_GameObjects.at("tree");
+
+	// Initialize "trees" instance renderer
+	if(InstanceRenderer::mapIR.find("rocks") == InstanceRenderer::mapIR.end())
+	{
+		std::cout << "couldn't find the \"rocks\" instance renderer" << std::endl;
+		std::cout << "creating \"rocks\" instance renderer..." << std::endl;
+		InstanceRenderer::mapIR.insert({"rocks",new InstanceRenderer()});
+	}
+	auto rocksIR = InstanceRenderer::mapIR.at("rocks");
+	if (!tools::pFindObjectByFriendlyNameMap("mossyRock"))
+	{
+		std::cout << "No rock model!!" << std::endl;
+		return;;
+	}
+	rocksIR->gameObj = ::g_map_GameObjects.at("mossyRock");
+	
 	for (auto i = 0; i < width; i++)
 	{
 		for (auto j = 0; j < height; j++)
@@ -132,8 +162,9 @@ void Terrain::setTerrainObjects()
 				newTerrain = new cGameObject(::g_map_GameObjects["mossyRock"]);
 				newTerrain->scale *= GameTools::worldScale;
 				newTerrain->isVisible = true;
-				newTerrain->positionXYZ = GameTools::coordToWorldPos(i, j);
-				theSceneManager->scenesVector[0]->addGameObject(newTerrain);
+				newTerrain->positionXYZ = GameTools::coordToWorldPos(i, j);				
+				rocksIR->vecWMs.push_back(tools::calculateWorldMatrix(newTerrain));
+				//theSceneManager->scenesVector[0]->addGameObject(newTerrain);
 			}
 			
 			// Add a tree to the top of forest blocks
@@ -148,12 +179,19 @@ void Terrain::setTerrainObjects()
 				tree->isVisible = true;
 				tree->scale = GameTools::worldScale;
 				tree->positionXYZ = GameTools::coordToWorldPos(i, j);
-				//::g_map_GameObjects[tree->friendlyName] = tree;
-				theSceneManager->scenesVector[0]->addGameObject(tree);
+
+				treesIR->vecWMs.push_back(tools::calculateWorldMatrix(tree));
 			}
 		}
 	}
-	blocksIR->setVAOVariables();
+	for(std::pair<std::string,InstanceRenderer*> insRend : InstanceRenderer::mapIR)
+	{
+		//blocksIR->setVAOVariables();
+		if(!insRend.second->vecWMs.empty())
+		{
+			insRend.second->setVAOVariables();
+		}
+	}
 }
 
 bool Terrain::isTerrainWalkable(std::string type)
