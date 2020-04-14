@@ -52,6 +52,7 @@
   {
     "alphaTransparency": 1.0,
     "friendlyName": "groundBlock",
+    "graphicEffects": { "toonLighting": true, "toonOutline": true },
     "isVisible": false,
     "meshName": "terrainBlock",
     "meshURL": "assets/models/ground.fbx",

@@ -118,6 +118,35 @@ void InstanceRenderer::drawIR()
 	{
 		glEnable(GL_DEPTH);								// Write to depth buffer
 	}
+
+	auto jGraphicEffects = gameObj->jGraphicEffects;
+	if (jGraphicEffects.contains("toonOutline") &&
+		jGraphicEffects["toonOutline"])
+	{
+		glUniform1i(glGetUniformLocation(shaderProgID, "objectID"), gameObj->getUniqueID());
+	}
+	else
+	{
+		glUniform1i(glGetUniformLocation(shaderProgID, "objectID"), 0);
+	}
+	
+	if (jGraphicEffects.contains("outlineColorID"))
+	{
+		glUniform1i(glGetUniformLocation(shaderProgID, "outlineColorID"), jGraphicEffects["outlineColorID"]);
+	}
+	else
+	{
+		glUniform1i(glGetUniformLocation(shaderProgID, "outlineColorID"), 0);
+	}
+
+	if (jGraphicEffects.contains("outlineWidth"))
+	{
+		glUniform1i(glGetUniformLocation(shaderProgID, "outlineWidth"), jGraphicEffects["outlineWidth"]);
+	}
+	else
+	{
+		glUniform1i(glGetUniformLocation(shaderProgID, "outlineWidth"), 0);
+	}
 	
 	glUniform1f(glGetUniformLocation(shaderProgID, "isBloom"),		float(GL_FALSE));
 	glUniform1f(glGetUniformLocation(shaderProgID, "isNightVision"),float(GL_FALSE));
