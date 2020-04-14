@@ -17,6 +17,11 @@ struct GameArmies
 	static void nextAlly();
 	static void previousAlly();
 	/*
+	 * Resets the properties of the object and other stuff
+	 * to show the unit as not selected
+	 */
+	static void deselectUnit(GameUnit* unit);
+	/*
 	 * Sets all of the extra things to show that a unit is selected
 	 * Like moving the cursor, maybe changing the unit's color, etc
 	 */

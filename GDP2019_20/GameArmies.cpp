@@ -150,11 +150,7 @@ void GameArmies::setUnitObjects()
 	}
 }
 
-/*
- * Resets the properties of the object and other stuff
- * to show the unit as not selected
- */
-void deselectUnit(GameUnit* unit)
+void GameArmies::deselectUnit(GameUnit* unit)
 {
 	unit->gameObj->jGraphicEffects["outlineWidth"] = 2;
 	unit->gameObj->jGraphicEffects["outlineColorID"] = 1;

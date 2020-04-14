@@ -1,5 +1,6 @@
 #include "cAnimationState.h"
 #include <iostream>
+#include "GameEvents.h"
 
 cAnimationState::cAnimationState(cSimpleAssimpSkinnedMesh* p_SM)
 {
@@ -41,6 +42,7 @@ void cAnimationState::makeDefaultAnimation(std::string name)
 
 void cAnimationState::update(float dt,std::vector<glm::mat4> &FinalTransformation,std::vector<glm::mat4> &Globals,std::vector<glm::mat4> &Offsets)
 {
+	if (GameEvents::effectState != "inactive") return;
 	
 	if(!activeAnimation)
 	{

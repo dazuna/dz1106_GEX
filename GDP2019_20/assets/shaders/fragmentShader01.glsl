@@ -29,6 +29,7 @@ uniform sampler2D textSamp03;
 uniform sampler2D secondPassColourTexture;
 uniform sampler2D scenePassColourTexture;
 uniform sampler2D depthTexture;
+uniform usampler2D stencilTexture;
 uniform sampler2D lightGradientSampler;
 uniform int objectID;
 
@@ -127,7 +128,7 @@ vec3 outlineColors[4] = {
 
 vec4 buildOutlineInfo()
 {
-	return vec4(objectID,outlineWidth,outlineColorID,1);
+	return vec4(objectID,outlineWidth,outlineColorID, gl_FragCoord.z);
 }
 
 bool isCoordInWindow(vec2 screenCoord)
@@ -136,10 +137,11 @@ bool isCoordInWindow(vec2 screenCoord)
 		screenCoord.t >= 0 && screenCoord.t < screenHeight;
 }
 
-bool isCoordDifferentObjectBehind(vec2 screenCoord, int sampledID)
+bool isCoordDifferentObjectBehind(vec2 screenCoord, vec4 currentPixelInfo)
 {
 	if (!isCoordInWindow(screenCoord)) return false;
 
+	int sampledID = int(currentPixelInfo.r);
 	// Is screenCoord on another object?
 	vec2 textCoords = vec2( screenCoord.x / screenWidth, 
 							screenCoord.y / screenHeight );
@@ -148,12 +150,10 @@ bool isCoordDifferentObjectBehind(vec2 screenCoord, int sampledID)
 		return false;
 
 	// Is screenCoord behind what I'm coloring?
-	vec3 otherPixelDepth = texture( depthTexture, textCoords ).rgb;
-	textCoords = vec2( gl_FragCoord.x / screenWidth, 
-						gl_FragCoord.y / screenHeight );
-	vec3 thisPixelDepth = texture( depthTexture, textCoords ).rgb;
+	float thisPixelDepth = currentPixelInfo.a;
+	float otherPixelDepth = otherPixelInfo.a;
 
-	if (thisPixelDepth.r > otherPixelDepth.r)
+	if (thisPixelDepth > otherPixelDepth)
 		return false;
 
 	return true;
@@ -162,10 +162,8 @@ bool isCoordDifferentObjectBehind(vec2 screenCoord, int sampledID)
 // Reserved for the last pass. Samples the outlineInfoTexture.
 bool isPixelBorder(vec4 currentPixelInfo)
 {
-	vec2 textCoords = vec2( gl_FragCoord.x / screenWidth, 
-								gl_FragCoord.y / screenHeight );
 	int currentPixelID = int(currentPixelInfo.r);
-	vec3 thisPixelDepth = texture( depthTexture, textCoords ).rgb;
+	float thisPixelDepth = currentPixelInfo.a;
 	if (currentPixelID == 0)
 		return false;
 
@@ -173,7 +171,7 @@ bool isPixelBorder(vec4 currentPixelInfo)
 	// farther > closer [0-1]
 	// 0.9997 is a good depth to stop doing outlines, far enough
 	// values less than 0.9997 will be outlined
-	if (thisPixelDepth.r > 0.9997)
+	if (thisPixelDepth > 0.9997)
 		return false;
 
 	float limit = int(currentPixelInfo.g);
@@ -184,15 +182,15 @@ bool isPixelBorder(vec4 currentPixelInfo)
 	// 	if (isCoordDifferentObjectBehind(gl_FragCoord.st + vec2(s,0), int(currentPixelInfo.r)))
 	// 		return true;
 	// }
-	if (isCoordDifferentObjectBehind(gl_FragCoord.st + vec2(-limit,0), int(currentPixelInfo.r)))
+	if (isCoordDifferentObjectBehind(gl_FragCoord.st + vec2(-limit,0), currentPixelInfo))
 		return true;
-	if (isCoordDifferentObjectBehind(gl_FragCoord.st + vec2(limit,0), int(currentPixelInfo.r)))
+	if (isCoordDifferentObjectBehind(gl_FragCoord.st + vec2(limit,0), currentPixelInfo))
 		return true;
 
 	// vertical
-	if (isCoordDifferentObjectBehind(gl_FragCoord.st + vec2(0, limit), int(currentPixelInfo.r)))
+	if (isCoordDifferentObjectBehind(gl_FragCoord.st + vec2(0, limit), currentPixelInfo))
 		return true;
-	if (isCoordDifferentObjectBehind(gl_FragCoord.st + vec2(0, -limit), int(currentPixelInfo.r)))
+	if (isCoordDifferentObjectBehind(gl_FragCoord.st + vec2(0, -limit), currentPixelInfo))
 		return true;
 	// for (int t = -limit; t <= limit; t++)
 	// {
@@ -210,7 +208,7 @@ bool isPixelBorder(vec4 currentPixelInfo)
 	 
 void main()  
 {
-	outlineInfo = vec4(0,0,0,0);
+	outlineInfo = vec4(0,0,0,1);
 
 	if ( bIsSkyBox )
 	{
@@ -228,7 +226,7 @@ void main()
 		                         gl_FragCoord.y / screenHeight );
 		vec3 texRGB = texture( secondPassColourTexture, textCoords.st ).rgb;
 		vec4 currentPixelInfo = texture( outlineInfoTexture, textCoords.st );
-		vec3 thisPixelDepth = texture( depthTexture, textCoords ).rgb;
+		uvec4 thisPixelStencil = texture( stencilTexture, textCoords );
 		if (isPixelBorder(currentPixelInfo))
 		{
 			int sampledOutlineColorID = int(currentPixelInfo.b);
@@ -243,6 +241,13 @@ void main()
 		}
 		else
 			pixelColour.rgb = texRGB;
+
+		if (thisPixelStencil.r > 0)
+		{
+			pixelColour.rgb = 1 - pixelColour.rgb;
+		}
+
+		// pixelColour.rgb = vec3(currentPixelInfo.a / 1000);
 
 		pixelColour.a = 1.0f;
 		return;

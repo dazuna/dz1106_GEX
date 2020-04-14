@@ -6,7 +6,7 @@
     "isVisible": false,
     "meshName": "cubeMesh",
     "meshURL": "assets/models/cube1_xyx_n_uv.ply",
-    "positionXYZ": [43.36638641357422, 41.478023529052734, 77.85726165771484],
+    "positionXYZ": [34.23561096191406, 64.61907958984375, 146.09413146972656],
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 1.0,
     "texture": ["White.png", "", "", ""],
@@ -19,7 +19,7 @@
     "isVisible": false,
     "meshName": "cubeMesh",
     "meshURL": "assets/models/cube1_xyx_n_uv.ply",
-    "positionXYZ": [43.3392448425293, 41.03508758544922, 76.96112060546875],
+    "positionXYZ": [34.23970031738281, 64.13958740234375, 145.21658325195313],
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 1.0,
     "texture": ["White.png", "", "", ""],
@@ -31,9 +31,21 @@
     "isVisible": false,
     "meshName": "sphereMesh",
     "meshURL": "assets/models/Sphere_Radius_1_XYZ_n_uv.ply",
-    "positionXYZ": [0,20,0],
-    "rotationXYZ": [0,0,0],
+    "positionXYZ": [0.0, 20.0, 0.0],
+    "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 1.0,
+    "texture": ["White.png", "", "", ""],
+    "textureRatio": [1.0, 0.0, 0.0, 0.0]
+  },
+  {
+    "alphaTransparency": 1.0,
+    "friendlyName": "zawarudoSphere",
+    "isVisible": false,
+    "meshName": "sphereMesh",
+    "meshURL": "assets/models/Sphere_Radius_1_XYZ_n_uv.ply",
+    "positionXYZ": [36.0, 20.0, 44.0],
+    "rotationXYZ": [0.0, -0.0, 0.0],
+    "scale": 0.0,
     "texture": ["White.png", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0]
   },
@@ -52,6 +64,7 @@
   {
     "alphaTransparency": 1.0,
     "friendlyName": "tree",
+    "graphicEffects": { "toonLighting": true, "toonOutline": true },
     "isVisible": false,
     "meshName": "oak",
     "meshURL": "assets/models/oak.ply",
@@ -59,12 +72,7 @@
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 0.0,
     "texture": ["tree_test.png", "", "", ""],
-    "textureRatio": [1.0, 0.0, 0.0, 0.0],
-    "graphicEffects":
-    {
-        "toonOutline": true,
-        "toonLighting": true
-    }
+    "textureRatio": [1.0, 0.0, 0.0, 0.0]
   },
   {
     "alphaTransparency": 1.0,
@@ -93,6 +101,7 @@
   {
     "alphaTransparency": 1.0,
     "friendlyName": "cursor",
+    "graphicEffects": { "toonLighting": true, "toonOutline": true },
     "isVisible": true,
     "meshName": "diamond",
     "meshURL": "assets/models/diamond.ply",
@@ -100,16 +109,12 @@
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 1.600000023841858,
     "texture": ["Yellow.png", "", "", ""],
-    "textureRatio": [1.0, 0.0, 0.0, 0.0],
-    "graphicEffects":
-    {
-        "toonOutline": true,
-        "toonLighting": true
-    }
+    "textureRatio": [1.0, 0.0, 0.0, 0.0]
   },
   {
     "alphaTransparency": 1.0,
     "friendlyName": "knight",
+    "graphicEffects": { "toonLighting": true, "toonOutline": true },
     "inverseMass": -1.0,
     "isSkinnedMesh": true,
     "isVisible": false,
@@ -141,12 +146,7 @@
         "isReplaceable": false,
         "location": "assets/modelsFBX/Knight/sword and shield impact.fbx"
       }
-    ],
-    "graphicEffects":
-    {
-        "toonOutline": true,
-        "toonLighting": true
-    }
+    ]
   },
   {
     "alphaTransparency": 1.0,
@@ -190,11 +190,11 @@
     "isVisible": false,
     "meshName": "quadMesh",
     "meshURL": "assets/models/1x1_2Tri_Quad_2_Sided_xyz_n_uv.ply",
-    "positionXYZ": [41.04509735107422, 38.36678695678711, 73.88587951660156],
+    "positionXYZ": [32.05384826660156, 61.344085693359375, 142.17559814453125],
     "rotationXYZ": [
-      -26.29138946533203,
-      1.7347819805145264,
-      2.6692658749993825e-8
+      -28.651691436767578,
+      -0.267031192779541,
+      -6.670179963919054e-9
     ],
     "scale": 0.5,
     "texture": ["Red.png", "", "", ""],
@@ -203,6 +203,7 @@
   {
     "alphaTransparency": 1.0,
     "friendlyName": "mossyRock",
+    "graphicEffects": { "toonLighting": true, "toonOutline": true },
     "isVisible": false,
     "meshName": "mossyRock",
     "meshURL": "assets/models/mossy_rocks.ply",
@@ -210,27 +211,19 @@
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 0.20000000298023224,
     "texture": ["mossy_rocks.png", "", "", ""],
-    "textureRatio": [1.0, 0.0, 0.0, 0.0],
-    "graphicEffects":
-    {
-        "toonOutline": true,
-        "toonLighting": true
-    }
+    "textureRatio": [1.0, 0.0, 0.0, 0.0]
   },
   {
     "alphaTransparency": 1.0,
     "friendlyName": "quadParticle",
+    "graphicEffects": { "toonOutline": false },
     "isVisible": false,
     "meshName": "quadMesh",
     "meshURL": "assets/models/squareCursor.ply",
     "positionXYZ": [0.0, 0.0, 0.0],
-    "rotationXYZ": [1000,1000,1000],
-    "scale": 0.01,
+    "rotationXYZ": [-80.0, -79.99999237060547, -80.0],
+    "scale": 0.009999999776482582,
     "texture": ["spark1.png", "", "", "spark1.png"],
-    "textureRatio": [1.0, 0.0, 0.0, 0.0],
-    "graphicEffects":
-    {
-        "toonOutline": false
-    }
+    "textureRatio": [1.0, 0.0, 0.0, 0.0]
   }
 ]

@@ -57,6 +57,7 @@ void GameTools::update(float dt)
 	{
 		EnemyAI::update();
 	}
+	GameEvents::update(dt);
 }
 
 bool GameTools::isCoordWalkable(int x, int y)
@@ -73,6 +74,9 @@ bool GameTools::isCoordWalkable(int x, int y)
 
 void GameTools::changeTurn()
 {
+	// if we want to limit the player back in time
+	// power to their own turns
+	//GameEvents::deleteHistory();
 	isPlayerTurn = !isPlayerTurn;
 	const auto& armyInTurn = isPlayerTurn ? GameArmies::allyUnits : GameArmies::enemyUnits;
 	for (auto unit : armyInTurn)
@@ -82,6 +86,7 @@ void GameTools::changeTurn()
 	if (!isPlayerTurn)
 	{
 		EnemyAI::state = "begin";
+		
 	}
 	else
 	{

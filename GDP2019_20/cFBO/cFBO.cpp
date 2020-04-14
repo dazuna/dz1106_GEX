@@ -53,8 +53,9 @@ bool cFBO::init( int width, int height, std::string &error )
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-
-
+	glFramebufferTexture(GL_FRAMEBUFFER,
+		GL_COLOR_ATTACHMENT0,			// Colour goes to #0
+		this->colourTexture_0_ID, 0);
 
 	//     ___        _   _ _              ___        __       
 	//    / _ \ _   _| |_| (_)_ __   ___  |_ _|_ __  / _| ___  
@@ -62,7 +63,6 @@ bool cFBO::init( int width, int height, std::string &error )
 	//   | |_| | |_| | |_| | | | | |  __/  | || | | |  _| (_) |
 	//    \___/ \__,_|\__|_|_|_| |_|\___| |___|_| |_|_|  \___/ 
 	//
-	//                                                         
 	glGenTextures(1, &(this->outlineInfoBuffer_1_ID));		//g_FBO_colourTexture
 	glBindTexture(GL_TEXTURE_2D, this->outlineInfoBuffer_1_ID);
 
@@ -73,46 +73,44 @@ bool cFBO::init( int width, int height, std::string &error )
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-//***************************************************************
+	glFramebufferTexture(GL_FRAMEBUFFER,
+		GL_COLOR_ATTACHMENT1,			// outline info goes to #1
+		this->outlineInfoBuffer_1_ID, 0);
 
-	// Create the depth buffer (texture)
+	//    ___           _   _      ___       __  __         
+	//   |   \ ___ _ __| |_| |_   | _ )_  _ / _|/ _|___ _ _ 
+	//   | |) / -_) '_ \  _| ' \  | _ \ || |  _|  _/ -_) '_|
+	//   |___/\___| .__/\__|_||_| |___/\_,_|_| |_| \___|_|  
+	//            |_|                                       
 	glGenTextures(1, &( this->depthTexture_ID ));			//g_FBO_depthTexture
 	glBindTexture(GL_TEXTURE_2D, this->depthTexture_ID);
-
-	//glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH_COMPONENT32F, ]
-
-	// Note that, unless you specifically ask for it, the stencil buffer
-	// is NOT present... i.e. GL_DEPTH_COMPONENT32F DOESN'T have stencil
-
-	// These are:
-	// - GL_DEPTH32F_STENCIL8, which is 32 bit float depth + 8 bit stencil
-	// - GL_DEPTH24_STENCIL8,  which is 24 bit float depth + 8 bit stencil (more common?)
-	glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8,	//GL_DEPTH32F_STENCIL8,
+	glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8,
 				   this->width,		//g_FBO_SizeInPixes
 				   this->height);
-//	glTexParameteri(GL_TEXTURE_2D, GL_DEPTH_STENCIL_TEXTURE_MODE, GL_DEPTH_COMPONENT );
-//	glTexParameteri(GL_TEXTURE_2D, GL_DEPTH_STENCIL_TEXTURE_MODE, GL_STENCIL_COMPONENT );
-//	glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, this->width, this->height, 0, GL_EXT_packe
+	glFramebufferTexture(GL_FRAMEBUFFER,
+		GL_DEPTH_STENCIL_ATTACHMENT,
+		this->depthTexture_ID, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_DEPTH_STENCIL_TEXTURE_MODE, GL_STENCIL_INDEX);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH24_STENCIL8, GL_TEXTURE_2D, this->depthTexture_ID, 0);
+	//    ___ _               _ _   ___       __  __         
+	//   / __| |_ ___ _ _  __(_) | | _ )_  _ / _|/ _|___ _ _ 
+	//   \__ \  _/ -_) ' \/ _| | | | _ \ || |  _|  _/ -_) '_|
+	//   |___/\__\___|_||_\__|_|_| |___/\_,_|_| |_| \___|_|  
+	//
+	// We need to do 2 because we need to set up different ways to
+	// sample them
+	//glGenTextures(1, &(this->stencilTexture_ID));			//g_FBO_depthTexture
+	//glBindTexture(GL_TEXTURE_2D, this->stencilTexture_ID);
+	//glTexStorage2D(GL_TEXTURE_2D, 1, GL_STENCIL_INDEX16,	//GL_DEPTH32F_STENCIL8,
+	//	this->width,		//g_FBO_SizeInPixes
+	//	this->height);
+	//glFramebufferTexture(GL_FRAMEBUFFER,
+	//	GL_STENCIL_ATTACHMENT,
+	//	this->stencilTexture_ID, 0);
 
 // ***************************************************************
-
-	glFramebufferTexture(GL_FRAMEBUFFER,
-						 GL_COLOR_ATTACHMENT0,			// Colour goes to #0
-						 this->colourTexture_0_ID, 0);
-
-	glFramebufferTexture(GL_FRAMEBUFFER,
-						GL_COLOR_ATTACHMENT1,			// outline info goes to #1
-						this->outlineInfoBuffer_1_ID, 0);
-
-
-//	glFramebufferTexture(GL_FRAMEBUFFER,
-//						 GL_DEPTH_ATTACHMENT,
-//						 this->depthTexture_ID, 0);
-	glFramebufferTexture(GL_FRAMEBUFFER,
-						 GL_DEPTH_STENCIL_ATTACHMENT,
-						 this->depthTexture_ID, 0);
 
 	static const GLenum draw_bufers[] = 
 	{
@@ -121,11 +119,8 @@ bool cFBO::init( int width, int height, std::string &error )
 	};
 	glDrawBuffers(2, draw_bufers);		// There are 2 outputs now
 
+	
 	// ***************************************************************
-
-
-
-
 	// ADD ONE MORE THING...
 	bool bFrameBufferIsGoodToGo = true; 
 
@@ -137,11 +132,11 @@ bool cFBO::init( int width, int height, std::string &error )
 
 	case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
 		error = "GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT";
-		bFrameBufferIsGoodToGo = false; 
-		break;
 //	case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
 	case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+		error = "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT";
 	case GL_FRAMEBUFFER_UNSUPPORTED:
+		error = "GL_FRAMEBUFFER_UNSUPPORTED";
 	default:
 		bFrameBufferIsGoodToGo = false; 
 		break;
@@ -175,9 +170,9 @@ void cFBO::clearBuffers(bool bClearColour, bool bClearDepth)
 		glClearBufferfv(GL_COLOR, 0, zero_x3);		// Colour
 		glClearBufferfv(GL_COLOR, 1, zero_x4);		// Outline info
 	}
+	glClearBufferfv(GL_DEPTH, 0, &one);		// Depth is normalized 0.0 to 1.0f
 	if ( bClearDepth )
 	{
-		glClearBufferfv(GL_DEPTH, 0, &one);		// Depth is normalized 0.0 to 1.0f
 	}
 	// If buffer is GL_STENCIL, drawbuffer must be zero, and value points to a 
 	//  single value to clear the stencil buffer to. Masking is performed in the 

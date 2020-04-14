@@ -136,6 +136,44 @@ bool cSceneManager::update()
 		if (sceneIdx == 0)
 		{
 			drawObjectWithFBO(nullptr, "miniMapQuad", 1);
+
+			if (!tools::pFindObjectByFriendlyNameMap("zawarudoSphere")) 
+				continue;
+			/*
+			 * Draw the zawardo sphere in the stencil buffer
+			 */
+
+			// clear stencil
+			glClearStencil(0);
+			glClear(GL_STENCIL_BUFFER_BIT);
+			// Disable depth testing
+			glDisable(GL_DEPTH_TEST);
+			// enable stencil test
+			glEnable(GL_STENCIL_TEST);
+			// Define the operation (replace)
+			glStencilOp(GL_REPLACE,// Stencil fails KEEP the original value 
+				GL_REPLACE,		// Depth fails KEEP the original value
+				GL_REPLACE);	// Stencil AND depth PASSES, REPLACE with 1's
+			// define the test (always)
+			glStencilFunc(
+				GL_ALWAYS, // No test. Always passes
+				1,		   // Replace with 1's
+				0xFF);	   // Mask of 1111,1111 (no mask)
+			// disable the color buffer
+			glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+
+			// draw the sphere
+			auto sphere = ::g_map_GameObjects["zawarudoSphere"];
+			sphere->isVisible = true;
+			tools::DrawObject(mat4(0), sphere, ::shaderProgID, ::pTheVAOManager);
+			sphere->isVisible = false;
+
+			// enable the color buffer
+			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+			// disable the stencil test
+			glDisable(GL_STENCIL_TEST);
+			// eneable the depth test
+			glEnable(GL_DEPTH_TEST);
 		}
 	}
 	return result;
@@ -181,6 +219,10 @@ void cSceneManager::lastPass(GLFWwindow* window)
 	glActiveTexture(GL_TEXTURE0 + 42);
 	glBindTexture(GL_TEXTURE_2D, texture->depthTexture_ID);
 	glUniform1i(glGetUniformLocation(shaderProgID, "depthTexture"), 42);
+
+	glActiveTexture(GL_TEXTURE0 + 43);
+	glBindTexture(GL_TEXTURE_2D, texture->depthTexture_ID);
+	glUniform1i(glGetUniformLocation(shaderProgID, "stencilTexture"), 43);
 
 	// 4. Draw a single object (a triangle or quad)
 	cGameObject* pQuadOrIsIt = NULL;

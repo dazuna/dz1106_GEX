@@ -202,7 +202,8 @@ int main(void)
 	::g_pFlyCamera->camPos = ::g_map_GameObjects.at("cameraPosition0");
 	::g_pFlyCamera->battlePos = ::g_map_GameObjects.at("cameraTarget0");
 
-	::theSceneManager->init();
+	if (!::theSceneManager->init())
+		return 1;
 
 	// Get the initial time
 	double lastTime = glfwGetTime();
