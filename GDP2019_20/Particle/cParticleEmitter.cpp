@@ -43,15 +43,15 @@ cParticleEmitter::sParticleCreationSettings::sParticleCreationSettings()
 
 void cParticleEmitter::setSPCSDefaultValues(sParticleCreationSettings& sPCS)
 {
-	sPCS.minLifeSeconds = float(0.3);
-	sPCS.maxLifeInSeconds = float(0.5);
+	sPCS.minLifeSeconds = float(0.1);
+	sPCS.maxLifeInSeconds = float(5.5);
 	sPCS.particleCreationVolume = cParticleEmitter::sParticleCreationSettings::SPHERE;
 	sPCS.minVelocity = glm::vec3(-20);
 	sPCS.maxVelocity = glm::vec3(20);
 	sPCS.minStartingScale = 0.01f;
 	sPCS.maxStartingScale = 0.1f;
 	sPCS.minScaleChangePercentPerSecond = 0.1f;	// 10%
-	sPCS.maxScaleChangePercentPerSecond = 0.5f;	// 100%
+	sPCS.maxScaleChangePercentPerSecond = 0.2f;	// 100%
 	sPCS.numParticlesPerSecond = float(500);
 	sPCS.isImposterFaceCamera = true;
 	sPCS.bFadeOutOverLifetime = false;

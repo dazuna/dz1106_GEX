@@ -124,7 +124,7 @@
     "positionXYZ": [0.0, 5.0, 0.0],
     "rotationXYZ": [0.0, -0.0, 0.0],
     "scale": 0.0,
-    "texture": ["Paladin_diffuse.png", "", "", ""],
+    "texture": ["Paladin_diffuse1.png", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0],
     "zAnimations": [
       {

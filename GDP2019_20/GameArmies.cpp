@@ -181,7 +181,7 @@ void GameArmies::previousAlly()
 void GameArmies::selectUnit(vUnits::iterator selectedUnit)
 {
 	GameCursor::setCoordinates((*selectedUnit)->coord_x, (*selectedUnit)->coord_y);
-	(*selectedUnit)->gameObj->jGraphicEffects["outlineWidth"] = 5;
+	(*selectedUnit)->gameObj->jGraphicEffects["outlineWidth"] = 3;
 	(*selectedUnit)->gameObj->jGraphicEffects["outlineColorID"] = 3;
 }
 

@@ -239,6 +239,8 @@ int main(void)
 	cParticleEmitter::setSPCSDefaultValues(sPCS);
 	cParticleEmitter::PEmtr->Initialize(sPCS);
 	auto ball = ::g_map_GameObjects.at("sphere");
+	//cParticleEmitter::PEmtr->location = glm::vec3(40,5,70);
+	//cParticleEmitter::PEmtr->enableNewParticles();
 	
 	while (!glfwWindowShouldClose(window))
 	{

@@ -143,7 +143,7 @@ void GameUnit::update(float dt)
 			wait++;
 			timer = 0.f;
 		}
-		if(wait >= 4)
+		if(wait >= 3)
 		{
 			gameObj->pAS->setActiveAnimation("Attack");
 			state = "attacking";			
@@ -171,7 +171,7 @@ void GameUnit::update(float dt)
 				/* setup camera wait */
 				auto cam = cFlyCamera::getTheCamera();
 				cam->state = "wait";
-				cam->timeToWait = 3.f;
+				cam->timeToWait = 1.f;
 				cam->nextAction = "zoom_out";
 				/* /setup camera wait */
 			}
@@ -187,7 +187,7 @@ void GameUnit::update(float dt)
 			wait++;
 			timer = 0.f;
 		}
-		if(wait >= 4)
+		if(wait >= 3)
 		{
 			gameObj->pAS->setActiveAnimation("GetHit");
 			state = "gotHit";			

@@ -123,7 +123,7 @@ vec3 outlineColors[4] = {
 	vec3(0,0,0), // black
 	vec3(0,0,164) / 255, // blue, for ally troops
 	vec3(140,0,0) / 255, // red, for enemy troops
-	vec3(1,1,1) // white, for selected ally troops
+	vec3(0,1,1) // white, for selected ally troops
 };
 
 vec4 buildOutlineInfo()
