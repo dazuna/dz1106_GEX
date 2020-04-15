@@ -135,7 +135,7 @@
       {
         "animName": "Run",
         "isReplaceable": true,
-        "location": "assets/modelsFBX/Knight/sword and shield run.fbx"
+        "location": "assets/modelsFBX/Knight/Knight@Run2.fbx"
       },
       {
         "animName": "Attack",
@@ -146,6 +146,11 @@
         "animName": "GetHit",
         "isReplaceable": false,
         "location": "assets/modelsFBX/Knight/sword and shield impact.fbx"
+      },
+      {
+        "animName": "Dance",
+        "isReplaceable": false,
+        "location": "assets/modelsFBX/Knight/Kumbion.fbx"
       }
     ]
   },

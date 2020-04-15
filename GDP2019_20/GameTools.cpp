@@ -46,7 +46,18 @@ bool GameTools::validCoord(int x, int y)
 
 void GameTools::update(float dt)
 {
-	if (winner != "") return;
+	if (winner != "")
+	{
+		for (auto unit : GameArmies::allyUnits)
+		{
+			unit->gameObj->pAS->setActiveAnimation("Dance");
+		}
+		for (auto unit : GameArmies::enemyUnits)
+		{
+			unit->gameObj->pAS->setActiveAnimation("Dance");
+		}
+		return;
+	}
 	
 	for (auto unit : GameArmies::allyUnits)
 	{
