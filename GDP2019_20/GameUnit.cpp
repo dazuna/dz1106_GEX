@@ -12,15 +12,13 @@ nlohmann::json GameUnit::toJSON()
 	nlohmann::json res;
 	auto cam = cFlyCamera::getTheCamera();
 	auto part = cParticleEmitter::PEmtr;
-	res["type"] = type;
-	res["x"] = coord_x + 1;
-	res["y"] = Terrain::height - coord_y;
-	res["health"] = health;
-	res["range"] = range;
-	res["rest movement"] = rest_movement;
 	res["state"] = state;
-	res["zcamState"] = cam->state;
-	res["zPE_createPart"] = (part->m_generateNewParticles ? "true" : "false");
+	res["health"] = health;
+	res["rest movement"] = rest_movement;
+	//res["x"] = coord_x + 1;
+	//res["y"] = Terrain::height - coord_y;
+	//res["range"] = range;
+	//res["type"] = type;
 	return res;
 }
 

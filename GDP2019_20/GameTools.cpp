@@ -30,11 +30,22 @@ void GameTools::init()
 
 void GameTools::displaySelectedAlly()
 {
-	if (GameArmies::selectedAlly != GameArmies::allyUnits.end())
+	GameUnit* selectedUnit = GameArmies::getUnitByCoord(GameArmies::allyUnits, GameCursor::coord_x, GameCursor::coord_y);
+	if (selectedUnit)
 	{
-		auto jAlly = (*GameArmies::selectedAlly)->toJSON();
-		jAlly["title"] = "Selected unit";
+		auto jAlly = selectedUnit->toJSON();
+		jAlly["title"] = "Selected ally unit";
 		ImGUI_utils::displayJSON(jAlly);
+		return;
+	}
+
+	selectedUnit = GameArmies::getUnitByCoord(GameArmies::enemyUnits, GameCursor::coord_x, GameCursor::coord_y);
+	if (selectedUnit)
+	{
+		auto jAlly = selectedUnit->toJSON();
+		jAlly["title"] = "Selected enemy unit";
+		ImGUI_utils::displayJSON(jAlly);
+		return;
 	}
 }
 

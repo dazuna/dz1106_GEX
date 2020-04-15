@@ -64,8 +64,6 @@ void ImGUI_utils::render()
 	}
 	jsonsToDisplay.clear();
 
-	renderMenu();
-
 	if (GameTools::winner != "")
 	{
 		ImGui::Begin("And the winner is...");
