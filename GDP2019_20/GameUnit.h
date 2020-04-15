@@ -15,11 +15,15 @@ struct GameUnit
 	cGameObject* gameObj = nullptr;
 	// TODO: change this per type of unit
 	int health = 10, range = 1,
-		movement = 5, rest_movement = 5, atkPwr = 2;
+		movement = 5, rest_movement = 5, atkPwr = 6;
 
 	float timer = 0;
 	int wait = 0;
 
+	/* {
+	 *	"team": "player" | "enemy"
+	 * }
+	 */
 	nlohmann::json jAdditionalInfo;
 	
 	nlohmann::json toJSON();

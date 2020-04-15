@@ -284,14 +284,14 @@
     <ClCompile Include="GamePathFinding.cpp">
       <Filter>MiracleKnightStuff</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyAI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameEvents.cpp">
       <Filter>MiracleKnightStuff</Filter>
     </ClCompile>
     <ClCompile Include="InstanceRenderer.cpp">
       <Filter>InstanceRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAI.cpp">
+      <Filter>MiracleKnightStuff</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -490,14 +490,14 @@
     <ClInclude Include="GamePathFinding.h">
       <Filter>MiracleKnightStuff</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyAI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameEvents.h">
       <Filter>MiracleKnightStuff</Filter>
     </ClInclude>
     <ClInclude Include="InstanceRenderer.h">
       <Filter>InstanceRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAI.h">
+      <Filter>MiracleKnightStuff</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

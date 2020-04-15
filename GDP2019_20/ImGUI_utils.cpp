@@ -66,7 +66,13 @@ void ImGUI_utils::render()
 
 	renderMenu();
 
-	if (!GameTools::isPlayerTurn)
+	if (GameTools::winner != "")
+	{
+		ImGui::Begin("And the winner is...");
+		ImGui::Text(GameTools::winner.c_str());
+		ImGui::End();
+	}
+	else if (!GameTools::isPlayerTurn)
 	{
 		ImGui::Begin("Enemy Turn", nullptr, ImGuiWindowFlags_NoTitleBar);
 		ImGui::Text("ENEMY TURN!");

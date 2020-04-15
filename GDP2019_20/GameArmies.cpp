@@ -203,3 +203,38 @@ bool GameArmies::isCoordOccupied(int x, int y)
 	}
 	return false;
 }
+
+void _killUnits(vUnits& army, vUnits::iterator& selectedUnit)
+{
+	vUnits::iterator itUnit = army.begin();
+	for (;itUnit != army.end();)
+	{
+		if ((*itUnit)->health <= 0)
+		{
+			(*itUnit)->gameObj->isVisible = false;
+			itUnit = army.erase(itUnit);
+			if (itUnit == selectedUnit)
+			{
+				selectedUnit = itUnit;
+			}
+		}
+		else
+		{
+			itUnit++;
+		}
+	}
+}
+
+void GameArmies::killUnits()
+{
+	_killUnits(allyUnits, selectedAlly);
+	_killUnits(enemyUnits, selectedEnemy);
+	if (enemyUnits.empty())
+	{
+		GameTools::winner = "Blue Team";
+	}
+	else if (allyUnits.empty())
+	{
+		GameTools::winner = "Red Team";
+	}
+}
