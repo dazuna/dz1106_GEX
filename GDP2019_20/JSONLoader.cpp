@@ -441,6 +441,7 @@ bool JSONLoader::JSONLoadSceneConf()
 	json jsonArray;
 	int index = 0;
 	inFile >> jsonArray;
+	JsonState::getTheJsonState()->JSONGlobalConfig = jsonArray;
 
 	cSceneManager* theSceneManager = cSceneManager::getTheSceneManager();
 	theSceneManager->numScenes = jsonArray["numberOfScenes"];

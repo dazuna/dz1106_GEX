@@ -13,6 +13,7 @@ struct JsonState
 
 	json JSONObjects;
 	json JSONLights;
+	json JSONGlobalConfig;
 
 	int findObject(cGameObject* theGO);
 	void mergeObject(cGameObject* theGO);

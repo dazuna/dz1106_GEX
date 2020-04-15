@@ -6,6 +6,7 @@
 #include "GamePathFinding.h"
 #include "EnemyAI.h"
 #include "GameEvents.h"
+#include "JsonState.h"
 
 float GameTools::worldScale = 10.0f;
 bool GameTools::isPlayerTurn = true;
@@ -19,10 +20,17 @@ glm::vec3 GameTools::coordToWorldPos(int i, int j)
 void GameTools::init()
 {
 	std::cout << "Initializing game stuff..." << std::endl;
-	Terrain::loadTerrain("./assets/textures/maps/small/terrain.png");
+	auto config = JsonState::getTheJsonState()->JSONGlobalConfig;
+	if (!config.contains("mapsBaseLocation"))
+	{
+		std::cout << "No maps base location in global config!!" << std::endl;
+		return;
+	}
+	auto mapsBaseLocation = config["mapsBaseLocation"].get<std::string>();
+	if (!Terrain::loadTerrain(mapsBaseLocation + "terrain.png")) return;
 	Terrain::setTerrainObjects();
-	GameArmies::loadAllies("./assets/textures/maps/small/playerUnits.png");
-	GameArmies::loadEnemies("./assets/textures/maps/small/enemyUnits.png");
+	if (!GameArmies::loadAllies(mapsBaseLocation + "playerUnits.png")) return;
+	if (!GameArmies::loadEnemies(mapsBaseLocation + "enemyUnits.png")) return;
 	GameArmies::setUnitObjects();
 	GameCursor::init();
 	GameArmies::selectUnit(GameArmies::selectedAlly);
