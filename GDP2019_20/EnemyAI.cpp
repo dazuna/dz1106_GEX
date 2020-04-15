@@ -29,8 +29,14 @@ void EnemyAI::update()
 		GameArmies::selectedEnemy = GameArmies::enemyUnits.begin();
 		state = "path_finding";
 	}
+	
+	if(GameArmies::selectedEnemy == GameArmies::enemyUnits.end())
+	{
+		end();
+	}
 
 	auto unit = *GameArmies::selectedEnemy;
+
 	
 	if (state == "path_finding")
 	{
@@ -52,11 +58,18 @@ void EnemyAI::update()
 	{
 		if (unit->state != "waiting") return;
 
-		if (route.size() <= 1)
+		if (route.size() <= unit->range)
 		{
 			state = "attacking";
 			GameCursor::setCoordinates(target->coord_x, target->coord_y);
-			unit->enemyAttack();
+			if (!unit->attkAction())
+			{
+				if (!nextEnemy())
+				{
+					end();
+				}
+				return;
+			}
 			return;
 		}
 
@@ -87,14 +100,16 @@ void EnemyAI::update()
 		auto targetUnit = GameArmies::getUnitByCoord(GameArmies::allyUnits, target->coord_x, target->coord_y);
 		// Bot Units has finished the attack animation
 		if (unit->state == "inactive" &&
-			targetUnit->state == "inactive" &&
+			(!targetUnit ||
+			  targetUnit->state == "inactive") &&
 			// and the camera has zoomed out completely
 			theCamera->state == "normal")
 		{
 			if (!nextEnemy())
 			{
 				end();
-			} else
+			}
+			else
 			{
 				state = "path_finding";
 			}

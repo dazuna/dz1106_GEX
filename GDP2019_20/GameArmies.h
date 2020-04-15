@@ -27,5 +27,6 @@ struct GameArmies
 	 */
 	static void selectUnit(vUnits::iterator selectedUnit);
 	static bool isCoordOccupied(int x, int y);
+	static void killUnits();
 };
 

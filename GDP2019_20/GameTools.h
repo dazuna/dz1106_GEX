@@ -1,10 +1,12 @@
 #pragma once
 #include <glm/vec3.hpp>
+#include <string>
 
 struct GameTools
 {
 	static float worldScale;
 	static bool isPlayerTurn;
+	static std::string winner;
 	static glm::vec3 coordToWorldPos(int i, int j);
 	static void init();
 	static void displaySelectedAlly();

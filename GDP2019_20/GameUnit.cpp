@@ -68,18 +68,27 @@ bool GameUnit::attkAction()
 	std::cout << "range: " << this->range << std::endl;
 	//return false;
 	if(dist > range) return false;
-	auto enemy = GameArmies::getUnitByCoord(GameArmies::enemyUnits,new_x,new_y);
+	const auto& opposingArmy = GameTools::isPlayerTurn ? GameArmies::enemyUnits : GameArmies::allyUnits;
+	auto enemy = GameArmies::getUnitByCoord(opposingArmy,new_x,new_y);
 	if(!enemy) return false;
 	
 	GameEvents::saveGameState();
-	
-	gameObj->setAT(enemy->gameObj->positionXYZ - gameObj->positionXYZ);
-	state = "wait4attacking";
-	enemy->getHitAction(coord_x,coord_y,atkPwr);
 
-	auto cam = cFlyCamera::getTheCamera();
-	cam->battleTarget = gameObj->positionXYZ;
-	cam->state = "zoom_in";
+	gameObj->setAT(enemy->gameObj->positionXYZ - gameObj->positionXYZ);
+	if (GameTools::isPlayerTurn)
+	{
+		state = "wait4attacking";
+
+		auto cam = cFlyCamera::getTheCamera();
+		cam->battleTarget = gameObj->positionXYZ;
+		cam->state = "zoom_in";
+	}
+	else
+	{
+		state = "attacking";
+		gameObj->pAS->setActiveAnimation("Attack");
+	}
+	enemy->getHitAction(coord_x, coord_y, atkPwr);
 	
 	return true;
 }
@@ -99,13 +108,6 @@ bool GameUnit::enemyAttack()
 	auto enemy = GameArmies::getUnitByCoord(GameArmies::allyUnits, new_x, new_y);
 	if (!enemy) return false;
 
-	gameObj->setAT(enemy->gameObj->positionXYZ - gameObj->positionXYZ);
-	state = "attacking";
-	gameObj->pAS->setActiveAnimation("Attack");
-	enemy->gameObj->setAT(gameObj->positionXYZ - enemy->gameObj->positionXYZ);
-	enemy->state = "gotHit";
-	enemy->gameObj->pAS->setActiveAnimation("GetHit");
-
 	return true;
 }
 
@@ -113,8 +115,16 @@ void GameUnit::getHitAction(int dir_x, int dir_y, int dmgTaken)
 {
 	auto targetPos = GameTools::coordToWorldPos(dir_x, dir_y);
 	gameObj->setAT(targetPos - gameObj->positionXYZ);
-	state = "wait4getHit";
 	health -= dmgTaken;
+	if (GameTools::isPlayerTurn)
+	{
+		state = "wait4getHit";
+	}
+	else
+	{
+		state = "gotHit";
+		gameObj->pAS->setActiveAnimation("GetHit");
+	}
 }
 
 void GameUnit::update(float dt)
@@ -160,6 +170,7 @@ void GameUnit::update(float dt)
 			particles->m_generateNewParticles = false;
 			state = "inactive";
 			wait = 0;
+			GameArmies::killUnits();
 		}
 	}
 	if(state == "attacking")

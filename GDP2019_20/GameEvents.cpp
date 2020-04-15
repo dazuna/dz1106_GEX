@@ -128,30 +128,34 @@ void GameEvents::deleteHistory()
 	stepsBack = 0;
 }
 
+void restoreArmy(vUnits& army, const GameEvents::vecGameUnit& state)
+{
+	for (auto& unit : army)
+	{
+		unit->gameObj->isVisible = false;
+	}
+	army.clear();
+	
+	for(const auto& unitState : state)
+	{
+		auto tmpAlly = new GameUnit(unitState);
+		tmpAlly->gameObj->positionXYZ = GameTools::coordToWorldPos(tmpAlly->coord_x, tmpAlly->coord_y);
+		tmpAlly->gameObj->isVisible = true;
+		army.push_back(tmpAlly);
+	}
+}
+
 void GameEvents::goBackInTime(int stepsBack)
 {
 	if (stepsBack < 0 || stepsBack >= allyStates.size() || allyStates.empty()) return;
 	auto idxUnit = 0;
 	GameArmies::deselectUnit(*GameArmies::selectedAlly);
-	GameArmies::allyUnits.clear();
+
 	// assuming original state is in last position
 	const auto idxEvent = int(allyStates.size()) - stepsBack - 1;
+	restoreArmy(GameArmies::allyUnits, allyStates[idxEvent]);
+	restoreArmy(GameArmies::enemyUnits, enemyStates[idxEvent]);
 	
-	for(idxUnit = 0; idxUnit < allyStates[idxEvent].size(); idxUnit++)
-	{
-		auto tmpAlly = new GameUnit(allyStates[idxEvent][idxUnit]);
-		tmpAlly->gameObj->positionXYZ = GameTools::coordToWorldPos(tmpAlly->coord_x, tmpAlly->coord_y);
-		tmpAlly->gameObj->isVisible = true;
-		GameArmies::allyUnits.push_back(tmpAlly);
-	}
-	GameArmies::enemyUnits.clear();
-	for(idxUnit = 0; idxUnit < enemyStates[idxEvent].size(); idxUnit++)
-	{
-		auto tmpEnemy = new GameUnit(enemyStates[idxEvent][idxUnit]);
-		tmpEnemy->gameObj->positionXYZ = GameTools::coordToWorldPos(tmpEnemy->coord_x, tmpEnemy->coord_y);
-		tmpEnemy->gameObj->isVisible = true;
-		GameArmies::enemyUnits.push_back(tmpEnemy);
-	}
 	GameArmies::selectedAlly = GameArmies::allyUnits.begin();
 	GameArmies::selectUnit(GameArmies::allyUnits.begin());
 	

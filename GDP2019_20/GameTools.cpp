@@ -9,6 +9,7 @@
 
 float GameTools::worldScale = 10.0f;
 bool GameTools::isPlayerTurn = true;
+std::string GameTools::winner = "";
 
 glm::vec3 GameTools::coordToWorldPos(int i, int j)
 {
@@ -45,6 +46,8 @@ bool GameTools::validCoord(int x, int y)
 
 void GameTools::update(float dt)
 {
+	if (winner != "") return;
+	
 	for (auto unit : GameArmies::allyUnits)
 	{
 		unit->update(dt);
