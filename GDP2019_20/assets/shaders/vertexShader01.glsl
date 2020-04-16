@@ -82,9 +82,11 @@ void main()
 	else
 	{	
 		mat4 matModelCpy = matModel;
+		mat4 matModelInverseTransposeCpy = matModelInverseTranspose;
 		if(isInstanced)
 		{
 			matModelCpy = instanceMatrix;
+			matModelInverseTransposeCpy = inverse(transpose(matModelCpy));
 		}
 
 		//vertPosition.xyz += ( vNormal.xyz * textOffset.x );		
@@ -97,10 +99,9 @@ void main()
 		// Vertex location in "world space"
 		// Vec4 = mat4x4 * vec4
 		fVertWorldLocation = matModelCpy * vertOriginal;
-		//mat4 matModelInverseTranspose = inverse(transpose(matModel));
 		
 		vec3 theNormal = normalize(vNormal.xyz);
-		fNormal = matModelInverseTranspose * vec4(theNormal, 1.0f);
+		fNormal = matModelInverseTransposeCpy * vec4(theNormal, 1.0f);
 		fNormal.xyz = normalize(fNormal.xyz); 
 		
 		// Pass the colour and UV unchanged.

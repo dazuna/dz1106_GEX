@@ -1,5 +1,5 @@
 {
-    "mapsBaseLocation": "./assets/textures/maps/small/", 
+    "mapsBaseLocation": "./assets/textures/maps/large/", 
     "numberOfScenes": 1,
     "numberOfCameras": 1,
     "scenes":

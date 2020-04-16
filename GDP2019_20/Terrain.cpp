@@ -177,9 +177,10 @@ void Terrain::setTerrainObjects()
 				}
 				auto tree = new cGameObject(::g_map_GameObjects["tree"]);
 				tree->isVisible = true;
-				tree->scale = GameTools::worldScale;
+				tree->scale *= GameTools::worldScale;
 				tree->positionXYZ = GameTools::coordToWorldPos(i, j);
-
+				tree->updateOrientation({ 0,randInRange(0, 360),0 });
+				
 				treesIR->vecWMs.push_back(tools::calculateWorldMatrix(tree));
 			}
 		}

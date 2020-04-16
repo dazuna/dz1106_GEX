@@ -67,12 +67,12 @@
     "friendlyName": "tree",
     "graphicEffects": { "toonLighting": true, "toonOutline": true },
     "isVisible": false,
-    "meshName": "oak",
-    "meshURL": "assets/models/oak.ply",
+    "meshName": "joined_trees",
+    "meshURL": "assets/models/three_trees.ply",
     "positionXYZ": [0.0, 0.0, 10.0],
-    "rotationXYZ": [0.0, -0.0, 0.0],
-    "scale": 0.0,
-    "texture": ["tree_test.png", "", "", ""],
+    "rotationXYZ": [0.0, 0.0, 0.0],
+    "scale": 0.35,
+    "texture": ["joined_trees.png", "", "", ""],
     "textureRatio": [1.0, 0.0, 0.0, 0.0]
   },
   {
