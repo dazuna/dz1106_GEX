@@ -73,13 +73,13 @@ void drawSkyBox(glm::vec3 positionSkyBox)
 
 void setSkyBoxTexture()
 {
-	::pTextureManager->SetBasePath("assets/textures/cubemaps");
+	::pTextureManager->SetBasePath("assets/textures/cubemaps/");
 	std::string errorString;
 
 	if (::pTextureManager->CreateCubeTextureFromBMPFiles("space",
-		"SpaceBox_right1_posX.png", "SpaceBox_left2_negX.png",
-		"SpaceBox_top3_posY.png", "SpaceBox_bottom4_negY.png",
-		"SpaceBox_front5_posZ.png", "SpaceBox_back6_negZ.png", true, errorString))
+		"field/posx.png", "field/negx.png",
+		"field/posy.png", "field/negy.png",
+		"field/posz.png", "field/negz.png", true, errorString))
 	{
 		std::cout << "Space skybox loaded" << std::endl;
 	}
@@ -87,23 +87,11 @@ void setSkyBoxTexture()
 	{
 		std::cout << "OH NO! " << errorString << std::endl;
 	}
-	
+
 	//if (::pTextureManager->CreateCubeTextureFromBMPFiles("space",
-	//	"SpaceBox_right1_posX.bmp", "SpaceBox_left2_negX.bmp",
-	//	"SpaceBox_top3_posY.bmp", "SpaceBox_bottom4_negY.bmp",
-	//	"SpaceBox_front5_posZ.bmp", "SpaceBox_back6_negZ.bmp", true, errorString))
-	//{
-	//	std::cout << "Space skybox loaded" << std::endl;
-	//}
-	//else
-	//{
-	//	std::cout << "OH NO! " << errorString << std::endl;
-	//}
-	
-	//if (::pTextureManager->CreateCubeTextureFromBMPFiles("space",
-	//	"city_rt.bmp", "city_lf.bmp",
-	//	"city_up.bmp", "city_dn.bmp",
-	//	"city_ft.bmp", "city_bk.bmp", true, errorString))
+	//	"SpaceBox_right1_posX.png", "SpaceBox_left2_negX.png",
+	//	"SpaceBox_top3_posY.png", "SpaceBox_bottom4_negY.png",
+	//	"SpaceBox_front5_posZ.png", "SpaceBox_back6_negZ.png", true, errorString))
 	//{
 	//	std::cout << "Space skybox loaded" << std::endl;
 	//}
