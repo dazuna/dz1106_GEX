@@ -5,7 +5,7 @@
 struct GameTools
 {
 	static float worldScale;
-	static bool isPlayerTurn;
+	static bool isPlayerTurn, isFogActive;
 	static std::string winner;
 	static glm::vec3 coordToWorldPos(int i, int j);
 	static void init();

@@ -140,6 +140,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	bool debugControls = false;
 	debugControls = !(theAnimatedPlayer->isPlayModeOn);
 
+	if (key == GLFW_KEY_F && action == GLFW_PRESS)
+	{
+		GameTools::isFogActive = !GameTools::isFogActive;
+	}
+
 	// Game controls
 	if (GameTools::isPlayerTurn)
 	{

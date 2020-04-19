@@ -101,8 +101,10 @@ vec3 eyeVector = eyeLocation.xyz - fVertWorldLocation.xyz;
 */
 float eyeIntoFog = (1 - smoothstep(20, 50, eyeLocation.y)) * 0.95;
 vec3 fogColor = vec3(0.6, 0.6, 0.6);
+uniform bool isFogActive;
 vec3 addFog(vec3 color)
 {
+	if (!isFogActive) return color;
 	if (eyeIntoFog < 0.01) return color;
 	float distanceToCamera = length(fVertWorldLocation - eyeLocation);
 	float fogPower = smoothstep(0, 85, distanceToCamera) * eyeIntoFog;
@@ -215,7 +217,8 @@ void main()
 		vec3 skyColour = texture( skyBox, fNormal.xyz ).rgb;
 		pixelColour.rgb = skyColour.rgb;
 		pixelColour.a = 1.0f;
-		pixelColour.rgb = fogColor * eyeIntoFog + pixelColour.rgb * (1 - eyeIntoFog);
+		if (isFogActive)
+			pixelColour.rgb = fogColor * eyeIntoFog + pixelColour.rgb * (1 - eyeIntoFog);
 		return;
 	}
 	

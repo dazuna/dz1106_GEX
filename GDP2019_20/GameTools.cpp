@@ -10,6 +10,7 @@
 
 float GameTools::worldScale = 10.0f;
 bool GameTools::isPlayerTurn = true;
+bool GameTools::isFogActive = true;
 std::string GameTools::winner = "";
 
 glm::vec3 GameTools::coordToWorldPos(int i, int j)

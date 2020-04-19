@@ -266,6 +266,7 @@ int main(void)
 		tools::setWindowTitle(&ssTitle);
 		glfwSetWindowTitle(window, ssTitle.str().c_str());
 
+		glUniform1i(glGetUniformLocation(shaderProgID, "isFogActive"), GameTools::isFogActive);
 		::g_pFlyCamera->repositionMiniMap();
 		theSceneManager->update();
 		// theSceneManager->updateStencil(window);
@@ -294,7 +295,7 @@ int main(void)
 		p = glm::perspective(0.6f,ratio,0.1f,1000.0f);
 		v = glm::mat4(1.0f);
 		v = glm::lookAt( ::g_pFlyCamera->eye,::g_pFlyCamera->getAtInWorldSpace(),::g_pFlyCamera->getUpVector() );
-		pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
+		//pDebugRenderer->RenderDebugObjects(v, p, 0.01f);
 
 		::theSceneManager->lastPass(window);		
 
