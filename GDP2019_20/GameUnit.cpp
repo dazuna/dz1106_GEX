@@ -6,6 +6,7 @@
 #include "GameEvents.h"
 #include "cFlyCamera/cFlyCamera.h"
 #include "./Particle/cParticleEmitter.h"
+#include "EnemyAI.h"
 
 nlohmann::json GameUnit::toJSON()
 {
@@ -62,8 +63,8 @@ bool GameUnit::attkAction()
 	if (!GameTools::validCoord(new_x, new_y)) return false;
 
 	auto dist = getDistToCoord(new_x,new_y);
-	std::cout << "dist to cursor: " << dist << std::endl;
-	std::cout << "range: " << this->range << std::endl;
+	//std::cout << "dist to cursor: " << dist << std::endl;
+	//std::cout << "range: " << this->range << std::endl;
 	//return false;
 	if(dist > range) return false;
 	const auto& opposingArmy = GameTools::isPlayerTurn ? GameArmies::enemyUnits : GameArmies::allyUnits;

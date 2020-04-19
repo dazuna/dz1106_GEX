@@ -36,7 +36,7 @@ void GameEvents::saveGameState()
 {
 	saveAllies();
 	saveEnemies();
-	std::cout << "saved game state!" << std::endl;
+	//std::cout << "saved game state!" << std::endl;
 }
 
 void GameEvents::update(float dt)

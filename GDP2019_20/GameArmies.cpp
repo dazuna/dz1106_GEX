@@ -212,14 +212,18 @@ void _killUnits(vUnits& army, vUnits::iterator& selectedUnit)
 		if ((*itUnit)->health <= 0)
 		{
 			(*itUnit)->gameObj->isVisible = false;
-			itUnit = army.erase(itUnit);
+			auto tempItUnit = army.erase(itUnit);
+			if (itUnit == selectedUnit)
+			{
+				selectedUnit = tempItUnit;
+			}
+			itUnit = tempItUnit;			
 		}
 		else
 		{
 			itUnit++;
 		}
 	}
-	selectedUnit = army.begin();
 }
 
 void GameArmies::killUnits()

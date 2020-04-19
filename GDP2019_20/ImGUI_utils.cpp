@@ -86,6 +86,30 @@ void ImGUI_utils::render()
 		ImGui::End();
 	}
 
+	nlohmann::json jAIDebug;
+	jAIDebug["title"] = "AI Debug";
+	auto selectedEnemyIT = GameArmies::selectedEnemy;
+	if (selectedEnemyIT != GameArmies::enemyUnits.end())
+	{
+		auto selectedEnemy = *GameArmies::selectedEnemy;
+		if (selectedEnemy)
+		{
+			jAIDebug["position"] = "(" + std::to_string(selectedEnemy->coord_x) + "," +
+				std::to_string(selectedEnemy->coord_y) + ")";
+		}
+	}
+	jAIDebug["state"] = EnemyAI::state;
+	jAIDebug["path length"] = EnemyAI::route.size();
+	auto target = EnemyAI::target;
+	if (target)
+	{
+		jAIDebug["target position"] = "(" + std::to_string(target->coord_x) + "," +
+			std::to_string(target->coord_y) + ")";
+	}
+
+	//renderJSON(jAIDebug);
+	
+
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }

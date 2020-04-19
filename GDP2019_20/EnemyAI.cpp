@@ -17,18 +17,13 @@ bool EnemyAI::nextEnemy()
 void EnemyAI::end()
 {
 	state = "inactive";
+	GameArmies::selectedEnemy = GameArmies::enemyUnits.begin();
 	GameTools::changeTurn();
 }
 
 void EnemyAI::update()
 {
 	if (state == "inactive") return;
-
-	if (state == "begin")
-	{
-		GameArmies::selectedEnemy = GameArmies::enemyUnits.begin();
-		state = "path_finding";
-	}
 	
 	if(GameArmies::selectedEnemy == GameArmies::enemyUnits.end())
 	{
@@ -37,6 +32,20 @@ void EnemyAI::update()
 
 	auto unit = *GameArmies::selectedEnemy;
 
+	if (state == "begin")
+	{
+		if (unit->state == "inactive")
+		{
+			if (!nextEnemy())
+			{
+				end();
+				return;
+			}
+		}
+		
+		GameArmies::selectedEnemy = GameArmies::enemyUnits.begin();
+		state = "path_finding";
+	}
 	
 	if (state == "path_finding")
 	{
@@ -101,9 +110,7 @@ void EnemyAI::update()
 		// Bot Units has finished the attack animation
 		if (unit->state == "inactive" &&
 			(!targetUnit ||
-			  targetUnit->state == "inactive") &&
-			// and the camera has zoomed out completely
-			theCamera->state == "normal")
+			  targetUnit->state == "inactive"))
 		{
 			if (!nextEnemy())
 			{
