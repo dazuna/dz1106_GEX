@@ -1,7 +1,3 @@
-# Miracle Knight
-
-by José Daniel Casado Aguilar and David Zuñiga Navarro
-
 Turn-grid strategy game. Eliminate all the red units before they eliminate you!
 
 ## Controls
